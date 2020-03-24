@@ -8,10 +8,8 @@ import model.Person;
 import model.Tree;
 import tools.Action;
 import tools.Settings;
-import windows.CardScreen;
-import windows.Window;
-import windows.MainWindow;
 import windows.FileChooseWindow;
+import windows.MainWindow;
 
 public class Main {
 
@@ -20,7 +18,6 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
 		pokazOkno();
 		if (!Settings.zaladuj()) System.out.println("brak ustawieñ");
 	}
