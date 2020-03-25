@@ -35,6 +35,7 @@ public class MainWindowBuilder {
 		SwingNode fxmlSearch = new SwingNode();
 		fxmlSearch.setContent(search);
 		
+		nac.getController().addNode(generateFileChoosePane());
 		nac.getController().addNode(generateTreeDetailsPane());
 		nac.getController().addNode(generateCommonNamePane());
 		nac.getController().addNode(fxmlSearch);
@@ -53,7 +54,15 @@ public class MainWindowBuilder {
 
 	private Pane generateCommonNamePane() {
 		CommonSurnamesPaneBuilder builder = new CommonSurnamesPaneBuilder();
-		builder.setSurnames(Arrays.asList(tree.getGlowneNazwiska()));//"Nowak", "Kowalski", "Smith", "Malinowski"));
+		builder.setSurnames(Arrays.asList(tree.getGlowneNazwiska()));
+		builder.build();
+		
+		return builder.getPane();
+	}
+	
+	private Pane generateFileChoosePane() {
+		FileChoosePaneBuilder builder = new FileChoosePaneBuilder();
+		builder.setLastOpenFiles(Arrays.asList("D:\\trees\\tree1.pgl","D:\\newtrees\\tree1.pgl","D:\\trees\\Nowak.pgl","D:\\trees\\Smith.pgl"));
 		builder.build();
 		
 		return builder.getPane();

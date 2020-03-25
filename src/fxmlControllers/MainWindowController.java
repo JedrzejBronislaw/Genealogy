@@ -23,9 +23,5 @@ public class MainWindowController implements Initializable {
 		
 	}
 
-	public Object addCommonSurname(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="TOP_CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.FileChoosePaneController">
+   <children>
+      <Button fx:id="newTreeButton" mnemonicParsing="false" text="%new_tree" />
+      <Button fx:id="browseButton" mnemonicParsing="false" text="%browse" />
+      <VBox>
+         <children>
+            <Label text="%last_open_trees_" />
+            <ListView fx:id="fileList" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </VBox>
+   </children>
+</VBox>
