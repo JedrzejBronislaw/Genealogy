@@ -13,6 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Setter;
+import tools.Injection;
 
 public class FileChoosePaneController implements Initializable {
 
@@ -35,19 +36,20 @@ public class FileChoosePaneController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		newTreeButton.setOnAction(e -> {
-			if (newTreeEvent != null)
-				newTreeEvent.run();
+			Injection.run(newTreeEvent);
 		});
 		
 		browseButton.setOnAction(e -> {
 			File treeFile = selectTree();
-			if (openTreeEvent != null && treeFile != null)
-				openTreeEvent.accept(treeFile);
+			if (treeFile != null)
+				Injection.run(openTreeEvent, treeFile);
 		});
 		
 		fileList.setOnMouseClicked(e -> {
-			if (e.getClickCount() == 2 && openTreeEvent != null)
-				openTreeEvent.accept(new File(fileList.getSelectionModel().getSelectedItem()));
+			String selectedPath = fileList.getSelectionModel().getSelectedItem();
+
+			if (e.getClickCount() == 2)
+				Injection.run(openTreeEvent, new File(selectedPath));
 		});
 	}
 
