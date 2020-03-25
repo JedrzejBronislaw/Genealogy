@@ -9,8 +9,10 @@ import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.Setter;
 import model.Tree;
+import nameDisplaying.SimpleNameDisplaying;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
+import treeGraphs.DrawingDescendantTreeGraph;
 import windows.SearchScreen;
 
 public class MainWindowBuilder {
@@ -35,6 +37,7 @@ public class MainWindowBuilder {
 		SwingNode fxmlSearch = new SwingNode();
 		fxmlSearch.setContent(search);
 		
+		nac.getController().addNode(generateTreeGrapfPane());
 		nac.getController().addNode(generateFileChoosePane());
 		nac.getController().addNode(generateTreeDetailsPane());
 		nac.getController().addNode(generateCommonNamePane());
@@ -64,6 +67,20 @@ public class MainWindowBuilder {
 		FileChoosePaneBuilder builder = new FileChoosePaneBuilder();
 		builder.setLastOpenFiles(Arrays.asList("D:\\trees\\tree1.pgl","D:\\newtrees\\tree1.pgl","D:\\trees\\Nowak.pgl","D:\\trees\\Smith.pgl"));
 		builder.build();
+		
+		return builder.getPane();
+	}
+	
+	private Pane generateTreeGrapfPane() {
+		TreeGraphPaneBuilder builder = new TreeGraphPaneBuilder();
+		builder.build();
+		
+		DrawingDescendantTreeGraph graph = new DrawingDescendantTreeGraph();
+		graph.setWyswietlacz(new SimpleNameDisplaying());
+		
+		
+		builder.getController().setGraph(graph);
+		builder.getController().setPerson(tree.getOsoba("100"));
 		
 		return builder.getPane();
 	}
