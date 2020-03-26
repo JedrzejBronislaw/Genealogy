@@ -37,6 +37,7 @@ public class MainWindowBuilder {
 		SwingNode fxmlSearch = new SwingNode();
 		fxmlSearch.setContent(search);
 		
+		nac.getController().addNode(generateCardPane());
 		nac.getController().addNode(generateTreeGrapfPane());
 		nac.getController().addNode(generateFileChoosePane());
 		nac.getController().addNode(generateTreeDetailsPane());
@@ -81,6 +82,16 @@ public class MainWindowBuilder {
 		
 		builder.getController().setGraph(graph);
 		builder.getController().setPerson(tree.getOsoba("100"));
+		
+		return builder.getPane();
+	}
+	
+	private Pane generateCardPane() {
+		CardPaneBuilder builder = new CardPaneBuilder();
+		builder.build();
+		
+//		builder.getController().setPerson(tree.getOsoba("34"));
+		builder.getController().setPerson(tree.getOsoba("9"));
 		
 		return builder.getPane();
 	}
