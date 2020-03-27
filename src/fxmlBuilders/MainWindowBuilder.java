@@ -1,20 +1,16 @@
 package fxmlBuilders;
 
-import java.awt.Dimension;
 import java.util.Arrays;
 
 import fxmlBuilders.session.Session;
 import fxmlControllers.MainWindowController;
-import javafx.embed.swing.SwingNode;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.Setter;
-import model.Tree;
 import nameDisplaying.SimpleNameDisplaying;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 import treeGraphs.DrawingDescendantTreeGraph;
-import windows.SearchScreen;
 
 public class MainWindowBuilder {
 
@@ -31,35 +27,16 @@ public class MainWindowBuilder {
 		
 		pane = (Pane) nac.getNode();
 		
-		
-		SearchScreen search = new SearchScreen();
-		search.setDrzewo(session.getTree());
-		search.setPreferredSize(new Dimension(330, 200));
-		SwingNode fxmlSearch = new SwingNode();
-		fxmlSearch.setContent(search);
-		
 		nac.getController().addNode(generateCardPane());
 		nac.getController().addNode(generateTreeGrapfPane());
 		nac.getController().addNode(generateFileChoosePane());
-		nac.getController().addNode(generateTreeDetailsPane());
-		nac.getController().addNode(generateCommonNamePane());
-		nac.getController().addNode(fxmlSearch);
-		
+		nac.getController().addNode(generateTreePane());
 	}
 
 
-	private Pane generateTreeDetailsPane() {
-		TreeDetailsPaneBuilder builder = new TreeDetailsPaneBuilder();
-		builder.setTree(session.getTree());
-		builder.build();
-		
-		return builder.getPane();
-	}
-
-
-	private Pane generateCommonNamePane() {
-		CommonSurnamesPaneBuilder builder = new CommonSurnamesPaneBuilder();
-		builder.setSurnames(Arrays.asList(session.getTree().getGlowneNazwiska()));
+	private Pane generateTreePane() {
+		TreePaneBuilder builder = new TreePaneBuilder();
+		builder.setSession(session);
 		builder.build();
 		
 		return builder.getPane();
