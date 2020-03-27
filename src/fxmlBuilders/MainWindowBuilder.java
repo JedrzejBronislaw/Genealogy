@@ -3,6 +3,7 @@ package fxmlBuilders;
 import java.awt.Dimension;
 import java.util.Arrays;
 
+import fxmlBuilders.session.Session;
 import fxmlControllers.MainWindowController;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.layout.Pane;
@@ -21,7 +22,7 @@ public class MainWindowBuilder {
 	private Pane pane;
 
 	@Setter
-	private Tree tree;
+	private Session session;
 	
 	
 	public void build() {
@@ -32,7 +33,7 @@ public class MainWindowBuilder {
 		
 		
 		SearchScreen search = new SearchScreen();
-		search.setDrzewo(tree);
+		search.setDrzewo(session.getTree());
 		search.setPreferredSize(new Dimension(330, 200));
 		SwingNode fxmlSearch = new SwingNode();
 		fxmlSearch.setContent(search);
@@ -49,7 +50,7 @@ public class MainWindowBuilder {
 
 	private Pane generateTreeDetailsPane() {
 		TreeDetailsPaneBuilder builder = new TreeDetailsPaneBuilder();
-		builder.setTree(tree);
+		builder.setTree(session.getTree());
 		builder.build();
 		
 		return builder.getPane();
@@ -58,7 +59,7 @@ public class MainWindowBuilder {
 
 	private Pane generateCommonNamePane() {
 		CommonSurnamesPaneBuilder builder = new CommonSurnamesPaneBuilder();
-		builder.setSurnames(Arrays.asList(tree.getGlowneNazwiska()));
+		builder.setSurnames(Arrays.asList(session.getTree().getGlowneNazwiska()));
 		builder.build();
 		
 		return builder.getPane();
@@ -81,7 +82,7 @@ public class MainWindowBuilder {
 		
 		
 		builder.getController().setGraph(graph);
-		builder.getController().setPerson(tree.getOsoba("100"));
+		builder.getController().setPerson(session.getTree().getOsoba("100"));
 		
 		return builder.getPane();
 	}
@@ -91,7 +92,7 @@ public class MainWindowBuilder {
 		builder.build();
 		
 //		builder.getController().setPerson(tree.getOsoba("34"));
-		builder.getController().setPerson(tree.getOsoba("9"));
+		builder.getController().setPerson(session.getTree().getOsoba("9"));
 		
 		return builder.getPane();
 	}

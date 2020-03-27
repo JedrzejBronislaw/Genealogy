@@ -3,6 +3,7 @@ package main;
 import java.io.FileNotFoundException;
 
 import fxmlBuilders.MainWindowBuilder;
+import fxmlBuilders.session.Session;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -15,6 +16,8 @@ public class FXMLMain extends Application {
 	private static final String WINDOW_TITLE = "Pogologia";
 	private Stage stage;
 	
+	private Session session = new Session();
+		
 	public static void main(String[] args) {
 		FXMLMain.launch(args);
 	}
@@ -22,12 +25,13 @@ public class FXMLMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.stage = primaryStage;
+		session.setTree(loadTree("tree.pgl"));
 		buildView();
 	}
 
 	private void buildView() {
 		MainWindowBuilder mainWindowBuilder = new MainWindowBuilder();
-		mainWindowBuilder.setTree(loadTree("tree.pgl"));
+		mainWindowBuilder.setSession(session);
 		mainWindowBuilder.build();
 		
 		stage.setScene(new Scene(mainWindowBuilder.getPane()));
