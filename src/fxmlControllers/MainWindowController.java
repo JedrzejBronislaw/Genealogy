@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import lombok.Setter;
@@ -14,6 +15,8 @@ public class MainWindowController implements Initializable {
 
 	public enum Views{ChooseFile, Tree, Card, Graph}
 	
+	@FXML
+	private Label titleLabel;
 	@FXML
 	private ScrollPane mainPane;
 	
@@ -26,6 +29,7 @@ public class MainWindowController implements Initializable {
 	@Setter
 	private Pane graphPane;
 	
+	Views currentView;
 	
 	public void showView(Views view) {
 		Pane selected;
@@ -48,14 +52,18 @@ public class MainWindowController implements Initializable {
 			selected = null;
 		}
 		
-		if(selected != null)
+		if(selected != null) {
+			currentView = view;
 			Platform.runLater(() -> mainPane.setContent(selected));
+		}
 	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
+		titleLabel.setOnMouseClicked(e -> {
+			if (currentView != null && currentView != Views.ChooseFile)
+				showView(Views.Tree);
+		});
 	}
 
 
