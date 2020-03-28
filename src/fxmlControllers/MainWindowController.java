@@ -3,6 +3,7 @@ package fxmlControllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
@@ -48,7 +49,7 @@ public class MainWindowController implements Initializable {
 		}
 		
 		if(selected != null)
-			mainPane.setContent(selected);
+			Platform.runLater(() -> mainPane.setContent(selected));
 	}
 	
 	@Override
