@@ -17,6 +17,8 @@ public class TreeDetailsPaneBuilder {
 	private TreeDetailsPaneController controller;
 	
 	public void setSession(Session session) {
+		if (session == null) return;
+		
 		session.addNewTreeListener(tree -> {
 			setLabelsValue(tree);
 		});

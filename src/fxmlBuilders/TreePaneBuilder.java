@@ -63,7 +63,8 @@ public class TreePaneBuilder {
 		SwingNode fxmlSearch = new SwingNode();
 		fxmlSearch.setContent(search);
 		
-		session.addNewTreeListener(tree -> search.setDrzewo(tree));
+		if (session != null)
+			session.addNewTreeListener(tree -> search.setDrzewo(tree));
 		
 		return fxmlSearch;
 	}

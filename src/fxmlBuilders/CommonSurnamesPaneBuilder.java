@@ -18,6 +18,8 @@ public class CommonSurnamesPaneBuilder {
 	private CommonSurnamesPaneController controller;
 
 	public void setSession(Session session) {
+		if(session == null) return;
+		
 		session.addNewTreeListener(tree -> {
 			updateSurnames(Arrays.asList(tree.getGlowneNazwiska()));
 		});
