@@ -58,7 +58,7 @@ public class TreePaneBuilder {
 	
 	private Node generateSearchPane() {
 		SearchScreen search = new SearchScreen();
-		search.setClickAction(selectPerson);
+		search.setChooseAction(selectPerson);
 		search.setPreferredSize(new Dimension(330, 200));
 		SwingNode fxmlSearch = new SwingNode();
 		fxmlSearch.setContent(search);

@@ -37,7 +37,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 
 	
 	@Setter
-	private Consumer<Person> clickAction;
+	private Consumer<Person> chooseAction;
 	
 	JTextField pytanie = new JTextField();
 	JList<String> lista = new JList<String>();
@@ -186,10 +186,10 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 					if ((lista.getSelectedIndex() > -1) && (lista.getSelectedIndex() < lista.getModel().getSize()))
 					{
 						int indeks = lista.getSelectedIndex();
-						new Window(new CardScreen(wyszukane.get(indeks)));
+						Injection.run(chooseAction, wyszukane.get(indeks));
 					} else
 					if (lista.getModel().getSize() == 1)
-						new Window(new CardScreen(wyszukane.get(0)));
+						Injection.run(chooseAction, wyszukane.get(0));
 			}
 			
 			String pyt = pytanie.getText();
@@ -240,8 +240,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 			(arg0.getClickCount() == 2))
 		{
 			int indeks = lista.getSelectedIndex();
-//			new Window(new CardScreen(wyszukane.get(indeks)));
-			Injection.run(clickAction, wyszukane.get(indeks));
+			Injection.run(chooseAction, wyszukane.get(indeks));
 		}
 	}
 
