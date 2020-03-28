@@ -1,6 +1,5 @@
 package fxmlBuilders;
 
-import fxmlControllers.TreeDetailsPaneController;
 import fxmlControllers.TreeGraphPaneController;
 import javafx.scene.layout.Pane;
 import lombok.Getter;

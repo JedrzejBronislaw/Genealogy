@@ -1,6 +1,8 @@
 package fxmlBuilders;
 
+import java.io.File;
 import java.util.List;
+import java.util.function.Consumer;
 
 import fxmlControllers.FileChoosePaneController;
 import javafx.scene.layout.Pane;
@@ -14,6 +16,8 @@ public class FileChoosePaneBuilder {
 	@Getter
 	private Pane pane;
 
+	@Setter
+	private Consumer<File> openFileAction;
 	@Setter
 	private List<String> lastOpenFiles;
 	
@@ -29,7 +33,7 @@ public class FileChoosePaneBuilder {
 	
 		controller.setPathList(lastOpenFiles);
 		controller.setNewTreeEvent(() -> System.out.println("Create new tree"));
-		controller.setOpenTreeEvent(file -> System.out.println("Open tree file (" + file.getName() + ")"));
+		controller.setOpenTreeEvent(openFileAction);
 	}
 
 }

@@ -25,17 +25,22 @@ public class FXMLMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.stage = primaryStage;
-		session.setTree(loadTree("tree.pgl"));
 		buildView();
 	}
 
 	private void buildView() {
 		MainWindowBuilder mainWindowBuilder = new MainWindowBuilder();
 		mainWindowBuilder.setSession(session);
+		mainWindowBuilder.setLoadTree(treeFile -> {
+			Tree tree = loadTree(treeFile.getPath());
+			session.setTree(tree);
+			return tree != null;
+		});
 		mainWindowBuilder.build();
 		
 		stage.setScene(new Scene(mainWindowBuilder.getPane()));
-		
+		stage.setWidth(1000);
+		stage.setHeight(600);
 		stage.setTitle(WINDOW_TITLE);
 		stage.setOnCloseRequest(e -> Platform.exit());
 		

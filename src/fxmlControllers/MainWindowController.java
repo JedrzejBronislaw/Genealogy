@@ -5,16 +5,50 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
+import lombok.Setter;
 
 public class MainWindowController implements Initializable {
 
-	@FXML
-	private HBox mainBox;
+	public enum Views{ChooseFile, Tree, Card, Graph}
 	
-	public void addNode(Node node) {
-		mainBox.getChildren().add(node);
+	@FXML
+	private ScrollPane mainPane;
+	
+	@Setter
+	private Pane chooseFilePane;
+	@Setter
+	private Pane cardPane;
+	@Setter
+	private Pane treePane;
+	@Setter
+	private Pane graphPane;
+	
+	
+	public void showView(Views view) {
+		Pane selected;
+		
+		switch (view) {
+		case ChooseFile:
+			selected = chooseFilePane;
+			break;
+		case Tree:
+			selected = treePane;
+			break;
+		case Card:
+			selected = cardPane;
+			break;
+		case Graph:
+			selected = graphPane;
+			break;
+
+		default:
+			selected = null;
+		}
+		
+		if(selected != null)
+			mainPane.setContent(selected);
 	}
 	
 	@Override

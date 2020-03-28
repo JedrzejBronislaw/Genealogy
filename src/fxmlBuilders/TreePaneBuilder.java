@@ -1,7 +1,6 @@
 package fxmlBuilders;
 
 import java.awt.Dimension;
-import java.util.Arrays;
 
 import fxmlBuilders.session.Session;
 import fxmlControllers.TreePaneController;
@@ -37,7 +36,7 @@ public class TreePaneBuilder {
 	
 	private Pane generateTreeDetailsPane() {
 		TreeDetailsPaneBuilder builder = new TreeDetailsPaneBuilder();
-		builder.setTree(session.getTree());
+		builder.setSession(session);
 		builder.build();
 		
 		return builder.getPane();
@@ -46,7 +45,7 @@ public class TreePaneBuilder {
 
 	private Pane generateCommonNamePane() {
 		CommonSurnamesPaneBuilder builder = new CommonSurnamesPaneBuilder();
-		builder.setSurnames(Arrays.asList(session.getTree().getGlowneNazwiska()));
+		builder.setSession(session);
 		builder.build();
 		
 		return builder.getPane();
@@ -54,10 +53,11 @@ public class TreePaneBuilder {
 	
 	private Node generateSearchPane() {
 		SearchScreen search = new SearchScreen();
-		search.setDrzewo(session.getTree());
 		search.setPreferredSize(new Dimension(330, 200));
 		SwingNode fxmlSearch = new SwingNode();
 		fxmlSearch.setContent(search);
+		
+		session.addNewTreeListener(tree -> search.setDrzewo(tree));
 		
 		return fxmlSearch;
 	}

@@ -28,6 +28,10 @@ public class CommonSurnamesPaneController implements Initializable {
 			surnamesBox.getChildren().add(surnamePane);
 		}
 	}
+
+	public void clearCommonSurnames() {
+		surnamesBox.getChildren().clear();
+	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

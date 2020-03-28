@@ -2,10 +2,10 @@ package fxmlBuilders;
 
 import java.text.SimpleDateFormat;
 
+import fxmlBuilders.session.Session;
 import fxmlControllers.TreeDetailsPaneController;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
-import lombok.Setter;
 import model.Tree;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
@@ -16,8 +16,11 @@ public class TreeDetailsPaneBuilder {
 	private Pane pane;
 	private TreeDetailsPaneController controller;
 	
-	@Setter
-	private Tree tree;
+	public void setSession(Session session) {
+		session.addNewTreeListener(tree -> {
+			setLabelsValue(tree);
+		});
+	}
 	
 	public void build() {
 		MyFXMLLoader<TreeDetailsPaneController> loader = new MyFXMLLoader<>();
@@ -26,10 +29,14 @@ public class TreeDetailsPaneBuilder {
 		controller = nac.getController();
 		pane = (Pane) nac.getNode();
 		
-		setLabelsValue();
+		clearLabelsValue();
 	}
 	
-	private void setLabelsValue() {
+	private void clearLabelsValue() {
+		controller.set("", "", "");
+	}
+	
+	private void setLabelsValue(Tree tree) {
 		if(tree == null)
 			return;
 
