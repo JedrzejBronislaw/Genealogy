@@ -6,6 +6,7 @@ import model.Person.Plec;
 import other.Constants;
 import other.Diminutives;
 import other.PersonDetails;
+import tools.Injection;
 import tools.Tools;
 
 import java.awt.BorderLayout;
@@ -20,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -29,8 +31,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import lombok.Setter;
+
 public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 
+	
+	@Setter
+	private Consumer<Person> clickAction;
 	
 	JTextField pytanie = new JTextField();
 	JList<String> lista = new JList<String>();
@@ -233,7 +240,8 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 			(arg0.getClickCount() == 2))
 		{
 			int indeks = lista.getSelectedIndex();
-			new Window(new CardScreen(wyszukane.get(indeks)));
+//			new Window(new CardScreen(wyszukane.get(indeks)));
+			Injection.run(clickAction, wyszukane.get(indeks));
 		}
 	}
 
