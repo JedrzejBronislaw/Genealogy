@@ -1,8 +1,12 @@
 package fxmlBuilders;
 
+import java.util.function.Consumer;
+
 import fxmlControllers.CardPaneController;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
+import lombok.Setter;
+import model.Person;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 
@@ -13,6 +17,13 @@ public class CardPaneBuilder {
 	@Getter
 	private CardPaneController controller;
 	
+	@Setter
+	private Consumer<Person> showAncestorsTree;
+	@Setter
+	private Consumer<Person> showDescendantsTree;
+	@Setter
+	private Consumer<Person> showDrawingTree;
+	
 	
 	public void build() {
 		MyFXMLLoader<CardPaneController> loader = new MyFXMLLoader<>();
@@ -22,9 +33,9 @@ public class CardPaneBuilder {
 		pane = (Pane) nac.getNode();
 		
 	
-		controller.setAncestorsTreeAction(person -> System.out.println("Draw ancestor tree for " + person.imieNazwisko()));
-		controller.setDescendantsTreeAction(person -> System.out.println("Draw descendants tree for " + person.imieNazwisko()));
-		controller.setDrawingTreeAction(person -> System.out.println("Draw drawing descendants tree for " + person.imieNazwisko()));
+		controller.setAncestorsTreeAction(showAncestorsTree);
+		controller.setDescendantsTreeAction(showDescendantsTree);
+		controller.setDrawingTreeAction(showDrawingTree);
 	}
 
 }
