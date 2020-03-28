@@ -1,6 +1,7 @@
 package fxmlBuilders;
 
 import java.awt.Dimension;
+import java.util.function.Consumer;
 
 import fxmlBuilders.session.Session;
 import fxmlControllers.TreePaneController;
@@ -9,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.Setter;
+import model.Person;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 import windows.SearchScreen;
@@ -21,6 +23,9 @@ public class TreePaneBuilder {
 	
 	@Setter
 	private Session session;
+	
+	@Setter
+	private Consumer<Person> selectPerson;
 	
 	public void build() {
 		MyFXMLLoader<TreePaneController> loader = new MyFXMLLoader<>();
@@ -53,6 +58,7 @@ public class TreePaneBuilder {
 	
 	private Node generateSearchPane() {
 		SearchScreen search = new SearchScreen();
+		search.setClickAction(selectPerson);
 		search.setPreferredSize(new Dimension(330, 200));
 		SwingNode fxmlSearch = new SwingNode();
 		fxmlSearch.setContent(search);

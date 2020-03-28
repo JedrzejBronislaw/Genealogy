@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 import fxmlBuilders.session.Session;
+import fxmlControllers.CardPaneController;
 import fxmlControllers.MainWindowController;
 import fxmlControllers.MainWindowController.Views;
 import javafx.scene.layout.Pane;
@@ -27,6 +28,7 @@ public class MainWindowBuilder {
 	@Setter
 	private Function<File, Boolean> loadTree;
 	
+	private CardPaneController cardController;
 	
 	public void build() {
 		MyFXMLLoader<MainWindowController> loader = new MyFXMLLoader<>();
@@ -47,6 +49,10 @@ public class MainWindowBuilder {
 	private Pane generateTreePane() {
 		TreePaneBuilder builder = new TreePaneBuilder();
 		builder.setSession(session);
+		builder.setSelectPerson(person -> {
+			cardController.setPerson(person);
+			controller.showView(Views.Card);
+		});
 		builder.build();
 		
 		return builder.getPane();
@@ -87,6 +93,7 @@ public class MainWindowBuilder {
 		CardPaneBuilder builder = new CardPaneBuilder();
 		builder.build();
 		
+		cardController = builder.getController();
 //		builder.getController().setPerson(tree.getOsoba("34"));
 //		builder.getController().setPerson(session.getTree().getOsoba("9"));
 		
