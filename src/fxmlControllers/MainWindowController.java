@@ -65,6 +65,4 @@ public class MainWindowController implements Initializable {
 				showView(Views.Tree);
 		});
 	}
-
-
 }

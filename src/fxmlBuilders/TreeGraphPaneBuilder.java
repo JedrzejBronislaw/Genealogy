@@ -19,7 +19,5 @@ public class TreeGraphPaneBuilder {
 		
 		controller = nac.getController();
 		pane = (Pane) nac.getNode();
-		
-		
 	}
 }

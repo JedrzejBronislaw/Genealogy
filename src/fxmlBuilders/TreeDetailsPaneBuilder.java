@@ -39,8 +39,7 @@ public class TreeDetailsPaneBuilder {
 	}
 	
 	private void setLabelsValue(Tree tree) {
-		if(tree == null)
-			return;
+		if(tree == null) return;
 
 		final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
 		

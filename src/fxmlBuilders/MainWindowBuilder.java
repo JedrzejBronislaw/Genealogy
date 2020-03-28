@@ -66,14 +66,9 @@ public class MainWindowBuilder {
 	
 	private Pane generateFileChoosePane() {
 		FileChoosePaneBuilder builder = new FileChoosePaneBuilder();
-//		builder.setOpenFileAction(file -> System.out.println("Open tree file (" + file.getName() + ")"));
 		builder.setOpenFileAction(file -> {
-			if(loadTree != null)
-				if (loadTree.apply(file)) {
+			if(loadTree != null && loadTree.apply(file))
 					controller.showView(Views.Tree);
-					System.out.println("git");
-				} else
-				System.out.println("error");
 		});
 		builder.setLastOpenFiles(Arrays.asList("D:\\trees\\tree1.pgl","D:\\newtrees\\tree1.pgl","D:\\trees\\Nowak.pgl","D:\\trees\\Smith.pgl"));
 		builder.build();
@@ -85,13 +80,6 @@ public class MainWindowBuilder {
 		TreeGraphPaneBuilder builder = new TreeGraphPaneBuilder();
 		builder.build();
 		treeGraphController = builder.getController();
-		
-		DrawingDescendantTreeGraph graph = new DrawingDescendantTreeGraph();
-		graph.setWyswietlacz(new SimpleNameDisplaying());
-		
-		
-		builder.getController().setGraph(graph);
-//		builder.getController().setPerson(session.getTree().getOsoba("100"));
 		
 		return builder.getPane();
 	}
@@ -113,8 +101,6 @@ public class MainWindowBuilder {
 		builder.build();
 		
 		cardController = builder.getController();
-//		builder.getController().setPerson(tree.getOsoba("34"));
-//		builder.getController().setPerson(session.getTree().getOsoba("9"));
 		
 		return builder.getPane();
 	}

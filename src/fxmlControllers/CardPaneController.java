@@ -168,14 +168,8 @@ public class CardPaneController implements Initializable{
 	}
 	
 	private JPanel miniTree() {
-		Group panel = new Group(1,1);
 		Canvas plutnoGrafu = new Canvas();
-
 		plutnoGrafu.setGrafDrzewa(grafMiniDrzewo);
-		
-		panel.add(plutnoGrafu);
-		
 		return plutnoGrafu;
-//		return panel;
 	}
 }
