@@ -42,7 +42,10 @@ public class FXMLMain extends Application {
 		stage.setWidth(1000);
 		stage.setHeight(600);
 		stage.setTitle(WINDOW_TITLE);
-		stage.setOnCloseRequest(e -> Platform.exit());
+		stage.setOnCloseRequest(e -> {
+			Platform.exit();
+			System.exit(0);
+		});
 		
 		stage.show();
 	}
