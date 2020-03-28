@@ -3,6 +3,7 @@ package treeGraphs;
 import model.Person;
 import nameDisplaying.Name;
 import nameDisplaying.SimpleNameDisplaying;
+import tools.Injection;
 import treeGraphs.ClickMap.Obszar;
 import windows.CardScreen;
 import windows.Window;
@@ -13,6 +14,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.function.Consumer;
+
+import lombok.Setter;
 
 public abstract class TreeGraph {
 
@@ -31,6 +35,9 @@ public abstract class TreeGraph {
 //	public abstract Dimension getWymiary();
 //	public abstract int getSzerokosc();
 //	public abstract int getWysokosc();
+	
+	@Setter
+	private Consumer<Person> personClickAction;
 	
 	public Person getOsobaGlowna(){
 		return osobaGlowna;
@@ -56,7 +63,7 @@ public abstract class TreeGraph {
 			if (wizytowka != null)
 				wizytowka.setOsoba(osoba);
 			else
-				new Window(new CardScreen(osoba));
+				Injection.run(personClickAction, osoba);
 		}
 	}
 	
