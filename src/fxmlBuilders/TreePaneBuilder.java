@@ -13,6 +13,7 @@ import lombok.Setter;
 import model.Person;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
+import tools.SwingRefresher;
 import windows.SearchScreen;
 
 public class TreePaneBuilder {
@@ -27,6 +28,8 @@ public class TreePaneBuilder {
 	@Setter
 	private Consumer<Person> selectPerson;
 	
+	SwingNode swingNodeSearch;
+	
 	public void build() {
 		MyFXMLLoader<TreePaneController> loader = new MyFXMLLoader<>();
 		NodeAndController<TreePaneController> nac = loader.create("TreePane.fxml");
@@ -37,6 +40,8 @@ public class TreePaneBuilder {
 		controller.addNode(generateTreeDetailsPane());
 		controller.addNode(generateCommonNamePane());
 		controller.addNode(generateSearchPane());
+		
+		pane.setOnMouseEntered(e -> SwingRefresher.refreshNow(swingNodeSearch));
 	}
 	
 	private Pane generateTreeDetailsPane() {
@@ -60,12 +65,12 @@ public class TreePaneBuilder {
 		SearchScreen search = new SearchScreen();
 		search.setChooseAction(selectPerson);
 		search.setPreferredSize(new Dimension(330, 200));
-		SwingNode fxmlSearch = new SwingNode();
-		fxmlSearch.setContent(search);
+		swingNodeSearch = new SwingNode();
+		swingNodeSearch.setContent(search);
 		
 		if (session != null)
 			session.addNewTreeListener(tree -> search.setDrzewo(tree));
 		
-		return fxmlSearch;
+		return swingNodeSearch;
 	}
 }

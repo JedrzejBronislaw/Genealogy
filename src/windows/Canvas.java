@@ -7,9 +7,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.function.BiConsumer;
 
 import javax.swing.JPanel;
 
+import lombok.Setter;
 import treeGraphs.TreeGraph;
 
 public class Canvas extends JPanel implements MouseListener {
@@ -24,6 +26,8 @@ public class Canvas extends JPanel implements MouseListener {
 	
 	public void setGrafDrzewa(TreeGraph graf) {this.graf = graf;}
 	
+	@Setter
+	private BiConsumer<Integer, Integer> wymiary;
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -42,6 +46,8 @@ public class Canvas extends JPanel implements MouseListener {
 //		setSize(getWidth(), getHeight()*2);
 		
 		if (graf != null) graf.rysuj(c);
+		if(wymiary != null)
+			wymiary.accept(graf.getSzerokosc(), graf.getWysokosc());
 		
 		if ((graf.getSzerokosc() != getWidth()) ||
 			(graf.getWysokosc()  != getHeight()))

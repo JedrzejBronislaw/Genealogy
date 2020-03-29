@@ -1,13 +1,12 @@
 package windows;
 
-import model.Person;
-import model.Tree;
-import treeGraphs.TreeGraph;
-
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+
+import model.Person;
+import treeGraphs.TreeGraph;
 
 public class TreeGraphWindow extends JFrame {
 

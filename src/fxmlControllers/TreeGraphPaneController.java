@@ -7,18 +7,20 @@ import java.util.ResourceBundle;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import model.Person;
+import tools.SwingRefresher;
 import treeGraphs.TreeGraph;
 import windows.Canvas;
 
 public class TreeGraphPaneController implements Initializable{
 
 	@FXML
-	private ScrollPane treePane;
+	private BorderPane treePane;
 
 	private Person person;
 	private TreeGraph graph;
+	private SwingNode swingNode;
 	
 	private Canvas canvas = new Canvas();
 	
@@ -36,6 +38,8 @@ public class TreeGraphPaneController implements Initializable{
 		if (graph != null && person != null) {
 			canvas.setGrafDrzewa(graph);
 			graph.setOsobaGlowna(person);
+
+			SwingRefresher.refreshGraph(swingNode);
 		}
 	}
 	
@@ -44,8 +48,13 @@ public class TreeGraphPaneController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		canvas.setPreferredSize(new Dimension(1000, 1000));
 		
-		SwingNode swingNode = new SwingNode();
+		swingNode = new SwingNode();
 		swingNode.setContent(canvas);
-		treePane.setContent(swingNode);
+		treePane.setCenter(swingNode);
+		
+		canvas.setWymiary((sz, wys) -> {
+			treePane.setPrefHeight(wys);
+			treePane.setPrefWidth(sz);
+		});
 	}
 }

@@ -1,11 +1,15 @@
 package fxmlControllers;
 
+import java.awt.Dimension;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Consumer;
 
 import javax.swing.JPanel;
 
+import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +23,7 @@ import lombok.Setter;
 import model.Person;
 import other.PersonDetails;
 import tools.Injection;
+import tools.SwingRefresher;
 import treeGraphs.ClosestTreeGraph;
 import visualComponents.Group;
 import windows.Canvas;
@@ -76,7 +81,7 @@ public class CardPaneController implements Initializable{
 	
 	private Person person;
 	private ClosestTreeGraph grafMiniDrzewo = new ClosestTreeGraph();
-	
+	SwingNode swingNode;
 	
 	public void setPerson(Person person) {
 		this.person = person;
@@ -89,9 +94,15 @@ public class CardPaneController implements Initializable{
 		descendantsButton.setOnAction(e -> Injection.run(descendantsTreeAction, person));
 		drawnigButton.setOnAction(e -> Injection.run(drawingTreeAction, person));
 		
-		SwingNode swingNode = new SwingNode();
-		swingNode.setContent(miniTree());
+		swingNode = new SwingNode();
+		Canvas miniGraphCanvas = miniTree();
+		swingNode.setContent(miniGraphCanvas);
 		miniTreePane.setCenter(swingNode);
+		
+		miniGraphCanvas.setWymiary((sz, wys) -> {
+    		miniTreePane.setPrefHeight(wys);
+    		miniTreePane.setPrefWidth(sz);
+		});
 	}
 
 	private void refreshValues() {
@@ -118,6 +129,7 @@ public class CardPaneController implements Initializable{
 		contactArea.setText(person.getKontakt());
 
 		grafMiniDrzewo.setOsobaGlowna(person);
+		SwingRefresher.refreshGraph(swingNode);
 	}
 
 	private void clearValues() {
@@ -167,7 +179,7 @@ public class CardPaneController implements Initializable{
 		return new Label(output.toString());
 	}
 	
-	private JPanel miniTree() {
+	private Canvas miniTree() {
 		Canvas plutnoGrafu = new Canvas();
 		plutnoGrafu.setGrafDrzewa(grafMiniDrzewo);
 		return plutnoGrafu;

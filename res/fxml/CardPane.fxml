@@ -13,7 +13,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.CardPaneController">
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox>
          <children>
             <Label text="%id" />
             <Label fx:id="idLabel" text="[id]" />
@@ -69,7 +69,7 @@
             <Label fx:id="ageLabel" text="Label" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <BorderPane fx:id="miniTreePane" prefHeight="200.0" prefWidth="200.0" />
+      <BorderPane fx:id="miniTreePane" minHeight="20.0" />
       <VBox>
          <children>
             <Label text="%tree_graphs" />
