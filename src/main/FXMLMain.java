@@ -38,7 +38,10 @@ public class FXMLMain extends Application {
 		});
 		mainWindowBuilder.build();
 		
-		stage.setScene(new Scene(mainWindowBuilder.getPane()));
+		Scene scene = new Scene(mainWindowBuilder.getPane());
+		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		
+		stage.setScene(scene);
 		stage.setWidth(1000);
 		stage.setHeight(600);
 		stage.setTitle(WINDOW_TITLE);

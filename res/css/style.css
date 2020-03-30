@@ -1,0 +1,10 @@
+#main_scrollpane > .viewport {
+   -fx-background-color: transparent;
+}
+#main_scrollpane {
+   -fx-background-color: #e7e7e7;
+   -fx-background-image: url("../img/oak_grey.png");
+   -fx-background-repeat: stretch;
+   -fx-background-size: auto 500;
+   -fx-background-position: center center;
+}
