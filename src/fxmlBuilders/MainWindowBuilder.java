@@ -98,6 +98,10 @@ public class MainWindowBuilder {
 			TreeGraph graph = new DrawingDescendantTreeGraph();
 			showGraph(graph, person);
 		});
+		builder.setGraphClickAction(selectedPerson -> {
+			cardController.setPerson(selectedPerson);
+			controller.showView(Views.Card);
+		});
 		builder.build();
 		
 		cardController = builder.getController();

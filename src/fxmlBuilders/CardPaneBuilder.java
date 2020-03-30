@@ -24,6 +24,9 @@ public class CardPaneBuilder {
 	@Setter
 	private Consumer<Person> showDrawingTree;
 	
+	@Setter
+	private Consumer<Person> graphClickAction;
+	
 	
 	public void build() {
 		MyFXMLLoader<CardPaneController> loader = new MyFXMLLoader<>();
@@ -36,6 +39,8 @@ public class CardPaneBuilder {
 		controller.setAncestorsTreeAction(showAncestorsTree);
 		controller.setDescendantsTreeAction(showDescendantsTree);
 		controller.setDrawingTreeAction(showDrawingTree);
+		
+		controller.setGraphClickAction(graphClickAction);
 	}
 
 }

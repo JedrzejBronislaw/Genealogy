@@ -79,13 +79,16 @@ public class CardPaneController implements Initializable{
 	@Setter
 	private Consumer<Person> drawingTreeAction;
 	
+	@Setter
+	private Consumer<Person> graphClickAction;
+	
 	private Person person;
 	private ClosestTreeGraph grafMiniDrzewo = new ClosestTreeGraph();
 	SwingNode swingNode;
 	
 	public void setPerson(Person person) {
 		this.person = person;
-		refreshValues();
+		Platform.runLater(() -> refreshValues());
 	}
 	
 	@Override
@@ -182,6 +185,7 @@ public class CardPaneController implements Initializable{
 	private Canvas miniTree() {
 		Canvas plutnoGrafu = new Canvas();
 		plutnoGrafu.setGrafDrzewa(grafMiniDrzewo);
+		grafMiniDrzewo.setPersonClickAction(person -> Injection.run(graphClickAction, person));
 		return plutnoGrafu;
 	}
 }
