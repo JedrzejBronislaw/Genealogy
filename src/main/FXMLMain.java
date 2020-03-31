@@ -3,13 +3,13 @@ package main;
 import java.io.FileNotFoundException;
 
 import fxmlBuilders.MainWindowBuilder;
-import fxmlBuilders.session.Session;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.PGLFile;
 import model.Tree;
+import session.Session;
 
 public class FXMLMain extends Application {
 

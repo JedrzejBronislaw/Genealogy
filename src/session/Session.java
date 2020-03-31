@@ -1,4 +1,4 @@
-package fxmlBuilders.session;
+package session;
 
 import java.util.ArrayList;
 import java.util.List;

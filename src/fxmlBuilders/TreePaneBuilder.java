@@ -3,7 +3,6 @@ package fxmlBuilders;
 import java.awt.Dimension;
 import java.util.function.Consumer;
 
-import fxmlBuilders.session.Session;
 import fxmlControllers.TreePaneController;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.Node;
@@ -11,6 +10,7 @@ import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
+import session.Session;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 import tools.SwingRefresher;

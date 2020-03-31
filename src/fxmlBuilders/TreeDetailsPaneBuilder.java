@@ -3,11 +3,11 @@ package fxmlBuilders;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import fxmlBuilders.session.Session;
 import fxmlControllers.TreeDetailsPaneController;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import model.Tree;
+import session.Session;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 

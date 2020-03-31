@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.function.Function;
 
-import fxmlBuilders.session.Session;
 import fxmlControllers.CardPaneController;
 import fxmlControllers.MainWindowController;
 import fxmlControllers.MainWindowController.Views;
@@ -14,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import model.Person;
 import nameDisplaying.SimpleNameDisplaying;
+import session.Session;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 import treeGraphs.DrawingDescendantTreeGraph;

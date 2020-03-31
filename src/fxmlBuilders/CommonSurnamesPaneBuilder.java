@@ -3,11 +3,11 @@ package fxmlBuilders;
 import java.util.Arrays;
 import java.util.List;
 
-import fxmlBuilders.session.Session;
 import fxmlControllers.CommonSurnamesPaneController;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
+import session.Session;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 
