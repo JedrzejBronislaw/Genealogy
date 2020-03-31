@@ -37,9 +37,9 @@ public class TreePaneBuilder {
 		pane = (Pane) nac.getNode();
 		controller = nac.getController();
 
-		controller.addNode(generateTreeDetailsPane());
-		controller.addNode(generateCommonNamePane());
-		controller.addNode(generateSearchPane());
+		controller.setTreeDetailsPane(generateTreeDetailsPane());
+		controller.setCommonSurnamePane(generateCommonNamePane());
+		controller.setSearchPane(generateSearchPane());
 		
 		pane.setOnMouseEntered(e -> SwingRefresher.refreshNow(swingNodeSearch));
 	}

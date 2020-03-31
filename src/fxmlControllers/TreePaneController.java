@@ -6,15 +6,29 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 public class TreePaneController implements Initializable{
 
 	@FXML
-	private VBox mainBox;
+	private StackPane searchBox;
+	@FXML
+	private HBox topHBox;
+
+	public void setTreeDetailsPane(Pane pane) {
+		topHBox.getChildren().add(0, pane);
+	}
 	
-	public void addNode(Node node) {
-		mainBox.getChildren().add(node);
+	public void setCommonSurnamePane(Pane pane) {
+		topHBox.getChildren().add(1, pane);
+	}
+	
+	public void setSearchPane(Node node) {
+		searchBox.getChildren().clear();
+		searchBox.getChildren().add(node);
 	}
 	
 	

@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.MainWindowController">
@@ -14,6 +15,9 @@
       </Label>
    </top>
    <center>
-      <ScrollPane id="main_scrollpane" fx:id="mainPane" />
+      <ScrollPane id="main_scrollpane" fitToWidth="true">
+         <content>
+            <StackPane fx:id="mainPane" />
+         </content></ScrollPane>
    </center>
 </BorderPane>

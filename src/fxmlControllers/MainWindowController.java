@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import lombok.Setter;
 
 public class MainWindowController implements Initializable {
@@ -18,7 +19,7 @@ public class MainWindowController implements Initializable {
 	@FXML
 	private Label titleLabel;
 	@FXML
-	private ScrollPane mainPane;
+	private StackPane mainPane;
 	
 	@Setter
 	private Pane chooseFilePane;
@@ -54,7 +55,10 @@ public class MainWindowController implements Initializable {
 		
 		if(selected != null) {
 			currentView = view;
-			Platform.runLater(() -> mainPane.setContent(selected));
+			Platform.runLater(() -> {
+				mainPane.getChildren().clear();
+				mainPane.getChildren().add(selected);
+			});
 		}
 	}
 	
