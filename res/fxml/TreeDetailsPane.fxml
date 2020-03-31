@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="fxmlControllers.TreeDetailsPaneController">
+<GridPane id="tree_details" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.TreeDetailsPaneController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" />
     <ColumnConstraints hgrow="SOMETIMES" />
@@ -16,11 +16,11 @@
     <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="%last_open_date_" />
-      <Label text="%last_modification_date_" GridPane.rowIndex="1" />
-      <Label text="%num_of_persons_" GridPane.rowIndex="2" />
-      <Label fx:id="lastOpenDate" text="Label" GridPane.columnIndex="1" />
-      <Label fx:id="lastModificationDate" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label fx:id="numOfPersons" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label styleClass="key" text="%last_open_date_" />
+      <Label styleClass="key" text="%last_modification_date_" GridPane.rowIndex="1" />
+      <Label styleClass="key" text="%num_of_persons_" GridPane.rowIndex="2" />
+      <Label fx:id="lastOpenDate" styleClass="value" text="Label" GridPane.columnIndex="1" />
+      <Label fx:id="lastModificationDate" styleClass="value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label fx:id="numOfPersons" styleClass="value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
 </GridPane>

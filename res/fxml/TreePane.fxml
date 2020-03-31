@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxWidth="-Infinity" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.TreePaneController">
+<VBox maxWidth="-Infinity" spacing="50.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.TreePaneController">
    <children>
-      <HBox fx:id="topHBox" />
+      <HBox fx:id="topHBox" spacing="50.0" />
       <StackPane fx:id="searchBox" scaleShape="false" />
    </children>
+   <padding>
+      <Insets top="50.0" />
+   </padding>
 </VBox>

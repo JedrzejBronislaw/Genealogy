@@ -3,10 +3,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.CommonSurnamesPaneController">
+<VBox id="common_surnames" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.CommonSurnamesPaneController">
    <children>
-      <Label text="%common_surnames_" />
+      <Label styleClass="pane_title" text="%common_surnames_" />
       <VBox fx:id="surnamesBox" />
    </children>
 </VBox>

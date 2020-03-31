@@ -15,7 +15,7 @@ public class CommonSurnamesItemController implements Initializable {
 	private Label surname;
 	
 	public void set(int number, String surname) {
-		this.number.setText(Integer.toString(number));
+		this.number.setText(Integer.toString(number) + ".");
 		this.surname.setText(surname);
 	}
 	
