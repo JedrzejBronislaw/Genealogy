@@ -1,6 +1,7 @@
 package fxmlBuilders;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import fxmlBuilders.session.Session;
 import fxmlControllers.TreeDetailsPaneController;
@@ -43,8 +44,11 @@ public class TreeDetailsPaneBuilder {
 
 		final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
 		
-		String lastOpenDate = sdf.format(tree.getOstatnieOtwarcie());
-		String lastModificationDate = sdf.format(tree.getOstatniaZmiana());
+		final Date lastOpen = tree.getOstatnieOtwarcie();
+		final Date lastModi = tree.getOstatniaZmiana();
+		
+		String lastOpenDate = (lastOpen != null) ? sdf.format(lastOpen) : "";
+		String lastModificationDate = (lastModi != null) ? sdf.format(lastModi) : "";
 		String numOfPersons = Integer.toString(tree.getLiczbaOsob());
 
 		controller.set(

@@ -166,15 +166,14 @@ public class PGLFile {
 	private void ladujMetaDaneDoDrzewa(Tree d, sekcjaINI sekcja)
 	{
 		String w;
-		final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
 		
 		w = sekcja.getWartosc("ost_otw");
 		if (w != null)
-			try {d.setOstatnieOtwarcie(sdf.parse(w));} catch (ParseException e) {}
+			d.setOstatnieOtwarcie(loadDate(w));
 		
 		w = sekcja.getWartosc("wersja");
 		if (w != null)
-			try {d.setOstatniaZmiana(sdf.parse(w));} catch (ParseException e) {}
+			d.setOstatniaZmiana(loadDate(w));
 		
 		w = sekcja.getWartosc("ile");
 		if (w != null)
@@ -183,6 +182,32 @@ public class PGLFile {
 		for (int i=1; i<=10; i++)
 			{w = sekcja.getWartosc("nazw"+i);	if ((w != null) && (!w.equals(""))) d.dodajGlowneNazwisko(w);}
 	}
+
+	private Date loadDate(String w) {
+
+		final SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
+		final SimpleDateFormat sdf2 = new SimpleDateFormat("hh:mm:ss dd.MM.yyyy");
+		
+		Date date;
+		
+		date = tryLoadDate(w, sdf1);
+		if(date == null)
+			date = tryLoadDate(w, sdf2);
+
+		return date;
+	}
+
+	private Date tryLoadDate(String textDate, SimpleDateFormat format) {
+		Date date;
+		try {
+			date = format.parse(textDate);
+		} catch (ParseException e) {
+			date = null;
+		}
+		
+		return date;
+	}
+	
 	private void ladujDaneDoDrzewa(Tree d, sekcjaINI sekcja, List<Relacja> relacje)
 	{
 		Person o =  new Person();
