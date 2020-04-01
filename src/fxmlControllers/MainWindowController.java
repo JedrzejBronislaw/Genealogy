@@ -30,7 +30,7 @@ public class MainWindowController implements Initializable {
 	@Setter
 	private Pane graphPane;
 	
-	Views currentView;
+	private Views currentView;
 	
 	public void showView(Views view) {
 		Pane selected;
@@ -53,7 +53,7 @@ public class MainWindowController implements Initializable {
 			selected = null;
 		}
 		
-		if(selected != null) {
+		if(selected != null && view != currentView) {
 			currentView = view;
 			Platform.runLater(() -> {
 				mainPane.getChildren().clear();
