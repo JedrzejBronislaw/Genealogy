@@ -1,13 +1,11 @@
 package fxmlControllers;
 
-import java.awt.Dimension;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.function.Consumer;
-
-import javax.swing.JPanel;
 
 import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
@@ -17,15 +15,18 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import model.Person;
+import model.Person.Plec;
+import model.Person.Zyje;
 import other.PersonDetails;
 import tools.Injection;
 import tools.SwingRefresher;
 import treeGraphs.ClosestTreeGraph;
-import visualComponents.Group;
 import windows.Canvas;
 
 public class CardPaneController implements Initializable{
@@ -50,7 +51,12 @@ public class CardPaneController implements Initializable{
 	private Label deathPlaceLabel;
 	@FXML
 	private Label burialPlaceLabel;
-	
+
+	@FXML
+	private ImageView sexImg;
+	@FXML
+	private ImageView liveImg;
+
 	@FXML
 	private Label ageLabel;
 	
@@ -86,6 +92,8 @@ public class CardPaneController implements Initializable{
 	private ClosestTreeGraph grafMiniDrzewo = new ClosestTreeGraph();
 	SwingNode swingNode;
 	
+	private Image star, cross, venus, mars;
+	
 	public void setPerson(Person person) {
 		this.person = person;
 		Platform.runLater(() -> refreshValues());
@@ -106,6 +114,27 @@ public class CardPaneController implements Initializable{
     		miniTreePane.setPrefHeight(wys);
     		miniTreePane.setPrefWidth(sz);
 		});
+
+		star = loadImage("res/img/star.jpg");
+		cross = loadImage("res/img/cross.jpg");
+		venus = loadImage("res/img/venus.jpg");
+		mars = loadImage("res/img/mars.jpg");
+	}
+
+	private Image loadImage(String path) {
+		Image image = null;
+		
+		try (FileInputStream input = new FileInputStream(path)) {
+			image = new Image(input);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return image;
 	}
 
 	private void refreshValues() {
@@ -122,6 +151,9 @@ public class CardPaneController implements Initializable{
 		deathPlaceLabel.setText(person.getMiejsceSmierci());
 		burialPlaceLabel.setText(person.getMiejscePochowku());
 
+		sexImg.setImage(getSexSymbol());
+		liveImg.setImage(getLiveSymbol());
+
 		ageLabel.setText(PersonDetails.wiekStr(person));
 		
 		for(int i=0; i<person.liczbaMalzenstw(); i++) {
@@ -133,6 +165,24 @@ public class CardPaneController implements Initializable{
 
 		grafMiniDrzewo.setOsobaGlowna(person);
 		SwingRefresher.refreshGraph(swingNode);
+	}
+
+	private Image getSexSymbol() {
+		if (person.getPlec() == Plec.Kobieta)
+			return venus;
+		if (person.getPlec() == Plec.Mezczyna)
+			return mars;
+		else
+			return null;
+	}
+	
+	private Image getLiveSymbol() {
+		if (person.getZyje() == Zyje.TAK)
+			return star;
+		if (person.getZyje() == Zyje.NIE)
+			return cross;
+		else
+			return null;
 	}
 
 	private void clearValues() {
