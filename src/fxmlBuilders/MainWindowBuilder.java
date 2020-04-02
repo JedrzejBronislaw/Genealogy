@@ -2,6 +2,7 @@ package fxmlBuilders;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import fxmlControllers.CardPaneController;
@@ -9,6 +10,7 @@ import fxmlControllers.MainWindowController;
 import fxmlControllers.MainWindowController.Views;
 import fxmlControllers.TreeGraphPaneController;
 import javafx.scene.layout.Pane;
+import lang.Languages;
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
@@ -32,6 +34,8 @@ public class MainWindowBuilder {
 
 	@Setter
 	private Function<File, Boolean> loadTree;
+	@Setter
+	private Consumer<Languages> changeLanguage;
 	
 	private CardPaneController cardController;
 	private TreeGraphPaneController treeGraphController;
@@ -43,6 +47,8 @@ public class MainWindowBuilder {
 		pane = (Pane) nac.getNode();
 		controller = nac.getController();
 				
+		controller.setLanguagePane(generateLanguagePane());
+		
 		controller.setCardPane(generateCardPane());
 		controller.setGraphPane(generateTreeGrapfPane());
 		controller.setChooseFilePane(generateFileChoosePane());
@@ -51,6 +57,14 @@ public class MainWindowBuilder {
 		controller.showView(Views.ChooseFile);
 	}
 
+
+	private Pane generateLanguagePane() {
+		LanguagePaneBuilder builder = new LanguagePaneBuilder();
+		builder.setChangeLanguage(changeLanguage);
+		builder.build();
+		
+		return builder.getPane();
+	}
 
 	private Pane generateTreePane() {
 		TreePaneBuilder builder = new TreePaneBuilder();
@@ -119,4 +133,5 @@ public class MainWindowBuilder {
 		treeGraphController.setPerson(person);
 		controller.showView(Views.Graph);
 	}
+
 }

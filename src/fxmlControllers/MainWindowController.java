@@ -20,6 +20,8 @@ public class MainWindowController implements Initializable {
 	private Label titleLabel;
 	@FXML
 	private StackPane mainPane;
+	@FXML
+	private StackPane topPane;
 	
 	@Setter
 	private Pane chooseFilePane;
@@ -60,6 +62,10 @@ public class MainWindowController implements Initializable {
 				mainPane.getChildren().add(selected);
 			});
 		}
+	}
+	
+	public void setLanguagePane(Pane pane) {
+		topPane.getChildren().add(pane);
 	}
 	
 	@Override

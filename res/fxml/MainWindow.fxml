@@ -9,11 +9,15 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.MainWindowController">
    <top>
-      <Label fx:id="titleLabel" text="Pogologia" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="Arial Black" size="30.0" />
-         </font>
-      </Label>
+      <StackPane fx:id="topPane" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="titleLabel" text="Pogologia">
+               <font>
+                  <Font name="Arial Black" size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </StackPane>
    </top>
    <center>
       <ScrollPane id="main_scrollpane" fitToWidth="true">

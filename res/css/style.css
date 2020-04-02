@@ -37,3 +37,14 @@ Label.key {
 Label.value {
     -fx-font-size: 14px;
 }
+
+
+/*language*/
+.langAbbr {
+    -fx-font-weight: normal;
+    -fx-text-fill: rgb(113, 52, 5);
+}
+
+.langAbbr:hover {
+    -fx-font-weight: bold;
+}

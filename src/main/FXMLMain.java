@@ -7,6 +7,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lang.Internationalization;
+import lang.Languages;
 import model.PGLFile;
 import model.Tree;
 import session.Session;
@@ -27,21 +29,9 @@ public class FXMLMain extends Application {
 		this.stage = primaryStage;
 		buildView();
 	}
-
+	
 	private void buildView() {
-		MainWindowBuilder mainWindowBuilder = new MainWindowBuilder();
-		mainWindowBuilder.setSession(session);
-		mainWindowBuilder.setLoadTree(treeFile -> {
-			Tree tree = loadTree(treeFile.getPath());
-			session.setTree(tree);
-			return tree != null;
-		});
-		mainWindowBuilder.build();
-		
-		Scene scene = new Scene(mainWindowBuilder.getPane());
-		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-		
-		stage.setScene(scene);
+		stage.setScene(buildScene());
 		stage.setWidth(1000);
 		stage.setHeight(600);
 		stage.setTitle(WINDOW_TITLE);
@@ -51,6 +41,35 @@ public class FXMLMain extends Application {
 		});
 		
 		stage.show();
+	}
+	
+	private void changeLanguage(Languages language) {
+		if(Internationalization.getCurrentLanguage() != language) {
+			stage.setScene(buildScene(language));
+			stage.hide();
+			stage.show();
+		}
+	}
+
+	private Scene buildScene(Languages language) {
+		Internationalization.setLanguage(language);
+		return buildScene();
+	}
+
+	private Scene buildScene() {
+		MainWindowBuilder mainWindowBuilder = new MainWindowBuilder();
+		mainWindowBuilder.setSession(session);
+		mainWindowBuilder.setLoadTree(treeFile -> {
+			Tree tree = loadTree(treeFile.getPath());
+			session.setTree(tree);
+			return tree != null;
+		});
+		mainWindowBuilder.setChangeLanguage(this::changeLanguage);
+		mainWindowBuilder.build();
+		
+		Scene scene = new Scene(mainWindowBuilder.getPane());
+		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		return scene;
 	}
 	
 	private static Tree loadTree(String path)
