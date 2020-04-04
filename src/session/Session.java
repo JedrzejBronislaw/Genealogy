@@ -5,6 +5,7 @@ import java.util.List;
 
 import lombok.Getter;
 import model.Tree;
+import settings.Settings;
 
 public class Session {
 
@@ -13,7 +14,15 @@ public class Session {
 	}
 	
 	@Getter
+	private Settings settings;
+	
+	@Getter
 	private Tree tree;
+	
+	public Session() {
+		settings = new Settings();
+		settings.load();
+	}
 	
 	private List<NewTreeListener> newTreeListeners = new ArrayList<>();
 	

@@ -1,7 +1,6 @@
 package fxmlBuilders;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -16,6 +15,7 @@ import lombok.Setter;
 import model.Person;
 import nameDisplaying.SimpleNameDisplaying;
 import session.Session;
+import settings.Settings;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 import treeGraphs.DrawingDescendantTreeGraph;
@@ -79,12 +79,17 @@ public class MainWindowBuilder {
 	}
 	
 	private Pane generateFileChoosePane() {
+		Settings settings = session.getSettings();
 		FileChoosePaneBuilder builder = new FileChoosePaneBuilder();
+		
 		builder.setOpenFileAction(file -> {
-			if(loadTree != null && loadTree.apply(file))
+			if(loadTree != null && loadTree.apply(file)) {
 					controller.showView(Views.Tree);
+					settings.getRecentFiles().add(file);
+					settings.save();
+			}
 		});
-		builder.setLastOpenFiles(Arrays.asList("D:\\trees\\tree1.pgl","D:\\newtrees\\tree1.pgl","D:\\trees\\Nowak.pgl","D:\\trees\\Smith.pgl"));
+		builder.setLastOpenFiles(settings.getRecentFiles().extractPaths());
 		builder.build();
 		
 		return builder.getPane();
