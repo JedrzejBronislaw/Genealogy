@@ -8,6 +8,7 @@ import fxmlControllers.FileChoosePaneController;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.Setter;
+import settings.RecentFile;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 
@@ -19,7 +20,7 @@ public class FileChoosePaneBuilder {
 	@Setter
 	private Consumer<File> openFileAction;
 	@Setter
-	private List<String> lastOpenFiles;
+	private List<RecentFile> lastOpenFiles;
 	
 	
 	public void build() {

@@ -46,4 +46,8 @@ public class RecentFileList {
 		
 		return pathList;
 	}
+
+	public List<RecentFile> copyList() {
+		return new ArrayList<>(list);
+	}
 }

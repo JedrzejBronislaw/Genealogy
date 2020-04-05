@@ -89,7 +89,7 @@ public class MainWindowBuilder {
 					settings.save();
 			}
 		});
-		builder.setLastOpenFiles(settings.getRecentFiles().extractPaths());
+		builder.setLastOpenFiles(settings.getRecentFiles().copyList());
 		builder.build();
 		
 		return builder.getPane();
