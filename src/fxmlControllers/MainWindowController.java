@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import lombok.Setter;
@@ -63,8 +62,12 @@ public class MainWindowController implements Initializable {
 			});
 		}
 	}
-	
+
 	public void setLanguagePane(Pane pane) {
+		topPane.getChildren().add(pane);
+	}
+
+	public void setFullScreenPane(Pane pane) {
 		topPane.getChildren().add(pane);
 	}
 	

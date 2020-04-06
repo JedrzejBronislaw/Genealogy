@@ -3,6 +3,7 @@ package fxmlBuilders;
 import java.io.File;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import fxmlControllers.CardPaneController;
 import fxmlControllers.MainWindowController;
@@ -36,6 +37,10 @@ public class MainWindowBuilder {
 	private Function<File, Boolean> loadTree;
 	@Setter
 	private Consumer<Languages> changeLanguage;
+	@Setter
+	private Consumer<Boolean> fullScreenAction;
+	@Setter
+	private Supplier<Boolean> isFullScreen;
 	
 	private CardPaneController cardController;
 	private TreeGraphPaneController treeGraphController;
@@ -46,9 +51,10 @@ public class MainWindowBuilder {
 		
 		pane = (Pane) nac.getNode();
 		controller = nac.getController();
-				
+
 		controller.setLanguagePane(generateLanguagePane());
-		
+		controller.setFullScreenPane(generateFullScreenPane());
+
 		controller.setCardPane(generateCardPane());
 		controller.setGraphPane(generateTreeGrapfPane());
 		controller.setChooseFilePane(generateFileChoosePane());
@@ -61,6 +67,15 @@ public class MainWindowBuilder {
 	private Pane generateLanguagePane() {
 		LanguagePaneBuilder builder = new LanguagePaneBuilder();
 		builder.setChangeLanguage(changeLanguage);
+		builder.build();
+		
+		return builder.getPane();
+	}
+
+	private Pane generateFullScreenPane() {
+		FullScreenPaneBuilder builder = new FullScreenPaneBuilder();
+		builder.setFullScreenAction(fullScreenAction);
+		builder.setIsFullScreen(isFullScreen);
 		builder.build();
 		
 		return builder.getPane();

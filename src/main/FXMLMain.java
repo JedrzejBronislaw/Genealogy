@@ -45,8 +45,9 @@ public class FXMLMain extends Application {
 	
 	private void changeLanguage(Languages language) {
 		if(Internationalization.getCurrentLanguage() != language) {
-			stage.setScene(buildScene(language));
+			Scene scene = buildScene(language);
 			stage.hide();
+			stage.setScene(scene);
 			stage.show();
 		}
 	}
@@ -65,11 +66,17 @@ public class FXMLMain extends Application {
 			return tree != null;
 		});
 		mainWindowBuilder.setChangeLanguage(this::changeLanguage);
+		mainWindowBuilder.setFullScreenAction(this::setFullScreen);
+		mainWindowBuilder.setIsFullScreen(stage::isFullScreen);
 		mainWindowBuilder.build();
 		
 		Scene scene = new Scene(mainWindowBuilder.getPane());
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 		return scene;
+	}
+	
+	private void setFullScreen(boolean fullscreen) {
+		stage.setFullScreen(fullscreen);
 	}
 	
 	private static Tree loadTree(String path)
