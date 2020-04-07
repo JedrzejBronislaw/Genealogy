@@ -27,6 +27,8 @@ public class TreePaneBuilder {
 	
 	@Setter
 	private Consumer<Person> selectPerson;
+	@Setter
+	private Runnable closeTree;
 	
 	SwingNode swingNodeSearch;
 	
@@ -40,6 +42,8 @@ public class TreePaneBuilder {
 		controller.setTreeDetailsPane(generateTreeDetailsPane());
 		controller.setCommonSurnamePane(generateCommonNamePane());
 		controller.setSearchPane(generateSearchPane());
+		
+		controller.setCloseTree(closeTree);
 		
 		pane.setOnMouseEntered(e -> SwingRefresher.refreshNow(swingNodeSearch));
 	}
@@ -68,9 +72,11 @@ public class TreePaneBuilder {
 		swingNodeSearch = new SwingNode();
 		swingNodeSearch.setContent(search);
 		
-		if (session != null)
+		if (session != null) {
 			session.addNewTreeListener(tree -> search.setDrzewo(tree));
-		
+//			session.addCloseTreeListener(() -> {});
+		}
+
 		return swingNodeSearch;
 	}
 }

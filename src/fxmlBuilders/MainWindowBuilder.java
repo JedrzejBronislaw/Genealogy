@@ -17,6 +17,7 @@ import model.Person;
 import nameDisplaying.SimpleNameDisplaying;
 import session.Session;
 import settings.Settings;
+import tools.Injection;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
 import treeGraphs.DrawingDescendantTreeGraph;
@@ -41,6 +42,8 @@ public class MainWindowBuilder {
 	private Consumer<Boolean> fullScreenAction;
 	@Setter
 	private Supplier<Boolean> isFullScreen;
+	@Setter
+	private Runnable closeTree;
 	
 	private CardPaneController cardController;
 	private TreeGraphPaneController treeGraphController;
@@ -87,6 +90,10 @@ public class MainWindowBuilder {
 		builder.setSelectPerson(person -> {
 			cardController.setPerson(person);
 			controller.showView(Views.Card);
+		});
+		builder.setCloseTree(() -> {
+			Injection.run(closeTree);
+			controller.showView(Views.ChooseFile);
 		});
 		builder.build();
 		

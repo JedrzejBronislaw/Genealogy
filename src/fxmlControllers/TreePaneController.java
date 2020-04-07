@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import lombok.Setter;
+import tools.Injection;
 
 public class TreePaneController implements Initializable{
 
@@ -17,6 +19,11 @@ public class TreePaneController implements Initializable{
 	private StackPane searchBox;
 	@FXML
 	private HBox topHBox;
+	@FXML
+	private Button closeTreeButton;
+	
+	@Setter
+	private Runnable closeTree;
 
 	public void setTreeDetailsPane(Pane pane) {
 		topHBox.getChildren().add(0, pane);
@@ -34,8 +41,7 @@ public class TreePaneController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
+		closeTreeButton.setOnAction(e -> Injection.run(closeTree));
 	}
 
 }

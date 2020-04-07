@@ -23,15 +23,23 @@ public class Session {
 		settings = new Settings();
 		settings.load();
 	}
-	
+
 	private List<NewTreeListener> newTreeListeners = new ArrayList<>();
+	private List<Runnable> closeTreeListeners = new ArrayList<>();
 	
 	public void setTree(Tree tree) {
 		this.tree = tree;
-		newTreeListeners.forEach(l -> l.run(tree));
+		if (tree != null)
+			newTreeListeners.forEach(l -> l.run(tree));
+		else
+			closeTreeListeners.forEach(l -> l.run());
 	}
 	
 	public void addNewTreeListener(NewTreeListener listener) {
 		newTreeListeners.add(listener);
+	}
+	
+	public void addCloseTreeListener(Runnable listener) {
+		closeTreeListeners.add(listener);
 	}
 }

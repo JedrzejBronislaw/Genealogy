@@ -68,6 +68,7 @@ public class FXMLMain extends Application {
 		mainWindowBuilder.setChangeLanguage(this::changeLanguage);
 		mainWindowBuilder.setFullScreenAction(this::setFullScreen);
 		mainWindowBuilder.setIsFullScreen(stage::isFullScreen);
+		mainWindowBuilder.setCloseTree(() -> session.setTree(null));
 		mainWindowBuilder.build();
 		
 		Scene scene = new Scene(mainWindowBuilder.getPane());

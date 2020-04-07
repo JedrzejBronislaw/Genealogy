@@ -31,6 +31,7 @@ public class CommonSurnamesPaneController implements Initializable {
 
 	public void clearCommonSurnames() {
 		surnamesBox.getChildren().clear();
+		numOfSurnames = 0;
 	}
 	
 	@Override

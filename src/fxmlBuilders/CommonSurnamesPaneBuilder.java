@@ -19,10 +19,9 @@ public class CommonSurnamesPaneBuilder {
 
 	public void setSession(Session session) {
 		if(session == null) return;
-		
-		session.addNewTreeListener(tree -> {
-			updateSurnames(Arrays.asList(tree.getGlowneNazwiska()));
-		});
+
+		session.addNewTreeListener(tree -> updateSurnames(Arrays.asList(tree.getGlowneNazwiska())));
+		session.addCloseTreeListener(() -> clearSurnames());
 	}
 	
 	public void build() {

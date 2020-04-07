@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxWidth="-Infinity" spacing="50.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.TreePaneController">
+
+<StackPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.TreePaneController">
    <children>
-      <HBox fx:id="topHBox" spacing="50.0" />
-      <StackPane fx:id="searchBox" scaleShape="false" />
+      <HBox alignment="TOP_RIGHT">
+         <children>
+            <Button fx:id="closeTreeButton" mnemonicParsing="false" text="%close_tree" />
+         </children>
+         <padding>
+            <Insets right="20.0" top="-30.0" />
+         </padding>
+      </HBox>
+      <VBox maxWidth="-Infinity" spacing="50.0">
+         <children>
+            <HBox fx:id="topHBox" spacing="50.0" />
+            <StackPane fx:id="searchBox" scaleShape="false" />
+         </children>
+      </VBox>
    </children>
-</VBox>
+</StackPane>
