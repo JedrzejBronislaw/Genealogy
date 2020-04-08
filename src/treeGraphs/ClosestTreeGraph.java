@@ -74,8 +74,8 @@ public class ClosestTreeGraph extends TreeGraph {
 			wykonajObliczenia = false;
 		}
 		
-		String nazwisko = osobaGlowna.imieNazwisko();
-		Person[] rodzenstwo = osobaGlowna.getRodzenstwo();
+		String nazwisko = osobaGlowna.nameSurname();
+		Person[] rodzenstwo = osobaGlowna.getSiblings();
 		
 		
 		g.setFont(fontOsobaGlowna);
@@ -102,12 +102,12 @@ public class ClosestTreeGraph extends TreeGraph {
 	
 	private void obliczenia(Graphics2D g)
 	{
-		Person matka = osobaGlowna.getMatka();
-		Person ojciec = osobaGlowna.getOjciec();
-		Person[] rodzenstwo = osobaGlowna.getRodzenstwo();
-		String nazwisko = osobaGlowna.imieNazwisko();
-		String matkaIN  = (matka != null)  ? matka.imieNazwisko()  : "";
-		String ojciecIN = (ojciec != null) ? ojciec.imieNazwisko() : "";
+		Person matka = osobaGlowna.getMother();
+		Person ojciec = osobaGlowna.getFather();
+		Person[] rodzenstwo = osobaGlowna.getSiblings();
+		String nazwisko = osobaGlowna.nameSurname();
+		String matkaIN  = (matka != null)  ? matka.nameSurname()  : "";
+		String ojciecIN = (ojciec != null) ? ojciec.nameSurname() : "";
 		
 		
 		g.setFont(fontOsobaGlowna);
@@ -129,9 +129,9 @@ public class ClosestTreeGraph extends TreeGraph {
 		szerRodzenstwa = szerRodzenstwa(g, rodzenstwo);
 		wysRodzenstwa  = rodzenstwo.length * (wysTekstu+odstepMiedzyRodzenstwem);
 		szerMalzonkow = szerMalzonkow(g);
-		wysMalzonkow  = osobaGlowna.liczbaMalzenstw() * (wysTekstu+odstepMiedzyMalzonkami);
+		wysMalzonkow  = osobaGlowna.numberOfMarriages() * (wysTekstu+odstepMiedzyMalzonkami);
 		szerDzieci = szerDzieci(g);
-		wysDzieci  = osobaGlowna.liczbaDzieci() * (wysTekstu+odstepMiedzyDzieci)-odstepMiedzyDzieci;
+		wysDzieci  = osobaGlowna.numberOfChildren() * (wysTekstu+odstepMiedzyDzieci)-odstepMiedzyDzieci;
 		
 		szerokoscObszaru = szerNazw;// + 100;
 		if (szerokoscObszaru < szerNazwO+szerNazwM+minSzerMiedzyRodzicami)
@@ -144,7 +144,7 @@ public class ClosestTreeGraph extends TreeGraph {
 		wysokosc = yNazw+wysRodzenstwa;
 		if (wysokosc < yNazw+wysMalzonkow)
 			wysokosc = yNazw+wysMalzonkow;
-		if ((osobaGlowna.liczbaDzieci() > 0) && (wysokosc < yNazw+wysMalzonkow+odstepPrzedDziecmi+wysDzieci))
+		if ((osobaGlowna.numberOfChildren() > 0) && (wysokosc < yNazw+wysMalzonkow+odstepPrzedDziecmi+wysDzieci))
 			wysokosc = yNazw+wysMalzonkow+odstepPrzedDziecmi+wysDzieci;
 		szerokosc = szerokoscObszaru;//szerNazw;
 		
@@ -154,8 +154,8 @@ public class ClosestTreeGraph extends TreeGraph {
 	
 	private void rysujKreski(Graphics2D g, boolean maRodzenstwo)
 	{
-		Person ojciec = osobaGlowna.getOjciec();
-		Person matka  = osobaGlowna.getMatka();
+		Person ojciec = osobaGlowna.getFather();
+		Person matka  = osobaGlowna.getMother();
 		
 		//linia miêdzy rodzicami
 		int xOdOjca = marginesX+szerNazwO+marginesLini;
@@ -187,7 +187,7 @@ public class ClosestTreeGraph extends TreeGraph {
 		}
 		
 		//linia do dzieci
-		if (osobaGlowna.liczbaDzieci() > 0)
+		if (osobaGlowna.numberOfChildren() > 0)
 		{
 			int xDoDzieci = marginesX+wciecieDzieci+szerDzieci/2;
 			int yDoDzieciG = yNazw+wysMalzonkow+marginesLini;
@@ -205,10 +205,10 @@ public class ClosestTreeGraph extends TreeGraph {
 	
 	private void rysujRodzicow(Graphics2D g,int szerokoscObszaru)
 	{
-		Person matka = osobaGlowna.getMatka();
-		Person ojciec = osobaGlowna.getOjciec();
-		String matkaIN  = (matka != null)  ? matka.imieNazwisko()  : "";
-		String ojciecIN = (ojciec != null) ? ojciec.imieNazwisko() : "";
+		Person matka = osobaGlowna.getMother();
+		Person ojciec = osobaGlowna.getFather();
+		String matkaIN  = (matka != null)  ? matka.nameSurname()  : "";
+		String ojciecIN = (ojciec != null) ? ojciec.nameSurname() : "";
 
 		
 		g.drawString(ojciecIN, marginesX, marginesY+wysTekstu);
@@ -230,8 +230,8 @@ public class ClosestTreeGraph extends TreeGraph {
 		
 		for (int i=0; i<rodzenstwo.length; i++)
 		{
-			szer = fm.stringWidth(rodzenstwo[i].imieNazwisko());
-			g.drawString(rodzenstwo[i].imieNazwisko(), x, y+(i+1)*(wys+odstepMiedzyRodzenstwem));
+			szer = fm.stringWidth(rodzenstwo[i].nameSurname());
+			g.drawString(rodzenstwo[i].nameSurname(), x, y+(i+1)*(wys+odstepMiedzyRodzenstwem));
 			klikMapa.dodajObszar(rodzenstwo[i], x, y+(i+1)*(wys+odstepMiedzyRodzenstwem), x+szer, y+(i+1)*(wys+odstepMiedzyRodzenstwem)-wys);
 		}
 		
@@ -245,11 +245,11 @@ public class ClosestTreeGraph extends TreeGraph {
 		int szer;
 		Person malzonek;
 		
-		for (int i=0; i<osobaGlowna.liczbaMalzenstw(); i++)
+		for (int i=0; i<osobaGlowna.numberOfMarriages(); i++)
 		{
-			malzonek = osobaGlowna.getMalzonek(i);
-			szer = fm.stringWidth(malzonek.imieNazwisko());
-			g.drawString(malzonek.imieNazwisko(), x, y+(i+1)*(wys+odstepMiedzyMalzonkami));
+			malzonek = osobaGlowna.getSpouse(i);
+			szer = fm.stringWidth(malzonek.nameSurname());
+			g.drawString(malzonek.nameSurname(), x, y+(i+1)*(wys+odstepMiedzyMalzonkami));
 			klikMapa.dodajObszar(malzonek, x, y+(i+1)*(wys+odstepMiedzyMalzonkami), x+szer, y+(i+1)*(wys+odstepMiedzyMalzonkami)-wys);
 		}		
 	}
@@ -261,11 +261,11 @@ public class ClosestTreeGraph extends TreeGraph {
 		int szer;
 		Person dziecko;
 		
-		for (int i=0; i<osobaGlowna.liczbaDzieci(); i++)
+		for (int i=0; i<osobaGlowna.numberOfChildren(); i++)
 		{
-			dziecko = osobaGlowna.getDziecko(i);
-			szer = fm.stringWidth(dziecko.imieNazwisko());
-			g.drawString(dziecko.imieNazwisko(), x, y+(i+1)*(wys+odstepMiedzyDzieci));
+			dziecko = osobaGlowna.getChild(i);
+			szer = fm.stringWidth(dziecko.nameSurname());
+			g.drawString(dziecko.nameSurname(), x, y+(i+1)*(wys+odstepMiedzyDzieci));
 			klikMapa.dodajObszar(dziecko, x, y+(i+1)*(wys+odstepMiedzyDzieci), x+szer, y+(i+1)*(wys+odstepMiedzyDzieci)-wys);
 		}		
 	}
@@ -278,8 +278,8 @@ public class ClosestTreeGraph extends TreeGraph {
 		int maksSzer = 0;
 		
 		for(Person o: rodzenstwo)
-			if (maksSzer < fm.stringWidth(o.imieNazwisko()))
-				maksSzer = fm.stringWidth(o.imieNazwisko());
+			if (maksSzer < fm.stringWidth(o.nameSurname()))
+				maksSzer = fm.stringWidth(o.nameSurname());
 
 		
 		g.setFont(f);
@@ -291,11 +291,11 @@ public class ClosestTreeGraph extends TreeGraph {
 		int maksSzer = 0;
 		Person o;
 		
-		for (int i=0; i<osobaGlowna.liczbaMalzenstw(); i++)
+		for (int i=0; i<osobaGlowna.numberOfMarriages(); i++)
 		{
-			o = osobaGlowna.getMalzonek(i);
-			if (maksSzer < fm.stringWidth(o.imieNazwisko()))
-				maksSzer = fm.stringWidth(o.imieNazwisko());
+			o = osobaGlowna.getSpouse(i);
+			if (maksSzer < fm.stringWidth(o.nameSurname()))
+				maksSzer = fm.stringWidth(o.nameSurname());
 		}
 		return maksSzer;
 	}
@@ -305,11 +305,11 @@ public class ClosestTreeGraph extends TreeGraph {
 		int maksSzer = 0;
 		Person o;
 		
-		for (int i=0; i<osobaGlowna.liczbaDzieci(); i++)
+		for (int i=0; i<osobaGlowna.numberOfChildren(); i++)
 		{
-			o = osobaGlowna.getDziecko(i);
-			if (maksSzer < fm.stringWidth(o.imieNazwisko()))
-				maksSzer = fm.stringWidth(o.imieNazwisko());
+			o = osobaGlowna.getChild(i);
+			if (maksSzer < fm.stringWidth(o.nameSurname()))
+				maksSzer = fm.stringWidth(o.nameSurname());
 		}
 		return maksSzer;
 	}

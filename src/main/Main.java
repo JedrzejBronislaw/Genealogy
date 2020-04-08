@@ -117,29 +117,29 @@ public class Main {
 			{
 				o = drzewo.getOsoba(identyfikatory[i]);
 				System.out.println(identyfikatory[i]);
-				System.out.println(o.imieNazwisko());
-				System.out.println("p³eæ: " + o.getPlec());
-				System.out.println(o.getDataUrodzenia() + " - " + o.getDataSmierci());
-				System.out.println(o.getMiejsceUrodzenia() + " - " + o.getMiejsceSmierci());
-				System.out.println("¿yje: " + o.getZyje());
+				System.out.println(o.nameSurname());
+				System.out.println("p³eæ: " + o.getSex());
+				System.out.println(o.getBirthDate() + " - " + o.getDeathDate());
+				System.out.println(o.getBirthPlace() + " - " + o.getDeathPlace());
+				System.out.println("¿yje: " + o.getLifeStatus());
 				
 				System.out.print("Ojciec: ");
-				if (o.getOjciec() != null)
-					System.out.print(o.getOjciec().imieNazwisko());
+				if (o.getFather() != null)
+					System.out.print(o.getFather().nameSurname());
 				System.out.println();
 				
 				System.out.print("Matka: ");
-				if (o.getMatka() != null)
-					System.out.print("Matka: " + o.getMatka().imieNazwisko());
+				if (o.getMother() != null)
+					System.out.print("Matka: " + o.getMother().nameSurname());
 				System.out.println();
 				
-				System.out.println("Dzieci (" + o.liczbaDzieci() + "):");
-				for (int j=0; j<o.liczbaDzieci(); j++)
-					System.out.println("\t" + (j+1) + ". " + o.getDziecko(j).imieNazwisko());
+				System.out.println("Dzieci (" + o.numberOfChildren() + "):");
+				for (int j=0; j<o.numberOfChildren(); j++)
+					System.out.println("\t" + (j+1) + ". " + o.getChild(j).nameSurname());
 				
-				System.out.println("Œluby (" + o.liczbaMalzenstw() + "):");
-				for (int j=0; j<o.liczbaMalzenstw(); j++)
-					System.out.println("\t" + (j+1) + ". " + o.getMalzonek(j).imieNazwisko());
+				System.out.println("Œluby (" + o.numberOfMarriages() + "):");
+				for (int j=0; j<o.numberOfMarriages(); j++)
+					System.out.println("\t" + (j+1) + ". " + o.getSpouse(j).nameSurname());
 				
 				System.out.println("\t-----");
 			}

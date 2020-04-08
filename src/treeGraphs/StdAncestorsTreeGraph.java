@@ -64,7 +64,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 	}
 	
 	private int ustalSzerokosciKolumn(FontMetrics fm) {
-		szerokosciKolumn = new int[osobaGlowna.rozmiarKorzenia()+2];
+		szerokosciKolumn = new int[osobaGlowna.rootSize()+2];
 		
 		//Ustalenie maksymalnych szerokosci nazwisk
 		szerokosciKolumn[0] = wyswietlacz.getSzerokosc(osobaGlowna);//fm.stringWidth(osobaGlowna.imieNazwisko());
@@ -90,15 +90,15 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 	
 	private int szerokoscRodzicow(FontMetrics fm, Person osoba, int pokolenie)
 	{
-		int matka  = (osoba.getMatka()  == null) ? 0 : wyswietlacz.getSzerokosc(osoba.getMatka());//fm.stringWidth(osoba.getMatka().imieNazwisko());
-		int ojciec = (osoba.getOjciec() == null) ? 0 : wyswietlacz.getSzerokosc(osoba.getOjciec());//fm.stringWidth(osoba.getOjciec().imieNazwisko());
+		int matka  = (osoba.getMother()  == null) ? 0 : wyswietlacz.getSzerokosc(osoba.getMother());//fm.stringWidth(osoba.getMatka().imieNazwisko());
+		int ojciec = (osoba.getFather() == null) ? 0 : wyswietlacz.getSzerokosc(osoba.getFather());//fm.stringWidth(osoba.getOjciec().imieNazwisko());
 		int szersze = (ojciec > matka) ? ojciec : matka;
 		
 		if (szerokosciKolumn[pokolenie] < szersze)
 			szerokosciKolumn[pokolenie] = szersze;
 
-		if (osoba.getMatka()  != null) szerokoscRodzicow(fm, osoba.getMatka(),  pokolenie+1);
-		if (osoba.getOjciec() != null) szerokoscRodzicow(fm, osoba.getOjciec(), pokolenie+1);
+		if (osoba.getMother()  != null) szerokoscRodzicow(fm, osoba.getMother(),  pokolenie+1);
+		if (osoba.getFather() != null) szerokoscRodzicow(fm, osoba.getFather(), pokolenie+1);
 		
 		return szersze;
 	}
@@ -108,8 +108,8 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		int wysNazw  = wyswietlacz.getWysokosc(osoba);
 		int szerNazw = wyswietlacz.getSzerokosc(osoba);
 
-		Person ojciec = osoba.getOjciec();
-		Person matka  = osoba.getMatka();
+		Person ojciec = osoba.getFather();
+		Person matka  = osoba.getMother();
 		int oy, my;
 		int x,y;
 		

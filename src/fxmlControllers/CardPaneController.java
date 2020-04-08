@@ -21,8 +21,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import model.Person;
-import model.Person.Plec;
-import model.Person.Zyje;
+import model.Person.Sex;
+import model.Person.LifeStatus;
 import other.PersonDetails;
 import tools.Injection;
 import tools.SwingRefresher;
@@ -141,45 +141,45 @@ public class CardPaneController implements Initializable{
 		clearValues();
 		if(person == null) return;
 		
-		firstNameLabel.setText(person.getImie());
-		lastNameLabel.setText(person.getNazwisko());
-		aliasLabel.setText(person.getPseudonim());
-		birthDateLabel.setText(person.getDataUrodzenia().toString());
-		birthPlaceLabel.setText(person.getMiejsceUrodzenia());
-		baptismParishLabel.setText(person.getParafiaChrztu());
-		deathDateLabel.setText(person.getDataSmierci().toString());
-		deathPlaceLabel.setText(person.getMiejsceSmierci());
-		burialPlaceLabel.setText(person.getMiejscePochowku());
+		firstNameLabel.setText(person.getFirstName());
+		lastNameLabel.setText(person.getLastname());
+		aliasLabel.setText(person.getAlias());
+		birthDateLabel.setText(person.getBirthDate().toString());
+		birthPlaceLabel.setText(person.getBirthPlace());
+		baptismParishLabel.setText(person.getBaptismParish());
+		deathDateLabel.setText(person.getDeathDate().toString());
+		deathPlaceLabel.setText(person.getDeathPlace());
+		burialPlaceLabel.setText(person.getBurialPlace());
 
 		sexImg.setImage(getSexSymbol());
 		liveImg.setImage(getLiveSymbol());
 
 		ageLabel.setText(PersonDetails.wiekStr(person));
 		
-		for(int i=0; i<person.liczbaMalzenstw(); i++) {
+		for(int i=0; i<person.numberOfMarriages(); i++) {
 			marriagesBox.getChildren().add(generateMarriageLabel(i));
 		}
 		
-		commentsArea.setText(person.getUwagi());
-		contactArea.setText(person.getKontakt());
+		commentsArea.setText(person.getComments());
+		contactArea.setText(person.getContact());
 
 		grafMiniDrzewo.setOsobaGlowna(person);
 		SwingRefresher.refreshGraph(swingNode);
 	}
 
 	private Image getSexSymbol() {
-		if (person.getPlec() == Plec.Kobieta)
+		if (person.getSex() == Sex.WOMEN)
 			return venus;
-		if (person.getPlec() == Plec.Mezczyna)
+		if (person.getSex() == Sex.MAN)
 			return mars;
 		else
 			return null;
 	}
 	
 	private Image getLiveSymbol() {
-		if (person.getZyje() == Zyje.TAK)
+		if (person.getLifeStatus() == LifeStatus.YES)
 			return star;
-		if (person.getZyje() == Zyje.NIE)
+		if (person.getLifeStatus() == LifeStatus.NO)
 			return cross;
 		else
 			return null;
@@ -211,9 +211,9 @@ public class CardPaneController implements Initializable{
 		StringBuffer output = new StringBuffer();
 		StringBuffer details = new StringBuffer();
 		
-		String name = person.getMalzonek(marriageNum).imieNazwisko();
-		String date = person.getMalzenstwo(marriageNum).getData();
-		String place = person.getMalzenstwo(marriageNum).getMiejsce();
+		String name = person.getSpouse(marriageNum).nameSurname();
+		String date = person.getMarriages(marriageNum).getData();
+		String place = person.getMarriages(marriageNum).getMiejsce();
 
 		if(date != null && !date.isBlank()) {
 			details.append(date);

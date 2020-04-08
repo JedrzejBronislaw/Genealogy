@@ -4,270 +4,179 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Person {
-	public enum Zyje{TAK, NIE, Nieokreslono};
-	public enum Plec{Kobieta, Mezczyna, Nieokreslono};
+	public enum LifeStatus{YES, NO, UNDEFINED};
+	public enum Sex{WOMEN, MAN, UNDEFINED};
 	
-	private String imie;
-	private String nazwisko;
-	private String pseudonim;
-	private Zyje zyje = Zyje.Nieokreslono;
-	private Plec plec = Plec.Nieokreslono;
-	private MyDate dataUrodzenia;
-	private MyDate dataSmierci;
-	private String miejsceUrodzenia;
-	private String miejsceSmierci;
-	private String kontakt;
-	private String uwagi;
-	private String parafiaChrztu;
-	private String miejscePochowku;
+	@Setter @Getter private String firstName;
+	@Setter @Getter private String lastname;
+	@Setter @Getter private String alias;
+	@Setter @Getter private LifeStatus lifeStatus = LifeStatus.UNDEFINED;
+	@Setter @Getter private Sex sex = Sex.UNDEFINED;
+	@Setter @Getter private MyDate birthDate;
+	@Setter @Getter private MyDate deathDate;
+	@Setter @Getter private String birthPlace;
+	@Setter @Getter private String deathPlace;
+	@Setter @Getter private String contact;
+	@Setter @Getter private String comments;
+	@Setter @Getter private String baptismParish;
+	@Setter @Getter private String burialPlace;
 	
-	private Person ojciec;
-	private Person matka;
-	private List<Person> dzieci = new ArrayList<Person>(); 
-	private List<Marriage> malzenstwa = new ArrayList<Marriage>(); 
+	@Setter @Getter private Person father;
+	@Setter @Getter private Person mother;
+	private List<Person> children = new ArrayList<Person>(); 
+	private List<Marriage> marriages = new ArrayList<Marriage>(); 
 	
-	public String getImie() {
-		return imie;
+
+	public void addChild(Person child) {
+		children.add(child);
 	}
-	public void setImie(String imie) {
-		this.imie = imie;
+	public Person getChild(int number) {
+		return children.get(number);
 	}
-	public String getNazwisko() {
-		return nazwisko;
+	public Person[] getChildren() {
+		Person[] outcome = new Person[children.size()];
+		outcome = children.toArray(outcome);
+		return outcome;
 	}
-	public void setNazwisko(String nazwisko) {
-		this.nazwisko = nazwisko;
-	}
-	public String getPseudonim() {
-		return pseudonim;
-	}
-	public void setPseudonim(String pseudonim) {
-		this.pseudonim = pseudonim;
-	}
-	public Zyje getZyje() {
-		return zyje;
-	}
-	public void setZyje(Zyje zyje) {
-		this.zyje = zyje;
-	}
-	public Plec getPlec() {
-		return plec;
-	}
-	public void setPlec(Plec plec) {
-		this.plec = plec;
-	}
-	public MyDate getDataUrodzenia() {
-		return dataUrodzenia;
-	}
-	public void setDataUrodzenia(MyDate dataUrodzenia) {
-		this.dataUrodzenia = dataUrodzenia;
-	}
-	public MyDate getDataSmierci() {
-		return dataSmierci;
-	}
-	public void setDataSmierci(MyDate dataSmierci) {
-		this.dataSmierci = dataSmierci;
-	}
-	public String getMiejsceUrodzenia() {
-		return miejsceUrodzenia;
-	}
-	public void setMiejsceUrodzenia(String miejsceUrodzenia) {
-		this.miejsceUrodzenia = miejsceUrodzenia;
-	}
-	public String getMiejsceSmierci() {
-		return miejsceSmierci;
-	}
-	public void setMiejsceSmierci(String miejsceSmierci) {
-		this.miejsceSmierci = miejsceSmierci;
-	}
-	public String getKontakt() {
-		return kontakt;
-	}
-	public void setKontakt(String kontakt) {
-		this.kontakt = kontakt;
-	}
-	public String getUwagi() {
-		return uwagi;
-	}
-	public void setUwagi(String uwagi) {
-		this.uwagi = uwagi;
-	}
-	public String getParafiaChrztu() {
-		return parafiaChrztu;
-	}
-	public void setParafiaChrztu(String parafiaChrztu) {
-		this.parafiaChrztu = parafiaChrztu;
-	}
-	public String getMiejscePochowku() {
-		return miejscePochowku;
-	}
-	public void setMiejscePochowku(String miejscePochowku) {
-		this.miejscePochowku = miejscePochowku;
-	}
-	
-	
-	
-	public Person getOjciec() {
-		return ojciec;
-	}
-	public void setOjciec(Person ojciec) {
-		this.ojciec = ojciec;
-	}
-	public Person getMatka() {
-		return matka;
-	}
-	public void setMatka(Person matka) {
-		this.matka = matka;
-	}
-	public void dodajDziecko(Person dziecko) {
-		dzieci.add(dziecko);
-	}
-	public Person getDziecko(int nr) {
-		return dzieci.get(nr);
-	}
-	public Person[] getDzieci() {
-		Person[] wynik = new Person[dzieci.size()];
-		wynik = dzieci.toArray(wynik);
-		return wynik;
-	}
-	public void dodajMalzenstwo(Person malzonek) {
-		Marriage malzenstwo = new Marriage();
-		if (plec == Plec.Mezczyna)
+	public void addMarriages(Person malzonek) {
+		Marriage marriage = new Marriage();
+		if (sex == Sex.MAN)
 		{
-			malzenstwo.setMaz(this);
-			malzenstwo.setZona(malzonek);
-			malzenstwa.add(malzenstwo);
+			marriage.setMaz(this);
+			marriage.setZona(malzonek);
+			marriages.add(marriage);
 		} else
-		if (plec == Plec.Kobieta)
+		if (sex == Sex.WOMEN)
 		{
-			malzenstwo.setMaz(malzonek);
-			malzenstwo.setZona(this);
-			malzenstwa.add(malzenstwo);
+			marriage.setMaz(malzonek);
+			marriage.setZona(this);
+			marriages.add(marriage);
 		}
 	}
-	public void dodajMalzenstwo(Person malzonek, String data, String miejsce) {
-		Marriage slob = new Marriage();
+	public void addMarriages(Person spouse, String date, String place) {
+		Marriage wedding = new Marriage();
 		
-		slob.setData(data);
-		slob.setMiejsce(miejsce);
-		if (plec == Plec.Mezczyna)
+		wedding.setData(date);
+		wedding.setMiejsce(place);
+		if (sex == Sex.MAN)
 		{
-			slob.setMaz(this);
-			slob.setZona(malzonek);
-			malzenstwa.add(slob);
+			wedding.setMaz(this);
+			wedding.setZona(spouse);
+			marriages.add(wedding);
 		} else
-		if (plec == Plec.Kobieta)
+		if (sex == Sex.WOMEN)
 		{
-			slob.setMaz(malzonek);
-			slob.setZona(this);
-			malzenstwa.add(slob);
+			wedding.setMaz(spouse);
+			wedding.setZona(this);
+			marriages.add(wedding);
 		}
 	}
-	public void dodajDateSlubu(Person malzonek, String data)
+	public void addWeddingDate(Person spouse, String date)
 	{
-		for(Marriage m : malzenstwa)
+		for(Marriage m : marriages)
 		{
-			if (((plec == Plec.Mezczyna) && (m.getZona() == malzonek)) ||
-				((plec == Plec.Kobieta)  && (m.getMaz()  == malzonek)))
+			if (((sex == Sex.MAN) && (m.getZona() == spouse)) ||
+				((sex == Sex.WOMEN)  && (m.getMaz()  == spouse)))
 			{
-				m.setData(data);
+				m.setData(date);
 				return;
 			}
 		}
 	}
-	public void dodajMiejsceSlubu(Person malzonek, String miejsce)
+	public void addWeddingVenue(Person spouse, String place)
 	{
-		for(Marriage m : malzenstwa)
+		for(Marriage m : marriages)
 		{
-			if (((plec == Plec.Mezczyna) && (m.getZona() == malzonek)) ||
-				((plec == Plec.Kobieta)  && (m.getMaz()  == malzonek)))
+			if (((sex == Sex.MAN) && (m.getZona() == spouse)) ||
+				((sex == Sex.WOMEN)  && (m.getMaz()  == spouse)))
 			{
-				m.setMiejsce(miejsce);
+				m.setMiejsce(place);
 				return;
 			}
 		}
 	}
 	
-	public Marriage getMalzenstwo(int nr) {
-		return malzenstwa.get(nr);
+	public Marriage getMarriages(int number) {
+		return marriages.get(number);
 	}
 	
-	public Person getMalzonek(int nr) {
-//		if (malzenstwa.get(nr) == null)
-//			System.out.println("malzenstwa.get(" + nr + ") == null");
-		if (plec == Plec.Mezczyna)
-			return malzenstwa.get(nr).getZona();
-		if (plec == Plec.Kobieta)
-			return malzenstwa.get(nr).getMaz();
+	public Person getSpouse(int number) {
+		if (sex == Sex.MAN)
+			return marriages.get(number).getZona();
+		if (sex == Sex.WOMEN)
+			return marriages.get(number).getMaz();
 		
 		return null;
 	}
 
-	public Person[] getRodzenstwo() {
-		Person[] dzieciO = (ojciec!=null) ? ojciec.getDzieci() : new Person[0];
-		Person[] dzieciM = (matka !=null) ? matka.getDzieci()  : new Person[0];
-		Person[] rodzenstwo;
+	public Person[] getSiblings() {
+		Person[] fathersChildren = (father!=null) ? father.getChildren() : new Person[0];
+		Person[] mothersChildren = (mother !=null) ? mother.getChildren()  : new Person[0];
+		Person[] siblings;
 		LinkedHashSet<Person> set = new LinkedHashSet<Person>();
 
-		for (Person o:dzieciO)
-			set.add(o);
-		for (Person o:dzieciM)
-			set.add(o);
+		for (Person p : fathersChildren)
+			set.add(p);
+		for (Person p : mothersChildren)
+			set.add(p);
 		
 		set.remove(this);
 		
-		rodzenstwo = new Person[set.size()];
-		rodzenstwo = set.toArray(rodzenstwo);
+		siblings = new Person[set.size()];
+		siblings = set.toArray(siblings);
 		
-		return rodzenstwo;
+		return siblings;
 	}
 	
-	public int liczbaDzieci() {return dzieci.size();}
-	public int liczbaMalzenstw() {return malzenstwa.size();}
-	public String imieNazwisko() 
+	public int numberOfChildren() {return children.size();}
+	public int numberOfMarriages() {return marriages.size();}
+	public String nameSurname() 
 	{
-		String wynik = "";
-		if (imie != null)		wynik += getImie() + " ";
-		if (nazwisko != null)	wynik += getNazwisko();
+		String outcome = "";
+		if (firstName != null)		outcome += getFirstName() + " ";
+		if (lastname != null)	outcome += getLastname();
 		
-		return wynik.trim();
+		return outcome.trim();
 	}
 	
-	public int rozmiarKorzenia()
+	public int rootSize()
 	{
-		int wynik = 0;
-		if (matka != null) wynik = matka.rozmiarKorzenia()+1;
-		if (ojciec != null) wynik = Math.max(wynik, ojciec.rozmiarKorzenia()+1);
+		int outcome = 0;
+		if (mother != null) outcome = mother.rootSize()+1;
+		if (father != null) outcome = Math.max(outcome, father.rootSize()+1);
 		
-		return wynik;
+		return outcome;
 	}
 	
-	public int liczbaPokolenPotomkow()
+	public int descendantGenerations()
 	{
-		int wynik = 0;
-		for (int i=0; i<liczbaDzieci(); i++)
-			wynik = Math.max(wynik, dzieci.get(i).liczbaPokolenPotomkow()+1);
+		int outcome = 0;
+		for (int i=0; i<numberOfChildren(); i++)
+			outcome = Math.max(outcome, children.get(i).descendantGenerations()+1);
 		
-		return wynik;
+		return outcome;
 	}
-	public int zKtoregoMalzenstwa(Person rodzic) {
-		int wynik = 0;
-		Person rodzic2;
+	public int parentsMarriageNumber(Person parent) {
+		int outcome = 0;
+		Person parent2;
 		
-		for (int i=0; i < rodzic.liczbaMalzenstw(); i++)
+		for (int i=0; i < parent.numberOfMarriages(); i++)
 		{
-			rodzic2 = rodzic.getMalzonek(i);
-			if ((getOjciec() == rodzic2) || (getMatka() == rodzic2))
+			parent2 = parent.getSpouse(i);
+			if ((getFather() == parent2) || (getMother() == parent2))
 			{
-				wynik = i+1;
+				outcome = i+1;
 				break;
 			}
 		}
 			
-		if ((getMatka() != rodzic) && (getOjciec() != rodzic))
-			wynik *= -1;
+		if ((getMother() != parent) && (getFather() != parent))
+			outcome *= -1;
 			
-		return wynik;
+		return outcome;
 	}
 }

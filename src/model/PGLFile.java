@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import model.Person.Plec;
-import model.Person.Zyje;
+import model.Person.Sex;
+import model.Person.LifeStatus;
 import tools.Tools;
 
 public class PGLFile {
@@ -149,14 +149,14 @@ public class PGLFile {
 		
 		for (Relacja r:relacje)
 		{
-			if (r.relacja == Relacja.Typ.Ojciec)	d.getOsoba(r.dopelnienie).setOjciec(d.getOsoba(r.podmiot)); else
-			if (r.relacja == Relacja.Typ.Matka)		d.getOsoba(r.dopelnienie).setMatka(d.getOsoba(r.podmiot)); else
-			if (r.relacja == Relacja.Typ.Dziecko)	d.getOsoba(r.dopelnienie).dodajDziecko(d.getOsoba(r.podmiot)); else
+			if (r.relacja == Relacja.Typ.Ojciec)	d.getOsoba(r.dopelnienie).setFather(d.getOsoba(r.podmiot)); else
+			if (r.relacja == Relacja.Typ.Matka)		d.getOsoba(r.dopelnienie).setMother(d.getOsoba(r.podmiot)); else
+			if (r.relacja == Relacja.Typ.Dziecko)	d.getOsoba(r.dopelnienie).addChild(d.getOsoba(r.podmiot)); else
 			if (r.relacja == Relacja.Typ.Malzonek)	
 			{
-				d.getOsoba(r.dopelnienie).dodajMalzenstwo(d.getOsoba(r.podmiot));
-				d.getOsoba(r.dopelnienie).dodajDateSlubu(d.getOsoba(r.podmiot), r.data);
-				d.getOsoba(r.dopelnienie).dodajMiejsceSlubu(d.getOsoba(r.podmiot), r.miejsce);
+				d.getOsoba(r.dopelnienie).addMarriages(d.getOsoba(r.podmiot));
+				d.getOsoba(r.dopelnienie).addWeddingDate(d.getOsoba(r.podmiot), r.data);
+				d.getOsoba(r.dopelnienie).addWeddingVenue(d.getOsoba(r.podmiot), r.miejsce);
 			}
 		}
 		
@@ -214,20 +214,20 @@ public class PGLFile {
 		String w;
 		int lDzieci=0, lMalzenstw=0;
 		
-		w = sekcja.getWartosc("imie");			if (w != null) o.setImie(w);
-		w = sekcja.getWartosc("nazwisko");		if (w != null) o.setNazwisko(w);
-		w = sekcja.getWartosc("datur");			if (w != null) o.setDataUrodzenia(new MyDate(w));
-		w = sekcja.getWartosc("datsm");			if (w != null) o.setDataSmierci(new MyDate(w));
-		w = sekcja.getWartosc("miejur");		if (w != null) o.setMiejsceUrodzenia(w);
-		w = sekcja.getWartosc("miejsm");		if (w != null) o.setMiejsceSmierci(w);
-		w = sekcja.getWartosc("zyje");			if (w != null) o.setZyje(w.equals("0")?Zyje.NIE:Zyje.TAK);
-		w = sekcja.getWartosc("plec");			if (w != null) o.setPlec(w.equals("0")?Plec.Kobieta:Plec.Mezczyna);
-		w = sekcja.getWartosc("ps");			if (w != null) o.setPseudonim(w);
-		w = sekcja.getWartosc("parafia");		if (w != null) o.setParafiaChrztu(w);
-		w = sekcja.getWartosc("mpoch");			if (w != null) o.setMiejscePochowku(w);
+		w = sekcja.getWartosc("imie");			if (w != null) o.setFirstName(w);
+		w = sekcja.getWartosc("nazwisko");		if (w != null) o.setLastname(w);
+		w = sekcja.getWartosc("datur");			if (w != null) o.setBirthDate(new MyDate(w));
+		w = sekcja.getWartosc("datsm");			if (w != null) o.setDeathDate(new MyDate(w));
+		w = sekcja.getWartosc("miejur");		if (w != null) o.setBirthPlace(w);
+		w = sekcja.getWartosc("miejsm");		if (w != null) o.setDeathPlace(w);
+		w = sekcja.getWartosc("zyje");			if (w != null) o.setLifeStatus(w.equals("0")?LifeStatus.NO:LifeStatus.YES);
+		w = sekcja.getWartosc("plec");			if (w != null) o.setSex(w.equals("0")?Sex.WOMEN:Sex.MAN);
+		w = sekcja.getWartosc("ps");			if (w != null) o.setAlias(w);
+		w = sekcja.getWartosc("parafia");		if (w != null) o.setBaptismParish(w);
+		w = sekcja.getWartosc("mpoch");			if (w != null) o.setBurialPlace(w);
 
-		w = sekcja.getWartosc("kontakt");		if (w != null) o.setKontakt(w.replace("$", "\n"));
-		w = sekcja.getWartosc("uwagi");			if (w != null) o.setUwagi(w.replace("$", "\n"));
+		w = sekcja.getWartosc("kontakt");		if (w != null) o.setContact(w.replace("$", "\n"));
+		w = sekcja.getWartosc("uwagi");			if (w != null) o.setComments(w.replace("$", "\n"));
 		
 
 		w = sekcja.getWartosc("ojciec");		if (w != null) relacje.add(new Relacja(w, Relacja.Typ.Ojciec, sekcja.nazwa));

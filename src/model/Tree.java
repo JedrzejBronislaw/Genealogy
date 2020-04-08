@@ -90,7 +90,7 @@ public class Tree {
 		for (int i=0; i<idy.length; i++)
 		{
 			temp = osoby.get(idy[i]);
-			if (temp.liczbaDzieci() == 0)
+			if (temp.numberOfChildren() == 0)
 				wynik.add(temp);
 		}
 		
@@ -111,12 +111,12 @@ public class Tree {
 		for (int i=0; i<idy.length; i++)
 		{
 			temp = osoby.get(idy[i]);
-			if ((temp.getMatka() == null) && (temp.getOjciec() == null))
+			if ((temp.getMother() == null) && (temp.getFather() == null))
 			{
 				malKorzen = true;
 				if (malzonekTez)
-				for (int j=0; j<temp.liczbaMalzenstw(); j++)
-					if ((temp.getMalzonek(j).getMatka() != null) || (temp.getMalzonek(j).getOjciec() != null))
+				for (int j=0; j<temp.numberOfMarriages(); j++)
+					if ((temp.getSpouse(j).getMother() != null) || (temp.getSpouse(j).getFather() != null))
 					{
 						malKorzen = false;
 						break;

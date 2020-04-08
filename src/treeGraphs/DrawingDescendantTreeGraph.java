@@ -45,10 +45,10 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		g.drawString(osobaGlowna.imieNazwisko(), 10, 20);
-		g.drawString("Pokoleñ potomków: " + osobaGlowna.liczbaPokolenPotomkow()+"", 10, 30);
+		g.drawString(osobaGlowna.nameSurname(), 10, 20);
+		g.drawString("Pokoleñ potomków: " + osobaGlowna.descendantGenerations()+"", 10, 30);
 		g.drawString("Szerokoœæ: " + PersonDetails.szerokoscGaleziPotomkow(osobaGlowna)+"", 10, 40);
-		g.drawString("Liczba dzieci: " + osobaGlowna.liczbaDzieci(), 10, 50);
+		g.drawString("Liczba dzieci: " + osobaGlowna.numberOfChildren(), 10, 50);
 
 //		srodekX = osobaGlowna.liczbaPokolenPotomkow()*50 + 50;
 //		srodekY = osobaGlowna.liczbaPokolenPotomkow()*50 + 50;
@@ -75,8 +75,8 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		for (Element e : plan)
 			for (Element e2 : e.getPoloczenie())
 			{
-				g.setColor(grad.getKolorPosredni((float)e.getPokolenie()/osobaGlowna.liczbaPokolenPotomkow()));
-				g.setStroke(new BasicStroke(5-5*e.getPokolenie()/osobaGlowna.liczbaPokolenPotomkow(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g.setColor(grad.getKolorPosredni((float)e.getPokolenie()/osobaGlowna.descendantGenerations()));
+				g.setStroke(new BasicStroke(5-5*e.getPokolenie()/osobaGlowna.descendantGenerations(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g.drawLine(e.getX(), e.getY(), e2.getX(), e2.getY());
 				g.setStroke(new BasicStroke(1));
 			}

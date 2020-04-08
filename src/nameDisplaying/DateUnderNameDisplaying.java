@@ -31,7 +31,7 @@ public class DateUnderNameDisplaying extends Name {
 
 	private String genNazwisko(Person osoba)
 	{
-		return osoba.imieNazwisko();
+		return osoba.nameSurname();
 	}
 	private String genDate(Person osoba)
 	{
@@ -40,14 +40,14 @@ public class DateUnderNameDisplaying extends Name {
 		
 		wynik = null;
 		
-		if (osoba.getZyje() != Person.Zyje.NIE)
+		if (osoba.getLifeStatus() != Person.LifeStatus.NO)
 		{
-			daty = osoba.getDataUrodzenia().toString();
-			if (!daty.isEmpty()) wynik = "(" + osoba.getDataUrodzenia() + ")";
+			daty = osoba.getBirthDate().toString();
+			if (!daty.isEmpty()) wynik = "(" + osoba.getBirthDate() + ")";
 		}
 		else
 		{
-			daty = osoba.getDataUrodzenia().toString() + " - " + osoba.getDataSmierci().toString();
+			daty = osoba.getBirthDate().toString() + " - " + osoba.getDeathDate().toString();
 			if (!daty.equals(" - ")) wynik = "(" + daty + ")";
 		}
 		

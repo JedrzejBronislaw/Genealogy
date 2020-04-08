@@ -17,7 +17,7 @@ import javax.swing.JScrollPane;
 
 import model.Marriage;
 import model.Person;
-import model.Person.Plec;
+import model.Person.Sex;
 import nameDisplaying.SimpleNameDisplaying;
 import other.PersonDetails;
 import treeGraphs.TreeGraph;
@@ -172,15 +172,15 @@ public class CardScreen extends JPanel implements ActionListener {
 	}
 	
 	private void wypelnijSluby() {
-		Field[] sluby = new Field[osoba.liczbaMalzenstw()];
+		Field[] sluby = new Field[osoba.numberOfMarriages()];
 		Marriage m;
 
 		pSluby.removeAll();
-		for (int i=0; i<osoba.liczbaMalzenstw(); i++)
+		for (int i=0; i<osoba.numberOfMarriages(); i++)
 		{
-			m = osoba.getMalzenstwo(i);
+			m = osoba.getMarriages(i);
 			sluby[i] = new Field();
-			sluby[i].setNazwa(osoba.getMalzonek(i).imieNazwisko());
+			sluby[i].setNazwa(osoba.getSpouse(i).nameSurname());
 			sluby[i].set(m.getData() + " " + m.getMiejsce());
 			pSluby.add(sluby[i]);
 		}
@@ -222,27 +222,27 @@ public class CardScreen extends JPanel implements ActionListener {
 
 	private void wypelnijPola() {
 		szerokosc.setText("sz: "+PersonDetails.szerokoscGaleziPotomkow(osoba));
-		imie.set(osoba.getImie());
-		nazwisko.set(osoba.getNazwisko());
-		pseudonim.set(osoba.getPseudonim());
-		dataUr.set(osoba.getDataUrodzenia().toString());
-		miejsceUr.set(osoba.getMiejsceUrodzenia());
-		dataSm.set(osoba.getDataSmierci().toString());
-		miejsceSm.set(osoba.getMiejsceSmierci());
+		imie.set(osoba.getFirstName());
+		nazwisko.set(osoba.getLastname());
+		pseudonim.set(osoba.getAlias());
+		dataUr.set(osoba.getBirthDate().toString());
+		miejsceUr.set(osoba.getBirthPlace());
+		dataSm.set(osoba.getDeathDate().toString());
+		miejsceSm.set(osoba.getDeathPlace());
 		wypelnijSluby();
-		uwagi.set(osoba.getUwagi());
-		kontakt.set(osoba.getKontakt());
-		parafiaChrztu.set(osoba.getParafiaChrztu());
-		miejscePochowku.set(osoba.getMiejscePochowku());
+		uwagi.set(osoba.getComments());
+		kontakt.set(osoba.getContact());
+		parafiaChrztu.set(osoba.getBaptismParish());
+		miejscePochowku.set(osoba.getBurialPlace());
 
 		grafMiniDrzewo.setOsobaGlowna(osoba);
 		plutnoGrafu.repaint();
 
 
-		if (osoba.getZyje() != Person.Zyje.NIE)
+		if (osoba.getLifeStatus() != Person.LifeStatus.NO)
 			wiek.setNazwa("¯yje: ");
 		else
-		if (osoba.getPlec() == Plec.Kobieta)
+		if (osoba.getSex() == Sex.WOMEN)
 			wiek.setNazwa("¯y³a: ");
 		else
 			wiek.setNazwa("¯y³: ");

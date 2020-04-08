@@ -2,33 +2,33 @@ package other;
 
 import model.MyDate;
 import model.Person;
-import model.Person.Plec;
+import model.Person.Sex;
 
 public class PersonDetails {
 	
 	public static String czyjeDziecko(Person o)
 	{
-		if ((o.getOjciec() == null) && (o.getMatka() == null)) return "";
+		if ((o.getFather() == null) && (o.getMother() == null)) return "";
 		
 		String wynik;
-		if (o.getPlec() == Plec.Kobieta)
+		if (o.getSex() == Sex.WOMEN)
 			wynik = "córka ";
-		else if (o.getPlec() == Plec.Mezczyna)
+		else if (o.getSex() == Sex.MAN)
 			wynik = "syn ";
 		else
 			wynik = "dziecko ";
 		
-		wynik += InflectionPL.dopelniaczImienia(o.getOjciec());
-		if ((o.getOjciec() != null) && (o.getMatka() != null))
+		wynik += InflectionPL.dopelniaczImienia(o.getFather());
+		if ((o.getFather() != null) && (o.getMother() != null))
 			wynik += " i ";
-		wynik += InflectionPL.dopelniaczImienia(o.getMatka());
+		wynik += InflectionPL.dopelniaczImienia(o.getMother());
 		
 			
 		return wynik;
 	}
 
 	public static int[] wiek(Person osoba) {		
-		return MyDate.teraz().roznica(osoba.getDataUrodzenia());
+		return MyDate.teraz().roznica(osoba.getBirthDate());
 	}
 	
 	public static String wiekStr(Person osoba) {
@@ -50,11 +50,11 @@ public class PersonDetails {
 	 */
 	public static int szerokoscGaleziPotomkow(Person osoba){
 		
-		if (osoba.liczbaDzieci() > 0)
+		if (osoba.numberOfChildren() > 0)
 		{
 			int wynik = 0;
-			for (int i=0; i<osoba.liczbaDzieci(); i++)
-				wynik += PersonDetails.szerokoscGaleziPotomkow(osoba.getDziecko(i));
+			for (int i=0; i<osoba.numberOfChildren(); i++)
+				wynik += PersonDetails.szerokoscGaleziPotomkow(osoba.getChild(i));
 			return wynik;
 		} else
 			return 1;

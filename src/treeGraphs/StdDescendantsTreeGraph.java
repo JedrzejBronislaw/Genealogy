@@ -103,7 +103,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	}
 
 	private int ustalSzerokosciKolumn(FontMetrics fm) {
-		szerokosciKolumn = new int[osobaGlowna.liczbaPokolenPotomkow()+1];
+		szerokosciKolumn = new int[osobaGlowna.descendantGenerations()+1];
 		int szerokoscCalokowita = 0;
 		
 		//Ustalenie maksymalnych szerokosci nazwisk
@@ -129,17 +129,17 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 			szerokosciKolumn[pokolenie] = szerokosc;
 
 		//porównie szerokoœci wszystkich ma³¿onków
-		for (int i=0; i<osoba.liczbaMalzenstw(); i++)
+		for (int i=0; i<osoba.numberOfMarriages(); i++)
 		{
-			malzonek = osoba.getMalzonek(i);
+			malzonek = osoba.getSpouse(i);
 			szerokosc = wyswietlacz.getSzerokosc(malzonek)+wciecieMalzonka;
 			if (szerokosc > szerokosciKolumn[pokolenie])
 				szerokosciKolumn[pokolenie] = szerokosc;			
 		}
 		
 		//rekurencyjne wywo³anie dla wszystkich dzieci
-		for (int i=0; i<osoba.liczbaDzieci(); i++)
-			szerokosciGalezi(fm, osoba.getDziecko(i), pokolenie+1);
+		for (int i=0; i<osoba.numberOfChildren(); i++)
+			szerokosciGalezi(fm, osoba.getChild(i), pokolenie+1);
 	}
 	
 	private int rysujRodzine(Graphics2D g, Person o, int x, int y, int pokolenie)
@@ -155,24 +155,24 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		wyswietlacz.wyswietl(o, x, y);
 		klikMapa.dodajObszar(o, x, y, x+szerNazw, y-wysNazw);
 		
-		for (int i=0; i<o.liczbaMalzenstw(); i++)
+		for (int i=0; i<o.numberOfMarriages(); i++)
 //			przesMal += rysujMalzonka(g, o.getMalzonek(i), x, y+((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
-			przesMal += rysujMalzonka(g, o.getMalzonek(i), x, y+przesMal+odstepMiedzyMalzonkami) + odstepMiedzyMalzonkami;;//((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
+			przesMal += rysujMalzonka(g, o.getSpouse(i), x, y+przesMal+odstepMiedzyMalzonkami) + odstepMiedzyMalzonkami;;//((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
 	
-		if (o.liczbaDzieci() > 0)
+		if (o.numberOfChildren() > 0)
 		{
 			liniaX = x+szerokosciKolumn[pokolenie]+marginesLini+minDlugoscKreskiOdRodzica;//
 			//linia od rodzica
 			g.drawLine(x+szerNazw+marginesLini, y-wysNazw/2, liniaX, y-wysNazw/2);
-			for (int i=0; i<o.liczbaDzieci(); i++)
+			for (int i=0; i<o.numberOfChildren(); i++)
 			{
 				//linia do dziecka
 				g.drawLine(liniaX, y+przes-wysNazw/2, liniaX+dlugoscStrzalekDoDzieci, y+przes-wysNazw/2);
 				rysujGrot(g, liniaX+dlugoscStrzalekDoDzieci, y+przes-wysNazw/2);
-				rysujNumerMalzenstwa(g, o.getDziecko(i), o, liniaX, y+przes, y+przes-wysNazw/2);
+				rysujNumerMalzenstwa(g, o.getChild(i), o, liniaX, y+przes, y+przes-wysNazw/2);
 				//linia pionowa
 				g.drawLine(liniaX, y-wysNazw/2, liniaX, y-wysNazw/2+przes);
-				przes += rysujRodzine(g, o.getDziecko(i), liniaX+dlugoscStrzalekDoDzieci+marginesLini, y-wysNazw+przes, pokolenie+1)+miedzyRodzenstwem;
+				przes += rysujRodzine(g, o.getChild(i), liniaX+dlugoscStrzalekDoDzieci+marginesLini, y-wysNazw+przes, pokolenie+1)+miedzyRodzenstwem;
 			}
 //			przes -= miedzyRodzenstwem; //Mo¿na w³¹czyæ do zacieœnienia zapisu (i do mniejszenia czytlnoœci)
 		}
@@ -182,11 +182,11 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 	}
 	private void rysujNumerMalzenstwa(Graphics2D g, Person dziecko, Person rodzic, int x1, int y1, int yLini) {
-		if (rodzic.liczbaMalzenstw() > 1)
+		if (rodzic.numberOfMarriages() > 1)
 		{
 			Color tempColor;
 			FontMetrics fm = g.getFontMetrics();
-			int nrMalzenstwa = dziecko.zKtoregoMalzenstwa(rodzic);
+			int nrMalzenstwa = dziecko.parentsMarriageNumber(rodzic);
 			if (nrMalzenstwa != 0)
 			{
 				tempColor = g.getColor();
@@ -216,31 +216,31 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 //		g.drawString(nazwisko, x, y);
 		klikMapa.dodajObszar(o, x, y, x+szerNazw, y-wysNazw);
 		
-		for (int i=0; i<o.liczbaMalzenstw(); i++)
+		for (int i=0; i<o.numberOfMarriages(); i++)
 //			przesMal += rysujMalzonka(g, o.getMalzonek(i), x, y+((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
-			przesMal += rysujMalzonka(g, o.getMalzonek(i), x, y+przesMal+odstepMiedzyMalzonkami) + odstepMiedzyMalzonkami;//((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
+			przesMal += rysujMalzonka(g, o.getSpouse(i), x, y+przesMal+odstepMiedzyMalzonkami) + odstepMiedzyMalzonkami;//((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
 	
-		if (o.liczbaDzieci() > 0)
+		if (o.numberOfChildren() > 0)
 		{
 			liniaX = x+szerokosciKolumn[pokolenie]+marginesLini+minDlugoscKreskiOdRodzica;//szerPokolenia;
 			//linia od rodzica
 			g.drawLine(x+szerNazw+marginesLini, y-wysNazw/2, liniaX, y-wysNazw/2);
-			for (int i=0; i<o.liczbaDzieci(); i++)
+			for (int i=0; i<o.numberOfChildren(); i++)
 			{
 				//linia do dziecka
 				g.drawLine(liniaX, y+przes-wysNazw/2, liniaX+dlugoscStrzalekDoDzieci, y+przes-wysNazw/2);
 				rysujGrot(g, liniaX+dlugoscStrzalekDoDzieci, y+przes-wysNazw/2);
-				rysujNumerMalzenstwa(g, o.getDziecko(i), o, liniaX, y+przes, y+przes-wysNazw/2);
+				rysujNumerMalzenstwa(g, o.getChild(i), o, liniaX, y+przes, y+przes-wysNazw/2);
 				//linia pionowa
 				g.drawLine(liniaX, y-wysNazw/2, liniaX, y-wysNazw/2+przes);
-				przes += rysujRodzine(g, o.getDziecko(i), liniaX+dlugoscStrzalekDoDzieci+marginesLini, y-wysNazw+przes, pokolenie+1, i==o.liczbaDzieci()-1);
+				przes += rysujRodzine(g, o.getChild(i), liniaX+dlugoscStrzalekDoDzieci+marginesLini, y-wysNazw+przes, pokolenie+1, i==o.numberOfChildren()-1);
 			}
 		}
 
 		if (ostatnie)
 			return Math.max(przesMal+wysNazw, przes);
 		
-		if (o.liczbaDzieci() == 0)
+		if (o.numberOfChildren() == 0)
 			return przesMal+wysNazw+miedzyRodzenstwem;
 		
 		return Math.max(przesMal+wysNazw+miedzyRodzenstwem, przes+odstepMiedzyKuzynostwem);

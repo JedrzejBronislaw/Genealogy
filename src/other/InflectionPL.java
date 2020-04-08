@@ -1,7 +1,7 @@
 package other;
 
 import model.Person;
-import model.Person.Plec;
+import model.Person.Sex;
 
 public class InflectionPL {
 	
@@ -9,10 +9,10 @@ public class InflectionPL {
 	public static String dopelniaczImienia(Person o)
 	{
 		if (o == null) return "";
-		return dopelniaczImienia(o.getImie(), o.getPlec());
+		return dopelniaczImienia(o.getFirstName(), o.getSex());
 		
 	}
-	public static String dopelniaczImienia(String imie, Plec plec)
+	public static String dopelniaczImienia(String imie, Sex plec)
 	{
 		if (imie == null)
 			return "";
@@ -20,7 +20,7 @@ public class InflectionPL {
 			return imie;
 			
 		//Odmiana imienia ¿eñskiego
-		if (plec == Plec.Kobieta)
+		if (plec == Sex.WOMEN)
 		{
 			if (imie.substring(imie.length()-1).equals("a"))
 			{
@@ -33,7 +33,7 @@ public class InflectionPL {
 		}	
 		
 		//Odmiana imienia mêskiego
-		if (plec == Plec.Mezczyna)
+		if (plec == Sex.MAN)
 		{
 			if (imie.substring(imie.length()-1).equals("i"))	imie = imie + "ego"; else
 			if (imie.substring(imie.length()-1).equals("y"))	imie = imie.substring(0,imie.length()-1) + "ego"; else

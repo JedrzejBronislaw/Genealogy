@@ -95,7 +95,7 @@ public class DrawingDescendantTreeGraphCalculation {
 		return this;
 	}
 	public DrawingDescendantTreeGraphCalculation setOdlegloscMiedzyNajmlodszymiPokoleniami(int odleglosc) {
-		float x = (odleglosc-poczatkowaOdlegloscMiedzyPokoleniami)/(osobaGlowna.liczbaPokolenPotomkow()-1);
+		float x = (odleglosc-poczatkowaOdlegloscMiedzyPokoleniami)/(osobaGlowna.descendantGenerations()-1);
 		
 		RoznicaDlugosciGaleziWzgledemRodzica = x;
 		return this;
@@ -210,10 +210,10 @@ public class DrawingDescendantTreeGraphCalculation {
 //		klikMapa.dodajObszar(osoba, rodzicX-5, rodzicY-5, rodzicX+5, rodzicY+5);
 		
 //		rysujPromien(g, rodzicX, rodzicY, kat1, 200, new Color(150, 75, 0));
-		for (int i=0; i<osoba.liczbaDzieci(); i++)
+		for (int i=0; i<osoba.numberOfChildren(); i++)
 		{
 //			setSymetrycznyKat(90+pokolenie*20);
-			dziecko = osoba.getDziecko(i);
+			dziecko = osoba.getChild(i);
 			szerAkt = PersonDetails.szerokoscGaleziPotomkow(dziecko);
 			odleglosc = (pokolenie+1)*poczatkowaOdlegloscMiedzyPokoleniami;
 			

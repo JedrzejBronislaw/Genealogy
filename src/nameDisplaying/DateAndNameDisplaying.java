@@ -24,16 +24,16 @@ public class DateAndNameDisplaying extends Name{
 		String daty;
 		String wynik;
 		
-		wynik = osoba.imieNazwisko();
+		wynik = osoba.nameSurname();
 		
-		if (osoba.getZyje() != Person.Zyje.NIE)
+		if (osoba.getLifeStatus() != Person.LifeStatus.NO)
 		{
-			daty = osoba.getDataUrodzenia().toString();
-			if (!daty.isEmpty()) wynik += " (" + osoba.getDataUrodzenia() + ")";
+			daty = osoba.getBirthDate().toString();
+			if (!daty.isEmpty()) wynik += " (" + osoba.getBirthDate() + ")";
 		}
 		else
 		{
-			daty = osoba.getDataUrodzenia().toString() + " - " + osoba.getDataSmierci().toString();
+			daty = osoba.getBirthDate().toString() + " - " + osoba.getDeathDate().toString();
 			if (!daty.equals(" - ")) wynik += " (" + daty + ")";
 		}
 		

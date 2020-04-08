@@ -70,7 +70,7 @@ public class ClickMap {
 		
 		for (Obszar o: obszary)
 		{
-			sb.append(o.osoba.imieNazwisko() + " -> " + o.x1 + "," + o.y1 + " | " + o.x2 + "," + o.y2 + "\n");
+			sb.append(o.osoba.nameSurname() + " -> " + o.x1 + "," + o.y1 + " | " + o.x2 + "," + o.y2 + "\n");
 		}
 		
 		return sb.toString();

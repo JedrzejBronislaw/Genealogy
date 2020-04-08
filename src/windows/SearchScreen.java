@@ -2,7 +2,7 @@ package windows;
 
 import model.Person;
 import model.Tree;
-import model.Person.Plec;
+import model.Person.Sex;
 import other.Constants;
 import other.Diminutives;
 import other.PersonDetails;
@@ -76,15 +76,15 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 	}
 
 	private String generujCiag(Person o) {
-		String ciag = o.imieNazwisko();
+		String ciag = o.nameSurname();
 		
-		if (o.getPlec() == Plec.Kobieta)
-			for (int i=0; i<o.liczbaMalzenstw(); i++)
-				ciag += " " + o.getMalzonek(i).getNazwisko();
+		if (o.getSex() == Sex.WOMEN)
+			for (int i=0; i<o.numberOfMarriages(); i++)
+				ciag += " " + o.getSpouse(i).getLastname();
 
-		ciag += " " +o.getPseudonim();
-		ciag += " " +Diminutives.dlaImieniaW(o.getImie());
-		ciag += " " +zdrobnienia.dlaImienia(o.getImie());
+		ciag += " " +o.getAlias();
+		ciag += " " +Diminutives.dlaImieniaW(o.getFirstName());
+		ciag += " " +zdrobnienia.dlaImienia(o.getFirstName());
 		
 		
 		ciag = ciag.toUpperCase();		
@@ -217,9 +217,9 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 					
 					etykieta = PersonDetails.czyjeDziecko(e.getKey());
 					if (!etykieta.equals(""))
-						etykieta = e.getKey().imieNazwisko() + ", " + etykieta;
+						etykieta = e.getKey().nameSurname() + ", " + etykieta;
 					else
-						etykieta = e.getKey().imieNazwisko();
+						etykieta = e.getKey().nameSurname();
 					model.addElement(etykieta);
 					wyszukane.add(e.getKey());
 				}

@@ -21,7 +21,7 @@ public class SimpleNameDisplaying extends Name{
 	
 	private String genTekst(Person osoba)
 	{
-		return osoba.imieNazwisko();
+		return osoba.nameSurname();
 	}
 
 }
