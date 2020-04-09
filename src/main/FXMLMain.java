@@ -86,7 +86,7 @@ public class FXMLMain extends Application {
 		
 		try {
 			PGLFile file = new PGLFile(path);
-			file.laduj(tree);
+			file.load(tree);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found (" + path + ").");
 			return null;

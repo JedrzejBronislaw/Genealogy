@@ -72,7 +72,7 @@ public class Main {
 		
 		try {
 			PGLFile plikPGL = new PGLFile(sciezka);
-			sukces = plikPGL.laduj(drzewo);
+			sukces = plikPGL.load(drzewo);
 		} catch (FileNotFoundException e) {
 			System.out.println("Nie znaleziono pliku (" + sciezka + ").");
 			return null;
@@ -93,7 +93,7 @@ public class Main {
 		
 		try {
 			PGLFile plikPGL = new PGLFile(sciezka+nazwaPliku);
-			sukces = plikPGL.laduj(drzewo);
+			sukces = plikPGL.load(drzewo);
 		} catch (FileNotFoundException e) {
 			System.out.println("Nie znaleziono pliku (" + sciezka+nazwaPliku + ").");
 			return null;
