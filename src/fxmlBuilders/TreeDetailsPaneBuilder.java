@@ -44,12 +44,12 @@ public class TreeDetailsPaneBuilder {
 
 		final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
 		
-		final Date lastOpen = tree.getOstatnieOtwarcie();
-		final Date lastModi = tree.getOstatniaZmiana();
+		final Date lastOpen = tree.getLastOpen();
+		final Date lastModi = tree.getLastModification();
 		
 		String lastOpenDate = (lastOpen != null) ? sdf.format(lastOpen) : "";
 		String lastModificationDate = (lastModi != null) ? sdf.format(lastModi) : "";
-		String numOfPersons = Integer.toString(tree.getLiczbaOsob());
+		String numOfPersons = Integer.toString(tree.getNumberOfPersons());
 
 		controller.set(
 				lastOpenDate,

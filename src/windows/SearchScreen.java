@@ -69,7 +69,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 	public void aktualizujSpisOsob()
 	{
 		zdrobnienia = new Diminutives(sciezkaDoDodatkowychZdrobnien);
-		wszyscy = drzewo.getWszyscy();
+		wszyscy = drzewo.getAll();
 		spisSlowKluczowych.clear();
 		for (Person o : wszyscy)
 			spisSlowKluczowych.put(o, generujCiag(o));

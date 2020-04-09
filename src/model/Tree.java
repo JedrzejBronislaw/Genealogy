@@ -7,133 +7,111 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Tree {
 
-//	List<Osoba> osoby = new ArrayList<Osoba>();
-	private Map<String, Person> osoby = new TreeMap<String, Person>();
-	private Date ostatnieOtwarcie;
-	private Date ostatniaZmiana;
-	private int liczbaOsob;
-	private List<String> glowneNazwiska = new ArrayList<String>();
-	
-	public Date getOstatnieOtwarcie() {
-		return ostatnieOtwarcie;
+	private Map<String, Person> persons = new TreeMap<String, Person>();
+	@Setter @Getter private Date lastOpen;
+	@Setter @Getter private Date lastModification;
+	@Setter @Getter private int numberOfPersons;
+	private List<String> commonSurnames = new ArrayList<String>();
+
+	public String[] getCommonSurnames() {
+		String[] outcome = new String[commonSurnames.size()];
+		outcome = commonSurnames.toArray(outcome);
+		return outcome;
 	}
 
-	public void setOstatnieOtwarcie(Date ostatnieOtwarcie) {
-		this.ostatnieOtwarcie = ostatnieOtwarcie;
-	}
-
-	public Date getOstatniaZmiana() {
-		return ostatniaZmiana;
-	}
-
-	public void setOstatniaZmiana(Date ostatniaZmiana) {
-		this.ostatniaZmiana = ostatniaZmiana;
-	}
-
-	public int getLiczbaOsob() {
-		return liczbaOsob;
-	}
-
-	public void setLiczbaOsob(int liczbaOsob) {
-		this.liczbaOsob = liczbaOsob;
-	}
-
-	public String[] getGlowneNazwiska() {
-		String[] wynik = new String[glowneNazwiska.size()];
-		wynik = glowneNazwiska.toArray(wynik);
-		return wynik;
-	}
-
-	public void dodajGlowneNazwisko(String glowneNazwisko) {
-		glowneNazwiska.add(glowneNazwisko);
+	public void addCommonSurname(String commonSurname) {
+		commonSurnames.add(commonSurname);
 	}
 
 	
 	
-	public void dodajOsobe(String id, Person osoba)
+	public void addPerson(String id, Person person)
 	{
-		osoby.put(id, osoba);
+		persons.put(id, person);
 	}
 	
-	public Person getOsoba(String id)
+	public Person getPerson(String id)
 	{
-		return osoby.get(id);
+		return persons.get(id);
 	}
 	
-	public int liczbaOsob()
+	public int numberOfPersons()
 	{
-		return osoby.size();
+		return persons.size();
 	}
 	
-	public String[] getIdentyfikatory()
+	public String[] getIDs()
 	{
-		String[] wynik = new String[osoby.size()];
-		return osoby.keySet().toArray(wynik);
+		String[] ids = new String[persons.size()];
+		return persons.keySet().toArray(ids);
 	}
 	
-	public Person losowaOsoba()
+	public Person randomPerson()
 	{
-		String[] idy = getIdentyfikatory();
+		String[] ids = getIDs();
 		Random r = new Random();
 		
-		return osoby.get(idy[r.nextInt(idy.length)]);
+		return persons.get(ids[r.nextInt(ids.length)]);
 	}
 	
-	public ArrayList<Person> liscie()
+	public ArrayList<Person> leaves()
 	{
-		String[] idy = getIdentyfikatory();
-		ArrayList<Person> wynik = new ArrayList<Person>();
+		String[] ids = getIDs();
+		ArrayList<Person> outcome = new ArrayList<Person>();
 		Person temp;
 		
-		for (int i=0; i<idy.length; i++)
+		for (int i=0; i<ids.length; i++)
 		{
-			temp = osoby.get(idy[i]);
+			temp = persons.get(ids[i]);
 			if (temp.numberOfChildren() == 0)
-				wynik.add(temp);
+				outcome.add(temp);
 		}
 		
-		return wynik;
+		return outcome;
 	}
 
-	public ArrayList<Person> korzenie()
+	public ArrayList<Person> roots()
 	{
-		return korzenie(false);
+		return roots(false);
 	}
-	public ArrayList<Person> korzenie(boolean malzonekTez)
+	public ArrayList<Person> roots(boolean spouseToo)
 	{
-		String[] idy = getIdentyfikatory();
-		ArrayList<Person> wynik = new ArrayList<Person>();
+		String[] ids = getIDs();
+		ArrayList<Person> outcome = new ArrayList<Person>();
 		Person temp;
-		boolean malKorzen;
+		boolean spouseRoot;
 		
-		for (int i=0; i<idy.length; i++)
+		for (int i=0; i<ids.length; i++)
 		{
-			temp = osoby.get(idy[i]);
+			temp = persons.get(ids[i]);
 			if ((temp.getMother() == null) && (temp.getFather() == null))
 			{
-				malKorzen = true;
-				if (malzonekTez)
+				spouseRoot = true;
+				if (spouseToo)
 				for (int j=0; j<temp.numberOfMarriages(); j++)
 					if ((temp.getSpouse(j).getMother() != null) || (temp.getSpouse(j).getFather() != null))
 					{
-						malKorzen = false;
+						spouseRoot = false;
 						break;
 					}
-				if (malKorzen) wynik.add(temp);
+				if (spouseRoot) outcome.add(temp);
 			}
 		}
 		
-		return wynik;
+		return outcome;
 	}
 
-	public Person[] getWszyscy() {
-		Person[] wynik = new Person[osoby.size()];
+	public Person[] getAll() {
+		Person[] outcome = new Person[persons.size()];
 
-		wynik = osoby.values().toArray(wynik);
+		outcome = persons.values().toArray(outcome);
 		
-		return wynik;
+		return outcome;
 	}
 	
 }

@@ -149,14 +149,14 @@ public class PGLFile {
 		
 		for (Relacja r:relacje)
 		{
-			if (r.relacja == Relacja.Typ.Ojciec)	d.getOsoba(r.dopelnienie).setFather(d.getOsoba(r.podmiot)); else
-			if (r.relacja == Relacja.Typ.Matka)		d.getOsoba(r.dopelnienie).setMother(d.getOsoba(r.podmiot)); else
-			if (r.relacja == Relacja.Typ.Dziecko)	d.getOsoba(r.dopelnienie).addChild(d.getOsoba(r.podmiot)); else
+			if (r.relacja == Relacja.Typ.Ojciec)	d.getPerson(r.dopelnienie).setFather(d.getPerson(r.podmiot)); else
+			if (r.relacja == Relacja.Typ.Matka)		d.getPerson(r.dopelnienie).setMother(d.getPerson(r.podmiot)); else
+			if (r.relacja == Relacja.Typ.Dziecko)	d.getPerson(r.dopelnienie).addChild(d.getPerson(r.podmiot)); else
 			if (r.relacja == Relacja.Typ.Malzonek)	
 			{
-				d.getOsoba(r.dopelnienie).addMarriages(d.getOsoba(r.podmiot));
-				d.getOsoba(r.dopelnienie).addWeddingDate(d.getOsoba(r.podmiot), r.data);
-				d.getOsoba(r.dopelnienie).addWeddingVenue(d.getOsoba(r.podmiot), r.miejsce);
+				d.getPerson(r.dopelnienie).addMarriages(d.getPerson(r.podmiot));
+				d.getPerson(r.dopelnienie).addWeddingDate(d.getPerson(r.podmiot), r.data);
+				d.getPerson(r.dopelnienie).addWeddingVenue(d.getPerson(r.podmiot), r.miejsce);
 			}
 		}
 		
@@ -169,18 +169,18 @@ public class PGLFile {
 		
 		w = sekcja.getWartosc("ost_otw");
 		if (w != null)
-			d.setOstatnieOtwarcie(loadDate(w));
+			d.setLastOpen(loadDate(w));
 		
 		w = sekcja.getWartosc("wersja");
 		if (w != null)
-			d.setOstatniaZmiana(loadDate(w));
+			d.setLastModification(loadDate(w));
 		
 		w = sekcja.getWartosc("ile");
 		if (w != null)
-			try {d.setLiczbaOsob(Integer.parseInt(w));} catch (NumberFormatException e) {}
+			try {d.setNumberOfPersons(Integer.parseInt(w));} catch (NumberFormatException e) {}
 		
 		for (int i=1; i<=10; i++)
-			{w = sekcja.getWartosc("nazw"+i);	if ((w != null) && (!w.equals(""))) d.dodajGlowneNazwisko(w);}
+			{w = sekcja.getWartosc("nazw"+i);	if ((w != null) && (!w.equals(""))) d.addCommonSurname(w);}
 	}
 
 	private Date loadDate(String w) {
@@ -243,7 +243,7 @@ public class PGLFile {
 		for (int i=1; i<=lMalzenstw; i++)
 			{w = sekcja.getWartosc("malzmjsc"+i);	if (w != null) Relacja.dodajMiejsceDoRelacji(relacje, sekcja.nazwa, Relacja.Typ.Malzonek, i, w);}
 
-		d.dodajOsobe(sekcja.nazwa, o);		
+		d.addPerson(sekcja.nazwa, o);		
 	}
 	
 	

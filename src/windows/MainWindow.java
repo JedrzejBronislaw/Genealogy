@@ -62,7 +62,7 @@ public class MainWindow extends JFrame implements AncestorListener, ActionListen
 			graf.setWyswietlacz(new SimpleNameDisplaying());
 		
 		okno.setGraf(graf);
-		okno.setOsoba(drzewo.getOsoba(id));
+		okno.setOsoba(drzewo.getPerson(id));
 	}
 
 	private void ustawKomponenty() {
@@ -136,16 +136,16 @@ public class MainWindow extends JFrame implements AncestorListener, ActionListen
 	{
 		final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
 
-		if (drzewo.getOstatnieOtwarcie() != null)
-			ostatnieOtwarcie.set(sdf.format(drzewo.getOstatnieOtwarcie()));
+		if (drzewo.getLastOpen() != null)
+			ostatnieOtwarcie.set(sdf.format(drzewo.getLastOpen()));
 
-		if (drzewo.getOstatniaZmiana() != null)
-			ostatniaZmiana.set(sdf.format(drzewo.getOstatniaZmiana()));
+		if (drzewo.getLastModification() != null)
+			ostatniaZmiana.set(sdf.format(drzewo.getLastModification()));
 		
-		liczbaOsob.set(drzewo.getLiczbaOsob() + " (" + drzewo.getLiczbaOsob() + ")");
+		liczbaOsob.set(drzewo.getNumberOfPersons() + " (" + drzewo.getNumberOfPersons() + ")");
 		
 		pNazwiska.removeAll();
-		String[] nazwiska = drzewo.getGlowneNazwiska();
+		String[] nazwiska = drzewo.getCommonSurnames();
 		Field pole;
 		for (int i=0; i<nazwiska.length; i++)
 		{

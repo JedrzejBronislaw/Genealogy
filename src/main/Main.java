@@ -108,14 +108,14 @@ public class Main {
 			
 			System.out.println();
 			
-			liczbaOsob = drzewo.liczbaOsob();
+			liczbaOsob = drzewo.numberOfPersons();
 			System.out.println("Liczba osób w drzewie: " + liczbaOsob);
 			System.out.println("\n\t-----\n");
-			identyfikatory = drzewo.getIdentyfikatory();
+			identyfikatory = drzewo.getIDs();
 			Person o;
 			for (int i=0; i<liczbaOsob; i++)
 			{
-				o = drzewo.getOsoba(identyfikatory[i]);
+				o = drzewo.getPerson(identyfikatory[i]);
 				System.out.println(identyfikatory[i]);
 				System.out.println(o.nameSurname());
 				System.out.println("p³eæ: " + o.getSex());
