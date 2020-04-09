@@ -46,32 +46,32 @@ public class Person {
 		Marriage marriage = new Marriage();
 		if (sex == Sex.MAN)
 		{
-			marriage.setMaz(this);
-			marriage.setZona(malzonek);
+			marriage.setHusband(this);
+			marriage.setWife(malzonek);
 			marriages.add(marriage);
 		} else
 		if (sex == Sex.WOMEN)
 		{
-			marriage.setMaz(malzonek);
-			marriage.setZona(this);
+			marriage.setHusband(malzonek);
+			marriage.setWife(this);
 			marriages.add(marriage);
 		}
 	}
 	public void addMarriages(Person spouse, String date, String place) {
 		Marriage wedding = new Marriage();
 		
-		wedding.setData(date);
-		wedding.setMiejsce(place);
+		wedding.setDate(date);
+		wedding.setPlace(place);
 		if (sex == Sex.MAN)
 		{
-			wedding.setMaz(this);
-			wedding.setZona(spouse);
+			wedding.setHusband(this);
+			wedding.setWife(spouse);
 			marriages.add(wedding);
 		} else
 		if (sex == Sex.WOMEN)
 		{
-			wedding.setMaz(spouse);
-			wedding.setZona(this);
+			wedding.setHusband(spouse);
+			wedding.setWife(this);
 			marriages.add(wedding);
 		}
 	}
@@ -79,10 +79,10 @@ public class Person {
 	{
 		for(Marriage m : marriages)
 		{
-			if (((sex == Sex.MAN) && (m.getZona() == spouse)) ||
-				((sex == Sex.WOMEN)  && (m.getMaz()  == spouse)))
+			if (((sex == Sex.MAN) && (m.getWife() == spouse)) ||
+				((sex == Sex.WOMEN)  && (m.getHusband()  == spouse)))
 			{
-				m.setData(date);
+				m.setDate(date);
 				return;
 			}
 		}
@@ -91,10 +91,10 @@ public class Person {
 	{
 		for(Marriage m : marriages)
 		{
-			if (((sex == Sex.MAN) && (m.getZona() == spouse)) ||
-				((sex == Sex.WOMEN)  && (m.getMaz()  == spouse)))
+			if (((sex == Sex.MAN) && (m.getWife() == spouse)) ||
+				((sex == Sex.WOMEN)  && (m.getHusband()  == spouse)))
 			{
-				m.setMiejsce(place);
+				m.setPlace(place);
 				return;
 			}
 		}
@@ -106,9 +106,9 @@ public class Person {
 	
 	public Person getSpouse(int number) {
 		if (sex == Sex.MAN)
-			return marriages.get(number).getZona();
+			return marriages.get(number).getWife();
 		if (sex == Sex.WOMEN)
-			return marriages.get(number).getMaz();
+			return marriages.get(number).getHusband();
 		
 		return null;
 	}
