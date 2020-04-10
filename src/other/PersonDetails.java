@@ -18,10 +18,10 @@ public class PersonDetails {
 		else
 			wynik = "dziecko ";
 		
-		wynik += InflectionPL.dopelniaczImienia(o.getFather());
+		wynik += InflectionPL.nameGenitive(o.getFather());
 		if ((o.getFather() != null) && (o.getMother() != null))
 			wynik += " i ";
-		wynik += InflectionPL.dopelniaczImienia(o.getMother());
+		wynik += InflectionPL.nameGenitive(o.getMother());
 		
 			
 		return wynik;

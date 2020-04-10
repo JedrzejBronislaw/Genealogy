@@ -6,43 +6,41 @@ import model.Person.Sex;
 public class InflectionPL {
 	
 	
-	public static String dopelniaczImienia(Person o)
+	public static String nameGenitive(Person o)
 	{
 		if (o == null) return "";
-		return dopelniaczImienia(o.getFirstName(), o.getSex());
+		return nameGenitive(o.getFirstName(), o.getSex());
 		
 	}
-	public static String dopelniaczImienia(String imie, Sex plec)
+	public static String nameGenitive(String name, Sex sex)
 	{
-		if (imie == null)
+		if (name == null)
 			return "";
-		if (!(imie.length() >= 2))
-			return imie;
+		if (!(name.length() >= 2))
+			return name;
 			
-		//Odmiana imienia ¿eñskiego
-		if (plec == Sex.WOMEN)
+		if (sex == Sex.WOMEN)
 		{
-			if (imie.substring(imie.length()-1).equals("a"))
+			if (name.substring(name.length()-1).equals("a"))
 			{
-				imie = imie.substring(0, imie.length()-1);//Copy(matka_,1,length(matka_)-1);
-				String c = imie.substring(imie.length()-1);
+				name = name.substring(0, name.length()-1);
+				String c = name.substring(name.length()-1);
 				if (c.equals("g") || c.equals("i") || c.equals("j") || c.equals("k") || c.equals("l"))
-					imie = imie + 'i'; else
-					imie = imie + 'y';
+					name = name + 'i'; else
+					name = name + 'y';
 			}
 		}	
 		
-		//Odmiana imienia mêskiego
-		if (plec == Sex.MAN)
+		if (sex == Sex.MAN)
 		{
-			if (imie.substring(imie.length()-1).equals("i"))	imie = imie + "ego"; else
-			if (imie.substring(imie.length()-1).equals("y"))	imie = imie.substring(0,imie.length()-1) + "ego"; else
-			if (imie.substring(imie.length()-1).equals("o"))	imie = imie.substring(0,imie.length()-1) + "a"; else
-			if (imie.substring(imie.length()-2).equals("ek"))	imie = imie.substring(0,imie.length()-2) + "ka"; else
-																imie = imie + "a";
+			if (name.substring(name.length()-1).equals("i"))	name = name + "ego"; else
+			if (name.substring(name.length()-1).equals("y"))	name = name.substring(0,name.length()-1) + "ego"; else
+			if (name.substring(name.length()-1).equals("o"))	name = name.substring(0,name.length()-1) + "a"; else
+			if (name.substring(name.length()-2).equals("ek"))	name = name.substring(0,name.length()-2) + "ka"; else
+																name = name + "a";
 		}
 		
-		return imie;
+		return name;
 	}
 	
 }
