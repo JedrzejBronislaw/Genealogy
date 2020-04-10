@@ -3,196 +3,186 @@ package model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MyDate {
-	public enum Porownanie {POZNIEJSZA, WCZESNIESZA, ROWNE, NIEPOROWNYWALNE};
-	
-	
-	private int dzien = 0;
-	private int miesiac = 0;
-	private int rok = 0;
+import lombok.Getter;
 
-	final String[] nazwyMiesiecy  = {"", "styczeñ", "luty", "marzec", "kwiecieñ", "maj", "czerwiec",
+public class MyDate {
+	public enum Comparison {LATER, EARLIER, EQUAL, INCOMPARABLE};
+	
+	
+	@Getter private int day = 0;
+	@Getter private int month = 0;
+	@Getter private int year = 0;
+
+	final String[] monthNames  = {"", "styczeñ", "luty", "marzec", "kwiecieñ", "maj", "czerwiec",
 										 "lipiec", "sierpieñ", "wrzesieñ", "paŸdziernik", "listopad", "grudzieñ"};
-	final String[] nazwyMiesiecyD = {"", "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
+	final String[] monthNamesGenitive = {"", "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
 										 "lipca", "sierpnia", "wrzesnia", "paŸdziernika", "listopada", "grudnia"};
-	final int[] liczbaDniWMiesiacu = {31, 31, 29, 31, 30, 31, 30,
+	final int[] monthSize = {31, 31, 29, 31, 30, 31, 30,
 										  31, 31, 30, 31, 30, 31};
 	
-	
-	public int getDzien() {
-		return dzien;
+
+	public void setDay(int day) {
+		if ((day >= 0) && (day <= monthSize[month]))
+			if ((month != 2) || (day <= 28) || (isLeapYear(year)))
+				this.day = day;
 	}
 
-	public void setDzien(int dzien) {
-		if ((dzien >= 0) && (dzien <= liczbaDniWMiesiacu[miesiac]))
-			if ((miesiac != 2) || (dzien <= 28) || (czyRokPrzestepny(rok)))
-				this.dzien = dzien;
-	}
-
-	public int getMiesiac() {
-		return miesiac;
-	}
-
-	public void setMiesiac(int miesiac) {
-		int tempDzien = dzien;
-		if ((miesiac >= 0) && (miesiac <= 12))
+	public void setMonth(int month) {
+		int tempDay = day;
+		if ((month >= 0) && (month <= 12))
 		{
-			this.miesiac = miesiac;
-			setDzien(0);
-			setDzien(tempDzien);
+			this.month = month;
+			setDay(0);
+			setDay(tempDay);
 		}
 	}
 
-	public int getRok() {
-		return rok;
+	public void setYear(int year) {
+		int tempDay = day;
+		this.year = year;
+		setDay(0);
+		setDay(tempDay);
 	}
 
-	public void setRok(int rok) {
-		int tempDzien = dzien;
-		this.rok = rok;
-		setDzien(0);
-		setDzien(tempDzien);
-	}
-
-	public static MyDate teraz()
+	public static MyDate now()
 	{
 		Date date = new Date();
-		int dzien, miesiac, rok;
+		int day, month, year;
 		SimpleDateFormat formatD = new SimpleDateFormat("d");
 		SimpleDateFormat formatM = new SimpleDateFormat("M");
-		SimpleDateFormat formatR = new SimpleDateFormat("yyyy");
+		SimpleDateFormat formatY = new SimpleDateFormat("yyyy");
 
-		try {dzien = Integer.parseInt(formatD.format(date));}
-		catch (NumberFormatException e) {dzien = 0;}
+		try {day = Integer.parseInt(formatD.format(date));}
+		catch (NumberFormatException e) {day = 0;}
 		
-		try {miesiac = Integer.parseInt(formatM.format(date));}
-		catch (NumberFormatException e) {miesiac = 0;}
+		try {month = Integer.parseInt(formatM.format(date));}
+		catch (NumberFormatException e) {month = 0;}
 		
-		try {rok = Integer.parseInt(formatR.format(date));}
-		catch (NumberFormatException e) {rok = 0;}
+		try {year = Integer.parseInt(formatY.format(date));}
+		catch (NumberFormatException e) {year = 0;}
 		
-		return new MyDate(dzien, miesiac, rok);		
+		return new MyDate(day, month, year);		
 	}
 	
-	public static boolean czyRokPrzestepny(int rok)
+	public static boolean isLeapYear(int year)
 	{
-		return (((rok%4 == 0) && (rok%100 != 0)) ||
-				(rok%400 == 0));
+		return (((year%4 == 0) && (year%100 != 0)) ||
+				(year%400 == 0));
 	}
 	
 	public MyDate() {	}
-	public MyDate(int dzien, int miesiac, int rok)
+	public MyDate(int day, int month, int year)
 	{
-		setDzien(dzien);
-		setMiesiac(miesiac);
-		setRok(rok);
+		setDay(day);
+		setMonth(month);
+		setYear(year);
 	}
-	public MyDate(String data)
+	public MyDate(String date)
 	{
-		String[] d = data.split("[.]");
+		String[] d = date.split("[.]");
 		
 		if (d.length > 0)
-			try {setDzien(Integer.parseInt(d[0]));}
-			catch (NumberFormatException e) {this.dzien = 0;}
+			try {setDay(Integer.parseInt(d[0]));}
+			catch (NumberFormatException e) {this.day = 0;}
 		if (d.length > 1)
-			try {setMiesiac(Integer.parseInt(d[1]));}
-			catch (NumberFormatException e) {this.miesiac = 0;}
+			try {setMonth(Integer.parseInt(d[1]));}
+			catch (NumberFormatException e) {this.month = 0;}
 		if (d.length > 2)
-			try {setRok(Integer.parseInt(d[2]));}
-			catch (NumberFormatException e) {this.rok = 0;}
+			try {setYear(Integer.parseInt(d[2]));}
+			catch (NumberFormatException e) {this.year = 0;}
 	}
 	
-	public Porownanie porownaj(MyDate data)
+	public Comparison compare(MyDate date)
 	{
-		if ((rok != 0) && (data.rok != 0))
+		if ((year != 0) && (date.year != 0))
 		{
-			if (data.rok > rok) return Porownanie.POZNIEJSZA;
-			if (data.rok < rok) return Porownanie.WCZESNIESZA;
+			if (date.year > year) return Comparison.LATER;
+			if (date.year < year) return Comparison.EARLIER;
 			
 			
-			if ((miesiac != 0) && (data.miesiac != 0))
+			if ((month != 0) && (date.month != 0))
 			{
-				if (data.miesiac > miesiac) return Porownanie.POZNIEJSZA;
-				if (data.miesiac < miesiac) return Porownanie.WCZESNIESZA;
+				if (date.month > month) return Comparison.LATER;
+				if (date.month < month) return Comparison.EARLIER;
 				
 
-				if ((dzien != 0) && (data.dzien != 0))
+				if ((day != 0) && (date.day != 0))
 				{
-					if (data.dzien > dzien) return Porownanie.POZNIEJSZA;
-					if (data.dzien < dzien) return Porownanie.WCZESNIESZA;
+					if (date.day > day) return Comparison.LATER;
+					if (date.day < day) return Comparison.EARLIER;
 					
-					return Porownanie.ROWNE;
+					return Comparison.EQUAL;
 					
-				} return Porownanie.NIEPOROWNYWALNE;
-			} return Porownanie.NIEPOROWNYWALNE;
-		} return Porownanie.NIEPOROWNYWALNE;
+				} return Comparison.INCOMPARABLE;
+			} return Comparison.INCOMPARABLE;
+		} return Comparison.INCOMPARABLE;
 	}
 	
-	public int[] roznica(MyDate data)
+	public int[] difference(MyDate date)
 	{
-		int dni = 0, miesiace = 0, lata = 0;
-		Porownanie porownanie = this.porownaj(data);
-		MyDate wczesniejsza, pozniejsza;
+		int days = 0, months = 0, years = 0;
+		Comparison comparasion = this.compare(date);
+		MyDate earlier, later;
 		
 		
-		if (porownanie == Porownanie.NIEPOROWNYWALNE) return null;
-		if (porownanie == Porownanie.WCZESNIESZA)
+		if (comparasion == Comparison.INCOMPARABLE) return null;
+		if (comparasion == Comparison.EARLIER)
 		{
-			wczesniejsza = data;
-			pozniejsza = this;
+			earlier = date;
+			later = this;
 		} else
 		{
-			wczesniejsza = this;
-			pozniejsza = data;
+			earlier = this;
+			later = date;
 		}
 		
-		//juz wiemy, ze pole rok istnieje w obu, bo s¹ porównywalne
-		lata = pozniejsza.rok - wczesniejsza.rok;
+		//it is known that years are set because dates are not incomparable
+		years = later.year - earlier.year;
 		
-		if ((wczesniejsza.miesiac != 0) && (pozniejsza.miesiac != 0))
+		if ((earlier.month != 0) && (later.month != 0))
 		{
-			miesiace = pozniejsza.miesiac - wczesniejsza.miesiac;
+			months = later.month - earlier.month;
 			
-			if ((dzien != 0) && (data.dzien != 0))
+			if ((day != 0) && (date.day != 0))
 			{
-				dni = pozniejsza.dzien - wczesniejsza.dzien;
-				if (dni < 0)
+				days = later.day - earlier.day;
+				if (days < 0)
 				{
-					miesiace--;
-					dni += 30;
+					months--;
+					days += 30;
 				}
 			}
 			
-			if (miesiace < 0)
+			if (months < 0)
 			{
-				lata--;
-				miesiace += 12;
+				years--;
+				months += 12;
 			}
 		}
 		
-		return new int[]{dni, miesiace, lata};
+		return new int[]{days, months, years};
 	}
 	
 	@Override
 	public String toString() {
-		String wynik = "";
+		String outcome = "";
 		
-		if (dzien != 0)
-			wynik += " " + dzien;
+		if (day != 0)
+			outcome += " " + day;
 
-		if (miesiac != 0)
+		if (month != 0)
 		{
-			if (dzien != 0)
-				wynik += " " + nazwyMiesiecyD[miesiac];
+			if (day != 0)
+				outcome += " " + monthNamesGenitive[month];
 			else
-				wynik += " " + nazwyMiesiecy[miesiac];
+				outcome += " " + monthNames[month];
 		}
 		
-		if (rok != 0)
-			wynik += " " + rok + " r.";
+		if (year != 0)
+			outcome += " " + year + " r.";
 
-		if (wynik.isEmpty()) wynik = " ";
+		if (outcome.isEmpty()) outcome = " ";
 		
-		return wynik.substring(1);
+		return outcome.substring(1);
 	}
 }

@@ -28,7 +28,7 @@ public class PersonDetails {
 	}
 
 	public static int[] wiek(Person osoba) {		
-		return MyDate.teraz().roznica(osoba.getBirthDate());
+		return MyDate.now().difference(osoba.getBirthDate());
 	}
 	
 	public static String wiekStr(Person osoba) {
