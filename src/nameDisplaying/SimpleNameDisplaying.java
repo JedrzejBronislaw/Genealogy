@@ -5,23 +5,23 @@ import model.Person;
 public class SimpleNameDisplaying extends Name{
 
 	@Override
-	public void wyswietl(Person osoba, int x, int y) {
-		g.drawString(genTekst(osoba), x, y);
+	public void print(Person person, int x, int y) {
+		g.drawString(genTekst(person), x, y);
 	}
 
 	@Override
-	public int getWysokosc(Person osoba) {
+	public int getHeight(Person person) {
 		return fm.getAscent()-fm.getDescent();
 	}
 
 	@Override
-	public int getSzerokosc(Person osoba) {
-		return fm.stringWidth(genTekst(osoba));
+	public int getWidth(Person person) {
+		return fm.stringWidth(genTekst(person));
 	}
 	
-	private String genTekst(Person osoba)
+	private String genTekst(Person person)
 	{
-		return osoba.nameSurname();
+		return person.nameSurname();
 	}
 
 }

@@ -5,38 +5,38 @@ import model.Person;
 public class DateAndNameDisplaying extends Name{
 	
 	@Override
-	public void wyswietl(Person osoba, int x, int y) {
-		g.drawString(genTekst(osoba), x, y);
+	public void print(Person person, int x, int y) {
+		g.drawString(genTekst(person), x, y);
 	}
 
 	@Override
-	public int getWysokosc(Person osoba) {
+	public int getHeight(Person person) {
 		return fm.getAscent()-fm.getDescent();
 	}
 
 	@Override
-	public int getSzerokosc(Person osoba) {
-		return fm.stringWidth(genTekst(osoba));
+	public int getWidth(Person person) {
+		return fm.stringWidth(genTekst(person));
 	}
 	
-	private String genTekst(Person osoba)
+	private String genTekst(Person person)
 	{
-		String daty;
-		String wynik;
+		String dates;
+		String outcome;
 		
-		wynik = osoba.nameSurname();
+		outcome = person.nameSurname();
 		
-		if (osoba.getLifeStatus() != Person.LifeStatus.NO)
+		if (person.getLifeStatus() != Person.LifeStatus.NO)
 		{
-			daty = osoba.getBirthDate().toString();
-			if (!daty.isEmpty()) wynik += " (" + osoba.getBirthDate() + ")";
+			dates = person.getBirthDate().toString();
+			if (!dates.isEmpty()) outcome += " (" + person.getBirthDate() + ")";
 		}
 		else
 		{
-			daty = osoba.getBirthDate().toString() + " - " + osoba.getDeathDate().toString();
-			if (!daty.equals(" - ")) wynik += " (" + daty + ")";
+			dates = person.getBirthDate().toString() + " - " + person.getDeathDate().toString();
+			if (!dates.equals(" - ")) outcome += " (" + dates + ")";
 		}
 		
-		return wynik;
+		return outcome;
 	}
 }

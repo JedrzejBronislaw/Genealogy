@@ -4,53 +4,53 @@ import model.Person;
 
 public class DateUnderNameDisplaying extends Name {
 
-	private static final int odstep = 3;
+	private static final int verticalSpacing = 3;
 	
 	@Override
-	public void wyswietl(Person osoba, int x, int y) {
-		String data = genDate(osoba);
-		if (data != null)
+	public void print(Person person, int x, int y) {
+		String date = generateDate(person);
+		if (date != null)
 		{
-			g.drawString(genNazwisko(osoba), x, y-odstep-(fm.getAscent()-fm.getDescent()));
-			g.drawString(data, x, y);
+			g.drawString(generateName(person), x, y-verticalSpacing-(fm.getAscent()-fm.getDescent()));
+			g.drawString(date, x, y);
 		} else
-			g.drawString(genNazwisko(osoba), x, y);
+			g.drawString(generateName(person), x, y);
 	}
 
 	@Override
-	public int getWysokosc(Person osoba) {
-//		System.out.println((fm.getAscent()-fm.getDescent()) * (genDate(osoba).equals("")?1:2) + odstep);
-		return (fm.getAscent()-fm.getDescent()) * (genDate(osoba)==null?1:2) + odstep;
+	
+	public int getHeight(Person person) {
+		return (fm.getAscent()-fm.getDescent()) * (generateDate(person)==null?1:2) + verticalSpacing;
 	}
 
 	@Override
-	public int getSzerokosc(Person osoba) {
-		String data = genDate(osoba);
-		return Math.max(fm.stringWidth(genNazwisko(osoba)), (data==null)?0:fm.stringWidth(genDate(osoba)));
+	public int getWidth(Person person) {
+		String date = generateDate(person);
+		return Math.max(fm.stringWidth(generateName(person)), (date==null)?0:fm.stringWidth(generateDate(person)));
 	}
 
-	private String genNazwisko(Person osoba)
+	private String generateName(Person person)
 	{
-		return osoba.nameSurname();
+		return person.nameSurname();
 	}
-	private String genDate(Person osoba)
+	private String generateDate(Person person)
 	{
-		String daty;
-		String wynik;
+		String dates;
+		String outcome;
 		
-		wynik = null;
+		outcome = null;
 		
-		if (osoba.getLifeStatus() != Person.LifeStatus.NO)
+		if (person.getLifeStatus() != Person.LifeStatus.NO)
 		{
-			daty = osoba.getBirthDate().toString();
-			if (!daty.isEmpty()) wynik = "(" + osoba.getBirthDate() + ")";
+			dates = person.getBirthDate().toString();
+			if (!dates.isEmpty()) outcome = "(" + person.getBirthDate() + ")";
 		}
 		else
 		{
-			daty = osoba.getBirthDate().toString() + " - " + osoba.getDeathDate().toString();
-			if (!daty.equals(" - ")) wynik = "(" + daty + ")";
+			dates = person.getBirthDate().toString() + " - " + person.getDeathDate().toString();
+			if (!dates.equals(" - ")) outcome = "(" + dates + ")";
 		}
 		
-		return wynik;
+		return outcome;
 	}
 }

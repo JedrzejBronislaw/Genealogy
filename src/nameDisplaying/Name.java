@@ -20,8 +20,8 @@ public abstract class Name {
 		this.fm = g.getFontMetrics();
 	}
 	
-	abstract public void wyswietl(Person osoba, int x, int y);
+	abstract public void print(Person person, int x, int y);
 
-	abstract public int getWysokosc(Person osoba);
-	abstract public int getSzerokosc(Person osoba);
+	abstract public int getHeight(Person person);
+	abstract public int getWidth(Person person);
 }

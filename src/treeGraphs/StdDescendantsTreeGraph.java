@@ -124,7 +124,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		Person malzonek;
 
 		//porónanie w³asnej szerokoœci
-		szerokosc = wyswietlacz.getSzerokosc(osoba);
+		szerokosc = wyswietlacz.getWidth(osoba);
 		if (szerokosc > szerokosciKolumn[pokolenie])
 			szerokosciKolumn[pokolenie] = szerokosc;
 
@@ -132,7 +132,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		for (int i=0; i<osoba.numberOfMarriages(); i++)
 		{
 			malzonek = osoba.getSpouse(i);
-			szerokosc = wyswietlacz.getSzerokosc(malzonek)+wciecieMalzonka;
+			szerokosc = wyswietlacz.getWidth(malzonek)+wciecieMalzonka;
 			if (szerokosc > szerokosciKolumn[pokolenie])
 				szerokosciKolumn[pokolenie] = szerokosc;			
 		}
@@ -146,13 +146,13 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	{
 		int przes = 0;
 		int przesMal = 0;
-		int wysNazw  = wyswietlacz.getWysokosc(o);
-		int szerNazw = wyswietlacz.getSzerokosc(o);
+		int wysNazw  = wyswietlacz.getHeight(o);
+		int szerNazw = wyswietlacz.getWidth(o);
 		
 		int liniaX;
 		
 		y += wysNazw;
-		wyswietlacz.wyswietl(o, x, y);
+		wyswietlacz.print(o, x, y);
 		klikMapa.dodajObszar(o, x, y, x+szerNazw, y-wysNazw);
 		
 		for (int i=0; i<o.numberOfMarriages(); i++)
@@ -203,8 +203,8 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		int przesMal = 0;
 //		FontMetrics fm = g.getFontMetrics();
 //		String nazwisko = o.imieNazwisko();
-		int wysNazw  = wyswietlacz.getWysokosc(o);
-		int szerNazw = wyswietlacz.getSzerokosc(o);
+		int wysNazw  = wyswietlacz.getHeight(o);
+		int szerNazw = wyswietlacz.getWidth(o);
 //		int wysNazw  = fm.getAscent()-fm.getDescent();//getHeight();
 //		int szerNazw = fm.stringWidth(nazwisko);
 //		int przesuniecie = wysNazw*4/5;
@@ -212,7 +212,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		int liniaX;
 		
 		y += wysNazw;
-		wyswietlacz.wyswietl(o, x, y);
+		wyswietlacz.print(o, x, y);
 //		g.drawString(nazwisko, x, y);
 		klikMapa.dodajObszar(o, x, y, x+szerNazw, y-wysNazw);
 		
@@ -252,11 +252,11 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 //		FontMetrics fm = g.getFontMetrics();
 //		int wysNazw = fm.getAscent()-fm.getDescent();
 //		int szerNazw = fm.stringWidth(nazwisko);
-		int wysNazw = wyswietlacz.getWysokosc(o);
-		int szerNazw = wyswietlacz.getSzerokosc(o);
+		int wysNazw = wyswietlacz.getHeight(o);
+		int szerNazw = wyswietlacz.getWidth(o);
 		
 //		g.drawString(nazwisko, x+wciecieMalzonka, y);
-		wyswietlacz.wyswietl(o, x+wciecieMalzonka, y+wysNazw);
+		wyswietlacz.print(o, x+wciecieMalzonka, y+wysNazw);
 		klikMapa.dodajObszar(o, x, y+wysNazw, x+wciecieMalzonka+szerNazw, y);
 		rysujObraczki(g, x, y, wciecieMalzonka, wysNazw);
 		

@@ -67,7 +67,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		szerokosciKolumn = new int[osobaGlowna.rootSize()+2];
 		
 		//Ustalenie maksymalnych szerokosci nazwisk
-		szerokosciKolumn[0] = wyswietlacz.getSzerokosc(osobaGlowna);//fm.stringWidth(osobaGlowna.imieNazwisko());
+		szerokosciKolumn[0] = wyswietlacz.getWidth(osobaGlowna);//fm.stringWidth(osobaGlowna.imieNazwisko());
 		szerokoscRodzicow(fm, osobaGlowna, 1);
 		
 		//obieczenie prawej granicy (z miejscem na strza³ki)
@@ -90,8 +90,8 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 	
 	private int szerokoscRodzicow(FontMetrics fm, Person osoba, int pokolenie)
 	{
-		int matka  = (osoba.getMother()  == null) ? 0 : wyswietlacz.getSzerokosc(osoba.getMother());//fm.stringWidth(osoba.getMatka().imieNazwisko());
-		int ojciec = (osoba.getFather() == null) ? 0 : wyswietlacz.getSzerokosc(osoba.getFather());//fm.stringWidth(osoba.getOjciec().imieNazwisko());
+		int matka  = (osoba.getMother()  == null) ? 0 : wyswietlacz.getWidth(osoba.getMother());//fm.stringWidth(osoba.getMatka().imieNazwisko());
+		int ojciec = (osoba.getFather() == null) ? 0 : wyswietlacz.getWidth(osoba.getFather());//fm.stringWidth(osoba.getOjciec().imieNazwisko());
 		int szersze = (ojciec > matka) ? ojciec : matka;
 		
 		if (szerokosciKolumn[pokolenie] < szersze)
@@ -105,8 +105,8 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 
 	private int rysujKorzen(Graphics2D g, Person osoba, int pokolenie, int y1)
 	{		
-		int wysNazw  = wyswietlacz.getWysokosc(osoba);
-		int szerNazw = wyswietlacz.getSzerokosc(osoba);
+		int wysNazw  = wyswietlacz.getHeight(osoba);
+		int szerNazw = wyswietlacz.getWidth(osoba);
 
 		Person ojciec = osoba.getFather();
 		Person matka  = osoba.getMother();
@@ -130,7 +130,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 			
 			x = szerokosciKolumn[pokolenie];
 			y = ((my-oy) / 2) + oy;
-			wyswietlacz.wyswietl(osoba, x, y+wysNazw);
+			wyswietlacz.print(osoba, x, y+wysNazw);
 			klikMapa.dodajObszar(osoba, x, y+wysNazw, x+szerNazw, y);
 			
 			//grot
@@ -149,7 +149,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		} else
 		{
 			x = szerokosciKolumn[pokolenie];
-			wyswietlacz.wyswietl(osoba, x, y1+wysNazw);
+			wyswietlacz.print(osoba, x, y1+wysNazw);
 			//klikdrzewo
 			klikMapa.dodajObszar(osoba, x, y1+wysNazw, szerokosciKolumn[pokolenie+1]-odstepPoziomy, y1);
 			y2 = y1+wysNazw/*przesuniecie*/+odstepPionowy;//wysWiersza;
