@@ -215,7 +215,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 						if (!e.getValue().contains(p))
 							continue osoba;
 					
-					etykieta = PersonDetails.czyjeDziecko(e.getKey());
+					etykieta = PersonDetails.whoseChild(e.getKey());
 					if (!etykieta.equals(""))
 						etykieta = e.getKey().nameSurname() + ", " + etykieta;
 					else

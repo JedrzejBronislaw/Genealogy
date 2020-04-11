@@ -47,7 +47,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		
 		g.drawString(osobaGlowna.nameSurname(), 10, 20);
 		g.drawString("Pokoleñ potomków: " + osobaGlowna.descendantGenerations()+"", 10, 30);
-		g.drawString("Szerokoœæ: " + PersonDetails.szerokoscGaleziPotomkow(osobaGlowna)+"", 10, 40);
+		g.drawString("Szerokoœæ: " + PersonDetails.descendantsBranchesWidth(osobaGlowna)+"", 10, 40);
 		g.drawString("Liczba dzieci: " + osobaGlowna.numberOfChildren(), 10, 50);
 
 //		srodekX = osobaGlowna.liczbaPokolenPotomkow()*50 + 50;

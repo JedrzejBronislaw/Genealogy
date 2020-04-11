@@ -6,56 +6,50 @@ import model.Person.Sex;
 
 public class PersonDetails {
 	
-	public static String czyjeDziecko(Person o)
+	public static String whoseChild(Person person)
 	{
-		if ((o.getFather() == null) && (o.getMother() == null)) return "";
+		if ((person.getFather() == null) && (person.getMother() == null)) return "";
 		
-		String wynik;
-		if (o.getSex() == Sex.WOMEN)
-			wynik = "córka ";
-		else if (o.getSex() == Sex.MAN)
-			wynik = "syn ";
+		String outcome;
+		if (person.getSex() == Sex.WOMEN)
+			outcome = "córka ";
+		else if (person.getSex() == Sex.MAN)
+			outcome = "syn ";
 		else
-			wynik = "dziecko ";
+			outcome = "dziecko ";
 		
-		wynik += InflectionPL.nameGenitive(o.getFather());
-		if ((o.getFather() != null) && (o.getMother() != null))
-			wynik += " i ";
-		wynik += InflectionPL.nameGenitive(o.getMother());
+		outcome += InflectionPL.nameGenitive(person.getFather());
+		if ((person.getFather() != null) && (person.getMother() != null))
+			outcome += " i ";
+		outcome += InflectionPL.nameGenitive(person.getMother());
 		
 			
-		return wynik;
+		return outcome;
 	}
 
-	public static int[] wiek(Person osoba) {		
-		return MyDate.now().difference(osoba.getBirthDate());
+	public static int[] age(Person person) {		
+		return MyDate.now().difference(person.getBirthDate());
 	}
 	
-	public static String wiekStr(Person osoba) {
-		int[] wiek = wiek(osoba);
+	public static String wiekStr(Person person) {
+		int[] age = age(person);
 		
-		if (wiek == null)
+		if (age == null)
 			return "";
 		else
-			return wiek[2] + " lat " + wiek[1] + " miesiêcy " + wiek[0] + " dni";
+			return age[2] + " lat " + age[1] + " miesiêcy " + age[0] + " dni";
 	}
 	
-	/**
-	 * TODO
-	 * Dla bezdzietnej osoby szerokosc = 1
-	 * Dla miej¹cej dzieci, ale nie wnuki szerokosc = licza dzieci
-	 * Ogólnie: maksymalna liczba osob w pokoleniu potomków (wersja z zarastaniem i bez ma³¿onków)
-	 * teraz jest inna wersja - bez zarastania 
-	 * @return
-	 */
-	public static int szerokoscGaleziPotomkow(Person osoba){
+//	 childless person -> 1
+//	 person with child, but without grandchildren -> number of children
+	public static int descendantsBranchesWidth(Person person){
 		
-		if (osoba.numberOfChildren() > 0)
+		if (person.numberOfChildren() > 0)
 		{
-			int wynik = 0;
-			for (int i=0; i<osoba.numberOfChildren(); i++)
-				wynik += PersonDetails.szerokoscGaleziPotomkow(osoba.getChild(i));
-			return wynik;
+			int outcome = 0;
+			for (int i=0; i<person.numberOfChildren(); i++)
+				outcome += PersonDetails.descendantsBranchesWidth(person.getChild(i));
+			return outcome;
 		} else
 			return 1;
 	}

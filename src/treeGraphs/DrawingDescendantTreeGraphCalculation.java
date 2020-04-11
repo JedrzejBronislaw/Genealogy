@@ -195,7 +195,7 @@ public class DrawingDescendantTreeGraphCalculation {
 
 	private Element rysujGalaz(Person osoba, double katOffset, int rodzicX, int rodzicY, int pokolenie)
 	{
-		int szer = PersonDetails.szerokoscGaleziPotomkow(osobaGlowna);//-1;
+		int szer = PersonDetails.descendantsBranchesWidth(osobaGlowna);//-1;
 		int szerCzesciowa = 0;
 		int szerAkt = 0;
 		Person dziecko;
@@ -214,7 +214,7 @@ public class DrawingDescendantTreeGraphCalculation {
 		{
 //			setSymetrycznyKat(90+pokolenie*20);
 			dziecko = osoba.getChild(i);
-			szerAkt = PersonDetails.szerokoscGaleziPotomkow(dziecko);
+			szerAkt = PersonDetails.descendantsBranchesWidth(dziecko);
 			odleglosc = (pokolenie+1)*poczatkowaOdlegloscMiedzyPokoleniami;
 			
 			if (dlugoscGalezi == DlugoscGalezi.Deterministzcyna)
