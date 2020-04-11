@@ -86,7 +86,7 @@ public class InflectionPLTest {
 
 	@Test
 	public void testNameGenitive_Diego() {
-		assertEquals("Diego", genitiveMan("Diego"));
+		assertEquals("Diega", genitiveMan("Diego"));
 	}
 
 	@Test
@@ -107,6 +107,21 @@ public class InflectionPLTest {
 	@Test
 	public void testNameGenitive_Mieszko() {
 		assertEquals("Mieszka", genitiveMan("Mieszko"));
+	}
+
+	@Test
+	public void testNameGenitive_Maciej() {
+		assertEquals("Macieja", genitiveMan("Maciej"));
+	}
+
+	@Test
+	public void testNameGenitive_Maciek() {
+		assertEquals("Maæka", genitiveMan("Maciek"));
+	}
+
+	@Test
+	public void testNameGenitive_Macius() {
+		assertEquals("Maciusia", genitiveMan("Maciuœ"));
 	}
 
 	//----------
@@ -194,6 +209,16 @@ public class InflectionPLTest {
 	@Test
 	public void testNameGenitive_Magda() {
 		assertEquals("Magdy", genitiveWoman("Magda"));
+	}
+	
+	@Test
+	public void testNameGenitive_Nicole() {
+		assertEquals("Nicole", genitiveWoman("Nicole"));
+	}
+	
+	@Test
+	public void testNameGenitive_Nadzieja() {
+		assertEquals("Nadziei", genitiveWoman("Nadzieja"));
 	}
 
 }
