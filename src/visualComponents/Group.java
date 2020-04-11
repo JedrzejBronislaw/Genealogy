@@ -20,7 +20,7 @@ public class Group extends JPanel {
 	}
 	private void ustawienia(int wys, int szer) {
 		setLayout(new GridLayout(wys, szer));
-		setBackground(Constants.brazowy);
+		setBackground(Constants.brown);
 		setBorder(new EmptyBorder(2, 2, 2, 2));
 	}
 	

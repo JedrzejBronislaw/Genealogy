@@ -112,7 +112,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 		
 //		setBorder(BorderFactory.createLineBorder(Color.BLACK,2,true));
 		setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-		setBackground(Constants.jasnybrazowy);
+		setBackground(Constants.lightBrown);
 	}
 	
 	private JPanel dolnyPanel()
