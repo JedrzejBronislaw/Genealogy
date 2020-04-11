@@ -16,31 +16,49 @@ public class InflectionPL {
 	{
 		if (name == null)
 			return "";
-		if (!(name.length() >= 2))
+		if (name.length() < 2)
 			return name;
 			
 		if (sex == Sex.WOMEN)
-		{
-			if (name.substring(name.length()-1).equals("a"))
-			{
-				name = name.substring(0, name.length()-1);
-				String c = name.substring(name.length()-1);
-				if (c.equals("g") || c.equals("i") || c.equals("j") || c.equals("k") || c.equals("l"))
-					name = name + 'i'; else
-					name = name + 'y';
-			}
-		}	
+			name = womanNameGenitive(name);
 		
 		if (sex == Sex.MAN)
-		{
-			if (name.substring(name.length()-1).equals("i"))	name = name + "ego"; else
-			if (name.substring(name.length()-1).equals("y"))	name = name.substring(0,name.length()-1) + "ego"; else
-			if (name.substring(name.length()-1).equals("o"))	name = name.substring(0,name.length()-1) + "a"; else
-			if (name.substring(name.length()-2).equals("ek"))	name = name.substring(0,name.length()-2) + "ka"; else
-																name = name + "a";
-		}
+			name = manNameGenitive(name);
 		
 		return name;
+	}
+	
+	private static String womanNameGenitive(String name) {
+		if (name.endsWith("a"))
+		{
+			name = cutLastChars(name,1);
+			if (endsWith(name, "g", "i", "j", "k", "l"))
+				name = name + 'i'; else
+				name = name + 'y';
+		}
+		return name;
+	}
+	
+	private static String manNameGenitive(String name) {
+		if (name.endsWith("i"))		name = name + "ego"; else
+		if (name.endsWith("y"))		name = cutLastChars(name, 1) + "ego"; else
+		if (name.endsWith("o"))		name = cutLastChars(name, 1) + "a"; else
+		if (name.endsWith("ek"))	name = cutLastChars(name, 2) + "ka"; else
+									name = name + "a";
+		return name;
+	}
+	
+	private static String cutLastChars(String name, int numOfChars) {
+		return name.substring(0,name.length()-numOfChars);
+	}
+	
+	private static boolean endsWith(String name, String... ends) {
+
+		for(int i=0; i<ends.length; i++)
+			if(name.endsWith(ends[i]))
+				return true;
+		
+		return false;
 	}
 	
 }
