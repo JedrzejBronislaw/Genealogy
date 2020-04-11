@@ -83,8 +83,8 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 				ciag += " " + o.getSpouse(i).getLastname();
 
 		ciag += " " +o.getAlias();
-		ciag += " " +Diminutives.dlaImieniaW(o.getFirstName());
-		ciag += " " +zdrobnienia.dlaImienia(o.getFirstName());
+		ciag += " " +Diminutives.forNameStd(o.getFirstName());
+		ciag += " " +zdrobnienia.forName(o.getFirstName());
 		
 		
 		ciag = ciag.toUpperCase();		

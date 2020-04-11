@@ -7,66 +7,66 @@ import java.util.Scanner;
 
 public class Diminutives {
 
-	private static Diminutives wbudowane = new Diminutives("resources/diminutives.ust", true);
-	private HashMap<String, String> zdrobnienia = new HashMap<String, String>();
+	private static Diminutives stdDiminutives = new Diminutives("resources/diminutives.ust", true);
+	private HashMap<String, String> diminutives = new HashMap<String, String>();
 	
 	
-	private Diminutives(String sciezka, boolean zasoby) {
-		if (!ladujZZasobow(sciezka)) System.out.println("brak zasobu");
+	private Diminutives(String path, boolean resources) {
+		if (!loadFromResources(path)) System.out.println("no resource");
 	}
 	
-	public Diminutives(String sciezka) {
-		ladujPlik(sciezka);
+	public Diminutives(String path) {
+		loadFile(path);
 	}
 	
-	private boolean ladujPlik(String sciezka)
+	private boolean loadFile(String path)
 	{
-		return analizaPliku(new File(sciezka));
+		return fileAnalysis(new File(path));
 	}
 	
-	private boolean ladujZZasobow(String sciezka)
+	private boolean loadFromResources(String path)
 	{
 		ClassLoader loader = getClass().getClassLoader();
-		File plik;
+		File file;
 		
 		try {
-			plik = new File(loader.getResource(sciezka).getFile());
+			file = new File(loader.getResource(path).getFile());
 		} catch (NullPointerException e)
 		{
 			return false;
 		}
 		
-		return analizaPliku(plik);
+		return fileAnalysis(file);
 	}
 
-	private boolean analizaPliku(File plik)
+	private boolean fileAnalysis(File file)
 	{
 		Scanner scanner;
 		try {
-			scanner = new Scanner(plik);
+			scanner = new Scanner(file);
 		} catch (FileNotFoundException e) {
 			return false;
 		}
 		
-		String linia;
-		String[] podzial;
+		String line;
+		String[] splitting;
 		
 		while(scanner.hasNextLine())
 		{
-			linia = scanner.nextLine();
-			podzial = linia.split("[|]");
-			if (podzial.length > 1)
-				zdrobnienia.put(podzial[0], podzial[1]);
+			line = scanner.nextLine();
+			splitting = line.split("[|]");
+			if (splitting.length > 1)
+				diminutives.put(splitting[0], splitting[1]);
 		}
 		scanner.close();
 		return true;		
 	}
 	
-	public static String dlaImieniaW(String imie) {
-		return wbudowane.dlaImienia(imie);
+	public static String forNameStd(String name) {
+		return stdDiminutives.forName(name);
 	}
-	public String dlaImienia(String imie) {
-		String zdrob = zdrobnienia.get(imie);
-		return (zdrob != null) ? zdrob : "";
+	public String forName(String name) {
+		String diminutive = diminutives.get(name);
+		return (diminutive != null) ? diminutive : "";
 	}
 }
