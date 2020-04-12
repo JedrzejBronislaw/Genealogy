@@ -144,17 +144,20 @@ public class CardPaneController implements Initializable{
 		firstNameLabel.setText(person.getFirstName());
 		lastNameLabel.setText(person.getLastname());
 		aliasLabel.setText(person.getAlias());
-		birthDateLabel.setText(person.getBirthDate().toString());
+		if(person.getBirthDate() != null)
+			birthDateLabel.setText(person.getBirthDate().toString());
 		birthPlaceLabel.setText(person.getBirthPlace());
 		baptismParishLabel.setText(person.getBaptismParish());
-		deathDateLabel.setText(person.getDeathDate().toString());
+		if(person.getDeathDate() != null)
+			deathDateLabel.setText(person.getDeathDate().toString());
 		deathPlaceLabel.setText(person.getDeathPlace());
 		burialPlaceLabel.setText(person.getBurialPlace());
 
 		sexImg.setImage(getSexSymbol());
 		liveImg.setImage(getLiveSymbol());
 
-		ageLabel.setText(PersonDetails.wiekStr(person));
+		if(person.getBirthDate() != null)
+			ageLabel.setText(PersonDetails.wiekStr(person));
 		
 		for(int i=0; i<person.numberOfMarriages(); i++) {
 			marriagesBox.getChildren().add(generateMarriageLabel(i));
