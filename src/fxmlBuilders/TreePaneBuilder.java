@@ -1,20 +1,16 @@
 package fxmlBuilders;
 
-import java.awt.Dimension;
 import java.util.function.Consumer;
 
 import fxmlControllers.TreePaneController;
-import javafx.embed.swing.SwingNode;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
+import searchEngine.SearchEngine;
 import session.Session;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
-import tools.SwingRefresher;
-import windows.SearchScreen;
 
 public class TreePaneBuilder {
 
@@ -30,7 +26,6 @@ public class TreePaneBuilder {
 	@Setter
 	private Runnable closeTree;
 	
-	SwingNode swingNodeSearch;
 	
 	public void build() {
 		MyFXMLLoader<TreePaneController> loader = new MyFXMLLoader<>();
@@ -44,8 +39,6 @@ public class TreePaneBuilder {
 		controller.setSearchPane(generateSearchPane());
 		
 		controller.setCloseTree(closeTree);
-		
-		pane.setOnMouseEntered(e -> SwingRefresher.refreshNow(swingNodeSearch));
 	}
 	
 	private Pane generateTreeDetailsPane() {
@@ -65,18 +58,23 @@ public class TreePaneBuilder {
 		return builder.getPane();
 	}
 	
-	private Node generateSearchPane() {
-		SearchScreen search = new SearchScreen();
-		search.setChooseAction(selectPerson);
-		search.setPreferredSize(new Dimension(330, 200));
-		swingNodeSearch = new SwingNode();
-		swingNodeSearch.setContent(search);
+	private Pane generateSearchPane() {
+		SearchViewBuilder builder = new SearchViewBuilder();
+		SearchEngine searchEngine = new SearchEngine();
+		builder.setChooseAction(selectPerson);
+		builder.setSearchEngine(searchEngine);
+		
+		builder.build();
 		
 		if (session != null) {
-			session.addNewTreeListener(tree -> search.setDrzewo(tree));
-//			session.addCloseTreeListener(() -> {});
+			session.addNewTreeListener(tree -> searchEngine.setTree(tree));
+			session.addCloseTreeListener(() -> {
+				searchEngine.forgetTree();
+				builder.getController().clearFields();
+			});
 		}
-
-		return swingNodeSearch;
+		
+		
+		return builder.getPane();
 	}
 }
