@@ -30,6 +30,11 @@ public class InflectionPLTest {
 	}
 
 	@Test
+	public void testNameGenitive_Stanislaw() {
+		assertEquals("Stanis³awa", genitiveMan("Stanis³aw"));
+	}
+
+	@Test
 	public void testNameGenitive_Marek() {
 		assertEquals("Marka", genitiveMan("Marek"));
 	}
