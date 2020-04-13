@@ -1,340 +1,302 @@
 package treeGraphs;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import lombok.Setter;
 import model.Person;
 
 public class ClosestTreeGraph extends TreeGraph {
 
 
-	private static final int marginesX = 20;
-	private static final int marginesY = 20;
-	private static final int marginesLini = 5;
-	private static final int minSzerMiedzyRodzicami = 50;
-	private static final int odstepOdRodzicow = 30;
-	private static final int odstepMiedzyRodzenstwem = 7;
-	private static final int odstepMiedzyMalzonkami = 7;
-	private static final int odstepMiedzyDzieci = 7;
-	private static final int wciecieMalzonkow = 20;
-	private static final int wciecieDzieci = 20;
-	private static final int odstepPrzedDziecmi = 30;
-	private static final int minOdstepMiedzyKolumnami = 30; //miêdzy ma³¿onkami i dzieæmi a rodzeñstwem
-	private static final int szerGrotu = 3;
-	private static final int wysGrotu  = 5;
+	private static final int marginX = 20;
+	private static final int marginY = 20;
+	private static final int lineMargin = 5;
+	private static final int minSpaceBetweenParents = 50;
+	private static final int underParentsSpace = 30;
+	private static final int spaceBetweenSiblings = 7;
+	private static final int spaceBetweenSpouses = 7;
+	private static final int spaceBetweenChildren = 7;
+	private static final int spouceIndentation = 20;
+	private static final int childIndentation = 20;
+	private static final int aboveChildrenSpace = 30;
+	private static final int minSpaceBetweenSpousesChildrenAndSiblings = 30;
+	private static final int arrowheadWidth = 3;
+	private static final int arrowheadHeight  = 5;
 
-	private static final Font fontOsobaGlowna = new Font("Times", Font.BOLD, 25);
-	private static final Font fontInneOsoby   = new Font("Arial", Font.BOLD, 12);
+	private static final Font mainPersonFont = new Font("Times", Font.BOLD, 25);
+	private static final Font familyFont   = new Font("Arial", Font.BOLD, 12);
 
 
-	private int szerokoscObszaru;
-	private int xNazw, yNazw;
-	private int szerNazw, wysNazw;
-	private int szerNazwM, szerNazwO;
-	private int wysTekstu;
-	private int szerRodzenstwa, wysRodzenstwa;
-	private int szerMalzonkow, wysMalzonkow;
-	private int szerDzieci, wysDzieci;
+	private int areaWidth;
+	private int xName, yName;
+	private int nameWidth, nameHeight;
+	private int motherNameWidth, fatherNameWidth;
+	private int textHeight;
+	private int siblingsWidth, siblingsHeight;
+	private int spousesWidth, spousesHeight;
+	private int childrenWidth, childrenHeight;
 	
-	boolean wykonajObliczenia = true;
+	@Setter
+	boolean makeCalculations = true;
 	
 	@Override
-	public void setOsobaGlowna(Person osoba) {
-		this.osobaGlowna = osoba;
-		wykonajObliczenia = true;
-	}
-	
-	public void setWykonajObliczenia(boolean wykonajObliczenia) {
-		this.wykonajObliczenia = wykonajObliczenia;
+	public void setMainPerson(Person osoba) {
+		this.mainPerson = osoba;
+		makeCalculations = true;
 	}
 	
 	public ClosestTreeGraph() {}
-	public ClosestTreeGraph(Person osoba) {
-		this.osobaGlowna = osoba;
+	public ClosestTreeGraph(Person mainPerson) {
+		this.mainPerson = mainPerson;
 	}
 	
 	@Override
-	public void rysuj(Graphics2D g) {
+	public void draw(Graphics2D g) {
 		g.setRenderingHint(
 			    RenderingHints.KEY_ANTIALIASING,
 			    RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		
-		klikMapa.wyczysc();
-		if (osobaGlowna == null)
+		clickMap.clear();
+		if (mainPerson == null)
 			return;
 		
-		if(wykonajObliczenia)
+		if(makeCalculations)
 		{
-			obliczenia(g);
-			wykonajObliczenia = false;
+			calculations(g);
+			makeCalculations = false;
 		}
 		
-		String nazwisko = osobaGlowna.nameSurname();
-		Person[] rodzenstwo = osobaGlowna.getSiblings();
+		String name = mainPerson.nameSurname();
+		Person[] siblings = mainPerson.getSiblings();
 		
 		
-		g.setFont(fontOsobaGlowna);
-		g.drawString(nazwisko, xNazw, yNazw);
+		g.setFont(mainPersonFont);
+		g.drawString(name, xName, yName);
 		
-		g.setFont(fontInneOsoby);
+		g.setFont(familyFont);
 
-		rysujKreski(g, rodzenstwo.length > 0);
-		rysujRodzicow(g, szerokoscObszaru);
-		rysujRodzenstwo(g, rodzenstwo, marginesX+szerokoscObszaru-szerRodzenstwa, yNazw);
-		rysujMalzonkow(g, xNazw+wciecieMalzonkow, yNazw);
-		rysujDzieci(g, xNazw+wciecieDzieci, yNazw+odstepPrzedDziecmi-odstepMiedzyDzieci+wysMalzonkow);
-
-
-		//ramka
-//		g.setColor(Color.gray);
-//		g.drawLine(marginesX, marginesY, szerokosc-marginesX, marginesY);
-//		g.drawLine(marginesX, marginesY, marginesX, wysokosc-marginesY);
-//		g.drawLine(szerokosc-marginesX, wysokosc-marginesY, szerokosc-marginesX, marginesY);
-//		g.drawLine(szerokosc-marginesX, wysokosc-marginesY, marginesX, wysokosc-marginesY);
-		
-		
+		drawLines(g, siblings.length > 0);
+		drawParents(g, areaWidth);
+		drawSiblings(g, siblings, marginX+areaWidth-siblingsWidth, yName);
+		drawSpouses(g, xName+spouceIndentation, yName);
+		drawChildren(g, xName+childIndentation, yName+aboveChildrenSpace-spaceBetweenChildren+spousesHeight);		
 	}
 	
-	private void obliczenia(Graphics2D g)
+	private void calculations(Graphics2D g)
 	{
-		Person matka = osobaGlowna.getMother();
-		Person ojciec = osobaGlowna.getFather();
-		Person[] rodzenstwo = osobaGlowna.getSiblings();
-		String nazwisko = osobaGlowna.nameSurname();
-		String matkaIN  = (matka != null)  ? matka.nameSurname()  : "";
-		String ojciecIN = (ojciec != null) ? ojciec.nameSurname() : "";
+		Person mother = mainPerson.getMother();
+		Person father = mainPerson.getFather();
+		Person[] siblings = mainPerson.getSiblings();
+		String name = mainPerson.nameSurname();
+		String motherName  = (mother != null)  ? mother.nameSurname()  : "";
+		String fatherName = (father != null) ? father.nameSurname() : "";
 		
 		
-		g.setFont(fontOsobaGlowna);
+		g.setFont(mainPersonFont);
 		FontMetrics fm = g.getFontMetrics();
-		wysNazw  = fm.getAscent()-fm.getDescent();
-		szerNazw = fm.stringWidth(nazwisko);
+		nameHeight  = fm.getAscent()-fm.getDescent();
+		nameWidth = fm.stringWidth(name);
 		
-		xNazw = marginesX;
-		yNazw = marginesY+wysNazw;
-		if ((ojciec != null) || (matka != null))
-		yNazw += odstepOdRodzicow;
+		xName = marginX;
+		yName = marginY+nameHeight;
+		if ((father != null) || (mother != null))
+		yName += underParentsSpace;
 		
-		g.setFont(fontInneOsoby);
+		g.setFont(familyFont);
 		fm = g.getFontMetrics();
-		wysTekstu = fm.getAscent()-fm.getDescent();
-		szerNazwM = fm.stringWidth(matkaIN);
-		szerNazwO = fm.stringWidth(ojciecIN);
+		textHeight = fm.getAscent()-fm.getDescent();
+		motherNameWidth = fm.stringWidth(motherName);
+		fatherNameWidth = fm.stringWidth(fatherName);
 
-		szerRodzenstwa = szerRodzenstwa(g, rodzenstwo);
-		wysRodzenstwa  = rodzenstwo.length * (wysTekstu+odstepMiedzyRodzenstwem);
-		szerMalzonkow = szerMalzonkow(g);
-		wysMalzonkow  = osobaGlowna.numberOfMarriages() * (wysTekstu+odstepMiedzyMalzonkami);
-		szerDzieci = szerDzieci(g);
-		wysDzieci  = osobaGlowna.numberOfChildren() * (wysTekstu+odstepMiedzyDzieci)-odstepMiedzyDzieci;
+		siblingsWidth = siblingsWidth(g, siblings);
+		siblingsHeight  = siblings.length * (textHeight+spaceBetweenSiblings);
+		spousesWidth = spousesWidth(g);
+		spousesHeight  = mainPerson.numberOfMarriages() * (textHeight+spaceBetweenSpouses);
+		childrenWidth = childrenWidth(g);
+		childrenHeight  = mainPerson.numberOfChildren() * (textHeight+spaceBetweenChildren)-spaceBetweenChildren;
 		
-		szerokoscObszaru = szerNazw;// + 100;
-		if (szerokoscObszaru < szerNazwO+szerNazwM+minSzerMiedzyRodzicami)
-			szerokoscObszaru = szerNazwO+szerNazwM+minSzerMiedzyRodzicami;
-		if (szerokoscObszaru < wciecieMalzonkow+szerMalzonkow+minOdstepMiedzyKolumnami+szerRodzenstwa)
-			szerokoscObszaru = wciecieMalzonkow+szerMalzonkow+minOdstepMiedzyKolumnami+szerRodzenstwa;
-		if (szerokoscObszaru < wciecieDzieci+szerDzieci+minOdstepMiedzyKolumnami+szerRodzenstwa)
-			szerokoscObszaru = wciecieDzieci+szerDzieci+minOdstepMiedzyKolumnami+szerRodzenstwa;
+		areaWidth = nameWidth;// + 100;
+		if (areaWidth < fatherNameWidth+motherNameWidth+minSpaceBetweenParents)
+			areaWidth = fatherNameWidth+motherNameWidth+minSpaceBetweenParents;
+		if (areaWidth < spouceIndentation+spousesWidth+minSpaceBetweenSpousesChildrenAndSiblings+siblingsWidth)
+			areaWidth = spouceIndentation+spousesWidth+minSpaceBetweenSpousesChildrenAndSiblings+siblingsWidth;
+		if (areaWidth < childIndentation+childrenWidth+minSpaceBetweenSpousesChildrenAndSiblings+siblingsWidth)
+			areaWidth = childIndentation+childrenWidth+minSpaceBetweenSpousesChildrenAndSiblings+siblingsWidth;
 		
-		wysokosc = yNazw+wysRodzenstwa;
-		if (wysokosc < yNazw+wysMalzonkow)
-			wysokosc = yNazw+wysMalzonkow;
-		if ((osobaGlowna.numberOfChildren() > 0) && (wysokosc < yNazw+wysMalzonkow+odstepPrzedDziecmi+wysDzieci))
-			wysokosc = yNazw+wysMalzonkow+odstepPrzedDziecmi+wysDzieci;
-		szerokosc = szerokoscObszaru;//szerNazw;
+		height = yName+siblingsHeight;
+		if (height < yName+spousesHeight)
+			height = yName+spousesHeight;
+		if ((mainPerson.numberOfChildren() > 0) && (height < yName+spousesHeight+aboveChildrenSpace+childrenHeight))
+			height = yName+spousesHeight+aboveChildrenSpace+childrenHeight;
+		width = areaWidth;
 		
-		wysokosc  += marginesY;	//nie *2 bo jest ju¿ w yNazw
-		szerokosc += marginesX*2;
+		height  += marginY;	//not twice, because it is already in yName
+		width += marginX*2;
 	}
 	
-	private void rysujKreski(Graphics2D g, boolean maRodzenstwo)
+	private void drawLines(Graphics2D g, boolean hasSiblings)
 	{
-		Person ojciec = osobaGlowna.getFather();
-		Person matka  = osobaGlowna.getMother();
+		Person father = mainPerson.getFather();
+		Person mother  = mainPerson.getMother();
 		
-		//linia miêdzy rodzicami
-		int xOdOjca = marginesX+szerNazwO+marginesLini;
-		int xOdMatki= marginesX+szerokoscObszaru-szerNazwM-marginesLini;
-		int xLini = xOdOjca + (xOdMatki - xOdOjca)/2;
-		int yLiniG = marginesY+wysTekstu/2;
-		int yLiniD = marginesY+odstepOdRodzicow-marginesLini;
-		if (ojciec != null)
-			g.drawLine(xOdOjca, yLiniG, xLini, yLiniG);
-		if (matka != null)
-			g.drawLine(xOdMatki, yLiniG, xLini, yLiniG);
-		//linia od rodziców
-		if ((ojciec != null) || (matka != null))
+		//between parents line
+		int xFromFather = marginX+fatherNameWidth+lineMargin;
+		int xFromMother= marginX+areaWidth-motherNameWidth-lineMargin;
+		int xLine = xFromFather + (xFromMother - xFromFather)/2;
+		int yLineTop = marginY+textHeight/2;
+		int yLineBottom = marginY+underParentsSpace-lineMargin;
+		if (father != null)
+			g.drawLine(xFromFather, yLineTop, xLine, yLineTop);
+		if (mother != null)
+			g.drawLine(xFromMother, yLineTop, xLine, yLineTop);
+
+		//from parents line
+		if ((father != null) || (mother != null))
 		{
-			g.drawLine(xLini, yLiniG, xLini, yLiniD);
-			rysujGrot(g, xLini, yLiniD);
+			g.drawLine(xLine, yLineTop, xLine, yLineBottom);
+			drawArrowhead(g, xLine, yLineBottom);
 		}
 		
-		//linia do rodzeñstwa
-		if (maRodzenstwo)
+		//to siblings line
+		if (hasSiblings)
 		{
-			int xNadRodzenstwem = marginesX+szerokoscObszaru-szerRodzenstwa/2;
-			if (xNadRodzenstwem < marginesX+szerNazw+(szerokoscObszaru-szerNazw)/2)
-				xNadRodzenstwem = marginesX+szerNazw+(szerokoscObszaru-szerNazw)/2;
-			int yNadRodzenstwem = yNazw+odstepMiedzyRodzenstwem-marginesLini;
-			g.drawLine(xLini, yLiniG+(yLiniD-yLiniG)/2, xNadRodzenstwem, yLiniG+(yLiniD-yLiniG)/2);
-			g.drawLine(xNadRodzenstwem, yLiniG+(yLiniD-yLiniG)/2, xNadRodzenstwem, yNadRodzenstwem);
-			rysujGrot(g, xNadRodzenstwem, yNadRodzenstwem);
+			int xAboveSiblings = marginX+areaWidth-siblingsWidth/2;
+			if (xAboveSiblings < marginX+nameWidth+(areaWidth-nameWidth)/2)
+				xAboveSiblings = marginX+nameWidth+(areaWidth-nameWidth)/2;
+			int yAboveSiblings = yName+spaceBetweenSiblings-lineMargin;
+			g.drawLine(xLine, yLineTop+(yLineBottom-yLineTop)/2, xAboveSiblings, yLineTop+(yLineBottom-yLineTop)/2);
+			g.drawLine(xAboveSiblings, yLineTop+(yLineBottom-yLineTop)/2, xAboveSiblings, yAboveSiblings);
+			drawArrowhead(g, xAboveSiblings, yAboveSiblings);
 		}
 		
-		//linia do dzieci
-		if (osobaGlowna.numberOfChildren() > 0)
+		//to children line
+		if (mainPerson.numberOfChildren() > 0)
 		{
-			int xDoDzieci = marginesX+wciecieDzieci+szerDzieci/2;
-			int yDoDzieciG = yNazw+wysMalzonkow+marginesLini;
-			int yDoDzieciD = yNazw+wysMalzonkow+odstepPrzedDziecmi-marginesLini;
-			g.drawLine(xDoDzieci, yDoDzieciG, xDoDzieci, yDoDzieciD);
-			rysujGrot(g, xDoDzieci, yDoDzieciD);
+			int xToChildren = marginX+childIndentation+childrenWidth/2;
+			int yToChildrenTop = yName+spousesHeight+lineMargin;
+			int yToChildrenBottom = yName+spousesHeight+aboveChildrenSpace-lineMargin;
+			g.drawLine(xToChildren, yToChildrenTop, xToChildren, yToChildrenBottom);
+			drawArrowhead(g, xToChildren, yToChildrenBottom);
 		}
 	}
 	
-	private void rysujGrot(Graphics2D g, int x, int y)
+	private void drawArrowhead(Graphics2D g, int x, int y)
 	{
-		g.drawLine(x, y, x-szerGrotu, y-wysGrotu);
-		g.drawLine(x, y, x+szerGrotu, y-wysGrotu);
+		g.drawLine(x, y, x-arrowheadWidth, y-arrowheadHeight);
+		g.drawLine(x, y, x+arrowheadWidth, y-arrowheadHeight);
 	}
 	
-	private void rysujRodzicow(Graphics2D g,int szerokoscObszaru)
+	private void drawParents(Graphics2D g, int areaWidth)
 	{
-		Person matka = osobaGlowna.getMother();
-		Person ojciec = osobaGlowna.getFather();
-		String matkaIN  = (matka != null)  ? matka.nameSurname()  : "";
-		String ojciecIN = (ojciec != null) ? ojciec.nameSurname() : "";
+		Person mother = mainPerson.getMother();
+		Person father = mainPerson.getFather();
+		String motherName  = (mother != null)  ? mother.nameSurname()  : "";
+		String fatherName = (father != null) ? father.nameSurname() : "";
 
 		
-		g.drawString(ojciecIN, marginesX, marginesY+wysTekstu);
-		g.drawString(matkaIN,  marginesX+szerokoscObszaru-szerNazwM, marginesY+wysTekstu);
-		if (ojciec != null)
-			klikMapa.dodajObszar(ojciec, marginesX, marginesY+wysTekstu, marginesX+szerNazwO, marginesY);
-		if (matka != null)
-			klikMapa.dodajObszar(matka, marginesX+szerokoscObszaru-szerNazwM, marginesY+wysTekstu, marginesX+szerokoscObszaru, marginesY);
+		g.drawString(fatherName, marginX, marginY+textHeight);
+		g.drawString(motherName,  marginX+areaWidth-motherNameWidth, marginY+textHeight);
+		if (father != null)
+			clickMap.addArea(father, marginX, marginY+textHeight, marginX+fatherNameWidth, marginY);
+		if (mother != null)
+			clickMap.addArea(mother, marginX+areaWidth-motherNameWidth, marginY+textHeight, marginX+areaWidth, marginY);
 	}
 	
-	private void rysujRodzenstwo(Graphics2D g, Person[] rodzenstwo, int x, int y)
+	private void drawSiblings(Graphics2D g, Person[] siblings, int x, int y)
 	{
 		Font f = g.getFont();
 		g.setFont(new Font(f.getName(), Font.PLAIN, f.getSize()));
 		
 		FontMetrics fm = g.getFontMetrics();
-		int wys = fm.getAscent()-fm.getDescent();
-		int szer;
+		int height = fm.getAscent()-fm.getDescent();
+		int width;
 		
-		for (int i=0; i<rodzenstwo.length; i++)
+		for (int i=0; i<siblings.length; i++)
 		{
-			szer = fm.stringWidth(rodzenstwo[i].nameSurname());
-			g.drawString(rodzenstwo[i].nameSurname(), x, y+(i+1)*(wys+odstepMiedzyRodzenstwem));
-			klikMapa.dodajObszar(rodzenstwo[i], x, y+(i+1)*(wys+odstepMiedzyRodzenstwem), x+szer, y+(i+1)*(wys+odstepMiedzyRodzenstwem)-wys);
+			width = fm.stringWidth(siblings[i].nameSurname());
+			g.drawString(siblings[i].nameSurname(), x, y+(i+1)*(height+spaceBetweenSiblings));
+			clickMap.addArea(siblings[i], x, y+(i+1)*(height+spaceBetweenSiblings), x+width, y+(i+1)*(height+spaceBetweenSiblings)-height);
 		}
 		
 		g.setFont(f);
 	}
 	
-	private void rysujMalzonkow(Graphics2D g, int x, int y)
+	private void drawSpouses(Graphics2D g, int x, int y)
 	{
 		FontMetrics fm = g.getFontMetrics();
-		int wys = fm.getAscent()-fm.getDescent();
-		int szer;
-		Person malzonek;
+		int height = fm.getAscent()-fm.getDescent();
+		int width;
+		Person spouse;
 		
-		for (int i=0; i<osobaGlowna.numberOfMarriages(); i++)
+		for (int i=0; i<mainPerson.numberOfMarriages(); i++)
 		{
-			malzonek = osobaGlowna.getSpouse(i);
-			szer = fm.stringWidth(malzonek.nameSurname());
-			g.drawString(malzonek.nameSurname(), x, y+(i+1)*(wys+odstepMiedzyMalzonkami));
-			klikMapa.dodajObszar(malzonek, x, y+(i+1)*(wys+odstepMiedzyMalzonkami), x+szer, y+(i+1)*(wys+odstepMiedzyMalzonkami)-wys);
+			spouse = mainPerson.getSpouse(i);
+			width = fm.stringWidth(spouse.nameSurname());
+			g.drawString(spouse.nameSurname(), x, y+(i+1)*(height+spaceBetweenSpouses));
+			clickMap.addArea(spouse, x, y+(i+1)*(height+spaceBetweenSpouses), x+width, y+(i+1)*(height+spaceBetweenSpouses)-height);
 		}		
 	}
 	
-	private void rysujDzieci(Graphics2D g, int x, int y)
+	private void drawChildren(Graphics2D g, int x, int y)
 	{
 		FontMetrics fm = g.getFontMetrics();
-		int wys = fm.getAscent()-fm.getDescent();
-		int szer;
-		Person dziecko;
+		int height = fm.getAscent()-fm.getDescent();
+		int width;
+		Person child;
 		
-		for (int i=0; i<osobaGlowna.numberOfChildren(); i++)
+		for (int i=0; i<mainPerson.numberOfChildren(); i++)
 		{
-			dziecko = osobaGlowna.getChild(i);
-			szer = fm.stringWidth(dziecko.nameSurname());
-			g.drawString(dziecko.nameSurname(), x, y+(i+1)*(wys+odstepMiedzyDzieci));
-			klikMapa.dodajObszar(dziecko, x, y+(i+1)*(wys+odstepMiedzyDzieci), x+szer, y+(i+1)*(wys+odstepMiedzyDzieci)-wys);
+			child = mainPerson.getChild(i);
+			width = fm.stringWidth(child.nameSurname());
+			g.drawString(child.nameSurname(), x, y+(i+1)*(height+spaceBetweenChildren));
+			clickMap.addArea(child, x, y+(i+1)*(height+spaceBetweenChildren), x+width, y+(i+1)*(height+spaceBetweenChildren)-height);
 		}		
 	}
 
-	private int szerRodzenstwa(Graphics2D g, Person[] rodzenstwo) {
+	private int siblingsWidth(Graphics2D g, Person[] sibilings) {
 		Font f = g.getFont();
 		g.setFont(new Font(f.getName(), Font.PLAIN, f.getSize()));
 		
 		FontMetrics fm = g.getFontMetrics();
-		int maksSzer = 0;
+		int maxWidth = 0;
 		
-		for(Person o: rodzenstwo)
-			if (maksSzer < fm.stringWidth(o.nameSurname()))
-				maksSzer = fm.stringWidth(o.nameSurname());
+		for(Person sibiling: sibilings)
+			if (maxWidth < fm.stringWidth(sibiling.nameSurname()))
+				maxWidth = fm.stringWidth(sibiling.nameSurname());
 
-		
 		g.setFont(f);
-		return maksSzer;
+		return maxWidth;
 	}
 
-	private int szerMalzonkow(Graphics2D g) {
+	private int spousesWidth(Graphics2D g) {
 		FontMetrics fm = g.getFontMetrics();
-		int maksSzer = 0;
-		Person o;
+		int maxWidth = 0;
+		Person spouse;
 		
-		for (int i=0; i<osobaGlowna.numberOfMarriages(); i++)
+		for (int i=0; i<mainPerson.numberOfMarriages(); i++)
 		{
-			o = osobaGlowna.getSpouse(i);
-			if (maksSzer < fm.stringWidth(o.nameSurname()))
-				maksSzer = fm.stringWidth(o.nameSurname());
+			spouse = mainPerson.getSpouse(i);
+			if (maxWidth < fm.stringWidth(spouse.nameSurname()))
+				maxWidth = fm.stringWidth(spouse.nameSurname());
 		}
-		return maksSzer;
+		return maxWidth;
 	}
 
-	private int szerDzieci(Graphics2D g) {
+	private int childrenWidth(Graphics2D g) {
 		FontMetrics fm = g.getFontMetrics();
-		int maksSzer = 0;
-		Person o;
+		int maxWidth = 0;
+		Person child;
 		
-		for (int i=0; i<osobaGlowna.numberOfChildren(); i++)
+		for (int i=0; i<mainPerson.numberOfChildren(); i++)
 		{
-			o = osobaGlowna.getChild(i);
-			if (maksSzer < fm.stringWidth(o.nameSurname()))
-				maksSzer = fm.stringWidth(o.nameSurname());
+			child = mainPerson.getChild(i);
+			if (maxWidth < fm.stringWidth(child.nameSurname()))
+				maxWidth = fm.stringWidth(child.nameSurname());
 		}
-		return maksSzer;
+		return maxWidth;
 	}
-
-//	@Override
-//	public Dimension getWymiary() {
-//		// TODO Auto-generated method stub
-//		return new Dimension(szerokosc, wysokosc);
-//	}
-//
-//	@Override
-//	public Osoba getOsobaGlowna() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public int getSzerokosc() {
-//		// TODO Auto-generated method stub
-//		return szerokosc;
-//	}
-//
-//	@Override
-//	public int getWysokosc() {
-//		// TODO Auto-generated method stub
-//		return wysokosc;
-//	}
 }

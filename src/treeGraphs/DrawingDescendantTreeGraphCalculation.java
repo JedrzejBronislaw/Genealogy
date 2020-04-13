@@ -1,285 +1,232 @@
 package treeGraphs;
 
-import model.Person;
-import other.InflectionPL;
-import other.PersonDetails;
-
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import lombok.Getter;
+import lombok.Setter;
+import model.Person;
+import other.PersonDetails;
+
 public class DrawingDescendantTreeGraphCalculation {
 	
-	enum DlugoscGalezi {Deterministzcyna, Losowa}
-	enum KatGalezi {Deterministzczny, Losowy}
+	enum BranchLengthType {Deterministic, Random}
+	enum BranchAngleType {Deterministic, Random}
 	
-	public class Element
+	public class TreeNode
 	{
-		private int x, y;
-		private int pokolenie;
-		private Person osoba;
-		private List<Element> poloczenie;
+		@Getter @Setter private int x, y;
+		@Getter @Setter private int generation;
+		@Getter @Setter private Person person;
+		@Getter @Setter private List<TreeNode> links;
 		
-		public Element(Person osoba, int pokolenie, int x, int y) {
-			this.osoba = osoba;
-			this.pokolenie = pokolenie;
+		public TreeNode(Person person, int generation, int x, int y) {
+			this.person = person;
+			this.generation = generation;
 			this.x = x;
 			this.y = y;
-			poloczenie = new ArrayList<Element>();
-		}
-		
-		public int getPokolenie() {
-			return pokolenie;
-		}
-		public void setPokolenie(int pokolenie) {
-			this.pokolenie = pokolenie;
+			links = new ArrayList<TreeNode>();
 		}		
-		public int getX() {
-			return x;
-		}
-		public void setX(int x) {
-			this.x = x;
-		}
-		public int getY() {
-			return y;
-		}
-		public void setY(int y) {
-			this.y = y;
-		}
-		public Person getOsoba() {
-			return osoba;
-		}
-		public void setOsoba(Person osoba) {
-			this.osoba = osoba;
-		}
-		public List<Element> getPoloczenie() {
-			return poloczenie;
-		}
-		public void setPoloczenie(List<Element> poloczenie) {
-			this.poloczenie = poloczenie;
-		}
-		
-		
 	}
 
-	private int poczatkowaOdlegloscMiedzyPokoleniami = 50;
+	private int InitialDistanceBetweenGenerations = 50;
 	
-	private Person osobaGlowna;
-	private List<Element> wyniki;
-	private float katPocz = 155;
-	private float katCaly = 130;
-	private int srodekOffsetX = 0, srodekOffsetY = 0;
-	private boolean obliczone = false;
-	private DlugoscGalezi dlugoscGalezi = DlugoscGalezi.Deterministzcyna;
-	private KatGalezi katGalezi = KatGalezi.Deterministzczny;
+	private Person mainPerson;
+	private List<TreeNode> results;
+	private float startAngle = 155;
+	private float wholeAngle = 130;
+	private int middleOffsetX = 0, middleOffsetY = 0;
+	private boolean calculated = false;
+	private BranchLengthType branchLength = BranchLengthType.Deterministic;
+	private BranchAngleType branchAngle = BranchAngleType.Deterministic;
 
-	private float RoznicaDlugosciGaleziWzgledemRodzica = -5;
+	private float branchLengthDifferenceToParent = -5;
 
-	private int wysokosc = 0;
-	private int szerokosc = 0;
-	private int przesuniecieX = 0;
-	private int przesuniecieY = 0;
+	private int height = 0;
+	private int width = 0;
+	private int offsetX = 0;
+	private int offsetY = 0;
 	
 	
 	
-	public DrawingDescendantTreeGraphCalculation setRoznicaDlugosciGaleziWzgledemRodzica(int roznica) {
-		RoznicaDlugosciGaleziWzgledemRodzica = roznica;
+	public DrawingDescendantTreeGraphCalculation setBranchLengthDifferenceToParent(int difference) {
+		branchLengthDifferenceToParent = difference;
 		return this;
 	}
 	
-	public DrawingDescendantTreeGraphCalculation setPoczatkowaOdlegloscMiedzyPokoleniami(int poczatkowaOdleglosc) {
-		this.poczatkowaOdlegloscMiedzyPokoleniami = poczatkowaOdleglosc;
+	public DrawingDescendantTreeGraphCalculation setInitialDistanceBetweenGenerations(int initialDistance) {
+		this.InitialDistanceBetweenGenerations = initialDistance;
 		return this;
 	}
-	public DrawingDescendantTreeGraphCalculation setOdlegloscMiedzyNajmlodszymiPokoleniami(int odleglosc) {
-		float x = (odleglosc-poczatkowaOdlegloscMiedzyPokoleniami)/(osobaGlowna.descendantGenerations()-1);
+	public DrawingDescendantTreeGraphCalculation setSpaceBetweenYoungestGeneration(int distance) {
+		float x = (distance-InitialDistanceBetweenGenerations)/(mainPerson.descendantGenerations()-1);
 		
-		RoznicaDlugosciGaleziWzgledemRodzica = x;
+		branchLengthDifferenceToParent = x;
 		return this;
 	}
 	
-	public DrawingDescendantTreeGraphCalculation setDlugoscGalezi(DlugoscGalezi dlugoscGalezi) {
-		this.dlugoscGalezi = dlugoscGalezi;
+	public DrawingDescendantTreeGraphCalculation setBranchLength(BranchLengthType branchLength) {
+		this.branchLength = branchLength;
 		return this;
 	}
-	public DrawingDescendantTreeGraphCalculation setKatGalezi(KatGalezi katGalezi) {
-		this.katGalezi = katGalezi;
-		return this;
-	}
-	
-	public DrawingDescendantTreeGraphCalculation setKatPocz(float katWStopniach) {
-		this.katPocz = katWStopniach;
-		return this;
-	}
-	public DrawingDescendantTreeGraphCalculation setKatCaly(float katWStopniach) {
-		this.katCaly = katWStopniach;
-		return this;
-	}
-	public DrawingDescendantTreeGraphCalculation setSymetrycznyKat(float szerokoscWSt) {
-		this.katCaly = szerokoscWSt;
-		this.katPocz = 180-(180-katCaly)/2;
+	public DrawingDescendantTreeGraphCalculation setBranchAngle(BranchAngleType branchAngle) {
+		this.branchAngle = branchAngle;
 		return this;
 	}
 	
+	public DrawingDescendantTreeGraphCalculation setStartAngle(float angleInDegrees) {
+		this.startAngle = angleInDegrees;
+		return this;
+	}
+	public DrawingDescendantTreeGraphCalculation setWholeAngle(float angleInDegrees) {
+		this.wholeAngle = angleInDegrees;
+		return this;
+	}
+	public DrawingDescendantTreeGraphCalculation setSymmetricalAngle(float widthInDegrees) {
+		this.wholeAngle = widthInDegrees;
+		this.startAngle = 180-(180-wholeAngle)/2;
+		return this;
+	}
 	
-	public DrawingDescendantTreeGraphCalculation(Person osobaGlowna) {
-		this.osobaGlowna = osobaGlowna;
-		wyniki = new ArrayList<Element>();
+	
+	public DrawingDescendantTreeGraphCalculation(Person mainPerson) {
+		this.mainPerson = mainPerson;
+		results = new ArrayList<TreeNode>();
 	}
 
-	public List<Element> get() {
-		if (!obliczone)
-			oblicz();
+	public List<TreeNode> get() {
+		if (!calculated)
+			calculate();
 		
-		return wyniki;
+		return results;
 	}
 	
 	
-	private void oblicz()
+	private void calculate()
 	{
-//		List<Element> wyniki = new ArrayList<Element>();
-		rysujGalaz(osobaGlowna, 1, 0, 0, 0);
-		obliczWymiary();
+		drawBranch(mainPerson, 1, 0, 0, 0);
+		computeDimension();
 		
-//		this.wyniki = new Element[wyniki.size()];
-//		wyniki.toArray(this.wyniki);
-		for (Element e : wyniki)
+		for (TreeNode node : results)
 		{
-			e.x += srodekOffsetX + przesuniecieX;
-			e.y += srodekOffsetY + przesuniecieY;
+			node.x += middleOffsetX + offsetX;
+			node.y += middleOffsetY + offsetY;
 		}
 		
-		obliczone = true;
+		calculated = true;
 	}
 	
 
-	private void obliczWymiary() {
+	private void computeDimension() {
 
 		int maxX, minX, maxY, minY;
 		maxX = minX = maxY = minY = 0;
 		
 		
-		for (Element e : wyniki){
-			if (e.x > maxX) maxX = e.x; 
-			else if (e.x < minX) minX = e.x;
+		for (TreeNode mode : results){
+			if (mode.x > maxX) maxX = mode.x; 
+			else if (mode.x < minX) minX = mode.x;
 
-			if (e.y > maxY) maxY = e.y; 
-			else if (e.y < minY) minY = e.y;
+			if (mode.y > maxY) maxY = mode.y; 
+			else if (mode.y < minY) minY = mode.y;
 		}
 
-		srodekOffsetX = -minX;
-		srodekOffsetY = -minY;
+		middleOffsetX = -minX;
+		middleOffsetY = -minY;
 		
-		wysokosc  = maxY-minY;
-		szerokosc = maxX-minX;
-		
-		
-//		p1 = wyznaczPunkt(odleglosc, kat)
-//		
-//		
-//		szerokosc = osobaGlowna.liczbaPokolenPotomkow()*poczatkowaOdlegloscMiedzyPokoleniami*2;
-//		
-//		if(katCaly <= 180 && Math.abs(katPocz) <= (180-katCaly)/2)
-//			wysokosc = osobaGlowna.liczbaPokolenPotomkow()*poczatkowaOdlegloscMiedzyPokoleniami;
-//		else
-//			wysokosc = osobaGlowna.liczbaPokolenPotomkow()*poczatkowaOdlegloscMiedzyPokoleniami*2;//TODO doprecyzowaæ, zawêziæ
+		height  = maxY-minY;
+		width = maxX-minX;
 	}
 	
-	public int getWysokosc() {return wysokosc;}
-	public int getSzerokosc() {return szerokosc;}
-	public Dimension getWymiary() {return new Dimension(szerokosc, wysokosc);}
-	public Point getKorzen() {return new Point(srodekOffsetX, srodekOffsetY);}
+	public int getHeight() {return height;}
+	public int getWidth() {return width;}
+	public Dimension getDimension() {return new Dimension(width, height);}
+	public Point getRoot() {return new Point(middleOffsetX, middleOffsetY);}
 
-	private Element rysujGalaz(Person osoba, double katOffset, int rodzicX, int rodzicY, int pokolenie)
+	private TreeNode drawBranch(Person person, double angleOffset, int parentX, int parentY, int generation)
 	{
-		int szer = PersonDetails.descendantsBranchesWidth(osobaGlowna);//-1;
-		int szerCzesciowa = 0;
-		int szerAkt = 0;
-		Person dziecko;
-		Point punkt;
-		double odleglosc;
-		double kat = 0; 
+		int width = PersonDetails.descendantsBranchesWidth(mainPerson);//-1;
+		int partialWidth = 0;
+		int currentWidth = 0;
+		Person child;
+		Point point;
+		double distance;
+		double angle = 0; 
 		
 		Random r = new Random();
 		
-			Element element = new Element(osoba, pokolenie, rodzicX, rodzicY);
-			wyniki.add(element);		
-//		klikMapa.dodajObszar(osoba, rodzicX-5, rodzicY-5, rodzicX+5, rodzicY+5);
-		
-//		rysujPromien(g, rodzicX, rodzicY, kat1, 200, new Color(150, 75, 0));
-		for (int i=0; i<osoba.numberOfChildren(); i++)
-		{
-//			setSymetrycznyKat(90+pokolenie*20);
-			dziecko = osoba.getChild(i);
-			szerAkt = PersonDetails.descendantsBranchesWidth(dziecko);
-			odleglosc = (pokolenie+1)*poczatkowaOdlegloscMiedzyPokoleniami;
-			
-			if (dlugoscGalezi == DlugoscGalezi.Deterministzcyna)
-				odleglosc += pokolenie*(pokolenie+1)/2*RoznicaDlugosciGaleziWzgledemRodzica ;
-			else if (dlugoscGalezi == DlugoscGalezi.Losowa)
-				odleglosc -= r.nextInt(poczatkowaOdlegloscMiedzyPokoleniami/2);
-			
-			if (katGalezi == KatGalezi.Deterministzczny)
-				kat = katOffset - (szerCzesciowa+((double)szerAkt/2))/szer;
-			else if (katGalezi == KatGalezi.Losowy)
-				kat = katOffset - (szerCzesciowa+((double)szerAkt*(r.nextDouble()/2+0.25)))/szer;
-			
-			
-			punkt = wyznaczPunkt(odleglosc, kat);
-			
+		TreeNode treeNode = new TreeNode(person, generation, parentX, parentY);
+		results.add(treeNode);		
 
+		for (int i=0; i<person.numberOfChildren(); i++)
+		{
+			child = person.getChild(i);
+			currentWidth = PersonDetails.descendantsBranchesWidth(child);
+			distance = (generation+1) * InitialDistanceBetweenGenerations;
+			
+			if (branchLength == BranchLengthType.Deterministic)
+				distance += generation*(generation+1)/2*branchLengthDifferenceToParent ;
+			else if (branchLength == BranchLengthType.Random)
+				distance -= r.nextInt(InitialDistanceBetweenGenerations/2);
+			
+			if (branchAngle == BranchAngleType.Deterministic)
+				angle = angleOffset - (partialWidth+((double)currentWidth/2))/width;
+			else if (branchAngle == BranchAngleType.Random)
+				angle = angleOffset - (partialWidth+((double)currentWidth*(r.nextDouble()/2+0.25)))/width;
 			
 			
-			element.getPoloczenie().add(rysujGalaz(dziecko, katOffset - (double)(szerCzesciowa)/szer, punkt.x, punkt.y, pokolenie+1));
+			point = findPoint(distance, angle);
 			
-			szerCzesciowa += szerAkt;
+			treeNode.getLinks().add(drawBranch(child, angleOffset - (double)(partialWidth)/width, point.x, point.y, generation+1));
+			
+			partialWidth += currentWidth;
 		}
-		return element;
+		return treeNode;
 	}
-	public static double stNaRad(double stopnie)
+	public static double degreeToRad(double degree)
 	{
-		return  (stopnie/360*2*Math.PI) % (2*Math.PI);
-	}
-	
-	public static double procOkreguNaRad(double procenty)
-	{
-		return procenty*2*Math.PI;
+		return  (degree/360*2*Math.PI) % (2*Math.PI);
 	}
 	
-	public double procObszaruNaRad(double procent)
+	public static double circlePercentageToRad(double percentage)
 	{
-		procent *= katCaly/360;
-		procent  = procOkreguNaRad(procent);
-		procent += stNaRad(katPocz-katCaly);
+		return percentage*2*Math.PI;
+	}
+	
+	public double areaPercentageToRad(double percentage)
+	{
+		percentage *= wholeAngle/360;
+		percentage  = circlePercentageToRad(percentage);
+		percentage += degreeToRad(startAngle-wholeAngle);
 		
-		return procent;
+		return percentage;
 	}
 	
-	public static Point katRadNaPunkt(double kat, double odleglosc, Point punkt)
+	public static Point radAngleToPoint(double angle, double distace, Point point)
 	{
-		int x = (int) (odleglosc *  Math.cos(kat)) + punkt.x;
-		int y = (int) (odleglosc * -Math.sin(kat)) + punkt.y;
+		int x = (int) (distace *  Math.cos(angle)) + point.x;
+		int y = (int) (distace * -Math.sin(angle)) + point.y;
 		
 		return new Point(x,y);
 	}
 	
-	private Point wyznaczPunkt(double odleglosc, double kat)
+	private Point findPoint(double distance, double angle)
 	{
-		kat = procObszaruNaRad(kat);
+		angle = areaPercentageToRad(angle);
 		
-		Point punkt = katRadNaPunkt(kat, odleglosc, new Point(srodekOffsetX, srodekOffsetY));
+		Point point = radAngleToPoint(angle, distance, new Point(middleOffsetX, middleOffsetY));
 
-		return punkt;
+		return point;
 	}
 
-	public DrawingDescendantTreeGraphCalculation setPrzesuniecie(int przesuniecieX,
-			int przesuniecieY) {
+	public DrawingDescendantTreeGraphCalculation setOffset(int offsetX,
+			int offsetY) {
 
-		this.przesuniecieX = przesuniecieX;
-		this.przesuniecieY = przesuniecieY;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
 
 		return this;
 	}

@@ -45,13 +45,13 @@ public class Canvas extends JPanel implements MouseListener {
 		
 //		setSize(getWidth(), getHeight()*2);
 		
-		if (graf != null) graf.rysuj(c);
+		if (graf != null) graf.draw(c);
 		if(wymiary != null)
-			wymiary.accept(graf.getSzerokosc(), graf.getWysokosc());
+			wymiary.accept(graf.getWidth(), graf.getHeight());
 		
-		if ((graf.getSzerokosc() != getWidth()) ||
-			(graf.getWysokosc()  != getHeight()))
-			setPreferredSize(new Dimension(graf.getSzerokosc(), graf.getWysokosc()));
+		if ((graf.getWidth() != getWidth()) ||
+			(graf.getHeight()  != getHeight()))
+			setPreferredSize(new Dimension(graf.getWidth(), graf.getHeight()));
 		revalidate();
 	}
 
@@ -60,7 +60,7 @@ public class Canvas extends JPanel implements MouseListener {
 		if (arg0.getClickCount() >= 2)
 		{
 			Point p = arg0.getPoint();
-			graf.klik(p.x, p.y);
+			graf.clik(p.x, p.y);
 		}
 	}
 

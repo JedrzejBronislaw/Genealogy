@@ -59,7 +59,7 @@ public class MainWindow extends JFrame implements AncestorListener, ActionListen
 			graf = new DrawingDescendantTreeGraph();
 //		
 //			graf.setWyswietlacz(new ZDatamiWyswietlanieNazwiska());
-			graf.setWyswietlacz(new SimpleNameDisplaying());
+			graf.setNameDisplay(new SimpleNameDisplaying());
 		
 		okno.setGraf(graf);
 		okno.setOsoba(drzewo.getPerson(id));

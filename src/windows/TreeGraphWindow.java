@@ -25,7 +25,7 @@ public class TreeGraphWindow extends JFrame {
 		{
 			plutno.setGrafDrzewa(gd);
 //			gd.setDrzewo(d);
-			gd.setOsobaGlowna(o);
+			gd.setMainPerson(o);
 		}
 	}
 	

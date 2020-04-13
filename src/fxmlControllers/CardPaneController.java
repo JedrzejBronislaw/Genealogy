@@ -166,7 +166,7 @@ public class CardPaneController implements Initializable{
 		commentsArea.setText(person.getComments());
 		contactArea.setText(person.getContact());
 
-		grafMiniDrzewo.setOsobaGlowna(person);
+		grafMiniDrzewo.setMainPerson(person);
 		SwingRefresher.refreshGraph(swingNode);
 	}
 

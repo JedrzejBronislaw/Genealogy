@@ -96,7 +96,7 @@ public class CardScreen extends JPanel implements ActionListener {
 			public void componentHidden(ComponentEvent e) {}
 		});
 		
-		grafMiniDrzewo.setWizytowka(this);
+		grafMiniDrzewo.setCard(this);
 		
 		panelGlowny.add(szerokosc);
 		panelGlowny.add(pOgolny());
@@ -235,7 +235,7 @@ public class CardScreen extends JPanel implements ActionListener {
 		parafiaChrztu.set(osoba.getBaptismParish());
 		miejscePochowku.set(osoba.getBurialPlace());
 
-		grafMiniDrzewo.setOsobaGlowna(osoba);
+		grafMiniDrzewo.setMainPerson(osoba);
 		plutnoGrafu.repaint();
 
 
@@ -286,9 +286,9 @@ public class CardScreen extends JPanel implements ActionListener {
 				graf = new DrawingDescendantTreeGraph();
 //			
 			if (datyNaGrafie.isSelected())
-				graf.setWyswietlacz(new DateAndNameDisplaying());
+				graf.setNameDisplay(new DateAndNameDisplaying());
 			else
-				graf.setWyswietlacz(new SimpleNameDisplaying());
+				graf.setNameDisplay(new SimpleNameDisplaying());
 			
 			okno.setGraf(graf);
 			okno.setOsoba(osoba);

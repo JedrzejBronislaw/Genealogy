@@ -151,7 +151,7 @@ public class MainWindowBuilder {
 	}
 	
 	private void showGraph(TreeGraph graph, Person person) {
-		graph.setWyswietlacz(new SimpleNameDisplaying());
+		graph.setNameDisplay(new SimpleNameDisplaying());
 		graph.setPersonClickAction(selectedPerson -> {
 			cardController.setPerson(selectedPerson);
 			controller.showView(Views.Card);

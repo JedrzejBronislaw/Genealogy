@@ -1,325 +1,255 @@
 package treeGraphs;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.io.ObjectInputStream.GetField;
-import java.lang.ProcessBuilder.Redirect;
-import java.util.ArrayList;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.Person;
-import model.Tree;
-import nameDisplaying.DateAndNameDisplaying;
 
 public class StdDescendantsTreeGraph extends TreeGraph{
 
-	public enum TrybOdstepow {TylkoMiedzyRodzienstwem, MiedzyRodzenstwemIKuzynostwem};
+	public enum SpaceType {OnlyBetweenSiblings, BetweenSiblingsAndCousins};
 	
 	private static final int marginesX = 20;
 	private static final int marginesY = 20;
-	private static final int wciecieMalzonka = 20;
-//	private static final int szerPokolenia = 150;
-	private	static final int minDlugoscKreskiOdRodzica = 3;
-	private	static final int dlugoscStrzalekDoDzieci = 15;
-	private				 int szerMiedzyPokoleniami;// = 20;
-	private static final int marginesLini = 5;
-	private static final int odstepMiedzyMalzonkami = 4;
-	private static final int miedzyRodzenstwem = 10;
-	private static final int odstepMiedzyKuzynostwem = 20;
-	private static final int szerGrotu = 5;
-	private static final int wysGrotu  = 3;
+	private static final int spouseIndentation = 20;
+	private	static final int minParentLineLength = 3;
+	private	static final int childArrowLength = 15;
+	private				 int betweenGenerationsSpace;
+	private static final int lineMargin = 5;
+	private static final int betweenSpousesSpace = 4;
+	private static final int betweenSiblingsSpace = 10;
+	private static final int betwennCousisnsSpace = 20;
+	private static final int arrowheadWidth = 5;
+	private static final int arrowheadHeight  = 3;
 
 	private Font font = new Font("Times", Font.PLAIN, 13);
-	private static final Color kolorObraczek = new Color(255, 215, 0);
+	private static final Color ringsColor = new Color(255, 215, 0);
 
-	private TrybOdstepow tryb = TrybOdstepow.TylkoMiedzyRodzienstwem;
-//	private TrybOdstepow tryb = TrybOdstepow.MiedzyRodzenstwemIKuzynostwem;
+	@Setter @Getter
+	private SpaceType spaceType = SpaceType.OnlyBetweenSiblings;
 	
-	private int[] szerokosciKolumn;
-	
-	
-	public void setTryb(TrybOdstepow tryb) {
-		this.tryb = tryb;
-	}
-	public TrybOdstepow getTryb() {
-		return tryb;
-	}
-	
-//	@Override
-//	public void setDrzewo(Drzewo drzewo) {
-//		this.drzewo = drzewo;
-//	}
-
+	private int[] columnsWidths;
 
 	public StdDescendantsTreeGraph() {}
-	public StdDescendantsTreeGraph(/*Drzewo d,*/ Person o) {
-//		drzewo = d;
-		osobaGlowna = o;
+	public StdDescendantsTreeGraph(Person person) {
+		mainPerson = person;
 	}
 
-//	@Override
-//	public int getSzerokosc() {return szerokosc;}
-//	@Override
-//	public int getWysokosc()  {return wysokosc;}
-	
-	
 	@Override
-	public void rysuj(Graphics2D g) {
+	public void draw(Graphics2D g) {
 		
-		if (osobaGlowna == null) return;
+		if (mainPerson == null) return;
 		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setFont(font);
-		wyswietlacz.setGraphics(g);
-		klikMapa.wyczysc();
+		nameDisplay.setGraphics(g);
+		clickMap.clear();
 		
-		szerMiedzyPokoleniami = minDlugoscKreskiOdRodzica+dlugoscStrzalekDoDzieci+marginesLini*2;
+		betweenGenerationsSpace = minParentLineLength + childArrowLength + lineMargin*2;
 		
-		szerokosc = ustalSzerokosciKolumn(g.getFontMetrics());
-		if (tryb == TrybOdstepow.TylkoMiedzyRodzienstwem)
-			wysokosc = rysujRodzine(g, osobaGlowna, marginesX, marginesY, 0) - miedzyRodzenstwem;
+		width = calculateColumnsWidths(g.getFontMetrics());
+		if (spaceType == SpaceType.OnlyBetweenSiblings)
+			height = drawFamily(g, mainPerson, marginesX, marginesY, 0) - betweenSiblingsSpace;
 		else
-			wysokosc = rysujRodzine(g, osobaGlowna, marginesX, marginesY, 0, true);
-//		szerokosc = pokolen*szerPokolenia + (pokolen-1)*szerMiedzyPokoleniami;
-
-//		g.setColor(Color.RED);
-//		int sz = 0;
-//		for (int i=0; i<szerokosciKolumn.length; i++)
-//		{
-//			sz += szerokosciKolumn[i];
-//			g.drawLine(marginesX+sz, 0, marginesX+sz, wysokosc+marginesY*2);
-//			sz += szerMiedzyPokoleniami;
-//			g.drawLine(marginesX+sz, 0, marginesX+sz, wysokosc+marginesY*2);
-//		}
-//		g.drawLine(marginesX, 0, marginesX, wysokosc+marginesY*2);
-//		g.drawLine(0, marginesY, szerokosc+marginesX+2, marginesY);
-//		g.drawLine(0, marginesY+wysokosc, szerokosc+marginesX*2, marginesY+wysokosc);
+			height = drawFamily(g, mainPerson, marginesX, marginesY, 0, true);
 		
-		wysokosc  += marginesY*2;
-		szerokosc += marginesX*2;
+		height += marginesY * 2;
+		width  += marginesX * 2;
 	}
 
-	private int ustalSzerokosciKolumn(FontMetrics fm) {
-		szerokosciKolumn = new int[osobaGlowna.descendantGenerations()+1];
-		int szerokoscCalokowita = 0;
+	private int calculateColumnsWidths(FontMetrics fm) {
+		columnsWidths = new int[mainPerson.descendantGenerations()+1];
+		int totalWidth = 0;
 		
-		//Ustalenie maksymalnych szerokosci nazwisk
-		szerokosciGalezi(fm, osobaGlowna, 0);
+		branchesWidth(fm, mainPerson, 0);
 		
-		//obliczenie szerokosci calkowitej (bez marginesow)
-		for (int i=0; i<szerokosciKolumn.length; i++)
-			szerokoscCalokowita += szerokosciKolumn[i]+szerMiedzyPokoleniami;
-		szerokoscCalokowita -= szerMiedzyPokoleniami;
+		for (int i=0; i<columnsWidths.length; i++)
+			totalWidth += columnsWidths[i] + betweenGenerationsSpace;
+		totalWidth -= betweenGenerationsSpace;
 		
-		//w ostatniej kolumnie pozosta³a prawa granica ostatniej kolumny
-		return szerokoscCalokowita;
+		return totalWidth;
 	}	
 	
-	private void szerokosciGalezi(FontMetrics fm, Person osoba, int pokolenie)
+	private void branchesWidth(FontMetrics fm, Person person, int generation)
 	{
-		int szerokosc;
-		Person malzonek;
+		int width;
+		Person spouse;
 
-		//porónanie w³asnej szerokoœci
-		szerokosc = wyswietlacz.getWidth(osoba);
-		if (szerokosc > szerokosciKolumn[pokolenie])
-			szerokosciKolumn[pokolenie] = szerokosc;
+		//compare own width
+		width = nameDisplay.getWidth(person);
+		if (width > columnsWidths[generation])
+			columnsWidths[generation] = width;
 
-		//porównie szerokoœci wszystkich ma³¿onków
-		for (int i=0; i<osoba.numberOfMarriages(); i++)
+		//compare widths all spouses
+		for (int i=0; i<person.numberOfMarriages(); i++)
 		{
-			malzonek = osoba.getSpouse(i);
-			szerokosc = wyswietlacz.getWidth(malzonek)+wciecieMalzonka;
-			if (szerokosc > szerokosciKolumn[pokolenie])
-				szerokosciKolumn[pokolenie] = szerokosc;			
+			spouse = person.getSpouse(i);
+			width = nameDisplay.getWidth(spouse) + spouseIndentation;
+			if (width > columnsWidths[generation])
+				columnsWidths[generation] = width;			
 		}
 		
-		//rekurencyjne wywo³anie dla wszystkich dzieci
-		for (int i=0; i<osoba.numberOfChildren(); i++)
-			szerokosciGalezi(fm, osoba.getChild(i), pokolenie+1);
+		//recurring invoke for all children
+		for (int i=0; i<person.numberOfChildren(); i++)
+			branchesWidth(fm, person.getChild(i), generation+1);
 	}
 	
-	private int rysujRodzine(Graphics2D g, Person o, int x, int y, int pokolenie)
+	private int drawFamily(Graphics2D g, Person person, int x, int y, int generation)
 	{
-		int przes = 0;
-		int przesMal = 0;
-		int wysNazw  = wyswietlacz.getHeight(o);
-		int szerNazw = wyswietlacz.getWidth(o);
+		int offset = 0;
+		int spouseOffset = 0;
+		int nameHeight  = nameDisplay.getHeight(person);
+		int nameWidth = nameDisplay.getWidth(person);
 		
-		int liniaX;
+		int lineX;
 		
-		y += wysNazw;
-		wyswietlacz.print(o, x, y);
-		klikMapa.dodajObszar(o, x, y, x+szerNazw, y-wysNazw);
+		y += nameHeight;
+		nameDisplay.print(person, x, y);
+		clickMap.addArea(person, x, y, x+nameWidth, y-nameHeight);
 		
-		for (int i=0; i<o.numberOfMarriages(); i++)
-//			przesMal += rysujMalzonka(g, o.getMalzonek(i), x, y+((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
-			przesMal += rysujMalzonka(g, o.getSpouse(i), x, y+przesMal+odstepMiedzyMalzonkami) + odstepMiedzyMalzonkami;;//((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
+		for (int i=0; i<person.numberOfMarriages(); i++)
+			spouseOffset += drawSpouse(g, person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
 	
-		if (o.numberOfChildren() > 0)
+		if (person.numberOfChildren() > 0)
 		{
-			liniaX = x+szerokosciKolumn[pokolenie]+marginesLini+minDlugoscKreskiOdRodzica;//
-			//linia od rodzica
-			g.drawLine(x+szerNazw+marginesLini, y-wysNazw/2, liniaX, y-wysNazw/2);
-			for (int i=0; i<o.numberOfChildren(); i++)
+			lineX = x + columnsWidths[generation] + lineMargin + minParentLineLength;
+
+			//line from parent
+			g.drawLine(x+nameWidth+lineMargin, y-nameHeight/2, lineX, y-nameHeight/2);
+			for (int i=0; i<person.numberOfChildren(); i++)
 			{
-				//linia do dziecka
-				g.drawLine(liniaX, y+przes-wysNazw/2, liniaX+dlugoscStrzalekDoDzieci, y+przes-wysNazw/2);
-				rysujGrot(g, liniaX+dlugoscStrzalekDoDzieci, y+przes-wysNazw/2);
-				rysujNumerMalzenstwa(g, o.getChild(i), o, liniaX, y+przes, y+przes-wysNazw/2);
-				//linia pionowa
-				g.drawLine(liniaX, y-wysNazw/2, liniaX, y-wysNazw/2+przes);
-				przes += rysujRodzine(g, o.getChild(i), liniaX+dlugoscStrzalekDoDzieci+marginesLini, y-wysNazw+przes, pokolenie+1)+miedzyRodzenstwem;
+				//line to child
+				g.drawLine(lineX, y+offset-nameHeight/2, lineX+childArrowLength, y+offset-nameHeight/2);
+				drawArrowhead(g, lineX+childArrowLength, y+offset-nameHeight/2);
+				drawMarriageNumber(g, person.getChild(i), person, lineX, y+offset, y+offset-nameHeight/2);
+
+				//vertical line
+				g.drawLine(lineX, y-nameHeight/2, lineX, y-nameHeight/2+offset);
+				offset += drawFamily(g, person.getChild(i), lineX+childArrowLength+lineMargin, y-nameHeight+offset, generation+1) + betweenSiblingsSpace;
 			}
-//			przes -= miedzyRodzenstwem; //Mo¿na w³¹czyæ do zacieœnienia zapisu (i do mniejszenia czytlnoœci)
 		}
 
-		return Math.max(przesMal+wysNazw, przes);
+		return Math.max(spouseOffset+nameHeight, offset);
 	
 		
 	}
-	private void rysujNumerMalzenstwa(Graphics2D g, Person dziecko, Person rodzic, int x1, int y1, int yLini) {
-		if (rodzic.numberOfMarriages() > 1)
+	
+	private void drawMarriageNumber(Graphics2D g, Person child, Person parent, int x1, int y1, int lineY) {
+		if (parent.numberOfMarriages() > 1)
 		{
 			Color tempColor;
 			FontMetrics fm = g.getFontMetrics();
-			int nrMalzenstwa = dziecko.parentsMarriageNumber(rodzic);
-			if (nrMalzenstwa != 0)
+			int marriageNumber = child.parentsMarriageNumber(parent);
+			if (marriageNumber != 0)
 			{
 				tempColor = g.getColor();
 				g.setColor(g.getBackground());
-				g.drawLine(x1+2, yLini, x1+2+fm.stringWidth(nrMalzenstwa+""), yLini);
+				g.drawLine(x1+2, lineY, x1+2+fm.stringWidth(marriageNumber+""), lineY);
 				g.setColor(tempColor);
-				g.drawString(nrMalzenstwa+"", x1+3, y1);
+				g.drawString(marriageNumber+"", x1+3, y1);
 			}
 		}
 	}
-	private int rysujRodzine(Graphics2D g, Person o, int x, int y, int pokolenie, boolean ostatnie)
-	{
-		int przes = 0;
-		int przesMal = 0;
-//		FontMetrics fm = g.getFontMetrics();
-//		String nazwisko = o.imieNazwisko();
-		int wysNazw  = wyswietlacz.getHeight(o);
-		int szerNazw = wyswietlacz.getWidth(o);
-//		int wysNazw  = fm.getAscent()-fm.getDescent();//getHeight();
-//		int szerNazw = fm.stringWidth(nazwisko);
-//		int przesuniecie = wysNazw*4/5;
-
-		int liniaX;
-		
-		y += wysNazw;
-		wyswietlacz.print(o, x, y);
-//		g.drawString(nazwisko, x, y);
-		klikMapa.dodajObszar(o, x, y, x+szerNazw, y-wysNazw);
-		
-		for (int i=0; i<o.numberOfMarriages(); i++)
-//			przesMal += rysujMalzonka(g, o.getMalzonek(i), x, y+((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
-			przesMal += rysujMalzonka(g, o.getSpouse(i), x, y+przesMal+odstepMiedzyMalzonkami) + odstepMiedzyMalzonkami;//((odstepMiedzyMalzonkami+wysNazw)*(i+1))) + odstepMiedzyMalzonkami;
 	
-		if (o.numberOfChildren() > 0)
+	private int drawFamily(Graphics2D g, Person person, int x, int y, int generation, boolean last)
+	{
+		int offset = 0;
+		int spouseOffset = 0;
+		int nameHeight  = nameDisplay.getHeight(person);
+		int nameWidth = nameDisplay.getWidth(person);
+
+		int lineX;
+		
+		y += nameHeight;
+		nameDisplay.print(person, x, y);
+		clickMap.addArea(person, x, y, x+nameWidth, y-nameHeight);
+		
+		for (int i=0; i<person.numberOfMarriages(); i++)
+			spouseOffset += drawSpouse(g, person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
+	
+		if (person.numberOfChildren() > 0)
 		{
-			liniaX = x+szerokosciKolumn[pokolenie]+marginesLini+minDlugoscKreskiOdRodzica;//szerPokolenia;
-			//linia od rodzica
-			g.drawLine(x+szerNazw+marginesLini, y-wysNazw/2, liniaX, y-wysNazw/2);
-			for (int i=0; i<o.numberOfChildren(); i++)
+			lineX = x + columnsWidths[generation] + lineMargin + minParentLineLength;
+
+			//line from parent
+			g.drawLine(x+nameWidth+lineMargin, y-nameHeight/2, lineX, y-nameHeight/2);
+			for (int i=0; i<person.numberOfChildren(); i++)
 			{
-				//linia do dziecka
-				g.drawLine(liniaX, y+przes-wysNazw/2, liniaX+dlugoscStrzalekDoDzieci, y+przes-wysNazw/2);
-				rysujGrot(g, liniaX+dlugoscStrzalekDoDzieci, y+przes-wysNazw/2);
-				rysujNumerMalzenstwa(g, o.getChild(i), o, liniaX, y+przes, y+przes-wysNazw/2);
-				//linia pionowa
-				g.drawLine(liniaX, y-wysNazw/2, liniaX, y-wysNazw/2+przes);
-				przes += rysujRodzine(g, o.getChild(i), liniaX+dlugoscStrzalekDoDzieci+marginesLini, y-wysNazw+przes, pokolenie+1, i==o.numberOfChildren()-1);
+				//line to child
+				g.drawLine(lineX, y+offset-nameHeight/2, lineX+childArrowLength, y+offset-nameHeight/2);
+				drawArrowhead(g, lineX+childArrowLength, y+offset-nameHeight/2);
+				drawMarriageNumber(g, person.getChild(i), person, lineX, y+offset, y+offset-nameHeight/2);
+
+				//vertical line
+				g.drawLine(lineX, y-nameHeight/2, lineX, y-nameHeight/2+offset);
+				offset += drawFamily(g, person.getChild(i), lineX+childArrowLength+lineMargin, y-nameHeight+offset, generation+1, i==person.numberOfChildren()-1);
 			}
 		}
 
-		if (ostatnie)
-			return Math.max(przesMal+wysNazw, przes);
+		if (last)
+			return Math.max(spouseOffset+nameHeight, offset);
 		
-		if (o.numberOfChildren() == 0)
-			return przesMal+wysNazw+miedzyRodzenstwem;
+		if (person.numberOfChildren() == 0)
+			return spouseOffset+nameHeight+betweenSiblingsSpace;
 		
-		return Math.max(przesMal+wysNazw+miedzyRodzenstwem, przes+odstepMiedzyKuzynostwem);
+		return Math.max(spouseOffset+nameHeight+betweenSiblingsSpace, offset+betwennCousisnsSpace);
 	}
 	
-	private int rysujMalzonka(Graphics2D g, Person o, int x, int y)
+	private int drawSpouse(Graphics2D g, Person person, int x, int y)
 	{
-//		String nazwisko = o.imieNazwisko();
-//		FontMetrics fm = g.getFontMetrics();
-//		int wysNazw = fm.getAscent()-fm.getDescent();
-//		int szerNazw = fm.stringWidth(nazwisko);
-		int wysNazw = wyswietlacz.getHeight(o);
-		int szerNazw = wyswietlacz.getWidth(o);
+		int nameHeight = nameDisplay.getHeight(person);
+		int nameWidth = nameDisplay.getWidth(person);
 		
-//		g.drawString(nazwisko, x+wciecieMalzonka, y);
-		wyswietlacz.print(o, x+wciecieMalzonka, y+wysNazw);
-		klikMapa.dodajObszar(o, x, y+wysNazw, x+wciecieMalzonka+szerNazw, y);
-		rysujObraczki(g, x, y, wciecieMalzonka, wysNazw);
+		nameDisplay.print(person, x+spouseIndentation, y+nameHeight);
+		clickMap.addArea(person, x, y+nameHeight, x+spouseIndentation+nameWidth, y);
+		drawRings(g, x, y, spouseIndentation, nameHeight);
 		
-		return wysNazw;
+		return nameHeight;
 	}
 
-	private void rysujObraczki(Graphics2D g, int x, int y, int szer, int wys) {
-		Color kolor = g.getColor();
-		final float czescWspolna = (float)0.3; 
-//		final int wspolne;
-		float propObraczek = (float) (2.0-czescWspolna);
-		float propObszaru  = szer/wys;
-		int wysObraczki, szerObraczki;
-		int szerObraczek;
+	private void drawRings(Graphics2D g, int x, int y, int width, int height) {
+		Color color = g.getColor();
+		final float commonPart = (float)0.3; 
+		float ringsRatio = (float) (2.0-commonPart);
+		float areaRatio  = width/height;
+		int ringHeight, ringWidth;
+		int ringsWidth;
 		int x2;
 		
-//		g.setColor(Color.RED);
-//		g.drawRect(x, y, szer, wys);
-		
-		
-		if (propObraczek > propObszaru)
+		if (ringsRatio > areaRatio)
 		{
-			//ograniczeniem jest szer
-			szerObraczek = szer;
-			szerObraczki = wysObraczki = (int) (szerObraczek/(2-czescWspolna));
+			//width is the limit
+			ringsWidth = width;
+			ringWidth = ringHeight = (int) (ringsWidth/(2-commonPart));
 		}
 		else
 		{
-			//ograniczeniem jest wys
-			szerObraczki = wysObraczki = wys;
-			szerObraczek = (int) (szerObraczki*(2-czescWspolna));
+			//height is the limit
+			ringWidth = ringHeight = height;
+			ringsWidth = (int) (ringWidth*(2-commonPart));
 		}
 		
-//		int wymiar;
+		g.setColor(ringsColor);
 		
-		g.setColor(kolorObraczek);
-//		wymiar = Math.min(szer, wys);
-//		wymiar = Math.min((int)(szer*(2-czescWspolna)), wys);
-//		
-//		int margX = (szer-wymiar)/2;
-//		int margY = (wys -wymiar)/2;
-		
-		x += (szer-szerObraczek)/2;//(szer-wymiar)/2;
-		y += (wys -wysObraczki) /2;//(wys -wymiar)/2;
-		x2 = (int)(x+(szerObraczki*(1-czescWspolna)));
+		x += (width-ringsWidth)/2;
+		y += (height -ringHeight) /2;
+		x2 = (int)(x+(ringWidth*(1-commonPart)));
 		
 
-		g.drawOval(x , y, szerObraczki, wysObraczki);
-		g.drawOval(x2, y, szerObraczki, wysObraczki);
+		g.drawOval(x , y, ringWidth, ringHeight);
+		g.drawOval(x2, y, ringWidth, ringHeight);
 		
-		g.setColor(kolor);
+		g.setColor(color);
 	}
 	
-	private void rysujGrot(Graphics2D g, int x, int y)
+	private void drawArrowhead(Graphics2D g, int x, int y)
 	{
-		g.drawLine(x, y, x-szerGrotu, y-wysGrotu);
-		g.drawLine(x, y, x-szerGrotu, y+wysGrotu);
+		g.drawLine(x, y, x-arrowheadWidth, y-arrowheadHeight);
+		g.drawLine(x, y, x-arrowheadWidth, y+arrowheadHeight);
 	}
-	
-//	@Override
-//	public Dimension getWymiary() {
-//		// TODO 
-//		return new Dimension(szerokosc, wysokosc);
-//	}
-
 }

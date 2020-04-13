@@ -6,71 +6,76 @@ import model.Person;
 
 public class ClickMap {
 
-	class Obszar {
-		int x1,y1,x2,y2;
+	class ClickArea {
+		int left, top, right, bottom;
 		Person osoba;
 
-		public Obszar() {
-			// TODO Auto-generated constructor stub
-		}
+		public ClickArea() {}
 
-		public Obszar(Person osoba, int x1, int y1, int x2, int y2) {
+		public ClickArea(Person osoba, int left, int top, int right, int bottom) {
 			this.osoba = osoba;
-			if (x1 < x2)
+			if (left < right)
 			{
-				this.x1 = x1; this.x2 = x2;
+				this.left = left;
+				this.right = right;
 			} else
 			{
-				this.x1 = x2; this.x2 = x1;
+				this.left = right;
+				this.right = left;
 			}
 			
-			if (y1 < y2)
+			if (top < bottom)
 			{
-				this.y1 = y1; this.y2 = y2;
+				this.top = top;
+				this.bottom = bottom;
 			} else
 			{
-				this.y1 = y2; this.y2 = y1;
+				this.top = bottom;
+				this.bottom = top;
 			}
 		}
 		
 	}
 	
-	private ArrayList<Obszar> obszary = new ArrayList<Obszar>();
+	private ArrayList<ClickArea> areas = new ArrayList<ClickArea>();
 	
-	public int liczbaObszarow() {return obszary.size();}
-	public Obszar getObszar(int indeks){
+	public int size() {
+		return areas.size();
+	}
+	
+	public ClickArea getArea(int index){
 		
-		if (indeks < 0 || indeks >= obszary.size())
-			throw new IllegalArgumentException("Indeks poza zakresem");
+		if (index < 0 || index >= areas.size())
+			throw new IllegalArgumentException("Index out of range");
 
-		return obszary.get(indeks);
+		return areas.get(index);
 	}
 	
-	public void dodajObszar(Person osoba, int x1, int y1, int x2, int y2)
+	public void addArea(Person person, int top, int left, int bottom, int right)
 	{
-		obszary.add(new Obszar(osoba, x1,y1,x2,y2));
+		areas.add(new ClickArea(person, top, left, bottom, right));
 	}
 	
-	public Person ktoTuJest(int x, int y)
+	public Person whoIsThere(int x, int y)
 	{
-		for (Obszar o: obszary)
-			if ((o.x1 <= x) && (o.x2 >= x) &&
-				(o.y1 <= y) && (o.y2 >= y))
+		for (ClickArea o: areas)
+			if ((o.left <= x) && (o.right >= x) &&
+				(o.top <= y) && (o.bottom >= y))
 				return o.osoba;
 		return null;
 	}
 
-	public void wyczysc() {
-		obszary.clear();
+	public void clear() {
+		areas.clear();
 	}
 	
-	public String listaObszarow()
+	public String areaList()
 	{
 		StringBuffer sb = new StringBuffer();
 		
-		for (Obszar o: obszary)
+		for (ClickArea area: areas)
 		{
-			sb.append(o.osoba.nameSurname() + " -> " + o.x1 + "," + o.y1 + " | " + o.x2 + "," + o.y2 + "\n");
+			sb.append(area.osoba.nameSurname() + " -> " + area.left + "," + area.top + " | " + area.right + "," + area.bottom + "\n");
 		}
 		
 		return sb.toString();

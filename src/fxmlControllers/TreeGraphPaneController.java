@@ -37,7 +37,7 @@ public class TreeGraphPaneController implements Initializable{
 	private void build() {
 		if (graph != null && person != null) {
 			canvas.setGrafDrzewa(graph);
-			graph.setOsobaGlowna(person);
+			graph.setMainPerson(person);
 
 			SwingRefresher.refreshGraph(swingNode);
 		}
