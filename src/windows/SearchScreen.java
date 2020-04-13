@@ -48,7 +48,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 	String stareZapytanie = "";
 	JLabel liczbaZnalezionych = new JLabel();
 	Diminutives zdrobnienia = null;
-	public static String sciezkaDoDodatkowychZdrobnien = Tools.sciezkaFolderuZJarem()+"zdrobnienia.ust";
+	public static String sciezkaDoDodatkowychZdrobnien = Tools.dirWithJarPath()+"zdrobnienia.ust";
 
 	
 	public void setDrzewo(Tree drzewo) {
@@ -88,7 +88,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 		
 		
 		ciag = ciag.toUpperCase();		
-		return Tools.usunPolskieZnaki(ciag);
+		return Tools.removePolishChars(ciag);
 	}
 
 	private void ustawKomponenty() {
@@ -196,7 +196,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 			if (pyt.equals(stareZapytanie)) return;
 			stareZapytanie = pyt;
 			pyt = pyt.toUpperCase();
-			pyt = Tools.usunPolskieZnaki(pyt);
+			pyt = Tools.removePolishChars(pyt);
 				
 			lista.removeAll();
 			DefaultListModel<String> model = new DefaultListModel<String>();

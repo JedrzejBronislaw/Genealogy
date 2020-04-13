@@ -29,7 +29,7 @@ public class Settings {
 		DataInputStream dis;
 		
 		if (sciezka.charAt(1) != ':')
-			sciezka = Tools.sciezkaFolderuZJarem() + sciezka;
+			sciezka = Tools.dirWithJarPath() + sciezka;
 		
 		fis = new FileInputStream(sciezka);
 		dis = new DataInputStream(fis);

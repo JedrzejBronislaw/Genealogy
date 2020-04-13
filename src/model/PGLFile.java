@@ -96,7 +96,7 @@ public class PGLFile {
 		DataInputStream dis;
 		
 		if (path.charAt(1) != ':')
-			path = Tools.sciezkaFolderuZJarem() + path;
+			path = Tools.dirWithJarPath() + path;
 		
 		fis = new FileInputStream(path);
 		dis = new DataInputStream(fis);

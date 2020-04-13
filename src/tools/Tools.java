@@ -6,44 +6,44 @@ import java.net.URLDecoder;
 
 public class Tools {
 	
-	public static String sciezkaFolderuZJarem()
+	public static String dirWithJarPath()
 	{
 		File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
-		String sciezka = null;
+		String path = null;
 
 		try {
-			sciezka = URLDecoder.decode(jarDir.getAbsolutePath(), "UTF-8");
-			sciezka = sciezka+File.separator;//"/";//"\\";
+			path = URLDecoder.decode(jarDir.getAbsolutePath(), "UTF-8");
+			path = path+File.separator;
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 
-		return sciezka;
+		return path;
 	}
 	
-	public static String usunPolskieZnaki(String tekst)
+	public static String removePolishChars(String text)
 	{
-		tekst = tekst.replace("π", "a");
-		tekst = tekst.replace("Í", "e");
-		tekst = tekst.replace("ú", "s");
-		tekst = tekst.replace("Ê", "c");
-		tekst = tekst.replace("≥", "l");
-		tekst = tekst.replace("Û", "o");
-		tekst = tekst.replace("ü", "z");
-		tekst = tekst.replace("ø", "z");
-		tekst = tekst.replace("Ò", "n");
+		text = text.replace("π", "a");
+		text = text.replace("Í", "e");
+		text = text.replace("ú", "s");
+		text = text.replace("Ê", "c");
+		text = text.replace("≥", "l");
+		text = text.replace("Û", "o");
+		text = text.replace("ü", "z");
+		text = text.replace("ø", "z");
+		text = text.replace("Ò", "n");
 
-		tekst = tekst.replace("•", "A");
-		tekst = tekst.replace(" ", "E");
-		tekst = tekst.replace("å", "S");
-		tekst = tekst.replace("∆", "C");
-		tekst = tekst.replace("£", "L");
-		tekst = tekst.replace("”", "O");
-		tekst = tekst.replace("è", "Z");
-		tekst = tekst.replace("Ø", "Z");
-		tekst = tekst.replace("—", "N");
+		text = text.replace("•", "A");
+		text = text.replace(" ", "E");
+		text = text.replace("å", "S");
+		text = text.replace("∆", "C");
+		text = text.replace("£", "L");
+		text = text.replace("”", "O");
+		text = text.replace("è", "Z");
+		text = text.replace("Ø", "Z");
+		text = text.replace("—", "N");
 				
-		return tekst;
+		return text;
 	}
 }
