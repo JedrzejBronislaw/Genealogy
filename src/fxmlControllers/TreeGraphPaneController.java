@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import model.Person;
 import tools.SwingRefresher;
 import treeGraphs.TreeGraph;
+import treeGraphs.painter.Graphics2DPainter;
 import windows.Canvas;
 
 public class TreeGraphPaneController implements Initializable{
@@ -23,6 +24,7 @@ public class TreeGraphPaneController implements Initializable{
 	private SwingNode swingNode;
 	
 	private Canvas canvas = new Canvas();
+	private Graphics2DPainter painter = new Graphics2DPainter();
 	
 	public void setPerson(Person person) {
 		this.person = person;
@@ -38,6 +40,9 @@ public class TreeGraphPaneController implements Initializable{
 		if (graph != null && person != null) {
 			canvas.setGrafDrzewa(graph);
 			graph.setMainPerson(person);
+			
+			canvas.setPainter(painter);
+			graph.setPainter(painter);
 
 			SwingRefresher.refreshGraph(swingNode);
 		}

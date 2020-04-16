@@ -1,6 +1,7 @@
 package nameDisplaying;
 
 import model.Person;
+import treeGraphs.painter.Point;
 
 public class DateUnderNameDisplaying extends Name {
 
@@ -11,22 +12,26 @@ public class DateUnderNameDisplaying extends Name {
 		String date = generateDate(person);
 		if (date != null)
 		{
-			g.drawString(generateName(person), x, y-verticalSpacing-(fm.getAscent()-fm.getDescent()));
-			g.drawString(date, x, y);
+			painter.drawText(generateName(person), new Point(x, y-verticalSpacing-painter.getTextHeight()));
+			painter.drawText(date, new Point(x, y));
 		} else
-			g.drawString(generateName(person), x, y);
+			painter.drawText(generateName(person), new Point(x, y));
 	}
+
 
 	@Override
 	
 	public int getHeight(Person person) {
-		return (fm.getAscent()-fm.getDescent()) * (generateDate(person)==null?1:2) + verticalSpacing;
+		int height = painter.getTextHeight();
+		return height * (generateDate(person)==null ? 1 : 2) + verticalSpacing;
 	}
 
 	@Override
 	public int getWidth(Person person) {
 		String date = generateDate(person);
-		return Math.max(fm.stringWidth(generateName(person)), (date==null)?0:fm.stringWidth(generateDate(person)));
+		int nameWidth = painter.getTextWidth(generateName(person));
+		int dateWidth = (date==null) ? 0 : painter.getTextWidth(generateDate(person));
+		return Math.max(nameWidth, dateWidth);
 	}
 
 	private String generateName(Person person)

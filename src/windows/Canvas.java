@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import lombok.Setter;
 import treeGraphs.TreeGraph;
+import treeGraphs.painter.Graphics2DPainter;
 
 public class Canvas extends JPanel implements MouseListener {
 	
@@ -29,23 +30,21 @@ public class Canvas extends JPanel implements MouseListener {
 	@Setter
 	private BiConsumer<Integer, Integer> wymiary;
 	
+	@Setter
+	Graphics2DPainter painter;
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-//		Color[] k = new Color[]{Color.black, Color.blue, Color.red, Color.CYAN};
 		Graphics2D c = (Graphics2D)g;
 		
+		if (painter != null)
+			painter.setGraphics(c);
 
 		c.setColor(Color.BLACK);
-//		c.drawString(getWidth() + "x" +getHeight(), 100, 100);
-
-//		c.setColor(k[new Random().nextInt(k.length)]);
-//		c.fillRect(100, 100, 100, 100);
 		
-//		setSize(getWidth(), getHeight()*2);
-		
-		if (graf != null) graf.draw(c);
+		if (graf != null) graf.draw();
 		if(wymiary != null)
 			wymiary.accept(graf.getWidth(), graf.getHeight());
 		

@@ -1,12 +1,11 @@
 package treeGraphs;
 
 import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 import lombok.Setter;
 import model.Person;
+import treeGraphs.painter.Direction;
+import treeGraphs.painter.Point;
 
 public class ClosestTreeGraph extends TreeGraph {
 
@@ -23,8 +22,6 @@ public class ClosestTreeGraph extends TreeGraph {
 	private static final int childIndentation = 20;
 	private static final int aboveChildrenSpace = 30;
 	private static final int minSpaceBetweenSpousesChildrenAndSiblings = 30;
-	private static final int arrowheadWidth = 3;
-	private static final int arrowheadHeight  = 5;
 
 	private static final Font mainPersonFont = new Font("Times", Font.BOLD, 25);
 	private static final Font familyFont   = new Font("Arial", Font.BOLD, 12);
@@ -54,11 +51,8 @@ public class ClosestTreeGraph extends TreeGraph {
 	}
 	
 	@Override
-	public void draw(Graphics2D g) {
-		g.setRenderingHint(
-			    RenderingHints.KEY_ANTIALIASING,
-			    RenderingHints.VALUE_ANTIALIAS_ON);
-		
+	public void draw() {
+		painter.startDrawing();
 		
 		clickMap.clear();
 		if (mainPerson == null)
@@ -66,27 +60,26 @@ public class ClosestTreeGraph extends TreeGraph {
 		
 		if(makeCalculations)
 		{
-			calculations(g);
+			calculations();
 			makeCalculations = false;
 		}
 		
 		String name = mainPerson.nameSurname();
 		Person[] siblings = mainPerson.getSiblings();
 		
+		painter.setTextStyle(mainPersonFont);
+		painter.drawText(name, new Point(xName, yName));
 		
-		g.setFont(mainPersonFont);
-		g.drawString(name, xName, yName);
-		
-		g.setFont(familyFont);
+		painter.setTextStyle(familyFont);
 
-		drawLines(g, siblings.length > 0);
-		drawParents(g, areaWidth);
-		drawSiblings(g, siblings, marginX+areaWidth-siblingsWidth, yName);
-		drawSpouses(g, xName+spouceIndentation, yName);
-		drawChildren(g, xName+childIndentation, yName+aboveChildrenSpace-spaceBetweenChildren+spousesHeight);		
+		drawLines(siblings.length > 0);
+		drawParents(areaWidth);
+		drawSiblings(siblings, marginX+areaWidth-siblingsWidth, yName);
+		drawSpouses(xName+spouceIndentation, yName);
+		drawChildren(xName+childIndentation, yName+aboveChildrenSpace-spaceBetweenChildren+spousesHeight);		
 	}
 	
-	private void calculations(Graphics2D g)
+	private void calculations()
 	{
 		Person mother = mainPerson.getMother();
 		Person father = mainPerson.getFather();
@@ -96,30 +89,28 @@ public class ClosestTreeGraph extends TreeGraph {
 		String fatherName = (father != null) ? father.nameSurname() : "";
 		
 		
-		g.setFont(mainPersonFont);
-		FontMetrics fm = g.getFontMetrics();
-		nameHeight  = fm.getAscent()-fm.getDescent();
-		nameWidth = fm.stringWidth(name);
+		painter.setTextStyle(mainPersonFont);
+		nameHeight = painter.getTextHeight();
+		nameWidth  = painter.getTextWidth(name);
 		
 		xName = marginX;
 		yName = marginY+nameHeight;
 		if ((father != null) || (mother != null))
-		yName += underParentsSpace;
+			yName += underParentsSpace;
 		
-		g.setFont(familyFont);
-		fm = g.getFontMetrics();
-		textHeight = fm.getAscent()-fm.getDescent();
-		motherNameWidth = fm.stringWidth(motherName);
-		fatherNameWidth = fm.stringWidth(fatherName);
+		painter.setTextStyle(familyFont);
+		textHeight = painter.getTextHeight();
+		motherNameWidth = painter.getTextWidth(motherName);
+		fatherNameWidth = painter.getTextWidth(fatherName);
 
-		siblingsWidth = siblingsWidth(g, siblings);
+		siblingsWidth = siblingsWidth(siblings);
 		siblingsHeight  = siblings.length * (textHeight+spaceBetweenSiblings);
-		spousesWidth = spousesWidth(g);
+		spousesWidth = spousesWidth();
 		spousesHeight  = mainPerson.numberOfMarriages() * (textHeight+spaceBetweenSpouses);
-		childrenWidth = childrenWidth(g);
+		childrenWidth = childrenWidth();
 		childrenHeight  = mainPerson.numberOfChildren() * (textHeight+spaceBetweenChildren)-spaceBetweenChildren;
 		
-		areaWidth = nameWidth;// + 100;
+		areaWidth = nameWidth;
 		if (areaWidth < fatherNameWidth+motherNameWidth+minSpaceBetweenParents)
 			areaWidth = fatherNameWidth+motherNameWidth+minSpaceBetweenParents;
 		if (areaWidth < spouceIndentation+spousesWidth+minSpaceBetweenSpousesChildrenAndSiblings+siblingsWidth)
@@ -138,7 +129,7 @@ public class ClosestTreeGraph extends TreeGraph {
 		width += marginX*2;
 	}
 	
-	private void drawLines(Graphics2D g, boolean hasSiblings)
+	private void drawLines(boolean hasSiblings)
 	{
 		Person father = mainPerson.getFather();
 		Person mother  = mainPerson.getMother();
@@ -150,15 +141,15 @@ public class ClosestTreeGraph extends TreeGraph {
 		int yLineTop = marginY+textHeight/2;
 		int yLineBottom = marginY+underParentsSpace-lineMargin;
 		if (father != null)
-			g.drawLine(xFromFather, yLineTop, xLine, yLineTop);
+			painter.drawLine(new Point(xFromFather, yLineTop), new Point(xLine, yLineTop));
 		if (mother != null)
-			g.drawLine(xFromMother, yLineTop, xLine, yLineTop);
+			painter.drawLine(new Point(xFromMother, yLineTop), new Point(xLine, yLineTop));
 
 		//from parents line
 		if ((father != null) || (mother != null))
 		{
-			g.drawLine(xLine, yLineTop, xLine, yLineBottom);
-			drawArrowhead(g, xLine, yLineBottom);
+			painter.drawLine(new Point(xLine, yLineTop), new Point(xLine, yLineBottom));
+			drawArrowhead(xLine, yLineBottom);
 		}
 		
 		//to siblings line
@@ -168,9 +159,9 @@ public class ClosestTreeGraph extends TreeGraph {
 			if (xAboveSiblings < marginX+nameWidth+(areaWidth-nameWidth)/2)
 				xAboveSiblings = marginX+nameWidth+(areaWidth-nameWidth)/2;
 			int yAboveSiblings = yName+spaceBetweenSiblings-lineMargin;
-			g.drawLine(xLine, yLineTop+(yLineBottom-yLineTop)/2, xAboveSiblings, yLineTop+(yLineBottom-yLineTop)/2);
-			g.drawLine(xAboveSiblings, yLineTop+(yLineBottom-yLineTop)/2, xAboveSiblings, yAboveSiblings);
-			drawArrowhead(g, xAboveSiblings, yAboveSiblings);
+			painter.drawLine(new Point(xLine, yLineTop+(yLineBottom-yLineTop)/2), new Point(xAboveSiblings, yLineTop+(yLineBottom-yLineTop)/2));
+			painter.drawLine(new Point(xAboveSiblings, yLineTop+(yLineBottom-yLineTop)/2), new Point(xAboveSiblings, yAboveSiblings));
+			drawArrowhead(xAboveSiblings, yAboveSiblings);
 		}
 		
 		//to children line
@@ -179,123 +170,115 @@ public class ClosestTreeGraph extends TreeGraph {
 			int xToChildren = marginX+childIndentation+childrenWidth/2;
 			int yToChildrenTop = yName+spousesHeight+lineMargin;
 			int yToChildrenBottom = yName+spousesHeight+aboveChildrenSpace-lineMargin;
-			g.drawLine(xToChildren, yToChildrenTop, xToChildren, yToChildrenBottom);
-			drawArrowhead(g, xToChildren, yToChildrenBottom);
+			painter.drawLine(new Point(xToChildren, yToChildrenTop), new Point(xToChildren, yToChildrenBottom));
+			drawArrowhead(xToChildren, yToChildrenBottom);
 		}
 	}
 	
-	private void drawArrowhead(Graphics2D g, int x, int y)
+	private void drawArrowhead(int x, int y)
 	{
-		g.drawLine(x, y, x-arrowheadWidth, y-arrowheadHeight);
-		g.drawLine(x, y, x+arrowheadWidth, y-arrowheadHeight);
+		painter.drawArrowhead(new Point(x, y), Direction.DOWN);
 	}
 	
-	private void drawParents(Graphics2D g, int areaWidth)
+	private void drawParents(int areaWidth)
 	{
 		Person mother = mainPerson.getMother();
 		Person father = mainPerson.getFather();
 		String motherName  = (mother != null)  ? mother.nameSurname()  : "";
 		String fatherName = (father != null) ? father.nameSurname() : "";
 
-		
-		g.drawString(fatherName, marginX, marginY+textHeight);
-		g.drawString(motherName,  marginX+areaWidth-motherNameWidth, marginY+textHeight);
+		painter.drawText(fatherName, new Point(marginX, marginY+textHeight));
+		painter.drawText(motherName, new Point(marginX+areaWidth-motherNameWidth, marginY+textHeight));
 		if (father != null)
 			clickMap.addArea(father, marginX, marginY+textHeight, marginX+fatherNameWidth, marginY);
 		if (mother != null)
 			clickMap.addArea(mother, marginX+areaWidth-motherNameWidth, marginY+textHeight, marginX+areaWidth, marginY);
 	}
 	
-	private void drawSiblings(Graphics2D g, Person[] siblings, int x, int y)
+	private void drawSiblings(Person[] siblings, int x, int y)
 	{
-		Font f = g.getFont();
-		g.setFont(new Font(f.getName(), Font.PLAIN, f.getSize()));
-		
-		FontMetrics fm = g.getFontMetrics();
-		int height = fm.getAscent()-fm.getDescent();
+		Font f = painter.getTextStyle();
+		painter.setTextStyle(f.getName(), Font.ITALIC, f.getSize());
+
+		int height = painter.getTextHeight();
 		int width;
 		
 		for (int i=0; i<siblings.length; i++)
 		{
-			width = fm.stringWidth(siblings[i].nameSurname());
-			g.drawString(siblings[i].nameSurname(), x, y+(i+1)*(height+spaceBetweenSiblings));
+			width = painter.getTextWidth(siblings[i].nameSurname());
+			painter.drawText(siblings[i].nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSiblings)));
 			clickMap.addArea(siblings[i], x, y+(i+1)*(height+spaceBetweenSiblings), x+width, y+(i+1)*(height+spaceBetweenSiblings)-height);
 		}
 		
-		g.setFont(f);
+		painter.setTextStyle(f.getName(), f.getStyle(), f.getSize());
 	}
 	
-	private void drawSpouses(Graphics2D g, int x, int y)
+	private void drawSpouses(int x, int y)
 	{
-		FontMetrics fm = g.getFontMetrics();
-		int height = fm.getAscent()-fm.getDescent();
+		int height = painter.getTextHeight();
 		int width;
 		Person spouse;
 		
 		for (int i=0; i<mainPerson.numberOfMarriages(); i++)
 		{
 			spouse = mainPerson.getSpouse(i);
-			width = fm.stringWidth(spouse.nameSurname());
-			g.drawString(spouse.nameSurname(), x, y+(i+1)*(height+spaceBetweenSpouses));
+			width = painter.getTextWidth(spouse.nameSurname());
+			painter.drawText(spouse.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSpouses)));
 			clickMap.addArea(spouse, x, y+(i+1)*(height+spaceBetweenSpouses), x+width, y+(i+1)*(height+spaceBetweenSpouses)-height);
 		}		
 	}
 	
-	private void drawChildren(Graphics2D g, int x, int y)
+	private void drawChildren(int x, int y)
 	{
-		FontMetrics fm = g.getFontMetrics();
-		int height = fm.getAscent()-fm.getDescent();
+		int height = painter.getTextHeight();
 		int width;
 		Person child;
 		
 		for (int i=0; i<mainPerson.numberOfChildren(); i++)
 		{
 			child = mainPerson.getChild(i);
-			width = fm.stringWidth(child.nameSurname());
-			g.drawString(child.nameSurname(), x, y+(i+1)*(height+spaceBetweenChildren));
+			width = painter.getTextWidth(child.nameSurname());
+			painter.drawText(child.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenChildren)));
 			clickMap.addArea(child, x, y+(i+1)*(height+spaceBetweenChildren), x+width, y+(i+1)*(height+spaceBetweenChildren)-height);
 		}		
 	}
 
-	private int siblingsWidth(Graphics2D g, Person[] sibilings) {
-		Font f = g.getFont();
-		g.setFont(new Font(f.getName(), Font.PLAIN, f.getSize()));
+	private int siblingsWidth(Person[] sibilings) {
+		Font f = painter.getTextStyle();
+		painter.setTextStyle(f.getName(), Font.PLAIN, f.getSize());
 		
-		FontMetrics fm = g.getFontMetrics();
 		int maxWidth = 0;
 		
 		for(Person sibiling: sibilings)
-			if (maxWidth < fm.stringWidth(sibiling.nameSurname()))
-				maxWidth = fm.stringWidth(sibiling.nameSurname());
+			if (maxWidth < painter.getTextWidth(sibiling.nameSurname()))
+				maxWidth = painter.getTextWidth(sibiling.nameSurname());
 
-		g.setFont(f);
+		painter.setTextStyle(f);
 		return maxWidth;
 	}
 
-	private int spousesWidth(Graphics2D g) {
-		FontMetrics fm = g.getFontMetrics();
+	private int spousesWidth() {
 		int maxWidth = 0;
 		Person spouse;
 		
 		for (int i=0; i<mainPerson.numberOfMarriages(); i++)
 		{
 			spouse = mainPerson.getSpouse(i);
-			if (maxWidth < fm.stringWidth(spouse.nameSurname()))
-				maxWidth = fm.stringWidth(spouse.nameSurname());
+			if (maxWidth < painter.getTextWidth(spouse.nameSurname()))
+				maxWidth = painter.getTextWidth(spouse.nameSurname());
 		}
 		return maxWidth;
 	}
 
-	private int childrenWidth(Graphics2D g) {
-		FontMetrics fm = g.getFontMetrics();
+	private int childrenWidth() {
 		int maxWidth = 0;
 		Person child;
 		
 		for (int i=0; i<mainPerson.numberOfChildren(); i++)
 		{
 			child = mainPerson.getChild(i);
-			if (maxWidth < fm.stringWidth(child.nameSurname()))
-				maxWidth = fm.stringWidth(child.nameSurname());
+			if (maxWidth < painter.getTextWidth(child.nameSurname()))
+				maxWidth = painter.getTextWidth(child.nameSurname());
 		}
 		return maxWidth;
 	}

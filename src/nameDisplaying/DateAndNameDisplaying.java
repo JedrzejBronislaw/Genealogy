@@ -1,22 +1,23 @@
 package nameDisplaying;
 
 import model.Person;
+import treeGraphs.painter.Point;
 
 public class DateAndNameDisplaying extends Name{
-	
+
 	@Override
 	public void print(Person person, int x, int y) {
-		g.drawString(genTekst(person), x, y);
+		painter.drawText(genTekst(person), new Point(x, y));
 	}
 
 	@Override
 	public int getHeight(Person person) {
-		return fm.getAscent()-fm.getDescent();
+		return painter.getTextHeight();
 	}
 
 	@Override
 	public int getWidth(Person person) {
-		return fm.stringWidth(genTekst(person));
+		return painter.getTextWidth(genTekst(person));
 	}
 	
 	private String genTekst(Person person)

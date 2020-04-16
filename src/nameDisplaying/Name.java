@@ -1,26 +1,24 @@
 package nameDisplaying;
 
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-
+import lombok.Setter;
 import model.Person;
+import treeGraphs.painter.Painter;
+import treeGraphs.painter.Point;
 
 public abstract class Name {
 	
-	Graphics2D g;
-	FontMetrics fm;
+	@Setter
+	protected Painter painter;
 	
 	public Name() {}
-	public Name(Graphics2D g) {
-		setGraphics(g);
+	public Name(Painter painter) {
+		setPainter(painter);
 	}
-	
-	public void setGraphics(Graphics2D g) {
-		this.g = g;
-		this.fm = g.getFontMetrics();
-	}
-	
+
 	abstract public void print(Person person, int x, int y);
+	public void print(Person person, Point point) {
+		print(person, point.getX(), point.getY());
+	};
 
 	abstract public int getHeight(Person person);
 	abstract public int getWidth(Person person);

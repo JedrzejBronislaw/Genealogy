@@ -21,12 +21,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import model.Person;
-import model.Person.Sex;
 import model.Person.LifeStatus;
+import model.Person.Sex;
 import other.PersonDetails;
 import tools.Injection;
 import tools.SwingRefresher;
 import treeGraphs.ClosestTreeGraph;
+import treeGraphs.painter.Graphics2DPainter;
 import windows.Canvas;
 
 public class CardPaneController implements Initializable{
@@ -119,6 +120,10 @@ public class CardPaneController implements Initializable{
 		cross = loadImage("res/img/cross.jpg");
 		venus = loadImage("res/img/venus.jpg");
 		mars = loadImage("res/img/mars.jpg");
+		
+		Graphics2DPainter painter = new Graphics2DPainter();
+		miniGraphCanvas.setPainter(painter);
+		grafMiniDrzewo.setPainter(painter);
 	}
 
 	private Image loadImage(String path) {

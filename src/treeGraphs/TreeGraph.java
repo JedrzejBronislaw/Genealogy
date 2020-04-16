@@ -14,6 +14,7 @@ import nameDisplaying.Name;
 import nameDisplaying.SimpleNameDisplaying;
 import tools.Injection;
 import treeGraphs.ClickMap.ClickArea;
+import treeGraphs.painter.Painter;
 import windows.CardScreen;
 import windows.Window;
 
@@ -23,7 +24,7 @@ public abstract class TreeGraph {
 	protected Person mainPerson;
 	protected int height;
 	protected int width;
-	@Setter
+
 	protected Name nameDisplay = new SimpleNameDisplaying();
 	
 	@Setter Window cardWindow = null;
@@ -31,10 +32,21 @@ public abstract class TreeGraph {
 	
 	protected ClickMap clickMap = new ClickMap();
 	
-	public abstract void draw(Graphics2D g);
+	protected Painter painter;
+	
+	public abstract void draw();
 	
 	@Setter
 	private Consumer<Person> personClickAction;
+	
+	public void setPainter(Painter painter) {
+		this.painter = painter;
+		nameDisplay.setPainter(painter);
+	}
+	public void setNameDisplay(Name nameDisplay) {
+		this.nameDisplay = nameDisplay;
+		nameDisplay.setPainter(painter);
+	}
 	
 	public void clik(int x, int y) {
 		Person person = clickMap.whoIsThere(x, y);
