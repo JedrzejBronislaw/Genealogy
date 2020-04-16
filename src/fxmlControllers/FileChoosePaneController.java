@@ -48,10 +48,12 @@ public class FileChoosePaneController implements Initializable {
 		});
 		
 		fileList.setOnMouseClicked(e -> {
-			String selectedPath = fileList.getSelectionModel().getSelectedItem().getPath();
+			RecentFile selectedFile = fileList.getSelectionModel().getSelectedItem();
 
-			if (e.getClickCount() == 2)
+			if (selectedFile != null && e.getClickCount() == 2) {
+				String selectedPath = selectedFile.getPath();
 				Injection.run(openTreeEvent, new File(selectedPath));
+			}
 		});
 		
 		fileList.setCellFactory(param -> new ListCell<RecentFile>() {
