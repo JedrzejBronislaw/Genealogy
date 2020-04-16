@@ -8,7 +8,11 @@ public class PersonDetails {
 	
 	public static String whoseChild(Person person)
 	{
-		if ((person.getFather() == null) && (person.getMother() == null)) return "";
+		Person father = person.getFather();
+		Person mother = person.getMother();
+
+		if ((father == null || father.getFirstName() == null || father.getFirstName().isEmpty()) 
+		&& (mother == null || mother.getFirstName() == null || mother.getFirstName().isEmpty())) return "";
 		
 		String outcome;
 		if (person.getSex() == Sex.WOMEN)
@@ -18,10 +22,10 @@ public class PersonDetails {
 		else
 			outcome = "dziecko ";
 		
-		outcome += InflectionPL.nameGenitive(person.getFather());
-		if ((person.getFather() != null) && (person.getMother() != null))
+		outcome += InflectionPL.nameGenitive(father);
+		if ((father != null) && (mother != null))
 			outcome += " i ";
-		outcome += InflectionPL.nameGenitive(person.getMother());
+		outcome += InflectionPL.nameGenitive(mother);
 		
 			
 		return outcome;
