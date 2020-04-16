@@ -20,4 +20,19 @@ public class Point {
 		
 		return (p.x == x && p.y == y);
 	}
+
+	public static Point middle(Point topLeft, Point bottomRight) {
+		int dx = bottomRight.getX() - topLeft.getX();
+		int dy = bottomRight.getY() - topLeft.getY();
+
+		int x = bottomRight.getX() + dx/2;
+		int y = bottomRight.getY() + dy/2;
+		
+		return new Point(x, y);
+	}
+	
+	@Override
+	public String toString() {
+		return "[x=" + x + "; y=" + y + "]";
+	}
 }

@@ -1,5 +1,5 @@
 package treeGraphs.painter;
 
-public enum Side {
+public enum Direction {
 	UP, LEFT, DOWN, RIGHT
 }
