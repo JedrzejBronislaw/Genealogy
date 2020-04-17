@@ -35,32 +35,6 @@ public class Graphics2DPainter extends Painter {
 	}
 
 	@Override
-	public void drawArrowhead(Point vertex, Direction side) {
-		int a, b, c, d;
-		int dx, dy;
-		
-		a = b = c = d = 1;
-		dx = dy = 1;
-		
-		switch (side) {
-			case UP:    a = -1; b = 1;  c = 1;  d = 1;  break;
-			case DOWN:  a = -1; b = -1; c = 1;  d = -1; break;
-			case LEFT:  a = 1;  b = 1;  c = 1;  d = -1; break;
-			case RIGHT: a = -1; b = 1;  c = -1; d = -1; break;
-		}
-
-		switch (side) {
-			case UP:
-			case DOWN:  dx = arrowheadWidth/2; dy = arrowheadLenght; break;
-			case LEFT:
-			case RIGHT: dx = arrowheadLenght; dy = arrowheadWidth/2; break;
-		}
-		
-		drawLine(vertex, vertex.addVector(a * dx, b * dy));
-		drawLine(vertex, vertex.addVector(c * dx, d * dy));
-	}
-
-	@Override
 	public void drawRectangle(Point topLeft, Point bottomRight) {
 		Rectangle rect = new Rectangle(topLeft, bottomRight);
 		g.fillRect(rect.getLeft(), rect.getTop(), rect.width(), rect.height());

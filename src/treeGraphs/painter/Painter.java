@@ -14,7 +14,6 @@ public abstract class Painter {
 	
 	abstract public void drawLine(Point start, Point end);
 	abstract public void drawText(String text, Point topLeft);
-	abstract public void drawArrowhead(Point vertex, Direction direction);
 	abstract public void drawRectangle(Point topLeft, Point bottomRight);
 	abstract public void drawCircle(Point center, float radius);
 	abstract public void drawRing(Point center, float radius);
@@ -52,5 +51,30 @@ public abstract class Painter {
 		System.out.println("dx = " + dx + "; dy = " + dy + "; r = " + radius);
 		
 		drawCircle(Point.middle(topLeft, bottomRight), radius);
+	}
+	
+	public void drawArrowhead(Point vertex, Direction side) {
+		int a, b, c, d;
+		int dx, dy;
+		
+		a = b = c = d = 1;
+		dx = dy = 1;
+		
+		switch (side) {
+			case UP:    a = -1; b = 1;  c = 1;  d = 1;  break;
+			case DOWN:  a = -1; b = -1; c = 1;  d = -1; break;
+			case LEFT:  a = 1;  b = 1;  c = 1;  d = -1; break;
+			case RIGHT: a = -1; b = 1;  c = -1; d = -1; break;
+		}
+
+		switch (side) {
+			case UP:
+			case DOWN:  dx = arrowheadWidth/2; dy = arrowheadLenght; break;
+			case LEFT:
+			case RIGHT: dx = arrowheadLenght; dy = arrowheadWidth/2; break;
+		}
+		
+		drawLine(vertex, vertex.addVector(a * dx, b * dy));
+		drawLine(vertex, vertex.addVector(c * dx, d * dy));
 	}
 }
