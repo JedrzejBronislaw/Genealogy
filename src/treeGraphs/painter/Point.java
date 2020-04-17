@@ -25,8 +25,8 @@ public class Point {
 		int dx = bottomRight.getX() - topLeft.getX();
 		int dy = bottomRight.getY() - topLeft.getY();
 
-		int x = bottomRight.getX() + dx/2;
-		int y = bottomRight.getY() + dy/2;
+		int x = topLeft.getX() + dx/2;
+		int y = topLeft.getY() + dy/2;
 		
 		return new Point(x, y);
 	}
