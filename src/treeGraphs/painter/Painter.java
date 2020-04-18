@@ -37,18 +37,12 @@ public abstract class Painter {
 		int dy = Math.abs(bottomRight.getY() - topLeft.getY());
 		float radius = Math.min(dx, dy)/2f;
 		
-		System.out.println("TL -> " + topLeft.toString() + "; BR -> " + bottomRight.toString());
-		System.out.println("dx = " + dx + "; dy = " + dy + "; r = " + radius);
-		
 		drawRing(Point.middle(topLeft, bottomRight), radius);
 	}
 	public void drawCircle(Point topLeft, Point bottomRight) {
 		int dx = Math.abs(bottomRight.getX() - topLeft.getX());
 		int dy = Math.abs(bottomRight.getY() - topLeft.getY());
 		float radius = Math.min(dx, dy)/2f;
-		
-		System.out.println("TL -> " + topLeft.toString() + "; BR -> " + bottomRight.toString());
-		System.out.println("dx = " + dx + "; dy = " + dy + "; r = " + radius);
 		
 		drawCircle(Point.middle(topLeft, bottomRight), radius);
 	}
