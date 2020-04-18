@@ -1,4 +1,4 @@
-package treeGraphs.painter;
+package treeGraphs.painter.graphics2DPainter;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -6,6 +6,10 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+
+import treeGraphs.painter.Painter;
+import treeGraphs.painter.Point;
+import treeGraphs.painter.Rectangle;
 
 public class Graphics2DPainter extends Painter {
 

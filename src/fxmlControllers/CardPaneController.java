@@ -27,7 +27,7 @@ import other.PersonDetails;
 import tools.Injection;
 import tools.SwingRefresher;
 import treeGraphs.ClosestTreeGraph;
-import treeGraphs.painter.Graphics2DPainter;
+import treeGraphs.painter.graphics2DPainter.Graphics2DPainter;
 import windows.Canvas;
 
 public class CardPaneController implements Initializable{

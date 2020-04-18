@@ -1,4 +1,4 @@
-package treeGraphs.painter;
+package treeGraphs.painter.fxPainter;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -8,6 +8,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import treeGraphs.painter.Painter;
+import treeGraphs.painter.Point;
+import treeGraphs.painter.Rectangle;
 
 public class FxPainter extends Painter{
 

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import lombok.Setter;
 import treeGraphs.TreeGraph;
-import treeGraphs.painter.Graphics2DPainter;
+import treeGraphs.painter.graphics2DPainter.Graphics2DPainter;
 
 public class Canvas extends JPanel implements MouseListener {
 	
@@ -44,14 +44,17 @@ public class Canvas extends JPanel implements MouseListener {
 
 		c.setColor(Color.BLACK);
 		
-		if (graf != null) graf.draw();
-		if(wymiary != null)
-			wymiary.accept(graf.getWidth(), graf.getHeight());
-		
-		if ((graf.getWidth() != getWidth()) ||
-			(graf.getHeight()  != getHeight()))
-			setPreferredSize(new Dimension(graf.getWidth(), graf.getHeight()));
-		revalidate();
+		if (graf != null) {
+			graf.draw();
+
+			if (wymiary != null)
+				wymiary.accept(graf.getWidth(), graf.getHeight());
+
+			if ((graf.getWidth() != getWidth()) ||
+					(graf.getHeight()  != getHeight()))
+				setPreferredSize(new Dimension(graf.getWidth(), graf.getHeight()));
+			revalidate();
+		}
 	}
 
 	@Override
