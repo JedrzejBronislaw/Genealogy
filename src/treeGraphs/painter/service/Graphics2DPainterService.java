@@ -9,6 +9,7 @@ import tools.SwingRefresher;
 import treeGraphs.TreeGraph;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.Painter;
+import treeGraphs.painter.graphics2DPainter.Graphics2DGraphSaver;
 import treeGraphs.painter.graphics2DPainter.Graphics2DPainter;
 import windows.Canvas;
 
@@ -17,6 +18,7 @@ public class Graphics2DPainterService extends PainterService {
 	private Canvas canvas;
 	private SwingNode swingNode;
 	private Graphics2DPainter painter = new Graphics2DPainter();
+	private Graphics2DGraphSaver graphSaver;
 	
 	public Graphics2DPainterService() {
 		canvas = new Canvas();
@@ -26,6 +28,8 @@ public class Graphics2DPainterService extends PainterService {
 		
 		swingNode = new SwingNode();
 		swingNode.setContent(canvas);
+		
+		graphSaver = new Graphics2DGraphSaver(canvas);
 	}
 	
 	@Override
@@ -52,8 +56,7 @@ public class Graphics2DPainterService extends PainterService {
 
 	@Override
 	public GraphSaver getGraphSaver() {
-		// TODO Auto-generated method stub
-		return null;
+		return graphSaver;
 	}
 
 
