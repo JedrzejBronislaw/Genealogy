@@ -23,7 +23,7 @@ public class TreeGraphWindow extends JFrame {
 	{
 		if ((gd != null) /*&& (d != null)*/ && (o != null))
 		{
-			plutno.setGrafDrzewa(gd);
+			plutno.setTreeGraph(gd);
 //			gd.setDrzewo(d);
 			gd.setMainPerson(o);
 		}

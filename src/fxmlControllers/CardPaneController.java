@@ -111,9 +111,9 @@ public class CardPaneController implements Initializable{
 		swingNode.setContent(miniGraphCanvas);
 		miniTreePane.setCenter(swingNode);
 		
-		miniGraphCanvas.setWymiary((sz, wys) -> {
-    		miniTreePane.setPrefHeight(wys);
-    		miniTreePane.setPrefWidth(sz);
+		miniGraphCanvas.setDimensions((width, height) -> {
+    		miniTreePane.setPrefHeight(height);
+    		miniTreePane.setPrefWidth(width);
 		});
 
 		star = loadImage("res/img/star.jpg");
@@ -242,7 +242,7 @@ public class CardPaneController implements Initializable{
 	
 	private Canvas miniTree() {
 		Canvas plutnoGrafu = new Canvas();
-		plutnoGrafu.setGrafDrzewa(grafMiniDrzewo);
+		plutnoGrafu.setTreeGraph(grafMiniDrzewo);
 		grafMiniDrzewo.setPersonClickAction(person -> Injection.run(graphClickAction, person));
 		return plutnoGrafu;
 	}

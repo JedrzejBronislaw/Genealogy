@@ -35,7 +35,7 @@ public class Graphics2DPainterService extends PainterService {
 	@Override
 	public void setGraph(TreeGraph graph) {
 		super.setGraph(graph);
-		canvas.setGrafDrzewa(graph);
+		canvas.setTreeGraph(graph);
 	}
 	
 	@Override
@@ -46,9 +46,9 @@ public class Graphics2DPainterService extends PainterService {
 	@Override
 	public Node getCanvas(Pane parent) {
 		if (parent != null)
-			canvas.setWymiary((sz, wys) -> {
-				parent.setPrefHeight(wys);
-				parent.setPrefWidth(sz);
+			canvas.setDimensions((width, height) -> {
+				parent.setPrefHeight(height);
+				parent.setPrefWidth(width);
 			});
 		
 		return swingNode;

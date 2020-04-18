@@ -213,7 +213,7 @@ public class CardScreen extends JPanel implements ActionListener {
 		Group panel = new Group(1,1);
 		plutnoGrafu = new Canvas();
 		
-		plutnoGrafu.setGrafDrzewa(grafMiniDrzewo);
+		plutnoGrafu.setTreeGraph(grafMiniDrzewo);
 		
 		panel.add(plutnoGrafu);
 		

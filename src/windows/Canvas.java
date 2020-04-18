@@ -18,20 +18,21 @@ import treeGraphs.painter.graphics2DPainter.Graphics2DPainter;
 public class Canvas extends JPanel implements MouseListener {
 	
 	private static final long serialVersionUID = -1257450015364085705L;
-	TreeGraph graf;
+
+	private TreeGraph graph;
 	
 	public Canvas() {
 		addMouseListener(this);
 		setBackground(Color.WHITE);
 	}
 	
-	public void setGrafDrzewa(TreeGraph graf) {this.graf = graf;}
+	public void setTreeGraph(TreeGraph graph) {this.graph = graph;}
 	
 	@Setter
-	private BiConsumer<Integer, Integer> wymiary;
+	private BiConsumer<Integer, Integer> dimensions;
 	
 	@Setter
-	Graphics2DPainter painter;
+	private Graphics2DPainter painter;
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -44,15 +45,15 @@ public class Canvas extends JPanel implements MouseListener {
 
 		c.setColor(Color.BLACK);
 		
-		if (graf != null) {
-			graf.draw();
+		if (graph != null) {
+			graph.draw();
 
-			if (wymiary != null)
-				wymiary.accept(graf.getWidth(), graf.getHeight());
+			if (dimensions != null)
+				dimensions.accept(graph.getWidth(), graph.getHeight());
 
-			if ((graf.getWidth() != getWidth()) ||
-					(graf.getHeight()  != getHeight()))
-				setPreferredSize(new Dimension(graf.getWidth(), graf.getHeight()));
+			if ((graph.getWidth()  != getWidth()) ||
+				(graph.getHeight() != getHeight()))
+			setPreferredSize(new Dimension(graph.getWidth(), graph.getHeight()));
 			revalidate();
 		}
 	}
@@ -62,7 +63,7 @@ public class Canvas extends JPanel implements MouseListener {
 		if (arg0.getClickCount() >= 2)
 		{
 			Point p = arg0.getPoint();
-			graf.clik(p.x, p.y);
+			graph.clik(p.x, p.y);
 		}
 	}
 
