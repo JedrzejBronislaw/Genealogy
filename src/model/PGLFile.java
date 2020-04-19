@@ -139,7 +139,9 @@ public class PGLFile {
 				}
 				line = brFile.readLine();
 			}
-			loadDataToTree(tree, section, relations);
+			
+			if (section != null)
+				loadDataToTree(tree, section, relations);
 			
 		} catch (IOException e)
 		{
