@@ -80,7 +80,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 		
 		if (o.getSex() == Sex.WOMEN)
 			for (int i=0; i<o.numberOfMarriages(); i++)
-				ciag += " " + o.getSpouse(i).getLastname();
+				ciag += " " + o.getSpouse(i).getLastName();
 
 		ciag += " " +o.getAlias();
 		ciag += " " +Diminutives.forNameStd(o.getFirstName());

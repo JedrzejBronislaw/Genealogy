@@ -147,7 +147,7 @@ public class CardPaneController implements Initializable{
 		if(person == null) return;
 		
 		firstNameLabel.setText(person.getFirstName());
-		lastNameLabel.setText(person.getLastname());
+		lastNameLabel.setText(person.getLastName());
 		aliasLabel.setText(person.getAlias());
 		if(person.getBirthDate() != null)
 			birthDateLabel.setText(person.getBirthDate().toString());

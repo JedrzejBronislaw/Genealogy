@@ -39,7 +39,7 @@ public class PGLFileTest_SinglePerson {
 
 	@Test
 	public void lastName() {
-		assertEquals("Kowalski", person.getLastname());
+		assertEquals("Kowalski", person.getLastName());
 	}
 
 	@Test

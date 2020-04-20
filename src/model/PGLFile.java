@@ -216,7 +216,7 @@ public class PGLFile {
 		int numOfChildren=0, numOfMarriages=0;
 		
 		value = section.getValue("imie");			if (value != null) person.setFirstName(value);
-		value = section.getValue("nazwisko");		if (value != null) person.setLastname(value);
+		value = section.getValue("nazwisko");		if (value != null) person.setLastName(value);
 		value = section.getValue("datur");			if (value != null) person.setBirthDate(new MyDate(value));
 		value = section.getValue("datsm");			if (value != null) person.setDeathDate(new MyDate(value));
 		value = section.getValue("miejur");		if (value != null) person.setBirthPlace(value);

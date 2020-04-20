@@ -12,7 +12,7 @@ public class Person {
 	public enum Sex{WOMEN, MAN, UNDEFINED};
 	
 	@Setter @Getter private String firstName;
-	@Setter @Getter private String lastname;
+	@Setter @Getter private String lastName;
 	@Setter @Getter private String alias;
 	@Setter @Getter private LifeStatus lifeStatus = LifeStatus.UNDEFINED;
 	@Setter @Getter private Sex sex = Sex.UNDEFINED;
@@ -138,7 +138,7 @@ public class Person {
 	{
 		String outcome = "";
 		if (firstName != null)		outcome += getFirstName() + " ";
-		if (lastname != null)	outcome += getLastname();
+		if (lastName != null)	outcome += getLastName();
 		
 		return outcome.trim();
 	}

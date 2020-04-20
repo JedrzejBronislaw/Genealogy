@@ -31,7 +31,7 @@ public class SearchEngine {
 		
 		if (person.getSex() == Sex.WOMEN)
 			for (int i=0; i<person.numberOfMarriages(); i++)
-				keyWords += " " + person.getSpouse(i).getLastname();
+				keyWords += " " + person.getSpouse(i).getLastName();
 
 		if (person.getAlias() != null)
 			keyWords += " " + person.getAlias();

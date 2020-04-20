@@ -78,7 +78,7 @@ public class PGLFileTest_SmallFamily {
 		String[] actualLastNames = new String[persons.length];
 
 		for(int i=0; i<persons.length; i++)
-			actualLastNames[i] = persons[i].getLastname();
+			actualLastNames[i] = persons[i].getLastName();
 
 		assertArrayEquals(expectedLastNames, actualLastNames);
 	}

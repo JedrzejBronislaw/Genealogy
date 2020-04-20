@@ -223,7 +223,7 @@ public class CardScreen extends JPanel implements ActionListener {
 	private void wypelnijPola() {
 		szerokosc.setText("sz: "+PersonDetails.descendantsBranchesWidth(osoba));
 		imie.set(osoba.getFirstName());
-		nazwisko.set(osoba.getLastname());
+		nazwisko.set(osoba.getLastName());
 		pseudonim.set(osoba.getAlias());
 		dataUr.set(osoba.getBirthDate().toString());
 		miejsceUr.set(osoba.getBirthPlace());
