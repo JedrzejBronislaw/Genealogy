@@ -195,4 +195,18 @@ public class MyDate {
 
 		return outcome;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (!(obj instanceof MyDate)) return false;
+
+		MyDate date = (MyDate) obj;
+
+		if (day != date.getDay()) return false;
+		if (month != date.getMonth()) return false;
+		if (year != date.getYear()) return false;
+
+		return true;
+	}
 }

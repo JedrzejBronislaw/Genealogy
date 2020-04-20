@@ -179,4 +179,42 @@ public class Person {
 			
 		return outcome;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (!(obj instanceof Person)) return false;
+		
+		Person person = (Person) obj;
+		
+		if (firstName == null && person.getFirstName() != null) return false;
+		if (lastName  == null && person.getLastName() != null) return false;
+		if (alias  == null    && person.getAlias() != null) return false;
+		if (lifeStatus  == null    && person.getLifeStatus() != null) return false;
+		if (sex  == null    && person.getSex() != null) return false;
+		if (birthDate  == null    && person.getBirthDate() != null) return false;
+		if (deathDate  == null    && person.getDeathDate() != null) return false;
+		if (birthPlace  == null    && person.getBirthPlace() != null) return false;
+		if (deathPlace  == null    && person.getDeathPlace() != null) return false;
+		if (contact  == null    && person.getContact() != null) return false;
+		if (comments  == null    && person.getComments() != null) return false;
+		if (baptismParish  == null    && person.getBaptismParish() != null) return false;
+		if (burialPlace  == null    && person.getBurialPlace() != null) return false;
+
+		if (firstName != null && !firstName.equals(person.getFirstName())) return false;
+		if (lastName  != null && !lastName.equals(person.getLastName())) return false;
+		if (alias  != null    && !alias.equals(person.getAlias())) return false;
+		if (lifeStatus  != null    && !lifeStatus.equals(person.getLifeStatus())) return false;
+		if (sex  != null    && !sex.equals(person.getSex())) return false;
+		if (birthDate  != null    && !birthDate.equals(person.getBirthDate())) return false;
+		if (deathDate  != null    && !deathDate.equals(person.getDeathDate())) return false;
+		if (birthPlace  != null    && !birthPlace.equals(person.getBirthPlace())) return false;
+		if (deathPlace  != null    && !deathPlace.equals(person.getDeathPlace())) return false;
+		if (contact  != null    && !contact.equals(person.getContact())) return false;
+		if (comments  != null    && !comments.equals(person.getComments())) return false;
+		if (baptismParish  != null    && !baptismParish.equals(person.getBaptismParish())) return false;
+		if (burialPlace  != null    && !burialPlace.equals(person.getBurialPlace())) return false;
+
+		return true;
+	}
 }
