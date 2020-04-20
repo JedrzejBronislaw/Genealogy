@@ -163,8 +163,7 @@ public class MyDate {
 		return new int[]{days, months, years};
 	}
 	
-	@Override
-	public String toString() {
+	public String toString_() {
 		String outcome = "";
 		
 		if (day != 0)
@@ -184,5 +183,16 @@ public class MyDate {
 		if (outcome.isEmpty()) outcome = " ";
 		
 		return outcome.substring(1);
+	}
+	
+	@Override
+	public String toString() {
+		String outcome = "";
+		
+		if (day != 0)   outcome += day;
+		if (month != 0) outcome += "." + month;
+		if (year != 0)  outcome += "." + year;
+
+		return outcome;
 	}
 }
