@@ -2,20 +2,25 @@ package model;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class PGLFileTest_EmptyFile extends PGLFileTest {
+public class PGLFileTest_EmptyFile {
 	
-	@Override
-	protected String content() {
-		return "";
+	static PGLFilePreparation preparation = new PGLFilePreparation("emptyFile");
+	static String content = "";
+
+	private static Tree tree;
+	
+	@BeforeClass
+	public static void x() {
+		preparation.createPGLFile(content);
+		tree = preparation.loadTreeFromFile();
 	}
+
 	
 	@Test
 	public void test() {
-		createPGLFile();
-		Tree tree = loadTreeFromFile();
-		
 		assertEquals(0, tree.getAll().length);
 	}
 

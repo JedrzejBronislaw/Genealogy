@@ -2,72 +2,53 @@ package model;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class PGLFileTest_SinglePerson extends PGLFileTest {
+public class PGLFileTest_SinglePerson {
+	private static PGLFilePreparation preparation = new PGLFilePreparation("singlePerson");
+	private static String content = String.join("\n",
+			"[1]",
+			"imie=Jan",
+			"nazwisko=Kowalski",
+			"miejur=Poznan",
+			"miejsm=Krakow"
+			);
 	
-	@Override
-	protected String content() {
-		return String.join("\n",
-				"[1]",
-				"imie=Jan",
-				"nazwisko=Kowalski",
-				"miejur=Poznan",
-				"miejsm=Krakow"
-							);
+	private static Tree tree;
+	private static Person person;
+	
+	@BeforeClass
+	public static void prepare() {
+		preparation.createPGLFile(content);
+		tree = preparation.loadTreeFromFile();
+		person = tree.getAll()[0];
 	}
+	
 
+	
 	@Test
 	public void numberOfPersons() {
-		createPGLFile();
-
-		Tree tree = loadTreeFromFile();
-		Person[] persons = tree.getAll();
-		
-		assertEquals(1, persons.length);
+		assertEquals(1, tree.getAll().length);
 	}
 
 	@Test
 	public void firstName() {
-		createPGLFile();
-
-		Tree tree = loadTreeFromFile();
-		Person[] persons = tree.getAll();
-		Person person = persons[0];
-		
 		assertEquals("Jan", person.getFirstName());
 	}
 
 	@Test
 	public void lastName() {
-		createPGLFile();
-
-		Tree tree = loadTreeFromFile();
-		Person[] persons = tree.getAll();
-		Person person = persons[0];
-		
 		assertEquals("Kowalski", person.getLastname());
 	}
 
 	@Test
 	public void birthPlace() {
-		createPGLFile();
-
-		Tree tree = loadTreeFromFile();
-		Person[] persons = tree.getAll();
-		Person person = persons[0];
-		
 		assertEquals("Poznan", person.getBirthPlace());
 	}
 
 	@Test
 	public void deathPlace() {
-		createPGLFile();
-
-		Tree tree = loadTreeFromFile();
-		Person[] persons = tree.getAll();
-		Person person = persons[0];
-		
 		assertEquals("Krakow", person.getDeathPlace());
 	}
 

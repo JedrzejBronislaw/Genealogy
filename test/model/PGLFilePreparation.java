@@ -5,21 +5,22 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-public abstract class PGLFileTest {
-	private static final String fileName = "tree.pgl";
-
-	@Rule
-	public TemporaryFolder tempfolder = new TemporaryFolder();
+@RequiredArgsConstructor
+public class PGLFilePreparation {
+	
+	@NonNull private String fileName;
 	protected File file;
 
-	protected void createPGLFile() {
+	protected void createPGLFile(String content) {
 		try {
-			file = tempfolder.newFile(fileName);
+			file = File.createTempFile(fileName, ".pgl");
+			file.deleteOnExit();
+			
 			FileWriter writer = new FileWriter(file);
-			writer.write(content());
+			writer.write(content);
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -40,7 +41,5 @@ public abstract class PGLFileTest {
 		
 		return tree;
 	}
-	
-	protected abstract String content();
 	
 }
