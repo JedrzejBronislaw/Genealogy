@@ -34,6 +34,12 @@ public class Person {
 	public void addChild(Person child) {
 		children.add(child);
 	}
+	public boolean delChildRelation(Person child) {
+		return children.remove(child);
+	}
+	public void delAllChildRelation() {
+		children.clear();
+	}
 	public Person getChild(int number) {
 		return children.get(number);
 	}
@@ -98,6 +104,18 @@ public class Person {
 				return;
 			}
 		}
+	}
+
+	public boolean delSpouseRelation(Person spouse) {
+		for(Marriage m : marriages) {
+			if (((sex == Sex.MAN) && (m.getWife() == spouse)) ||
+				((sex == Sex.WOMEN)  && (m.getHusband()  == spouse)))
+					return marriages.remove(m);
+		}
+		return false;
+	}
+	public void delAllSpouseRelation() {
+		marriages.clear();
 	}
 	
 	public Marriage getMarriages(int number) {
