@@ -242,7 +242,7 @@ public class CardScreen extends JPanel implements ActionListener {
 		if (osoba.getLifeStatus() != Person.LifeStatus.NO)
 			wiek.setNazwa("¯yje: ");
 		else
-		if (osoba.getSex() == Sex.WOMEN)
+		if (osoba.getSex() == Sex.WOMAN)
 			wiek.setNazwa("¯y³a: ");
 		else
 			wiek.setNazwa("¯y³: ");

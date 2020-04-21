@@ -15,7 +15,7 @@ public class PersonDetails {
 		&& (mother == null || mother.getFirstName() == null || mother.getFirstName().isEmpty())) return "";
 		
 		String outcome;
-		if (person.getSex() == Sex.WOMEN)
+		if (person.getSex() == Sex.WOMAN)
 			outcome = "córka ";
 		else if (person.getSex() == Sex.MAN)
 			outcome = "syn ";

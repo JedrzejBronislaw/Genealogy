@@ -21,7 +21,7 @@ public class InflectionPLTest {
 	}
 
 	private String genitiveWoman(String name) {
-		return InflectionPL.nameGenitive(createPerson(name, Sex.WOMEN));
+		return InflectionPL.nameGenitive(createPerson(name, Sex.WOMAN));
 	}
 
 	@Test

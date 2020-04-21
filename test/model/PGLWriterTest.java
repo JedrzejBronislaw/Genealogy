@@ -71,7 +71,7 @@ public class PGLWriterTest {
 		
 		person.setFirstName("Ewa");
 		person.setLastName("Nowak");
-		person.setSex(Sex.WOMEN);
+		person.setSex(Sex.WOMAN);
 		
 		return person;
 	}

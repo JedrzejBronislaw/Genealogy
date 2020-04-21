@@ -222,7 +222,7 @@ public class PGLFile {
 		value = section.getValue("miejur");		if (value != null) person.setBirthPlace(value);
 		value = section.getValue("miejsm");		if (value != null) person.setDeathPlace(value);
 		value = section.getValue("zyje");			if (value != null) person.setLifeStatus(value.equals("0") ? LifeStatus.NO : LifeStatus.YES);
-		value = section.getValue("plec");			if (value != null) person.setSex(value.equals("0") ? Sex.WOMEN : Sex.MAN);
+		value = section.getValue("plec");			if (value != null) person.setSex(value.equals("0") ? Sex.WOMAN : Sex.MAN);
 		value = section.getValue("ps");			if (value != null) person.setAlias(value);
 		value = section.getValue("parafia");		if (value != null) person.setBaptismParish(value);
 		value = section.getValue("mpoch");			if (value != null) person.setBurialPlace(value);

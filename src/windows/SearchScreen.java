@@ -78,7 +78,7 @@ public class SearchScreen extends JPanel implements KeyListener, MouseListener {
 	private String generujCiag(Person o) {
 		String ciag = o.nameSurname();
 		
-		if (o.getSex() == Sex.WOMEN)
+		if (o.getSex() == Sex.WOMAN)
 			for (int i=0; i<o.numberOfMarriages(); i++)
 				ciag += " " + o.getSpouse(i).getLastName();
 

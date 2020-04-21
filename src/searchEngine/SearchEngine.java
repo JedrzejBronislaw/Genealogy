@@ -29,7 +29,7 @@ public class SearchEngine {
 	private String generateKeyWords(Person person) {
 		String keyWords = person.nameSurname();
 		
-		if (person.getSex() == Sex.WOMEN)
+		if (person.getSex() == Sex.WOMAN)
 			for (int i=0; i<person.numberOfMarriages(); i++)
 				keyWords += " " + person.getSpouse(i).getLastName();
 

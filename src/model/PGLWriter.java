@@ -139,7 +139,7 @@ public class PGLWriter {
 	private void saveProperty(Sex value) throws IOException {
 		if (value == null || value == Sex.UNDEFINED) return;
 		
-		if (value == Sex.WOMEN) writer.write("plec=0");
+		if (value == Sex.WOMAN) writer.write("plec=0");
 		if (value == Sex.MAN)   writer.write("plec=1");
 		writeNewLine();
 	}

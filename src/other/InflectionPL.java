@@ -19,7 +19,7 @@ public class InflectionPL {
 		if (name.length() < 2)
 			return name;
 			
-		if (sex == Sex.WOMEN)
+		if (sex == Sex.WOMAN)
 			name = womanNameGenitive(name);
 		
 		if (sex == Sex.MAN)

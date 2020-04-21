@@ -47,7 +47,7 @@ public class Tree_Equals {
 
 		mother.setFirstName("Ewa");
 		mother.setLastName("Nowak");
-		mother.setSex(Sex.WOMEN);
+		mother.setSex(Sex.WOMAN);
 		mother.addMarriages(father);
 		mother.addChild(child);
 
@@ -74,7 +74,7 @@ public class Tree_Equals {
 		
 		wife1.setFirstName("Anna");
 		wife1.setLastName("Kwiatkowska");
-		wife1.setSex(Sex.WOMEN);
+		wife1.setSex(Sex.WOMAN);
 		
 		husband1.addMarriages(wife1);
 		wife1.addMarriages(husband1);
@@ -86,7 +86,7 @@ public class Tree_Equals {
 		
 		wife2.setFirstName("Julia");
 		wife2.setLastName("Pawlak");
-		wife2.setSex(Sex.WOMEN);
+		wife2.setSex(Sex.WOMAN);
 		
 		husband2.addMarriages(wife2);
 		wife2.addMarriages(husband2);
@@ -106,11 +106,11 @@ public class Tree_Equals {
 		
 		mother1.setFirstName("Aleksandra");
 		mother1.setLastName("Kowal");
-		mother1.setSex(Sex.WOMEN);
+		mother1.setSex(Sex.WOMAN);
 		
 		mother2.setFirstName("Kamila");
 		mother2.setLastName("Bartkowiak");
-		mother2.setSex(Sex.WOMEN);
+		mother2.setSex(Sex.WOMAN);
 		
 		child1.setFirstName("Filip");
 		child1.setLastName("Kowal");
@@ -157,7 +157,7 @@ public class Tree_Equals {
 
 		mother.setFirstName("Ewa");
 		mother.setLastName("Nowak");
-		mother.setSex(Sex.WOMEN);
+		mother.setSex(Sex.WOMAN);
 		mother.addMarriages(father);
 		mother.addChild(child);
 
@@ -185,7 +185,7 @@ public class Tree_Equals {
 		
 		wife1.setFirstName("Anna");
 		wife1.setLastName("Kwiatkowska");
-		wife1.setSex(Sex.WOMEN);
+		wife1.setSex(Sex.WOMAN);
 		
 		husband1.addMarriages(wife1);
 		wife1.addMarriages(husband1);
@@ -197,7 +197,7 @@ public class Tree_Equals {
 		
 		wife2.setFirstName("Julia");
 		wife2.setLastName("Pawlak");
-		wife2.setSex(Sex.WOMEN);
+		wife2.setSex(Sex.WOMAN);
 		
 		husband2.addMarriages(wife2);
 		wife2.addMarriages(husband2);
@@ -218,11 +218,11 @@ public class Tree_Equals {
 		
 		mother1.setFirstName("Aleksandra");
 		mother1.setLastName("Kowal");
-		mother1.setSex(Sex.WOMEN);
+		mother1.setSex(Sex.WOMAN);
 		
 		mother2.setFirstName("Kamila");
 		mother2.setLastName("Bartkowiak");
-		mother2.setSex(Sex.WOMEN);
+		mother2.setSex(Sex.WOMAN);
 		
 		child1.setFirstName("Filip");
 		child1.setLastName("Kowal");

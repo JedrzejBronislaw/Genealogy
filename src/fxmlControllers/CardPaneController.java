@@ -176,7 +176,7 @@ public class CardPaneController implements Initializable{
 	}
 
 	private Image getSexSymbol() {
-		if (person.getSex() == Sex.WOMEN)
+		if (person.getSex() == Sex.WOMAN)
 			return venus;
 		if (person.getSex() == Sex.MAN)
 			return mars;

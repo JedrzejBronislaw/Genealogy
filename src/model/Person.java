@@ -9,7 +9,7 @@ import lombok.Setter;
 
 public class Person {
 	public enum LifeStatus{YES, NO, UNDEFINED};
-	public enum Sex{WOMEN, MAN, UNDEFINED};
+	public enum Sex{WOMAN, MAN, UNDEFINED};
 	
 	@Setter @Getter private String firstName;
 	@Setter @Getter private String lastName;
@@ -56,7 +56,7 @@ public class Person {
 			marriage.setWife(malzonek);
 			marriages.add(marriage);
 		} else
-		if (sex == Sex.WOMEN)
+		if (sex == Sex.WOMAN)
 		{
 			marriage.setHusband(malzonek);
 			marriage.setWife(this);
@@ -74,7 +74,7 @@ public class Person {
 			wedding.setWife(spouse);
 			marriages.add(wedding);
 		} else
-		if (sex == Sex.WOMEN)
+		if (sex == Sex.WOMAN)
 		{
 			wedding.setHusband(spouse);
 			wedding.setWife(this);
@@ -86,7 +86,7 @@ public class Person {
 		for(Marriage m : marriages)
 		{
 			if (((sex == Sex.MAN) && (m.getWife() == spouse)) ||
-				((sex == Sex.WOMEN)  && (m.getHusband()  == spouse)))
+				((sex == Sex.WOMAN)  && (m.getHusband()  == spouse)))
 			{
 				m.setDate(date);
 				return;
@@ -98,7 +98,7 @@ public class Person {
 		for(Marriage m : marriages)
 		{
 			if (((sex == Sex.MAN) && (m.getWife() == spouse)) ||
-				((sex == Sex.WOMEN)  && (m.getHusband()  == spouse)))
+				((sex == Sex.WOMAN)  && (m.getHusband()  == spouse)))
 			{
 				m.setPlace(place);
 				return;
@@ -109,7 +109,7 @@ public class Person {
 	public boolean delSpouseRelation(Person spouse) {
 		for(Marriage m : marriages) {
 			if (((sex == Sex.MAN) && (m.getWife() == spouse)) ||
-				((sex == Sex.WOMEN)  && (m.getHusband()  == spouse)))
+				((sex == Sex.WOMAN)  && (m.getHusband()  == spouse)))
 					return marriages.remove(m);
 		}
 		return false;
@@ -125,7 +125,7 @@ public class Person {
 	public Person getSpouse(int number) {
 		if (sex == Sex.MAN)
 			return marriages.get(number).getWife();
-		if (sex == Sex.WOMEN)
+		if (sex == Sex.WOMAN)
 			return marriages.get(number).getHusband();
 		
 		return null;
