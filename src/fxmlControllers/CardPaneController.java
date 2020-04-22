@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import javafx.application.Platform;
-import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -25,10 +24,9 @@ import model.Person.LifeStatus;
 import model.Person.Sex;
 import other.PersonDetails;
 import tools.Injection;
-import tools.SwingRefresher;
 import treeGraphs.ClosestTreeGraph;
-import treeGraphs.painter.graphics2DPainter.Graphics2DPainter;
-import windows.Canvas;
+import treeGraphs.painter.service.FXPainterService;
+import treeGraphs.painter.service.PainterService;
 
 public class CardPaneController implements Initializable{
 
@@ -90,8 +88,7 @@ public class CardPaneController implements Initializable{
 	private Consumer<Person> graphClickAction;
 	
 	private Person person;
-	private ClosestTreeGraph grafMiniDrzewo = new ClosestTreeGraph();
-	SwingNode swingNode;
+	private PainterService painterService = new FXPainterService();
 	
 	private Image star, cross, venus, mars;
 	
@@ -105,25 +102,16 @@ public class CardPaneController implements Initializable{
 		ancestorsButton.setOnAction(e -> Injection.run(ancestorsTreeAction, person));
 		descendantsButton.setOnAction(e -> Injection.run(descendantsTreeAction, person));
 		drawnigButton.setOnAction(e -> Injection.run(drawingTreeAction, person));
-		
-		swingNode = new SwingNode();
-		Canvas miniGraphCanvas = miniTree();
-		swingNode.setContent(miniGraphCanvas);
-		miniTreePane.setCenter(swingNode);
-		
-		miniGraphCanvas.setDimensions((width, height) -> {
-    		miniTreePane.setPrefHeight(height);
-    		miniTreePane.setPrefWidth(width);
-		});
+
+		miniTreePane.setCenter(painterService.getCanvas(miniTreePane));
+		ClosestTreeGraph graph = new ClosestTreeGraph();
+		graph.setPersonClickAction(person -> Injection.run(graphClickAction, person));
+		painterService.setGraph(graph);
 
 		star = loadImage("res/img/star.jpg");
 		cross = loadImage("res/img/cross.jpg");
 		venus = loadImage("res/img/venus.jpg");
 		mars = loadImage("res/img/mars.jpg");
-		
-		Graphics2DPainter painter = new Graphics2DPainter();
-		miniGraphCanvas.setPainter(painter);
-		grafMiniDrzewo.setPainter(painter);
 	}
 
 	private Image loadImage(String path) {
@@ -171,8 +159,7 @@ public class CardPaneController implements Initializable{
 		commentsArea.setText(person.getComments());
 		contactArea.setText(person.getContact());
 
-		grafMiniDrzewo.setMainPerson(person);
-		SwingRefresher.refreshGraph(swingNode);
+		painterService.setMainPerson(person);
 	}
 
 	private Image getSexSymbol() {
@@ -211,8 +198,6 @@ public class CardPaneController implements Initializable{
 		
 		commentsArea.clear();
 		contactArea.clear();
-		
-//		grafMiniDrzewo.clear();
 	}
 
 	private Node generateMarriageLabel(int marriageNum) {
@@ -238,12 +223,5 @@ public class CardPaneController implements Initializable{
 		}
 		
 		return new Label(output.toString());
-	}
-	
-	private Canvas miniTree() {
-		Canvas plutnoGrafu = new Canvas();
-		plutnoGrafu.setTreeGraph(grafMiniDrzewo);
-		grafMiniDrzewo.setPersonClickAction(person -> Injection.run(graphClickAction, person));
-		return plutnoGrafu;
 	}
 }
