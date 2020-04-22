@@ -113,19 +113,30 @@ public class FxPainter extends Painter{
 
 	@Override
 	public void setTextStyle(String fontName, int style, int size) {
-		// TODO Auto-generated method stub
+		fontfamily = fontName;
+		fontsize = size;
+		
+		fontBold   = (style & java.awt.Font.BOLD)   != 0;
+		fontItalic = (style & java.awt.Font.ITALIC) != 0;
 	}
 
 	@Override
 	public void setTextStyle(java.awt.Font font) {
-		// TODO Auto-generated method stub
+		fontfamily = font.getFamily();
+		fontsize = font.getSize();
 		
+		fontBold   = (font.getStyle() & java.awt.Font.BOLD)   != 0;
+		fontItalic = (font.getStyle() & java.awt.Font.ITALIC) != 0;
 	}
 
 	@Override
 	public java.awt.Font getTextStyle() {
-		// TODO Auto-generated method stub
-		return null;
+		int style = 0;
+		
+		if (fontBold)   style += java.awt.Font.BOLD;
+		if (fontItalic) style += java.awt.Font.ITALIC;
+		
+		return new java.awt.Font(fontfamily, style, fontsize);
 	}
 
 	@Override
