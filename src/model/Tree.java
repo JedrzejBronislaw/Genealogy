@@ -125,113 +125,25 @@ public class Tree {
 		
 		return outcome;
 	}
+
+	public Marriage getMarriage(String personID1, String personID2) {
+		Person person1 = getPerson(personID1);
+		Person person2 = getPerson(personID2);
+		
+		return person1.getMarriage(person2);
+	}
+	public Marriage getMarriage(Person person1, String personID2) {
+		Person person2 = getPerson(personID2);
+		
+		return person1.getMarriage(person2);
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (!(obj instanceof Tree)) return false;
 		Tree tree = (Tree) obj;
-		
-		if (lastOpen  == null    && tree.getLastOpen() != null) return false;
-		if (lastModification  == null    && tree.getLastModification() != null) return false;
 
-		if (lastOpen != null && !lastOpen.equals(tree.getLastOpen())) return false;
-		if (lastModification != null && !lastModification.equals(tree.getLastModification())) return false;
-		
-		if (numberOfPersons != tree.numberOfPersons) return false;
-		if (commonSurnames.size() != tree.commonSurnames.size()) return false;
-		
-		for (int i=0; i<commonSurnames.size(); i++)
-			if (!commonSurnames.get(i).equals(tree.commonSurnames.get(i))) return false;
-		
-		String[] ids = getIDs();
-		for (int i=0; i<ids.length; i++)
-			if (!getPerson(ids[i]).equals(tree.getPerson(ids[i]))) return false;
-		
-		//relations
-		for (int i=0; i<ids.length; i++) {
-			Person person1 = getPerson(ids[i]);
-			Person person2 = tree.getPerson(ids[i]);
-			
-			if (person1.numberOfChildren() != person2.numberOfChildren()) return false;
-			if (person1.numberOfMarriages() != person2.numberOfMarriages()) return false;
-
-			String father1 =      getID(person1.getFather());
-			String father2 = tree.getID(person2.getFather());
-
-			String mother1 =      getID(person1.getMother());
-			String mother2 = tree.getID(person2.getMother());
-
-			if (father1 == null && father2 != null) return false;
-			if (mother1 == null && mother2 != null) return false;
-
-			if (father1 != null && !father1.equals(father2)) return false;
-			if (mother1 != null && !mother1.equals(mother2)) return false;
-			
-			//children
-			Person[] children1 = person1.getChildren();
-			Person[] children2 = person2.getChildren();
-			
-			List<String> childrenIds1 = new ArrayList<>();
-			List<String> childrenIds2 = new ArrayList<>();
-
-			for(int index=0; index<children1.length; index++)
-				childrenIds1.add(getID(children1[index]));
-			for(int index=0; index<children2.length; index++)
-				childrenIds2.add(tree.getID(children2[index]));
-			
-			for(String id : childrenIds1)
-				if (!childrenIds2.contains(id)) return false;
-			
-			
-			//marriages
-			List<String> marrIds1 = new ArrayList<>();
-			List<String> marrIds2 = new ArrayList<>();
-
-			for(int index=0; index<person1.numberOfMarriages(); index++)
-				marrIds1.add(     getID(person1.getSpouse(index)));
-
-			for(int index=0; index<person2.numberOfMarriages(); index++)
-				marrIds2.add(tree.getID(person2.getSpouse(index)));
-		
-			for(String id : marrIds1)
-				if (!marrIds2.contains(id)) return false;
-				else {
-					Marriage m1 = getMarriage(this, person1, id);
-					String place1 = m1.getPlace();
-					String date1 = m1.getDate();
-
-					Marriage m2 = getMarriage(tree, person2, id);
-					String place2 = m2.getPlace();
-					String date2 = m2.getDate();
-
-					if (place1 == null && place2 != null) return false;
-					if (place1 != null && !place1.equals(place2)) return false;
-					
-					if (date1 == null && date2 != null) return false;
-					if (date1 != null && !date1.equals(date2)) return false;
-				}
-			
-			
-		}
-		
-		return true;
-	}
-	
-
-	private Marriage getMarriage(Tree tree, Person p1, String p2) {
-		return getMarriage(tree, p1, tree.getPerson(p2));
-	}
-	
-	private Marriage getMarriage(Tree tree, Person p1, Person p2) {
-
-		for(int i=0; i<p1.numberOfMarriages(); i++) {
-			Marriage m = p1.getMarriage(i);
-			if ((m.getHusband() == p1 && m.getWife() == p2) ||
-				(m.getHusband() == p2 && m.getWife() == p1))
-				return m;
-		}
-		
-		return null;
+		return new SimpleTreeComparator().equals(this, tree);
 	}
 }

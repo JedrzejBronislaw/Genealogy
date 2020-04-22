@@ -122,6 +122,18 @@ public class Person {
 		return marriages.get(number);
 	}
 	
+	public Marriage getMarriage(Person p2) {
+
+		for(int i=0; i<numberOfMarriages(); i++) {
+			Marriage m = getMarriage(i);
+			if ((m.getHusband() == this && m.getWife() == p2) ||
+				(m.getHusband() == p2   && m.getWife() == this))
+				return m;
+		}
+		
+		return null;
+	}
+	
 	public Person getSpouse(int number) {
 		if (sex == Sex.MAN)
 			return marriages.get(number).getWife();
