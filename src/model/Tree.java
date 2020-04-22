@@ -226,7 +226,7 @@ public class Tree {
 	private Marriage getMarriage(Tree tree, Person p1, Person p2) {
 
 		for(int i=0; i<p1.numberOfMarriages(); i++) {
-			Marriage m = p1.getMarriages(i);
+			Marriage m = p1.getMarriage(i);
 			if ((m.getHusband() == p1 && m.getWife() == p2) ||
 				(m.getHusband() == p2 && m.getWife() == p1))
 				return m;

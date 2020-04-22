@@ -220,8 +220,8 @@ public class CardPaneController implements Initializable{
 		StringBuffer details = new StringBuffer();
 		
 		String name = person.getSpouse(marriageNum).nameSurname();
-		String date = person.getMarriages(marriageNum).getDate();
-		String place = person.getMarriages(marriageNum).getPlace();
+		String date = person.getMarriage(marriageNum).getDate();
+		String place = person.getMarriage(marriageNum).getPlace();
 
 		if(date != null && !date.isBlank()) {
 			details.append(date);

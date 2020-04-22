@@ -42,13 +42,13 @@ public class Tree_Equals {
 		father.setFirstName("Adam");
 		father.setLastName("Kowalski");
 		father.setSex(Sex.MAN);
-		father.addMarriages(mother);
+		father.addMarriage(mother);
 		father.addChild(child);
 
 		mother.setFirstName("Ewa");
 		mother.setLastName("Nowak");
 		mother.setSex(Sex.WOMAN);
-		mother.addMarriages(father);
+		mother.addMarriage(father);
 		mother.addChild(child);
 
 		child.setFirstName("Robert");
@@ -76,8 +76,8 @@ public class Tree_Equals {
 		wife1.setLastName("Kwiatkowska");
 		wife1.setSex(Sex.WOMAN);
 		
-		husband1.addMarriages(wife1);
-		wife1.addMarriages(husband1);
+		husband1.addMarriage(wife1);
+		wife1.addMarriage(husband1);
 		husband1.addWeddingVenue(wife1, "Poznan");
 		
 		husband2.setFirstName("Pawel");
@@ -88,8 +88,8 @@ public class Tree_Equals {
 		wife2.setLastName("Pawlak");
 		wife2.setSex(Sex.WOMAN);
 		
-		husband2.addMarriages(wife2);
-		wife2.addMarriages(husband2);
+		husband2.addMarriage(wife2);
+		wife2.addMarriage(husband2);
 		husband2.addWeddingDate(wife2, "1999.01.01");
 
 
@@ -152,13 +152,13 @@ public class Tree_Equals {
 		father.setFirstName("Adam");
 		father.setLastName("Kowalski");
 		father.setSex(Sex.MAN);
-		father.addMarriages(mother);
+		father.addMarriage(mother);
 		father.addChild(child);
 
 		mother.setFirstName("Ewa");
 		mother.setLastName("Nowak");
 		mother.setSex(Sex.WOMAN);
-		mother.addMarriages(father);
+		mother.addMarriage(father);
 		mother.addChild(child);
 
 		child.setFirstName("Robert");
@@ -187,8 +187,8 @@ public class Tree_Equals {
 		wife1.setLastName("Kwiatkowska");
 		wife1.setSex(Sex.WOMAN);
 		
-		husband1.addMarriages(wife1);
-		wife1.addMarriages(husband1);
+		husband1.addMarriage(wife1);
+		wife1.addMarriage(husband1);
 		husband1.addWeddingVenue(wife1, "Poznan");
 		
 		husband2.setFirstName("Pawel");
@@ -199,8 +199,8 @@ public class Tree_Equals {
 		wife2.setLastName("Pawlak");
 		wife2.setSex(Sex.WOMAN);
 		
-		husband2.addMarriages(wife2);
-		wife2.addMarriages(husband2);
+		husband2.addMarriage(wife2);
+		wife2.addMarriage(husband2);
 		husband2.addWeddingDate(wife2, "1999.01.01");
 
 		
@@ -326,7 +326,7 @@ public class Tree_Equals {
 		Person husband = actualTree.getPerson("1");
 		Person wife = actualTree.getPerson("2");
 		husband.delAllSpouseRelation();
-		husband.addMarriages(wife);
+		husband.addMarriage(wife);
 		assertEquals(expectedTree, actualTree);
 	}
 	
@@ -338,7 +338,7 @@ public class Tree_Equals {
 		Person wife = actualTree.getPerson("12");
 		
 		husband.delAllSpouseRelation();
-		husband.addMarriages(wife);
+		husband.addMarriage(wife);
 		assertNotEquals(expectedTree, actualTree);
 	}
 	
@@ -348,7 +348,7 @@ public class Tree_Equals {
 		Person wife = actualTree.getPerson("14");
 		
 		husband.delAllSpouseRelation();
-		husband.addMarriages(wife);
+		husband.addMarriage(wife);
 		assertNotEquals(expectedTree, actualTree);
 	}
 	
@@ -364,10 +364,10 @@ public class Tree_Equals {
 		husband2.delAllSpouseRelation();
 		wife2.delAllSpouseRelation();
 		
-		husband1.addMarriages(wife2);
-		wife2.addMarriages(husband1);
-		husband2.addMarriages(wife1);
-		wife1.addMarriages(husband2);
+		husband1.addMarriage(wife2);
+		wife2.addMarriage(husband1);
+		husband2.addMarriage(wife1);
+		wife1.addMarriage(husband2);
 		
 		assertNotEquals(expectedTree, actualTree);
 	}

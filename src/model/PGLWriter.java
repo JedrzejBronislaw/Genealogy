@@ -149,8 +149,8 @@ public class PGLWriter {
 		
 		for(int i=0; i<person.numberOfMarriages(); i++) {
 			saveProperty("malzonek" + (i+1), tree.getID(person.getSpouse(i)));
-			saveProperty("malzdata" + (i+1), person.getMarriages(i).getDate());
-			saveProperty("malzmjsc" + (i+1), person.getMarriages(i).getPlace());
+			saveProperty("malzdata" + (i+1), person.getMarriage(i).getDate());
+			saveProperty("malzmjsc" + (i+1), person.getMarriage(i).getPlace());
 		}
 	}
 

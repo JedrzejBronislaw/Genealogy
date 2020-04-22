@@ -25,9 +25,9 @@ public class PGLWriterTest {
 		Person mother = prepareMother();
 		Person child = prepareChild();
 		
-		father.addMarriages(mother);
+		father.addMarriage(mother);
 		father.addChild(child);
-		mother.addMarriages(father);
+		mother.addMarriage(father);
 		mother.addChild(child);
 		child.setFather(father);
 		child.setMother(mother);

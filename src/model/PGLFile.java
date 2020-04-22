@@ -155,7 +155,7 @@ public class PGLFile {
 			if (r.type == Relation.Type.CHILD)	tree.getPerson(r.object).addChild(tree.getPerson(r.subject)); else
 			if (r.type == Relation.Type.SPOUSE)	
 			{
-				tree.getPerson(r.object).addMarriages(tree.getPerson(r.subject));
+				tree.getPerson(r.object).addMarriage(tree.getPerson(r.subject));
 				tree.getPerson(r.object).addWeddingDate(tree.getPerson(r.subject), r.date);
 				tree.getPerson(r.object).addWeddingVenue(tree.getPerson(r.subject), r.place);
 			}

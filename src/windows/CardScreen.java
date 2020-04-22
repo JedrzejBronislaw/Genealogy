@@ -178,7 +178,7 @@ public class CardScreen extends JPanel implements ActionListener {
 		pSluby.removeAll();
 		for (int i=0; i<osoba.numberOfMarriages(); i++)
 		{
-			m = osoba.getMarriages(i);
+			m = osoba.getMarriage(i);
 			sluby[i] = new Field();
 			sluby[i].setNazwa(osoba.getSpouse(i).nameSurname());
 			sluby[i].set(m.getDate() + " " + m.getPlace());
