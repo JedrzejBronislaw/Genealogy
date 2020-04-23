@@ -13,7 +13,7 @@ import lombok.Setter;
 
 public class MainWindowController implements Initializable {
 
-	public enum Views{ChooseFile, Tree, Card, Graph}
+	public enum Views{ChooseFile, Tree, Card, Graph, EditPerson}
 	
 	@FXML
 	private Label titleLabel;
@@ -30,6 +30,8 @@ public class MainWindowController implements Initializable {
 	private Pane treePane;
 	@Setter
 	private Pane graphPane;
+	@Setter
+	private Pane editPersonPane;
 	
 	private Views currentView;
 	
@@ -48,6 +50,9 @@ public class MainWindowController implements Initializable {
 			break;
 		case Graph:
 			selected = graphPane;
+			break;
+		case EditPerson:
+			selected = editPersonPane;
 			break;
 
 		default:

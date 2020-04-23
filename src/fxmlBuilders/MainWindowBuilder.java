@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import fxmlControllers.CardPaneController;
+import fxmlControllers.EditPersonPaneController;
 import fxmlControllers.MainWindowController;
 import fxmlControllers.MainWindowController.Views;
 import fxmlControllers.TreeGraphPaneController;
@@ -47,6 +48,7 @@ public class MainWindowBuilder {
 	
 	private CardPaneController cardController;
 	private TreeGraphPaneController treeGraphController;
+	private EditPersonPaneController editPersonController;
 	
 	public void build() {
 		MyFXMLLoader<MainWindowController> loader = new MyFXMLLoader<>();
@@ -62,6 +64,7 @@ public class MainWindowBuilder {
 		controller.setGraphPane(generateTreeGrapfPane());
 		controller.setChooseFilePane(generateFileChoosePane());
 		controller.setTreePane(generateTreePane());
+		controller.setEditPersonPane(generateEditPersonPane());
 		
 		controller.showView(Views.ChooseFile);
 	}
@@ -143,6 +146,12 @@ public class MainWindowBuilder {
 			cardController.setPerson(selectedPerson);
 			controller.showView(Views.Card);
 		});
+
+		builder.setEditAction(person -> {
+			editPersonController.setPerson(person);
+			controller.showView(Views.EditPerson);
+		});
+		
 		builder.build();
 		
 		cardController = builder.getController();
@@ -159,6 +168,19 @@ public class MainWindowBuilder {
 		treeGraphController.setGraph(graph);
 		treeGraphController.setPerson(person);
 		controller.showView(Views.Graph);
+	}
+	
+	private Pane generateEditPersonPane() {
+		EditPersonPaneBuilder builder = new EditPersonPaneBuilder();
+		builder.setChangeEvent(person -> System.out.println("change (" + person.nameSurname() + ")"));
+		builder.setClosePane(() -> {
+			cardController.refresh();
+			controller.showView(Views.Card);
+		});
+		builder.build();
+		editPersonController = builder.getController();
+		
+		return builder.getPane();
 	}
 
 }

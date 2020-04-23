@@ -23,6 +23,9 @@ public class CardPaneBuilder {
 	private Consumer<Person> showDescendantsTree;
 	@Setter
 	private Consumer<Person> showDrawingTree;
+
+	@Setter
+	private Consumer<Person> editAction;
 	
 	@Setter
 	private Consumer<Person> graphClickAction;
@@ -39,6 +42,8 @@ public class CardPaneBuilder {
 		controller.setAncestorsTreeAction(showAncestorsTree);
 		controller.setDescendantsTreeAction(showDescendantsTree);
 		controller.setDrawingTreeAction(showDrawingTree);
+
+		controller.setEditAction(editAction);
 		
 		controller.setGraphClickAction(graphClickAction);
 	}

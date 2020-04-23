@@ -77,12 +77,19 @@ public class CardPaneController implements Initializable{
 	@FXML
 	private TextArea contactArea;
 
+	@FXML
+	private Button editButton;
+	
+	
 	@Setter
 	private Consumer<Person> ancestorsTreeAction;
 	@Setter
 	private Consumer<Person> descendantsTreeAction;
 	@Setter
 	private Consumer<Person> drawingTreeAction;
+	
+	@Setter
+	private Consumer<Person> editAction;
 	
 	@Setter
 	private Consumer<Person> graphClickAction;
@@ -94,6 +101,9 @@ public class CardPaneController implements Initializable{
 	
 	public void setPerson(Person person) {
 		this.person = person;
+		refresh();
+	}
+	public void refresh() {
 		Platform.runLater(() -> refreshValues());
 	}
 	
@@ -102,6 +112,7 @@ public class CardPaneController implements Initializable{
 		ancestorsButton.setOnAction(e -> Injection.run(ancestorsTreeAction, person));
 		descendantsButton.setOnAction(e -> Injection.run(descendantsTreeAction, person));
 		drawnigButton.setOnAction(e -> Injection.run(drawingTreeAction, person));
+		editButton.setOnAction(e -> Injection.run(editAction, person));
 
 		miniTreePane.setCenter(painterService.getCanvas(miniTreePane));
 		ClosestTreeGraph graph = new ClosestTreeGraph();
