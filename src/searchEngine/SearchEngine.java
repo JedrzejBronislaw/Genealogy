@@ -21,6 +21,18 @@ public class SearchEngine {
 		for (Person person : all)
 			keyWords.add(new KeyWordsItem(person, generateKeyWords(person)));
 	}
+	public void refresh() {
+		List<KeyWordsItem> newKeyWords = new ArrayList<>(keyWords.size());
+		keyWords.forEach(item -> newKeyWords.add(new KeyWordsItem(item.getPerson(), generateKeyWords(item.getPerson()))));
+		keyWords = newKeyWords;
+	}
+	public void refresh(Person person) {
+		for(int i=0; i<keyWords.size(); i++)
+			if (keyWords.get(i).getPerson() == person) {
+				keyWords.remove(i);
+				keyWords.add(new KeyWordsItem(person, generateKeyWords(person)));
+			}
+	}
 	
 	public void forgetTree() {
 		keyWords = new ArrayList<>();

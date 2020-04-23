@@ -72,6 +72,9 @@ public class TreePaneBuilder {
 				searchEngine.forgetTree();
 				builder.getController().clearFields();
 			});
+			session.addEditPersonListener(person -> {
+				searchEngine.refresh(person);
+			});
 		}
 		
 		

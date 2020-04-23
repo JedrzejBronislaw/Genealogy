@@ -172,7 +172,9 @@ public class MainWindowBuilder {
 	
 	private Pane generateEditPersonPane() {
 		EditPersonPaneBuilder builder = new EditPersonPaneBuilder();
-		builder.setChangeEvent(person -> System.out.println("change (" + person.nameSurname() + ")"));
+		builder.setChangeEvent(person -> {
+			session.reportPersonEdit(person);
+		});
 		builder.setClosePane(() -> {
 			cardController.refresh();
 			controller.showView(Views.Card);
