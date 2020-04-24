@@ -14,7 +14,7 @@ public class PersonDetails {
 		if ((father == null || father.getFirstName() == null || father.getFirstName().isEmpty()) 
 		&& (mother == null || mother.getFirstName() == null || mother.getFirstName().isEmpty())) return "";
 		
-		String outcome;
+		String outcome, fatherName, motherName;
 		if (person.getSex() == Sex.WOMAN)
 			outcome = "córka ";
 		else if (person.getSex() == Sex.MAN)
@@ -22,11 +22,13 @@ public class PersonDetails {
 		else
 			outcome = "dziecko ";
 		
-		outcome += InflectionPL.nameGenitive(father);
-		if ((father != null) && (mother != null))
-			outcome += " i ";
-		outcome += InflectionPL.nameGenitive(mother);
+		fatherName = InflectionPL.nameGenitive(father);
+		motherName = InflectionPL.nameGenitive(mother);
 		
+		if (fatherName.isEmpty() || motherName.isEmpty())
+			outcome += fatherName + motherName;
+		else
+			outcome += fatherName + " i " + motherName;
 			
 		return outcome;
 	}
