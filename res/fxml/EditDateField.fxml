@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox alignment="BOTTOM_RIGHT" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.edit.EditDateFieldController">
+   <children>
+      <TextField fx:id="dayField" prefWidth="35.0" />
+      <Label text="." />
+      <TextField fx:id="monthField" prefWidth="35.0" />
+      <Label text="." />
+      <TextField fx:id="yearField" prefWidth="70.0" />
+   </children>
+</HBox>

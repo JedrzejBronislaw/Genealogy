@@ -5,10 +5,11 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import fxmlBuilders.edit.EditPersonPaneBuilder;
 import fxmlControllers.CardPaneController;
-import fxmlControllers.EditPersonPaneController;
 import fxmlControllers.MainWindowController;
 import fxmlControllers.MainWindowController.Views;
+import fxmlControllers.edit.EditPersonPaneController;
 import fxmlControllers.TreeGraphPaneController;
 import javafx.scene.layout.Pane;
 import lang.Languages;

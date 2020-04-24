@@ -1,29 +1,23 @@
-package fxmlControllers;
+package fxmlControllers.edit;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class EditItemController implements Initializable {
+public class EditTextFieldController implements EditFieldInterface, Initializable {
 
-	@FXML
-	private Label label;
 	@FXML
 	private TextField value;
 	
-	public void setLabel(String labelText) {
-		label.setText(labelText);
-	}
-	
+	@Override
 	public void setOldValue(String valueText) {
 		value.setText(valueText);
 		value.setPromptText(valueText);
 	}
-
+	@Override
 	public String getValue() {
 		return value.getText();
 	}
