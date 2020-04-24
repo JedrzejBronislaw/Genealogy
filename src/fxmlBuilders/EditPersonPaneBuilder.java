@@ -38,8 +38,35 @@ public class EditPersonPaneBuilder {
 		controller.addItem(new EditField(Internationalization.get("first_name"),
 				(person, value) -> person.setFirstName(value),
 				person -> person.getFirstName()));
+		controller.addItem(new EditField(Internationalization.get("alias"),
+				(person, value) -> person.setAlias(value),
+				person -> person.getAlias()));
 		controller.addItem(new EditField(Internationalization.get("last_name"),
 				(person, value) -> person.setLastName(value),
 				person -> person.getLastName()));
+		//birth date
+		controller.addItem(new EditField(Internationalization.get("birth_place"),
+				(person, value) -> person.setBirthPlace(value),
+				person -> person.getBirthPlace()));
+		//death date
+		controller.addItem(new EditField(Internationalization.get("death_place"),
+				(person, value) -> person.setDeathPlace(value),
+				person -> person.getDeathPlace()));
+		//isalive
+		//sex
+		controller.addItem(new EditField(Internationalization.get("baptism_parish"),
+				(person, value) -> person.setBaptismParish(value),
+				person -> person.getBaptismParish()));
+		controller.addItem(new EditField(Internationalization.get("burial_place"),
+				(person, value) -> person.setBurialPlace(value),
+				person -> person.getBurialPlace()));
+		
+		//contact
+		//comments
+
+		//father
+		//mother
+		//spouses
+		//children
 	}
 }
