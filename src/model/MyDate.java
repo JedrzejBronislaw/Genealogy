@@ -190,8 +190,10 @@ public class MyDate {
 		String outcome = "";
 		
 		if (day != 0)   outcome += day;
-		if (month != 0) outcome += "." + month;
-		if (year != 0)  outcome += "." + year;
+		outcome += ".";
+		if (month != 0) outcome += month;
+		outcome += ".";
+		if (year != 0)  outcome += year;
 
 		return outcome;
 	}
