@@ -129,7 +129,7 @@ public class PGLWriter {
 	}
 
 	private void saveProperty(LifeStatus value) throws IOException {
-		if (value == null || value == LifeStatus.UNDEFINED) return;
+		if (value == null || value == LifeStatus.UNKNOWN) return;
 		
 		if (value == LifeStatus.NO)  writer.write("zyje=0");
 		if (value == LifeStatus.YES) writer.write("zyje=1");
@@ -137,7 +137,7 @@ public class PGLWriter {
 	}
 
 	private void saveProperty(Sex value) throws IOException {
-		if (value == null || value == Sex.UNDEFINED) return;
+		if (value == null || value == Sex.UNKNOWN) return;
 		
 		if (value == Sex.WOMAN) writer.write("plec=0");
 		if (value == Sex.MAN)   writer.write("plec=1");

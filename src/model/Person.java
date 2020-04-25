@@ -8,14 +8,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Person {
-	public enum LifeStatus{YES, NO, UNDEFINED};
-	public enum Sex{WOMAN, MAN, UNDEFINED};
+	public enum LifeStatus{YES, NO, UNKNOWN};
+	public enum Sex{WOMAN, MAN, UNKNOWN};
 	
 	@Setter @Getter private String firstName;
 	@Setter @Getter private String lastName;
 	@Setter @Getter private String alias;
-	@Setter @Getter private LifeStatus lifeStatus = LifeStatus.UNDEFINED;
-	@Setter @Getter private Sex sex = Sex.UNDEFINED;
+	@Setter @Getter private LifeStatus lifeStatus = LifeStatus.UNKNOWN;
+	@Setter @Getter private Sex sex = Sex.UNKNOWN;
 	@Setter @Getter private MyDate birthDate;
 	@Setter @Getter private MyDate deathDate;
 	@Setter @Getter private String birthPlace;

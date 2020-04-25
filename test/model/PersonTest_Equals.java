@@ -95,13 +95,13 @@ public class PersonTest_Equals {
 	
 	@Test
 	public void notEquals_lifeStatus() {
-		actualPerson.setLifeStatus(LifeStatus.UNDEFINED);
+		actualPerson.setLifeStatus(LifeStatus.UNKNOWN);
 		assertFalse(expectedPerson.equals(actualPerson));
 	}
 	
 	@Test
 	public void notEquals_sex() {
-		actualPerson.setSex(Sex.UNDEFINED);
+		actualPerson.setSex(Sex.UNKNOWN);
 		assertFalse(expectedPerson.equals(actualPerson));
 	}
 	
