@@ -1,15 +1,8 @@
 package fxmlBuilders;
 
 import fxmlControllers.CommonSurnamesItemController;
-import javafx.scene.layout.Pane;
-import lombok.Getter;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 
-public class CommonSurnamesItemBuilder {
-
-	@Getter
-	private Pane pane;
+public class CommonSurnamesItemBuilder extends PaneFXMLBuilder<CommonSurnamesItemController> {
 	
 	private int number;
 	private String surname;
@@ -23,12 +16,12 @@ public class CommonSurnamesItemBuilder {
 		return this;
 	}
 	
-	public void build() {
-		MyFXMLLoader<CommonSurnamesItemController> loader = new MyFXMLLoader<>();
-		NodeAndController<CommonSurnamesItemController> nac = loader.create("CommonSurnamesItem.fxml");
-		
-		pane = (Pane) nac.getNode();
-
-		nac.getController().set(number, surname);
+	@Override
+	public String getFxmlFileName() {
+		return "CommonSurnamesItem.fxml";
+	}
+	@Override
+	public void afterBuild() {
+		controller.set(number, surname);
 	}
 }

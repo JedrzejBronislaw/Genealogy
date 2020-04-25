@@ -2,41 +2,33 @@ package fxmlBuilders.edit;
 
 import java.util.function.Consumer;
 
+import fxmlBuilders.PaneFXMLBuilder;
 import fxmlControllers.edit.EditDateItem;
 import fxmlControllers.edit.EditEnumItem;
 import fxmlControllers.edit.EditPersonPaneController;
 import fxmlControllers.edit.EditTextItem;
-import javafx.scene.layout.Pane;
 import lang.Internationalization;
-import lombok.Getter;
 import lombok.Setter;
 import model.Person;
 import model.Person.LifeStatus;
 import model.Person.Sex;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 import tools.Tools;
 
-public class EditPersonPaneBuilder {
+public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneController> {
 	
-	@Getter
-	private Pane pane;
-	@Getter
-	private EditPersonPaneController controller;
-
 	@Setter
 	private Consumer<Person> changeEvent;
 	@Setter
 	private Runnable closePane;
-
 	
-	public void build(){
-		MyFXMLLoader<EditPersonPaneController> loader = new MyFXMLLoader<>();
-		NodeAndController<EditPersonPaneController> nac = loader.create("EditPersonPane.fxml");
-		
-		controller = nac.getController();
-		pane = (Pane) nac.getNode();
-		
+
+	@Override
+	public String getFxmlFileName() {
+		return "EditPersonPane.fxml";
+	}
+
+	@Override
+	public void afterBuild() {
 		controller.setChangeEvent(changeEvent);
 		controller.setClosePane(closePane);
 		

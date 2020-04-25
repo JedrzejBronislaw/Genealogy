@@ -3,21 +3,11 @@ package fxmlBuilders;
 import java.util.function.Consumer;
 
 import fxmlControllers.SearchViewController;
-import javafx.scene.layout.Pane;
-import lombok.Getter;
 import lombok.Setter;
 import model.Person;
 import searchEngine.SearchEngine;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 
-public class SearchViewBuilder {
-
-	@Getter
-	private Pane pane;
-	
-	@Getter
-	private SearchViewController controller;
+public class SearchViewBuilder extends PaneFXMLBuilder<SearchViewController> {
 
 	@Setter
 	private Consumer<Person> chooseAction;
@@ -25,13 +15,14 @@ public class SearchViewBuilder {
 	@Setter
 	private SearchEngine searchEngine = new SearchEngine();
 	
-	public void build() {
-		MyFXMLLoader<SearchViewController> loader = new MyFXMLLoader<>();
-		NodeAndController<SearchViewController> nac = loader.create("SearchView.fxml");
-		
-		pane = (Pane) nac.getNode();
-		controller = nac.getController();
-		
+
+	@Override
+	public String getFxmlFileName() {
+		return "SearchView.fxml";
+	}
+
+	@Override
+	public void afterBuild() {
 		controller.setChooseAction(chooseAction);
 		controller.setSubmitQuery(query -> controller.setItems(searchEngine.run(query)));
 	}

@@ -5,16 +5,14 @@ import java.util.function.Consumer;
 import fxmlControllers.LanguageItemPaneController;
 import javafx.scene.control.Label;
 import lang.Languages;
-import lombok.Getter;
 import lombok.Setter;
 import tools.Injection;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 
-public class LanguageItemPaneBuilder {
+public class LanguageItemPaneBuilder extends FXMLBuilder<LanguageItemPaneController> {
 
-	@Getter
-	private Label label;
+	public Label getLabel() {
+		return (Label) getNode();
+	}
 	
 	@Setter
 	private Languages language;
@@ -28,13 +26,14 @@ public class LanguageItemPaneBuilder {
 		this.language = language;
 	}
 	
-	public void build() {
-		MyFXMLLoader<LanguageItemPaneController> loader = new MyFXMLLoader<>();
-		NodeAndController<LanguageItemPaneController> nac = loader.create("LanguageItemPane.fxml");
-		LanguageItemPaneController controller = nac.getController();
-		
-		label = (Label) nac.getNode();
-		
+
+	@Override
+	public String getFxmlFileName() {
+		return "LanguageItemPane.fxml";
+	}
+
+	@Override
+	public void afterBuild() {
 		controller.setLanguage(language.getAbbr());
 		controller.setClick(() -> Injection.run(changeLanguage, language));
 	}

@@ -4,19 +4,12 @@ import java.util.function.Consumer;
 
 import fxmlControllers.TreePaneController;
 import javafx.scene.layout.Pane;
-import lombok.Getter;
 import lombok.Setter;
 import model.Person;
 import searchEngine.SearchEngine;
 import session.Session;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 
-public class TreePaneBuilder {
-
-	@Getter
-	private Pane pane;
-	private TreePaneController controller;
+public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 	
 	@Setter
 	private Session session;
@@ -25,15 +18,15 @@ public class TreePaneBuilder {
 	private Consumer<Person> selectPerson;
 	@Setter
 	private Runnable closeTree;
-	
-	
-	public void build() {
-		MyFXMLLoader<TreePaneController> loader = new MyFXMLLoader<>();
-		NodeAndController<TreePaneController> nac = loader.create("TreePane.fxml");
-		
-		pane = (Pane) nac.getNode();
-		controller = nac.getController();
 
+
+	@Override
+	public String getFxmlFileName() {
+		return "TreePane.fxml";
+	}
+
+	@Override
+	public void afterBuild() {
 		controller.setTreeDetailsPane(generateTreeDetailsPane());
 		controller.setCommonSurnamePane(generateCommonNamePane());
 		controller.setSearchPane(generateSearchPane());

@@ -1,23 +1,15 @@
 package fxmlBuilders.edit;
 
+import fxmlBuilders.FXMLBuilder;
 import fxmlControllers.edit.EditDateFieldController;
-import javafx.scene.Node;
-import lombok.Getter;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 
-public class EditDateFieldBuilder {
+public class EditDateFieldBuilder extends FXMLBuilder<EditDateFieldController> {
 
-	@Getter
-	private Node node;
-	@Getter
-	private EditDateFieldController controller;
-	
-	public void build(){
-		MyFXMLLoader<EditDateFieldController> loader = new MyFXMLLoader<>();
-		NodeAndController<EditDateFieldController> nac = loader.create("EditDateField.fxml");
-		
-		controller = nac.getController();
-		node = nac.getNode();
+	@Override
+	public String getFxmlFileName() {
+		return "EditDateField.fxml";
 	}
+
+	@Override
+	public void afterBuild() {}
 }

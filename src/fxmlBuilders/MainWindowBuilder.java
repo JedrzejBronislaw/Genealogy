@@ -9,29 +9,22 @@ import fxmlBuilders.edit.EditPersonPaneBuilder;
 import fxmlControllers.CardPaneController;
 import fxmlControllers.MainWindowController;
 import fxmlControllers.MainWindowController.Views;
-import fxmlControllers.edit.EditPersonPaneController;
 import fxmlControllers.TreeGraphPaneController;
+import fxmlControllers.edit.EditPersonPaneController;
 import javafx.scene.layout.Pane;
 import lang.Languages;
-import lombok.Getter;
 import lombok.Setter;
 import model.Person;
 import nameDisplaying.SimpleNameDisplaying;
 import session.Session;
 import settings.Settings;
 import tools.Injection;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 import treeGraphs.DrawingDescendantTreeGraph;
 import treeGraphs.StdAncestorsTreeGraph;
 import treeGraphs.StdDescendantsTreeGraph;
 import treeGraphs.TreeGraph;
 
-public class MainWindowBuilder {
-
-	@Getter
-	private Pane pane;
-	private MainWindowController controller;
+public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 
 	@Setter
 	private Session session;
@@ -50,14 +43,15 @@ public class MainWindowBuilder {
 	private CardPaneController cardController;
 	private TreeGraphPaneController treeGraphController;
 	private EditPersonPaneController editPersonController;
-	
-	public void build() {
-		MyFXMLLoader<MainWindowController> loader = new MyFXMLLoader<>();
-		NodeAndController<MainWindowController> nac = loader.create("MainWindow.fxml");
-		
-		pane = (Pane) nac.getNode();
-		controller = nac.getController();
 
+	@Override
+	public String getFxmlFileName() {
+		return "MainWindow.fxml";
+	}
+
+
+	@Override
+	public void afterBuild() {
 		controller.setLanguagePane(generateLanguagePane());
 		controller.setFullScreenPane(generateFullScreenPane());
 
@@ -185,5 +179,7 @@ public class MainWindowBuilder {
 		
 		return builder.getPane();
 	}
+
+
 
 }

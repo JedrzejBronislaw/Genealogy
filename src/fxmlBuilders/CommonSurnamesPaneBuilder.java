@@ -5,18 +5,21 @@ import java.util.List;
 
 import fxmlControllers.CommonSurnamesPaneController;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import lombok.Getter;
 import session.Session;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 
-public class CommonSurnamesPaneBuilder {
+public class CommonSurnamesPaneBuilder extends PaneFXMLBuilder<CommonSurnamesPaneController> {
 
-	@Getter
-	private Pane pane;
-	private CommonSurnamesPaneController controller;
+	@Override
+	public String getFxmlFileName() {
+		return "CommonSurnamesPane.fxml";
+	}
 
+	@Override
+	public void afterBuild() {
+		controller.setSurnamePaneGenerator(this::surnamePaneGenerator);
+		clearSurnames();
+	}
+	
 	public void setSession(Session session) {
 		if(session == null) return;
 
@@ -24,17 +27,6 @@ public class CommonSurnamesPaneBuilder {
 		session.addCloseTreeListener(() -> clearSurnames());
 	}
 	
-	public void build() {
-		MyFXMLLoader<CommonSurnamesPaneController> loader = new MyFXMLLoader<>();
-		NodeAndController<CommonSurnamesPaneController> nac = loader.create("CommonSurnamesPane.fxml");
-		
-		pane = (Pane) nac.getNode();
-		controller = nac.getController();
-		
-		controller.setSurnamePaneGenerator(this::surnamePaneGenerator);
-		clearSurnames();
-	}
-
 	private void clearSurnames() {
 		controller.clearCommonSurnames();
 	}

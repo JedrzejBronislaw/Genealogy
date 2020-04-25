@@ -3,20 +3,11 @@ package fxmlBuilders;
 import java.util.function.Consumer;
 
 import fxmlControllers.CardPaneController;
-import javafx.scene.layout.Pane;
-import lombok.Getter;
 import lombok.Setter;
 import model.Person;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 
-public class CardPaneBuilder {
+public class CardPaneBuilder extends PaneFXMLBuilder<CardPaneController> {
 
-	@Getter
-	private Pane pane;
-	@Getter
-	private CardPaneController controller;
-	
 	@Setter
 	private Consumer<Person> showAncestorsTree;
 	@Setter
@@ -30,19 +21,17 @@ public class CardPaneBuilder {
 	@Setter
 	private Consumer<Person> graphClickAction;
 	
-	
-	public void build() {
-		MyFXMLLoader<CardPaneController> loader = new MyFXMLLoader<>();
-		NodeAndController<CardPaneController> nac = loader.create("CardPane.fxml");
-		
-		controller = nac.getController();
-		pane = (Pane) nac.getNode();
-		
-	
+	@Override
+	public String getFxmlFileName() {
+		return "CardPane.fxml";
+	}
+
+	@Override
+	public void afterBuild() {
 		controller.setAncestorsTreeAction(showAncestorsTree);
 		controller.setDescendantsTreeAction(showDescendantsTree);
 		controller.setDrawingTreeAction(showDrawingTree);
-
+		
 		controller.setEditAction(editAction);
 		
 		controller.setGraphClickAction(graphClickAction);

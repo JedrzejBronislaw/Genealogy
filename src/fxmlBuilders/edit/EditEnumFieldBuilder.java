@@ -1,29 +1,21 @@
 package fxmlBuilders.edit;
 
+import fxmlBuilders.FXMLBuilder;
 import fxmlControllers.edit.EditEnumFieldController;
-import javafx.scene.Node;
-import lombok.Getter;
 import lombok.Setter;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
 
-public class EditEnumFieldBuilder {
-
-	@Getter
-	private Node node;
-	@Getter
-	private EditEnumFieldController controller;
+public class EditEnumFieldBuilder extends FXMLBuilder<EditEnumFieldController> {
 	
 	@Setter
 	private String[] options;
-	
-	public void build(){
-		MyFXMLLoader<EditEnumFieldController> loader = new MyFXMLLoader<>();
-		NodeAndController<EditEnumFieldController> nac = loader.create("EditEnumField.fxml");
-		
-		controller = nac.getController();
-		node = nac.getNode();
-		
+
+	@Override
+	public String getFxmlFileName() {
+		return "EditEnumField.fxml";
+	}
+
+	@Override
+	public void afterBuild() {
 		for (String name : options) controller.addOption(name);
 	}
 }
