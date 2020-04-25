@@ -1,6 +1,7 @@
 package lang;
 
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import lombok.Getter;
@@ -17,7 +18,12 @@ public class Internationalization {
 	
 	
 	public static String get(String key) {
-		return rb.getString(key);
+		try {
+			return rb.getString(key);
+		} catch(MissingResourceException e) {
+			e.printStackTrace();
+			return key;
+		}
 	}
 	
 	private static void refresh() {
