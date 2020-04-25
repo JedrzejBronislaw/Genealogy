@@ -3,14 +3,16 @@ package fxmlControllers.edit;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import fxmlBuilders.edit.EditItemBuilder.Type;
+import fxmlBuilders.edit.EditDateFieldBuilder;
+import fxmlControllers.edit.EditItemController.EditField;
 import model.MyDate;
 import model.Person;
 
 public class EditDateItem extends EditItem<MyDate> {
 
 	public EditDateItem(String label, BiConsumer<Person, MyDate> setter, Function<Person, MyDate> getter) {
-		super(label, Type.Date, setter, getter);
+		super(label, setter, getter);
+		build();
 	}
 
 	@Override
@@ -21,5 +23,12 @@ public class EditDateItem extends EditItem<MyDate> {
 	@Override
 	protected MyDate stringToSpecial(String value) {
 		return new MyDate(value);
+	}
+
+	@Override
+	protected EditField createEditField() {
+		EditDateFieldBuilder builder = new EditDateFieldBuilder();
+		builder.build();
+		return new EditField(builder.getNode(), builder.getController());
 	}
 }

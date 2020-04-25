@@ -3,14 +3,17 @@ package fxmlControllers.edit;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import fxmlBuilders.edit.EditTextFieldBuilder;
+import fxmlBuilders.edit.EditEnumFieldBuilder;
 import fxmlControllers.edit.EditItemController.EditField;
 import model.Person;
 
-public class EditTextItem extends EditItem<String> {
+public class EditEnumItem extends EditItem<String> {
 
-	public EditTextItem(String label, BiConsumer<Person, String> setter, Function<Person, String> getter) {
+	private String[] values;
+	
+	public EditEnumItem(String label, String[] values, BiConsumer<Person, String> setter, Function<Person, String> getter) {
 		super(label, setter, getter);
+		this.values = values;
 		build();
 	}
 
@@ -23,10 +26,11 @@ public class EditTextItem extends EditItem<String> {
 	protected String stringToSpecial(String value) {
 		return value;
 	}
-
+	
 	@Override
 	protected EditField createEditField() {
-		EditTextFieldBuilder builder = new EditTextFieldBuilder();
+		EditEnumFieldBuilder builder = new EditEnumFieldBuilder();
+		builder.setOptions(values);
 		builder.build();
 		return new EditField(builder.getNode(), builder.getController());
 	}

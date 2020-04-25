@@ -3,6 +3,7 @@ package fxmlBuilders.edit;
 import java.util.function.Consumer;
 
 import fxmlControllers.edit.EditDateItem;
+import fxmlControllers.edit.EditEnumItem;
 import fxmlControllers.edit.EditPersonPaneController;
 import fxmlControllers.edit.EditTextItem;
 import javafx.scene.layout.Pane;
@@ -10,8 +11,11 @@ import lang.Internationalization;
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
+import model.Person.LifeStatus;
+import model.Person.Sex;
 import tools.MyFXMLLoader;
 import tools.MyFXMLLoader.NodeAndController;
+import tools.Tools;
 
 public class EditPersonPaneBuilder {
 	
@@ -59,8 +63,16 @@ public class EditPersonPaneBuilder {
 		controller.addItem(new EditTextItem(Internationalization.get("death_place"),
 				(person, value) -> person.setDeathPlace(value),
 				person -> person.getDeathPlace()));
-		//isalive
-		//sex
+
+		controller.addItem(new EditEnumItem(Internationalization.get("lives"),
+				Tools.getStringValues(LifeStatus.class),
+				(person, value) -> person.setLifeStatus(LifeStatus.valueOf(value)),
+				person -> person.getLifeStatus().toString()));
+		controller.addItem(new EditEnumItem(Internationalization.get("sex"),
+				Tools.getStringValues(Sex.class),
+				(person, value) -> person.setSex(Sex.valueOf(value)),
+				person -> person.getSex().toString()));
+
 		controller.addItem(new EditTextItem(Internationalization.get("baptism_parish"),
 				(person, value) -> person.setBaptismParish(value),
 				person -> person.getBaptismParish()));

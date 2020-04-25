@@ -46,4 +46,14 @@ public class Tools {
 				
 		return text;
 	}
+	
+	public static String[] getStringValues(Class<? extends Enum<?>> enumClass) {
+		Enum<?>[] rawValues = enumClass.getEnumConstants();
+		String[] strValues = new String[rawValues.length];
+		
+		for(int i=0; i<rawValues.length; i++)
+			strValues[i] = rawValues[i].toString();
+		
+		return strValues;
+	}
 }

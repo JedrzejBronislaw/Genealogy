@@ -4,30 +4,36 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import fxmlBuilders.edit.EditItemBuilder;
-import fxmlBuilders.edit.EditItemBuilder.Type;
+import fxmlControllers.edit.EditItemController.EditField;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import model.Person;
 
 public abstract class EditItem<ValueType> implements EditItemInterface{
+
 	@Getter
 	protected Pane pane;
 	protected EditItemController controller;
-	
+
+	private String label;
 	private BiConsumer<Person, ValueType> setter;
 	private Function<Person, ValueType> getter;
 
 	
-	public EditItem(String label, Type type, BiConsumer<Person, ValueType> setter, Function<Person, ValueType> getter) {
+	public EditItem(String label, BiConsumer<Person, ValueType> setter, Function<Person, ValueType> getter) {
+		this.label = label;
+		this.getter = getter;
+		this.setter = setter;
+	}
+	
+	protected void build() {
 		EditItemBuilder builder = new EditItemBuilder();
-		builder.setFieldType(type);
+		builder.setEditField(createEditField());
 		builder.build();
 		builder.getController().setLabel(label);
 		
 		this.pane = builder.getPane();
 		this.controller = builder.getController();
-		this.getter = getter;
-		this.setter = setter;
 	}
 	
 	@Override
@@ -44,4 +50,5 @@ public abstract class EditItem<ValueType> implements EditItemInterface{
 	
 	protected abstract String specialToString(ValueType value);
 	protected abstract ValueType stringToSpecial(String value);
+	protected abstract EditField createEditField();
 }
