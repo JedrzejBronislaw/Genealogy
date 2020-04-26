@@ -7,6 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import treeGraphs.painter.Handle;
 import treeGraphs.painter.Painter;
 import treeGraphs.painter.Point;
 import treeGraphs.painter.Rectangle;
@@ -34,8 +35,14 @@ public class Graphics2DPainter extends Painter {
 	}
 
 	@Override
-	public void drawText(String text, Point topLeft) {
+	public Handle drawText(String text, Point topLeft) {
 		g.drawString(text, topLeft.getX(), topLeft.getY());
+		
+		return new Handle() {
+			
+			@Override
+			public void setOnMouseClick(Runnable action) {}
+		};
 	}
 
 	@Override

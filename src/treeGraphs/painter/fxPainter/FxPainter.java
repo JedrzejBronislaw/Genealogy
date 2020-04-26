@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import treeGraphs.painter.Handle;
 import treeGraphs.painter.Painter;
 import treeGraphs.painter.Point;
 import treeGraphs.painter.Rectangle;
@@ -52,7 +53,7 @@ public class FxPainter extends Painter{
 	}
 
 	@Override
-	public void drawText(String text, Point topLeft) {
+	public Handle drawText(String text, Point topLeft) {
 		Text textFX = new Text();
 
 		textFX.setText(text);
@@ -61,6 +62,8 @@ public class FxPainter extends Painter{
 		textFX.setFont(currentFont());
 
 		pane.getChildren().add(textFX);
+
+		return new FxHandle(textFX);
 	}
 
 	@Override

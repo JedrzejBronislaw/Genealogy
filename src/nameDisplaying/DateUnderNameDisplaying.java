@@ -1,6 +1,8 @@
 package nameDisplaying;
 
 import model.Person;
+import treeGraphs.painter.Handle;
+import treeGraphs.painter.MultiHandle;
 import treeGraphs.painter.Point;
 
 public class DateUnderNameDisplaying extends Name {
@@ -8,14 +10,16 @@ public class DateUnderNameDisplaying extends Name {
 	private static final int verticalSpacing = 3;
 	
 	@Override
-	public void print(Person person, int x, int y) {
+	public Handle print(Person person, int x, int y) {
 		String date = generateDate(person);
 		if (date != null)
 		{
-			painter.drawText(generateName(person), new Point(x, y-verticalSpacing-painter.getTextHeight()));
-			painter.drawText(date, new Point(x, y));
+			Handle h1, h2;
+			h1 = painter.drawText(generateName(person), new Point(x, y-verticalSpacing-painter.getTextHeight()));
+			h2 = painter.drawText(date, new Point(x, y));
+			return new MultiHandle(h1, h2);
 		} else
-			painter.drawText(generateName(person), new Point(x, y));
+			return painter.drawText(generateName(person), new Point(x, y));
 	}
 
 

@@ -4,7 +4,9 @@ import java.awt.Font;
 
 import lombok.Setter;
 import model.Person;
+import tools.Injection;
 import treeGraphs.painter.Direction;
+import treeGraphs.painter.Handle;
 import treeGraphs.painter.Point;
 
 public class ClosestTreeGraph extends TreeGraph {
@@ -182,17 +184,23 @@ public class ClosestTreeGraph extends TreeGraph {
 	
 	private void drawParents(int areaWidth)
 	{
+		Handle fHandle, mHandle;
 		Person mother = mainPerson.getMother();
 		Person father = mainPerson.getFather();
 		String motherName  = (mother != null)  ? mother.nameSurname()  : "";
 		String fatherName = (father != null) ? father.nameSurname() : "";
 
-		painter.drawText(fatherName, new Point(marginX, marginY+textHeight));
-		painter.drawText(motherName, new Point(marginX+areaWidth-motherNameWidth, marginY+textHeight));
-		if (father != null)
+		fHandle = painter.drawText(fatherName, new Point(marginX, marginY+textHeight));
+		mHandle = painter.drawText(motherName, new Point(marginX+areaWidth-motherNameWidth, marginY+textHeight));
+		
+		if (father != null) {
+			fHandle.setOnMouseClick(() -> Injection.run(personClickAction, father));
 			clickMap.addArea(father, marginX, marginY+textHeight, marginX+fatherNameWidth, marginY);
-		if (mother != null)
+		}
+		if (mother != null) {
+			mHandle.setOnMouseClick(() -> Injection.run(personClickAction, mother));
 			clickMap.addArea(mother, marginX+areaWidth-motherNameWidth, marginY+textHeight, marginX+areaWidth, marginY);
+		}
 	}
 	
 	private void drawSiblings(Person[] siblings, int x, int y)
@@ -202,12 +210,16 @@ public class ClosestTreeGraph extends TreeGraph {
 
 		int height = painter.getTextHeight();
 		int width;
+		Handle handle;
 		
 		for (int i=0; i<siblings.length; i++)
 		{
-			width = painter.getTextWidth(siblings[i].nameSurname());
-			painter.drawText(siblings[i].nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSiblings)));
-			clickMap.addArea(siblings[i], x, y+(i+1)*(height+spaceBetweenSiblings), x+width, y+(i+1)*(height+spaceBetweenSiblings)-height);
+			Person sibling = siblings[i];
+			width  = painter.getTextWidth(sibling.nameSurname());
+			handle = painter.drawText(sibling.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSiblings)));
+			
+			handle.setOnMouseClick(() -> Injection.run(personClickAction, sibling));
+			clickMap.addArea(sibling, x, y+(i+1)*(height+spaceBetweenSiblings), x+width, y+(i+1)*(height+spaceBetweenSiblings)-height);
 		}
 		
 		painter.setTextStyle(f.getName(), f.getStyle(), f.getSize());
@@ -217,13 +229,16 @@ public class ClosestTreeGraph extends TreeGraph {
 	{
 		int height = painter.getTextHeight();
 		int width;
-		Person spouse;
+		Handle handle;
 		
 		for (int i=0; i<mainPerson.numberOfMarriages(); i++)
 		{
+			Person spouse;
 			spouse = mainPerson.getSpouse(i);
-			width = painter.getTextWidth(spouse.nameSurname());
-			painter.drawText(spouse.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSpouses)));
+			width  = painter.getTextWidth(spouse.nameSurname());
+			handle = painter.drawText(spouse.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSpouses)));
+			
+			handle.setOnMouseClick(() -> Injection.run(personClickAction, spouse));
 			clickMap.addArea(spouse, x, y+(i+1)*(height+spaceBetweenSpouses), x+width, y+(i+1)*(height+spaceBetweenSpouses)-height);
 		}		
 	}
@@ -232,13 +247,16 @@ public class ClosestTreeGraph extends TreeGraph {
 	{
 		int height = painter.getTextHeight();
 		int width;
-		Person child;
+		Handle handle;
 		
 		for (int i=0; i<mainPerson.numberOfChildren(); i++)
 		{
-			child = mainPerson.getChild(i);
-			width = painter.getTextWidth(child.nameSurname());
-			painter.drawText(child.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenChildren)));
+			Person child;
+			child  = mainPerson.getChild(i);
+			width  = painter.getTextWidth(child.nameSurname());
+			handle = painter.drawText(child.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenChildren)));
+
+			handle.setOnMouseClick(() -> Injection.run(personClickAction, child));
 			clickMap.addArea(child, x, y+(i+1)*(height+spaceBetweenChildren), x+width, y+(i+1)*(height+spaceBetweenChildren)-height);
 		}		
 	}

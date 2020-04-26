@@ -3,7 +3,9 @@ package treeGraphs;
 import java.awt.Font;
 
 import model.Person;
+import tools.Injection;
 import treeGraphs.painter.Direction;
+import treeGraphs.painter.Handle;
 import treeGraphs.painter.Point;
 
 public class StdAncestorsTreeGraph extends TreeGraph {
@@ -95,6 +97,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		Person mother = person.getMother();
 		int fatherY, motherY;
 		int x,y;
+		Handle handle;
 		
 		if ((mother != null) || (father != null))
 		{
@@ -113,7 +116,8 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 			
 			x = columnsWidths[generation];
 			y = ((motherY-fatherY) / 2) + fatherY;
-			nameDisplay.print(person, x, y+nameHeight);
+			handle = nameDisplay.print(person, x, y+nameHeight);
+			handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
 			clickMap.addArea(person, x, y+nameHeight, x+nameWidth, y);
 			
 			//arrowhead
@@ -131,7 +135,8 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		} else
 		{
 			x = columnsWidths[generation];
-			nameDisplay.print(person, x, y1+nameHeight);
+			handle = nameDisplay.print(person, x, y1+nameHeight);
+			handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
 			//click map
 			clickMap.addArea(person, x, y1+nameHeight, columnsWidths[generation+1]-horizontalOffset, y1);
 			y2 = y1+nameHeight+verticalOffset;
