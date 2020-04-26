@@ -56,7 +56,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		for (TreeNode node : plan)
 			for (TreeNode child : node.getLinks())
 			{
-				painter.setColor(gradinent.getKolorPosredni((float)node.getGeneration()/mainPerson.descendantGenerations()));
+				painter.setColor(gradinent.getIntermediateColor((float)node.getGeneration()/mainPerson.descendantGenerations()));
 				painter.setLineStyle(5-5*node.getGeneration()/mainPerson.descendantGenerations());
 				painter.drawLine(new Point(node.getX(), node.getY()), new Point(child.getX(), child.getY()));
 				painter.setLineStyle(1);
