@@ -44,7 +44,7 @@ public class InflectionPL {
 		if (name.endsWith("y"))		name = cutLastChars(name, 1) + "ego"; else
 		if (name.endsWith("o"))		name = cutLastChars(name, 1) + "a"; else
 			
-		if (endsWith(name, "k", "³", "c") && !endsWith(name, "ck")) {
+		if (endsWith(name, "k", "³", "c") && !endsWith(name, "ck", "a³")) {
 			String letter = lastLetter(name);
 			name = hardenEnd(cutLastChars(name, 2)) + letter + "a";
 		} else

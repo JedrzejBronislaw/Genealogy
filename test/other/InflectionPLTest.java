@@ -129,6 +129,11 @@ public class InflectionPLTest {
 		assertEquals("Maciusia", genitiveMan("Maciuœ"));
 	}
 
+	@Test
+	public void testNameGenitive_Rafal() {
+		assertEquals("Rafa³a", genitiveMan("Rafa³"));
+	}
+
 	//----------
 	
 	@Test
