@@ -9,11 +9,24 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import tools.Injection;
 
 public class MainWindowController implements Initializable {
 
 	public enum Views{ChooseFile, Tree, Card, Graph, EditPerson}
+	
+	@RequiredArgsConstructor
+	public static class ViewPane{
+		private final Pane pane;
+		private final Runnable onShowAction;
+		
+		public ViewPane(Pane pane) {
+			this.pane = pane;
+			this.onShowAction = null;
+		}
+	}
 	
 	@FXML
 	private Label titleLabel;
@@ -23,20 +36,20 @@ public class MainWindowController implements Initializable {
 	private StackPane topPane;
 	
 	@Setter
-	private Pane chooseFilePane;
+	private ViewPane chooseFilePane;
 	@Setter
-	private Pane cardPane;
+	private ViewPane cardPane;
 	@Setter
-	private Pane treePane;
+	private ViewPane treePane;
 	@Setter
-	private Pane graphPane;
+	private ViewPane graphPane;
 	@Setter
-	private Pane editPersonPane;
+	private ViewPane editPersonPane;
 	
 	private Views currentView;
 	
 	public void showView(Views view) {
-		Pane selected;
+		ViewPane selected;
 		
 		switch (view) {
 		case ChooseFile:
@@ -63,7 +76,8 @@ public class MainWindowController implements Initializable {
 			currentView = view;
 			Platform.runLater(() -> {
 				mainPane.getChildren().clear();
-				mainPane.getChildren().add(selected);
+				mainPane.getChildren().add(selected.pane);
+				Injection.run(selected.onShowAction);
 			});
 		}
 	}

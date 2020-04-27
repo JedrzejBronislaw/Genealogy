@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import fxmlBuilders.edit.EditPersonPaneBuilder;
 import fxmlControllers.CardPaneController;
 import fxmlControllers.MainWindowController;
+import fxmlControllers.MainWindowController.ViewPane;
 import fxmlControllers.MainWindowController.Views;
 import fxmlControllers.TreeGraphPaneController;
 import fxmlControllers.edit.EditPersonPaneController;
@@ -82,7 +83,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		return builder.getPane();
 	}
 
-	private Pane generateTreePane() {
+	private ViewPane generateTreePane() {
 		TreePaneBuilder builder = new TreePaneBuilder();
 		builder.setSession(session);
 		builder.setSelectPerson(person -> {
@@ -95,10 +96,10 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		});
 		builder.build();
 		
-		return builder.getPane();
+		return new ViewPane(builder.getPane());
 	}
 	
-	private Pane generateFileChoosePane() {
+	private ViewPane generateFileChoosePane() {
 		Settings settings = session.getSettings();
 		FileChoosePaneBuilder builder = new FileChoosePaneBuilder();
 		
@@ -112,18 +113,18 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		builder.setLastOpenFiles(settings.getRecentFiles().copyList());
 		builder.build();
 		
-		return builder.getPane();
+		return new ViewPane(builder.getPane());
 	}
 	
-	private Pane generateTreeGrapfPane() {
+	private ViewPane generateTreeGrapfPane() {
 		TreeGraphPaneBuilder builder = new TreeGraphPaneBuilder();
 		builder.build();
 		treeGraphController = builder.getController();
 		
-		return builder.getPane();
+		return new ViewPane(builder.getPane());
 	}
 	
-	private Pane generateCardPane() {
+	private ViewPane generateCardPane() {
 		CardPaneBuilder builder = new CardPaneBuilder();
 		builder.setShowAncestorsTree(person -> {
 			TreeGraph graph = new StdAncestorsTreeGraph();
@@ -151,7 +152,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		
 		cardController = builder.getController();
 		
-		return builder.getPane();
+		return new ViewPane(builder.getPane());
 	}
 	
 	private void showGraph(TreeGraph graph, Person person) {
@@ -165,7 +166,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		controller.showView(Views.Graph);
 	}
 	
-	private Pane generateEditPersonPane() {
+	private ViewPane generateEditPersonPane() {
 		EditPersonPaneBuilder builder = new EditPersonPaneBuilder();
 		builder.setChangeEvent(person -> {
 			session.reportPersonEdit(person);
@@ -177,7 +178,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		builder.build();
 		editPersonController = builder.getController();
 		
-		return builder.getPane();
+		return new ViewPane(builder.getPane());
 	}
 
 
