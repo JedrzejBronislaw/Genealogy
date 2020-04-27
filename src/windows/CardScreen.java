@@ -96,8 +96,6 @@ public class CardScreen extends JPanel implements ActionListener {
 			public void componentHidden(ComponentEvent e) {}
 		});
 		
-		grafMiniDrzewo.setCard(this);
-		
 		panelGlowny.add(szerokosc);
 		panelGlowny.add(pOgolny());
 		panelGlowny.add(pDaty());

@@ -7,6 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import lombok.Setter;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.Painter;
 import treeGraphs.painter.Point;
@@ -16,6 +17,8 @@ public class Graphics2DPainter extends Painter {
 
 	private Graphics2D g;
 	
+	@Setter
+	private G2DHandleFactory handleFactory;
 	
 	public void setGraphics(Graphics2D graphics) {
 		this.g = graphics;
@@ -27,6 +30,8 @@ public class Graphics2DPainter extends Painter {
 			g.setRenderingHint(
 			    RenderingHints.KEY_ANTIALIASING,
 			    RenderingHints.VALUE_ANTIALIAS_ON);		
+
+		handleFactory.clearClickMap();
 	}
 	
 	@Override
@@ -38,26 +43,26 @@ public class Graphics2DPainter extends Painter {
 	public Handle drawText(String text, Point topLeft) {
 		g.drawString(text, topLeft.getX(), topLeft.getY());
 		
-		return new Handle() {
-			
-			@Override
-			public void setOnMouseClick(Runnable action) {}
-		};
+		return handleFactory.createHandle(topLeft, topLeft.addVector(getTextWidth(text), -getTextHeight()));
 	}
 
 	@Override
-	public void drawRectangle(Point topLeft, Point bottomRight) {
+	public Handle drawRectangle(Point topLeft, Point bottomRight) {
 		Rectangle rect = new Rectangle(topLeft, bottomRight);
 		g.fillRect(rect.getLeft(), rect.getTop(), rect.width(), rect.height());
+		
+		return handleFactory.createHandle(topLeft, bottomRight);
 	}
 
 	@Override
-	public void drawCircle(Point center, float radius) {
+	public Handle drawCircle(Point center, float radius) {
 		int diameter = (int)(radius*2);
 		int left = (int) (center.getX()-radius);
 		int  top = (int) (center.getY()-radius);
 		
 		g.fillOval(left, top, diameter, diameter);
+
+		return handleFactory.createHandle(left, top, left+diameter, top+diameter);
 	}
 	
 	@Override

@@ -13,7 +13,9 @@ import javax.swing.JPanel;
 
 import lombok.Setter;
 import treeGraphs.TreeGraph;
+import treeGraphs.painter.graphics2DPainter.ClickMap;
 import treeGraphs.painter.graphics2DPainter.Graphics2DPainter;
+import treeGraphs.painter.graphics2DPainter.ClickMap.ClickArea;
 
 public class Canvas extends JPanel implements MouseListener {
 	
@@ -33,6 +35,9 @@ public class Canvas extends JPanel implements MouseListener {
 	
 	@Setter
 	private Graphics2DPainter painter;
+	
+	@Setter
+	private ClickMap clickMap;
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -63,10 +68,12 @@ public class Canvas extends JPanel implements MouseListener {
 		if (arg0.getClickCount() >= 2)
 		{
 			Point p = arg0.getPoint();
-			graph.clik(p.x, p.y);
+			ClickArea area = clickMap.getArea(p.x, p.y);
+			if (area != null)
+				area.click();
 		}
 	}
-
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub

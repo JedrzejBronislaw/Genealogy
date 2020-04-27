@@ -56,7 +56,6 @@ public class ClosestTreeGraph extends TreeGraph {
 	public void draw() {
 		painter.startDrawing();
 		
-		clickMap.clear();
 		if (mainPerson == null)
 			return;
 		
@@ -193,14 +192,10 @@ public class ClosestTreeGraph extends TreeGraph {
 		fHandle = painter.drawText(fatherName, new Point(marginX, marginY+textHeight));
 		mHandle = painter.drawText(motherName, new Point(marginX+areaWidth-motherNameWidth, marginY+textHeight));
 		
-		if (father != null) {
+		if (father != null)
 			fHandle.setOnMouseClick(() -> Injection.run(personClickAction, father));
-			clickMap.addArea(father, marginX, marginY+textHeight, marginX+fatherNameWidth, marginY);
-		}
-		if (mother != null) {
+		if (mother != null)
 			mHandle.setOnMouseClick(() -> Injection.run(personClickAction, mother));
-			clickMap.addArea(mother, marginX+areaWidth-motherNameWidth, marginY+textHeight, marginX+areaWidth, marginY);
-		}
 	}
 	
 	private void drawSiblings(Person[] siblings, int x, int y)
@@ -209,7 +204,6 @@ public class ClosestTreeGraph extends TreeGraph {
 		painter.setTextStyle(f.getName(), Font.ITALIC, f.getSize());
 
 		int height = painter.getTextHeight();
-		int width;
 		Handle handle;
 		
 		for (int i=0; i<siblings.length; i++)
@@ -219,7 +213,6 @@ public class ClosestTreeGraph extends TreeGraph {
 			handle = painter.drawText(sibling.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSiblings)));
 			
 			handle.setOnMouseClick(() -> Injection.run(personClickAction, sibling));
-			clickMap.addArea(sibling, x, y+(i+1)*(height+spaceBetweenSiblings), x+width, y+(i+1)*(height+spaceBetweenSiblings)-height);
 		}
 		
 		painter.setTextStyle(f.getName(), f.getStyle(), f.getSize());
@@ -228,7 +221,6 @@ public class ClosestTreeGraph extends TreeGraph {
 	private void drawSpouses(int x, int y)
 	{
 		int height = painter.getTextHeight();
-		int width;
 		Handle handle;
 		
 		for (int i=0; i<mainPerson.numberOfMarriages(); i++)
@@ -239,14 +231,12 @@ public class ClosestTreeGraph extends TreeGraph {
 			handle = painter.drawText(spouse.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSpouses)));
 			
 			handle.setOnMouseClick(() -> Injection.run(personClickAction, spouse));
-			clickMap.addArea(spouse, x, y+(i+1)*(height+spaceBetweenSpouses), x+width, y+(i+1)*(height+spaceBetweenSpouses)-height);
 		}		
 	}
 	
 	private void drawChildren(int x, int y)
 	{
 		int height = painter.getTextHeight();
-		int width;
 		Handle handle;
 		
 		for (int i=0; i<mainPerson.numberOfChildren(); i++)
@@ -257,7 +247,6 @@ public class ClosestTreeGraph extends TreeGraph {
 			handle = painter.drawText(child.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenChildren)));
 
 			handle.setOnMouseClick(() -> Injection.run(personClickAction, child));
-			clickMap.addArea(child, x, y+(i+1)*(height+spaceBetweenChildren), x+width, y+(i+1)*(height+spaceBetweenChildren)-height);
 		}		
 	}
 

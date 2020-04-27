@@ -35,7 +35,6 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		
 		painter.setTextStyle(font);
 		
-		clickMap.clear();
 		if (mainPerson == null)
 			return;
 		
@@ -118,7 +117,6 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 			y = ((motherY-fatherY) / 2) + fatherY;
 			handle = nameDisplay.print(person, x, y+nameHeight);
 			handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
-			clickMap.addArea(person, x, y+nameHeight, x+nameWidth, y);
 			
 			//arrowhead
 			painter.drawArrowhead(new Point(x+nameWidth+10, y+nameHeight/2), Direction.LEFT);
@@ -137,8 +135,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 			x = columnsWidths[generation];
 			handle = nameDisplay.print(person, x, y1+nameHeight);
 			handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
-			//click map
-			clickMap.addArea(person, x, y1+nameHeight, columnsWidths[generation+1]-horizontalOffset, y1);
+			
 			y2 = y1+nameHeight+verticalOffset;
 			return y1;
 		}

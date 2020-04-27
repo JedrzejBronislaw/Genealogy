@@ -67,21 +67,25 @@ public class FxPainter extends Painter{
 	}
 
 	@Override
-	public void drawRectangle(Point topLeft, Point bottomRight) {
+	public Handle drawRectangle(Point topLeft, Point bottomRight) {
 		Rectangle rect = new Rectangle(topLeft, bottomRight);
 		
 		javafx.scene.shape.Rectangle r = new javafx.scene.shape.Rectangle(rect.getLeft(), rect.getTop(), rect.width(), rect.height());
 		r.setFill(color);
 		pane.getChildren().add(r);
+
+		return new FxHandle(r);
 	}
 
 	@Override
-	public void drawCircle(Point center, float radius) {
+	public Handle drawCircle(Point center, float radius) {
 		Circle circle = new Circle(center.getX(), center.getY(), radius);
 
 		circle.setFill(color);
 		
 		pane.getChildren().add(circle);
+
+		return new FxHandle(circle);
 	}
 
 	@Override

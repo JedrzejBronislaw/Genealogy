@@ -46,7 +46,6 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 		painter.startDrawing();
 		painter.setTextStyle(font);
-		clickMap.clear();
 		
 		betweenGenerationsSpace = minParentLineLength + childArrowLength + lineMargin*2;
 		
@@ -110,7 +109,6 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		y += nameHeight;
 		handle = nameDisplay.print(person, x, y);
 		handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
-		clickMap.addArea(person, x, y, x+nameWidth, y-nameHeight);
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
 			spouseOffset += drawSpouse(person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
@@ -168,7 +166,6 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		y += nameHeight;
 		handle = nameDisplay.print(person, x, y);
 		handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
-		clickMap.addArea(person, x, y, x+nameWidth, y-nameHeight);
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
 			spouseOffset += drawSpouse(person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
@@ -205,11 +202,9 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	{
 		Handle handle;
 		int nameHeight = nameDisplay.getHeight(person);
-		int nameWidth = nameDisplay.getWidth(person);
 		
 		handle = nameDisplay.print(person, x+spouseIndentation, y+nameHeight);
 		handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
-		clickMap.addArea(person, x, y+nameHeight, x+spouseIndentation+nameWidth, y);
 		drawRings(x, y, spouseIndentation, nameHeight);
 		
 		return nameHeight;
