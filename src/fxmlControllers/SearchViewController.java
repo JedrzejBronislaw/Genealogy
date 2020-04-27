@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
 import lombok.Setter;
 import model.Person;
 import other.PersonDetails;
@@ -66,6 +68,35 @@ public class SearchViewController implements Initializable {
 		});
 		
 		queryField.textProperty().addListener((observable, oldValue, newValue) -> Injection.run(submitQuery, newValue));
+		queryField.setOnKeyPressed(e -> {
+			KeyCode key = e.getCode();
+			int resultsSize = list.getItems().size();
+			int selectedIndex = list.getSelectionModel().getSelectedIndex();
+
+			if (key == KeyCode.DOWN) {
+				list.getSelectionModel().select(selectedIndex+1);
+				list.scrollTo(list.getSelectionModel().getSelectedIndex());
+			} else
+			if (key == KeyCode.UP && selectedIndex > 0) {
+				list.getSelectionModel().select(selectedIndex-1);
+				list.scrollTo(list.getSelectionModel().getSelectedIndex());
+			} else
+			if (key == KeyCode.ENTER && resultsSize == 1)
+				Injection.run(chooseAction, list.getItems().get(0));
+			else
+			if (key == KeyCode.ENTER && resultsSize > 1 && !list.getSelectionModel().isEmpty())
+				Injection.run(chooseAction, list.getSelectionModel().getSelectedItem());
+		});
+
+		list.setOnKeyPressed(e -> {
+			KeyCode key = e.getCode();
+			int resultsSize = list.getItems().size();
+			if (key == KeyCode.ENTER && resultsSize == 1)
+				Injection.run(chooseAction, list.getItems().get(0));
+			else
+			if (key == KeyCode.ENTER && resultsSize > 1 && !list.getSelectionModel().isEmpty())
+				Injection.run(chooseAction, list.getSelectionModel().getSelectedItem());
+		});
 	}
 
 	public String createLabel(Person person) {
