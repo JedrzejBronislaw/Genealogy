@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import fxmlControllers.TreePaneController;
 import javafx.scene.layout.Pane;
+import lombok.Getter;
 import lombok.Setter;
 import model.Person;
 import searchEngine.SearchEngine;
@@ -18,6 +19,9 @@ public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 	private Consumer<Person> selectPerson;
 	@Setter
 	private Runnable closeTree;
+	
+	@Getter
+	private Runnable settingSearchFocus;
 
 
 	@Override
@@ -70,6 +74,7 @@ public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 			});
 		}
 		
+		settingSearchFocus = () -> builder.getController().requestFocus();
 		
 		return builder.getPane();
 	}

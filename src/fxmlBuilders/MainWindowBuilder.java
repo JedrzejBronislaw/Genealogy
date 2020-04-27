@@ -96,7 +96,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		});
 		builder.build();
 		
-		return new ViewPane(builder.getPane());
+		return new ViewPane(builder.getPane(), builder.getSettingSearchFocus());
 	}
 	
 	private ViewPane generateFileChoosePane() {

@@ -12,7 +12,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
 import lombok.Setter;
 import model.Person;
 import other.PersonDetails;
@@ -109,5 +108,9 @@ public class SearchViewController implements Initializable {
 			label = person.nameSurname() + ", " + parents;
 	
 		return label;
+	}
+	
+	public void requestFocus() {
+		queryField.requestFocus();
 	}
 }
