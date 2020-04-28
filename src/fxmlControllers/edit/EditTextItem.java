@@ -28,6 +28,6 @@ public class EditTextItem extends EditItem<String> {
 	protected EditField createEditField() {
 		EditTextFieldBuilder builder = new EditTextFieldBuilder();
 		builder.build();
-		return new EditField(builder.getNode(), builder.getController());
+		return new EditField(builder.getRegion(), builder.getController());
 	}
 }

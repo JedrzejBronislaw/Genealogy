@@ -29,6 +29,6 @@ public class EditDateItem extends EditItem<MyDate> {
 	protected EditField createEditField() {
 		EditDateFieldBuilder builder = new EditDateFieldBuilder();
 		builder.build();
-		return new EditField(builder.getNode(), builder.getController());
+		return new EditField(builder.getRegion(), builder.getController());
 	}
 }

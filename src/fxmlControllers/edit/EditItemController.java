@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -14,11 +13,11 @@ import lombok.Getter;
 public class EditItemController implements Initializable {
 
 	public static class EditField{
-		private Node field;
+		private Region field;
 		
 		private EditFieldInterface controller;
 		
-		public EditField(Node field, EditFieldInterface controller) {
+		public EditField(Region field, EditFieldInterface controller) {
 			this.field = field;
 			this.controller = controller;
 		}
@@ -38,7 +37,7 @@ public class EditItemController implements Initializable {
 		box.getChildren().add(label);
 		box.getChildren().add(editField.field);
 		
-		((Region)editField.field).setPrefWidth(200);
+		editField.field.setPrefWidth(200);
 	}
 	
 	public void setLabel(String labelText) {

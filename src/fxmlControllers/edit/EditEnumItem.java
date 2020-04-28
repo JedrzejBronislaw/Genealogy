@@ -32,6 +32,6 @@ public class EditEnumItem extends EditItem<String> {
 		EditEnumFieldBuilder builder = new EditEnumFieldBuilder();
 		builder.setOptions(values);
 		builder.build();
-		return new EditField(builder.getNode(), builder.getController());
+		return new EditField(builder.getRegion(), builder.getController());
 	}
 }

@@ -1,10 +1,10 @@
 package fxmlBuilders.edit;
 
-import fxmlBuilders.FXMLBuilder;
+import fxmlBuilders.RegionFXMLBuilder;
 import fxmlControllers.edit.EditEnumFieldController;
 import lombok.Setter;
 
-public class EditEnumFieldBuilder extends FXMLBuilder<EditEnumFieldController> {
+public class EditEnumFieldBuilder extends RegionFXMLBuilder<EditEnumFieldController> {
 	
 	@Setter
 	private String[] options;

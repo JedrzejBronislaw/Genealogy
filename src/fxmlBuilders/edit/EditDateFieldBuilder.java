@@ -1,9 +1,9 @@
 package fxmlBuilders.edit;
 
-import fxmlBuilders.FXMLBuilder;
+import fxmlBuilders.RegionFXMLBuilder;
 import fxmlControllers.edit.EditDateFieldController;
 
-public class EditDateFieldBuilder extends FXMLBuilder<EditDateFieldController> {
+public class EditDateFieldBuilder extends RegionFXMLBuilder<EditDateFieldController> {
 
 	@Override
 	public String getFxmlFileName() {
