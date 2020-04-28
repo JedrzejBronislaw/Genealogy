@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox alignment="BOTTOM_RIGHT" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.edit.EditDateFieldController">
+<HBox alignment="BOTTOM_LEFT" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.edit.EditDateFieldController">
    <children>
       <TextField fx:id="dayField" prefWidth="35.0" />
       <Label text="." />

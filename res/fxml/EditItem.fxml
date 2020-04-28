@@ -5,6 +5,6 @@
 
 <HBox fx:id="box" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.edit.EditItemController">
    <children>
-      <Label fx:id="label" />
+      <Label fx:id="label" styleClass="key" />
    </children>
 </HBox>

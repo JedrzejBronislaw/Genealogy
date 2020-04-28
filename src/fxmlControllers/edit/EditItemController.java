@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import lombok.Getter;
 
 public class EditItemController implements Initializable {
@@ -36,6 +37,8 @@ public class EditItemController implements Initializable {
 		box.getChildren().clear();
 		box.getChildren().add(label);
 		box.getChildren().add(editField.field);
+		
+		((Region)editField.field).setPrefWidth(200);
 	}
 	
 	public void setLabel(String labelText) {
