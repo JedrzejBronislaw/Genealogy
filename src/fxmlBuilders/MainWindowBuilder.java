@@ -157,7 +157,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 	
 	private void showGraph(TreeGraph graph, Person person) {
 		graph.setNameDisplay(new SimpleNameDisplaying());
-		graph.setPersonClickAction(selectedPerson -> {
+		graph.setPersonDoubleClickAction(selectedPerson -> {
 			cardController.setPerson(selectedPerson);
 			controller.showView(Views.Card);
 		});

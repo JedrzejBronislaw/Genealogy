@@ -67,7 +67,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		for (TreeNode node : plan) {
 			if (node.getLinks().size() == 0) {
 				handle = drawLeaf(node.getX(), node.getY(), Color.GREEN);
-				handle.setOnMouseClick(() -> Injection.run(personClickAction, node.getPerson()));
+				handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, node.getPerson()));
 			}
 			//TODO click handling for not-leafs
 		}

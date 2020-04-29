@@ -70,7 +70,7 @@ public class Canvas extends JPanel implements MouseListener {
 			Point p = arg0.getPoint();
 			ClickArea area = clickMap.getArea(p.x, p.y);
 			if (area != null)
-				area.click();
+				area.doubleClick();
 		}
 	}
 	

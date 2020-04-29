@@ -108,7 +108,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 		y += nameHeight;
 		handle = nameDisplay.print(person, x, y);
-		handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
+		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
 			spouseOffset += drawSpouse(person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
@@ -165,7 +165,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 		y += nameHeight;
 		handle = nameDisplay.print(person, x, y);
-		handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
+		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
 			spouseOffset += drawSpouse(person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
@@ -204,7 +204,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		int nameHeight = nameDisplay.getHeight(person);
 		
 		handle = nameDisplay.print(person, x+spouseIndentation, y+nameHeight);
-		handle.setOnMouseClick(() -> Injection.run(personClickAction, person));
+		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
 		drawRings(x, y, spouseIndentation, nameHeight);
 		
 		return nameHeight;

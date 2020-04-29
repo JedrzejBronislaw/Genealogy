@@ -13,8 +13,10 @@ public class FxHandle extends Handle {
 	}
 	
 	@Override
-	public void setOnMouseClick(Runnable action) {
-		node.setOnMouseClicked(e -> Injection.run(action));
+	public void setOnMouseDoubleClick(Runnable action) {
+		node.setOnMouseClicked(e -> {
+			if (e.getClickCount() == 2) Injection.run(action);
+		});
 	}
 
 }

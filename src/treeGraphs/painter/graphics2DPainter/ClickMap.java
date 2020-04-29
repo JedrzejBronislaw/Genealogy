@@ -13,7 +13,7 @@ public class ClickMap {
 		private int left, top, right, bottom;
 
 		@Setter
-		private Runnable onMouseClick;
+		private Runnable onMouseDoubleClick;
 
 		public ClickArea(int left, int top, int right, int bottom) {
 			Point point1 = new Point(left, top);
@@ -35,8 +35,8 @@ public class ClickMap {
 			this.bottom = rect.getBottom();
 		}
 		
-		public void click() {
-			Injection.run(onMouseClick);
+		public void doubleClick() {
+			Injection.run(onMouseDoubleClick);
 		}
 	}
 	

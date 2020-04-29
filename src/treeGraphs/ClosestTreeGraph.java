@@ -193,9 +193,9 @@ public class ClosestTreeGraph extends TreeGraph {
 		mHandle = painter.drawText(motherName, new Point(marginX+areaWidth-motherNameWidth, marginY+textHeight));
 		
 		if (father != null)
-			fHandle.setOnMouseClick(() -> Injection.run(personClickAction, father));
+			fHandle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, father));
 		if (mother != null)
-			mHandle.setOnMouseClick(() -> Injection.run(personClickAction, mother));
+			mHandle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, mother));
 	}
 	
 	private void drawSiblings(Person[] siblings, int x, int y)
@@ -212,7 +212,7 @@ public class ClosestTreeGraph extends TreeGraph {
 			width  = painter.getTextWidth(sibling.nameSurname());
 			handle = painter.drawText(sibling.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSiblings)));
 			
-			handle.setOnMouseClick(() -> Injection.run(personClickAction, sibling));
+			handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, sibling));
 		}
 		
 		painter.setTextStyle(f.getName(), f.getStyle(), f.getSize());
@@ -230,7 +230,7 @@ public class ClosestTreeGraph extends TreeGraph {
 			width  = painter.getTextWidth(spouse.nameSurname());
 			handle = painter.drawText(spouse.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSpouses)));
 			
-			handle.setOnMouseClick(() -> Injection.run(personClickAction, spouse));
+			handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, spouse));
 		}		
 	}
 	
@@ -246,7 +246,7 @@ public class ClosestTreeGraph extends TreeGraph {
 			width  = painter.getTextWidth(child.nameSurname());
 			handle = painter.drawText(child.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenChildren)));
 
-			handle.setOnMouseClick(() -> Injection.run(personClickAction, child));
+			handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, child));
 		}		
 	}
 

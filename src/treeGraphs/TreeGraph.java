@@ -23,7 +23,7 @@ public abstract class TreeGraph {
 	public abstract void draw();
 	
 	@Setter
-	protected Consumer<Person> personClickAction;
+	protected Consumer<Person> personDoubleClickAction;
 	
 	public void setPainter(Painter painter) {
 		this.painter = painter;

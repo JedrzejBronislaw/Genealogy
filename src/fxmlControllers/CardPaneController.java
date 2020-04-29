@@ -116,7 +116,7 @@ public class CardPaneController implements Initializable{
 
 		miniTreePane.setCenter(painterService.getCanvas(miniTreePane));
 		ClosestTreeGraph graph = new ClosestTreeGraph();
-		graph.setPersonClickAction(person -> Injection.run(graphClickAction, person));
+		graph.setPersonDoubleClickAction(person -> Injection.run(graphClickAction, person));
 		painterService.setGraph(graph);
 
 		star = loadImage("res/img/star.jpg");

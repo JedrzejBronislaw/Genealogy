@@ -12,8 +12,8 @@ public class G2DHandle extends Handle {
 	}
 	
 	@Override
-	public void setOnMouseClick(Runnable action) {
-		area.setOnMouseClick(action);
+	public void setOnMouseDoubleClick(Runnable action) {
+		area.setOnMouseDoubleClick(action);
 	}
 
 }

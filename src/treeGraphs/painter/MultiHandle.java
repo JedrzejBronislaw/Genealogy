@@ -9,7 +9,7 @@ public class MultiHandle extends Handle {
 	}
 	
 	@Override
-	public void setOnMouseClick(Runnable action) {
-		for (Handle handle : handles) handle.setOnMouseClick(action);
+	public void setOnMouseDoubleClick(Runnable action) {
+		for (Handle handle : handles) handle.setOnMouseDoubleClick(action);
 	}
 }
