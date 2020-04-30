@@ -8,6 +8,8 @@ import lombok.Setter;
 import model.Person;
 import nameDisplaying.Name;
 import nameDisplaying.SimpleNameDisplaying;
+import tools.Injection;
+import treeGraphs.painter.Handle;
 import treeGraphs.painter.Painter;
 
 public abstract class TreeGraph {
@@ -21,9 +23,11 @@ public abstract class TreeGraph {
 	protected Painter painter;
 	
 	public abstract void draw();
-	
+
 	@Setter
 	protected Consumer<Person> personDoubleClickAction;
+	@Setter
+	protected Consumer<Person> personSingleClickAction;
 	
 	public void setPainter(Painter painter) {
 		this.painter = painter;
@@ -44,5 +48,10 @@ public abstract class TreeGraph {
 
 	public int getHeight() {
 		return height;
+	}
+	
+	protected void setHandleEvents(Handle handle, Person person) {
+		handle.setOnMouseSingleClick(() -> Injection.run(personSingleClickAction, person));
+		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
 	}
 }

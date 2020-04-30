@@ -65,12 +65,11 @@ public class Canvas extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		if (arg0.getClickCount() >= 2)
-		{
-			Point p = arg0.getPoint();
-			ClickArea area = clickMap.getArea(p.x, p.y);
-			if (area != null)
-				area.doubleClick();
+		Point p = arg0.getPoint();
+		ClickArea area = clickMap.getArea(p.x, p.y);
+		if (area != null) {
+			if (arg0.getClickCount() == 1) area.singleClick();
+			if (arg0.getClickCount() >= 2) area.doubleClick();
 		}
 	}
 	

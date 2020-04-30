@@ -3,7 +3,6 @@ package treeGraphs;
 import java.awt.Font;
 
 import model.Person;
-import tools.Injection;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.Point;
@@ -116,7 +115,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 			x = columnsWidths[generation];
 			y = ((motherY-fatherY) / 2) + fatherY;
 			handle = nameDisplay.print(person, x, y+nameHeight);
-			handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
+			setHandleEvents(handle, person);
 			
 			//arrowhead
 			painter.drawArrowhead(new Point(x+nameWidth+10, y+nameHeight/2), Direction.LEFT);
@@ -134,7 +133,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		{
 			x = columnsWidths[generation];
 			handle = nameDisplay.print(person, x, y1+nameHeight);
-			handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
+			setHandleEvents(handle, person);
 			
 			y2 = y1+nameHeight+verticalOffset;
 			return y1;

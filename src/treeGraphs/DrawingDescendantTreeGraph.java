@@ -6,7 +6,6 @@ import java.util.List;
 
 import other.PersonDetails;
 import tools.Gradient;
-import tools.Injection;
 import treeGraphs.DrawingDescendantTreeGraphCalculation.TreeNode;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MultiHandle;
@@ -67,7 +66,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		for (TreeNode node : plan) {
 			if (node.getLinks().size() == 0) {
 				handle = drawLeaf(node.getX(), node.getY(), Color.GREEN);
-				handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, node.getPerson()));
+				setHandleEvents(handle, node.getPerson());
 			}
 			//TODO click handling for not-leafs
 		}

@@ -4,7 +4,6 @@ import java.awt.Font;
 
 import lombok.Setter;
 import model.Person;
-import tools.Injection;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.Point;
@@ -193,9 +192,9 @@ public class ClosestTreeGraph extends TreeGraph {
 		mHandle = painter.drawText(motherName, new Point(marginX+areaWidth-motherNameWidth, marginY+textHeight));
 		
 		if (father != null)
-			fHandle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, father));
+			setHandleEvents(fHandle, father);
 		if (mother != null)
-			mHandle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, mother));
+			setHandleEvents(mHandle, mother);
 	}
 	
 	private void drawSiblings(Person[] siblings, int x, int y)
@@ -212,7 +211,7 @@ public class ClosestTreeGraph extends TreeGraph {
 			width  = painter.getTextWidth(sibling.nameSurname());
 			handle = painter.drawText(sibling.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSiblings)));
 			
-			handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, sibling));
+			setHandleEvents(handle, sibling);
 		}
 		
 		painter.setTextStyle(f.getName(), f.getStyle(), f.getSize());
@@ -230,7 +229,7 @@ public class ClosestTreeGraph extends TreeGraph {
 			width  = painter.getTextWidth(spouse.nameSurname());
 			handle = painter.drawText(spouse.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSpouses)));
 			
-			handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, spouse));
+			setHandleEvents(handle, spouse);
 		}		
 	}
 	
@@ -246,7 +245,7 @@ public class ClosestTreeGraph extends TreeGraph {
 			width  = painter.getTextWidth(child.nameSurname());
 			handle = painter.drawText(child.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenChildren)));
 
-			handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, child));
+			setHandleEvents(handle, child);
 		}		
 	}
 

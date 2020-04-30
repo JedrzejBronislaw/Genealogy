@@ -6,7 +6,6 @@ import java.awt.Font;
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
-import tools.Injection;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.Point;
@@ -108,7 +107,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 		y += nameHeight;
 		handle = nameDisplay.print(person, x, y);
-		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
+		setHandleEvents(handle, person);
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
 			spouseOffset += drawSpouse(person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
@@ -165,7 +164,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 		y += nameHeight;
 		handle = nameDisplay.print(person, x, y);
-		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
+		setHandleEvents(handle, person);
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
 			spouseOffset += drawSpouse(person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
@@ -204,7 +203,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		int nameHeight = nameDisplay.getHeight(person);
 		
 		handle = nameDisplay.print(person, x+spouseIndentation, y+nameHeight);
-		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
+		setHandleEvents(handle, person);
 		drawRings(x, y, spouseIndentation, nameHeight);
 		
 		return nameHeight;
