@@ -10,6 +10,7 @@ import fxmlControllers.CardPaneController;
 import fxmlControllers.MainWindowController;
 import fxmlControllers.MainWindowController.ViewPane;
 import fxmlControllers.MainWindowController.Views;
+import fxmlControllers.PersonDetailsPaneController;
 import fxmlControllers.TreeGraphPaneController;
 import fxmlControllers.edit.EditPersonPaneController;
 import javafx.scene.layout.Pane;
@@ -121,7 +122,15 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		builder.build();
 		treeGraphController = builder.getController();
 		
-		return new ViewPane(builder.getPane());
+		PersonDetailsPaneBuilder personDetailsBuilder = new PersonDetailsPaneBuilder();
+		personDetailsBuilder.build();
+		PersonDetailsPaneController personDetails = personDetailsBuilder.getController();
+		
+		treeGraphController.setShowPersonDetails(person -> personDetails.setPerson(person));
+		
+		ViewPane viewPane = new ViewPane(builder.getPane(), () -> personDetails.clearFields());
+		viewPane.setLeftPane(personDetailsBuilder.getPane());
+		return viewPane;
 	}
 	
 	private ViewPane generateCardPane() {
