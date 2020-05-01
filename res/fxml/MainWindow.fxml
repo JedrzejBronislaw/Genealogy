@@ -20,12 +20,18 @@
       </StackPane>
    </top>
    <center>
-      <ScrollPane id="main_scrollpane" fitToWidth="true">
-         <content>
-            <StackPane fx:id="mainPane">
-               <padding>
-                  <Insets top="50.0" />
-               </padding></StackPane>
-         </content></ScrollPane>
+      <BorderPane fx:id="borderPane">
+         <center>
+            <ScrollPane id="main_scrollpane" fitToWidth="true">
+               <content>
+                  <StackPane fx:id="mainPane">
+                     <padding>
+                        <Insets top="50.0" />
+                     </padding>
+                  </StackPane>
+               </content>
+            </ScrollPane>
+         </center>
+      </BorderPane>
    </center>
 </BorderPane>

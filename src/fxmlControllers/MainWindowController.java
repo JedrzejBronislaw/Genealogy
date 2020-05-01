@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ public class MainWindowController implements Initializable {
 	@RequiredArgsConstructor
 	public static class ViewPane{
 		private final Pane pane;
+		@Setter private Pane leftPane, rightPane, topPane, bottomPane;
+		
 		private final Runnable onShowAction;
 		
 		public ViewPane(Pane pane) {
@@ -30,6 +33,8 @@ public class MainWindowController implements Initializable {
 	
 	@FXML
 	private Label titleLabel;
+	@FXML
+	private BorderPane borderPane;
 	@FXML
 	private StackPane mainPane;
 	@FXML
@@ -77,6 +82,10 @@ public class MainWindowController implements Initializable {
 			Platform.runLater(() -> {
 				mainPane.getChildren().clear();
 				mainPane.getChildren().add(selected.pane);
+				borderPane.setLeft(selected.leftPane);
+				borderPane.setRight(selected.rightPane);
+				borderPane.setTop(selected.topPane);
+				borderPane.setBottom(selected.bottomPane);
 				Injection.run(selected.onShowAction);
 			});
 		}
