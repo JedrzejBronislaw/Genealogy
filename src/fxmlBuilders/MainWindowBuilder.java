@@ -123,6 +123,10 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		treeGraphController = builder.getController();
 		
 		PersonDetailsPaneBuilder personDetailsBuilder = new PersonDetailsPaneBuilder();
+		personDetailsBuilder.setPersonClick(person -> {
+			cardController.setPerson(person);
+			controller.showView(Views.Card);
+		});
 		personDetailsBuilder.build();
 		PersonDetailsPaneController personDetails = personDetailsBuilder.getController();
 		

@@ -2,15 +2,18 @@ package fxmlControllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import lang.Internationalization;
+import lombok.Setter;
 import model.MyDate;
 import model.Person;
 import model.Person.LifeStatus;
+import tools.Injection;
 
 public class PersonDetailsPaneController implements Initializable {
 
@@ -27,8 +30,15 @@ public class PersonDetailsPaneController implements Initializable {
 	@FXML
 	private Label deathDateLabel;
 	
+	private Person father, mother;
+	
+	@Setter
+	private Consumer<Person> personClick;
+	
 	public void setPerson(Person person) {
 		clearFields();
+		father = person.getFather();
+		mother = person.getMother();
 		
 		Platform.runLater(() -> {
 			MyDate birthDate = person.getBirthDate();
@@ -47,6 +57,9 @@ public class PersonDetailsPaneController implements Initializable {
 	}
 	
 	public void clearFields() {
+		father = null;
+		mother = null;
+		
 		Platform.runLater(() -> {
 			nameLabel.setText("");
 			surnameLabel.setText("");
@@ -75,6 +88,9 @@ public class PersonDetailsPaneController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		clearFields();
+		
+		motherLabel.setOnMouseClicked(e -> Injection.run(personClick, mother));
+		fatherLabel.setOnMouseClicked(e -> Injection.run(personClick, father));
 	}
 
 }

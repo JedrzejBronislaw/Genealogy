@@ -28,8 +28,8 @@
       <Label styleClass="key" text="%mother" GridPane.rowIndex="3" />
       <Label styleClass="key" text="%birth_date" GridPane.rowIndex="4" />
       <Label styleClass="key" text="%death_date" GridPane.rowIndex="5" />
-      <Label fx:id="fatherLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label fx:id="motherLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label fx:id="fatherLabel" styleClass="bolded" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label fx:id="motherLabel" styleClass="bolded" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Label fx:id="birthDateLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <Label fx:id="deathDateLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
    </children>

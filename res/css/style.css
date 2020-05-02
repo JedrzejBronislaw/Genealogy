@@ -48,3 +48,11 @@ Label.value {
 .langAbbr:hover {
     -fx-font-weight: bold;
 }
+
+
+.bolded:hover {
+    -fx-font-weight: bold;
+}
+.bolded {
+    -fx-font-weight: normal;
+}
