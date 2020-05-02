@@ -37,6 +37,7 @@ public class EditEnumFieldController implements EditFieldInterface, Initializabl
 	
 	@Override
 	public void setOldValue(String value) {
+		this.value = value;
 		options.get(value).setSelected(true);
 	}
 
