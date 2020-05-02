@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import fxmlBuilders.PaneFXMLBuilder;
 import fxmlControllers.edit.EditDateItem;
 import fxmlControllers.edit.EditEnumItem;
+import fxmlControllers.edit.EditPersonItem;
 import fxmlControllers.edit.EditPersonPaneController;
 import fxmlControllers.edit.EditTextItem;
 import lang.Internationalization;
@@ -12,6 +13,7 @@ import lombok.Setter;
 import model.Person;
 import model.Person.LifeStatus;
 import model.Person.Sex;
+import model.Tree;
 import tools.Tools;
 
 public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneController> {
@@ -20,6 +22,8 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 	private Consumer<Person> changeEvent;
 	@Setter
 	private Runnable closePane;
+	@Setter
+	private Tree tree;
 	
 
 	@Override
@@ -75,8 +79,15 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 		//contact
 		//comments
 
-		//father
-		//mother
+		controller.addItem(new EditPersonItem(Internationalization.get("father"),
+				() -> tree,
+				(person, value) -> person.setFather(value),
+				person -> person.getFather()));
+		controller.addItem(new EditPersonItem(Internationalization.get("mother"),
+				() -> tree,
+				(person, value) -> person.setMother(value),
+				person -> person.getMother()));
+
 		//spouses
 		//children
 	}

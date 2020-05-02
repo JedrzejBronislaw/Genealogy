@@ -188,6 +188,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 			cardController.refresh();
 			controller.showView(Views.Card);
 		});
+		session.addNewTreeListener(builder::setTree);
 		builder.build();
 		editPersonController = builder.getController();
 		
