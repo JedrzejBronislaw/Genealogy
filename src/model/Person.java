@@ -48,6 +48,15 @@ public class Person {
 		outcome = children.toArray(outcome);
 		return outcome;
 	}
+	public boolean isChildless() {
+		return numberOfChildren() == 0;
+	}
+	public boolean hasNoParents() {
+		return (getMother() == null && getFather() == null);
+	}
+	public boolean hasAnyParent() {
+		return !hasNoParents();
+	}
 	public void addMarriage(Person malzonek) {
 		Marriage marriage = new Marriage();
 		if (sex == Sex.MAN)
@@ -141,6 +150,15 @@ public class Person {
 			return marriages.get(number).getHusband();
 		
 		return null;
+	}
+	public Person[] getSpouses() {
+		int number = numberOfMarriages();
+		Person[] spouses = new Person[number];
+		
+		for (int i=0; i<number; i++)
+			spouses[i] = getSpouse(i);
+		
+		return spouses;
 	}
 
 	public Person[] getSiblings() {

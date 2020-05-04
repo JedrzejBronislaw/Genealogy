@@ -30,7 +30,6 @@ public class Tree {
 	}
 
 	
-	
 	public void addPerson(String id, Person person)
 	{
 		persons.put(id, person);
@@ -71,53 +70,6 @@ public class Tree {
 		return persons.get(ids[r.nextInt(ids.length)]);
 	}
 	
-	public ArrayList<Person> leaves()
-	{
-		String[] ids = getIDs();
-		ArrayList<Person> outcome = new ArrayList<Person>();
-		Person temp;
-		
-		for (int i=0; i<ids.length; i++)
-		{
-			temp = persons.get(ids[i]);
-			if (temp.numberOfChildren() == 0)
-				outcome.add(temp);
-		}
-		
-		return outcome;
-	}
-
-	public ArrayList<Person> roots()
-	{
-		return roots(false);
-	}
-	public ArrayList<Person> roots(boolean spouseToo)
-	{
-		String[] ids = getIDs();
-		ArrayList<Person> outcome = new ArrayList<Person>();
-		Person temp;
-		boolean spouseRoot;
-		
-		for (int i=0; i<ids.length; i++)
-		{
-			temp = persons.get(ids[i]);
-			if ((temp.getMother() == null) && (temp.getFather() == null))
-			{
-				spouseRoot = true;
-				if (spouseToo)
-				for (int j=0; j<temp.numberOfMarriages(); j++)
-					if ((temp.getSpouse(j).getMother() != null) || (temp.getSpouse(j).getFather() != null))
-					{
-						spouseRoot = false;
-						break;
-					}
-				if (spouseRoot) outcome.add(temp);
-			}
-		}
-		
-		return outcome;
-	}
-
 	public Person[] getAll() {
 		Person[] outcome = new Person[persons.size()];
 
