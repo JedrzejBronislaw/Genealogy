@@ -16,25 +16,20 @@ import org.junit.Test;
 
 import model.Person.LifeStatus;
 import model.Person.Sex;
+import model.familyRelations.Editor;
 
 public class PGLWriterTest {
 
 	public Tree prepareTree() {
 		Tree tree = new Tree();
+		Editor editor = new Editor(tree);
+		
 		Person father = prepareFather();
 		Person mother = prepareMother();
 		Person child = prepareChild();
 		
-		father.addMarriage(mother);
-		father.addChild(child);
-		mother.addMarriage(father);
-		mother.addChild(child);
-		child.setFather(father);
-		child.setMother(mother);
-		
-		tree.addPerson("1", father);
-		tree.addPerson("2", mother);
-		tree.addPerson("3", child);
+		editor.createMarriageRel(father, mother);
+		editor.setParentsChildRel(father, mother, child);
 		
 		tree.addCommonSurname("Kowalski");
 		tree.addCommonSurname("Nowak");

@@ -58,25 +58,15 @@ public class TreeExplorerTest {
 		editor.createMarriageRel(father, mother);
 
 		editor.setMotherChildRel(grand3mother, grandgrandfather);
-		
-		editor.setFatherChildRel(grandgrandfather, grandfatherA);
-		editor.setMotherChildRel(grandgrandmother, grandfatherA);
-		
-		editor.setFatherChildRel(grandfatherA, father);
-		editor.setMotherChildRel(grandmotherA, father);
-		
-		editor.setFatherChildRel(grandfatherB, mother);
-		editor.setMotherChildRel(grandmotherB, mother);
-		
-		editor.setFatherChildRel(father, child1);
-		editor.setFatherChildRel(father, child2);
-		editor.setFatherChildRel(father, child3);
-		editor.setMotherChildRel(mother, child1);
-		editor.setMotherChildRel(mother, child2);
-		editor.setMotherChildRel(mother, child3);
-		
-		editor.setMotherChildRel(grandmotherB, aunt);
-		editor.setFatherChildRel(grandfatherB, aunt);
+		editor.setParentsChildRel(grandgrandfather, grandgrandmother, grandfatherA);
+		editor.setParentsChildRel(grandfatherA, grandmotherA, father);
+		editor.setParentsChildRel(grandfatherB, grandmotherB, mother);
+
+		editor.setParentsChildRel(father, mother, child1);
+		editor.setParentsChildRel(father, mother, child2);
+		editor.setParentsChildRel(father, mother, child3);
+
+		editor.setParentsChildRel(grandfatherB, grandmotherB, aunt);
 		editor.setMotherChildRel(aunt, cousin);
 	}
 	

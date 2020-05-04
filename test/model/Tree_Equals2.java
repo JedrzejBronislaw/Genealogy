@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.Person.Sex;
+import model.familyRelations.Editor;
 
 public class Tree_Equals2 {
 
@@ -25,7 +26,8 @@ public class Tree_Equals2 {
 	
 	public static Tree prepareTree() {
 		Tree tree = new Tree();
-
+		Editor editor = new Editor();
+		
 		
 		Person husband1 = new Person();
 		Person wife1 = new Person();
@@ -40,9 +42,7 @@ public class Tree_Equals2 {
 		wife1.setLastName("Kwiatkowska");
 		wife1.setSex(Sex.WOMAN);
 		
-		husband1.addMarriage(wife1);
-		wife1.addMarriage(husband1);
-		husband1.addWeddingVenue(wife1, "Poznan");
+		editor.createMarriageRel(husband1, wife1, null, "Poznan");
 		
 		husband2.setFirstName("Pawel");
 		husband2.setLastName("Iksinski");
@@ -51,10 +51,8 @@ public class Tree_Equals2 {
 		wife2.setFirstName("Julia");
 		wife2.setLastName("Pawlak");
 		wife2.setSex(Sex.WOMAN);
-		
-		husband2.addMarriage(wife2);
-		wife2.addMarriage(husband2);
-		husband2.addWeddingDate(wife2, "1999.01.01");
+
+		editor.createMarriageRel(husband2, wife2, "1999.01.01", null);
 
 
 		tree.addPerson("11", husband1);
