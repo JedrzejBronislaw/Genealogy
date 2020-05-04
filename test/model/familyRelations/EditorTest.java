@@ -418,4 +418,127 @@ public class EditorTest {
 		assertEquals(1, husband2.numberOfMarriages());
 		assertEquals(1,    wife2.numberOfMarriages());
 	}
+
+	//-----SET PARENTS-----
+
+	@Test
+	public void testSetParentsChildRel() {
+		Person father = rPerson.generate(Sex.MAN);
+		Person mother = rPerson.generate(Sex.WOMAN);
+		Person child  = rPerson.generate();
+		
+		assertTrue(editor.setParentsChildRel(father, mother, child));
+		
+		assertEquals(1, father.numberOfChildren());
+		assertEquals(1, mother.numberOfChildren());
+		assertEquals(father, child.getFather());
+		assertEquals(mother, child.getMother());
+	}
+
+	@Test
+	public void testSetParentsChildRel_addToTree() {
+		Tree tree = new Tree();
+		Editor editor = new Editor(tree);
+		TreeEditor treeEditor = new TreeEditor(tree);
+		Person father = rPerson.generate(Sex.MAN);
+		Person mother = rPerson.generate(Sex.WOMAN);
+		Person child  = rPerson.generate();
+		
+		assertTrue(editor.setParentsChildRel(father, mother, child));
+		
+		assertEquals(3, tree.numberOfPersons());
+		assertTrue(treeEditor.isInTree(father));
+		assertTrue(treeEditor.isInTree(mother));
+		assertTrue(treeEditor.isInTree(child));
+		
+	}
+	
+	@Test
+	public void testSetParentsChildRel_reverseOrder() {
+		Person father = rPerson.generate(Sex.MAN);
+		Person mother = rPerson.generate(Sex.WOMAN);
+		Person child  = rPerson.generate();
+		
+		assertTrue(editor.setParentsChildRel(mother, father, child));
+		
+		assertEquals(1, father.numberOfChildren());
+		assertEquals(1, mother.numberOfChildren());
+		assertEquals(father, child.getFather());
+		assertEquals(mother, child.getMother());
+	}
+	
+	@Test
+	public void testSetParentsChildRel_twoMen() {
+		Person person1 = rPerson.generate(Sex.MAN);
+		Person person2 = rPerson.generate(Sex.MAN);
+		Person child  = rPerson.generate();
+		
+		assertFalse(editor.setParentsChildRel(person2, person1, child));
+		
+		assertEquals(0, person1.numberOfChildren());
+		assertEquals(0, person2.numberOfChildren());
+		assertNull(child.getFather());
+		assertNull(child.getMother());
+	}
+	
+	@Test
+	public void testSetParentsChildRel_twoWomen() {
+		Person person1 = rPerson.generate(Sex.WOMAN);
+		Person person2 = rPerson.generate(Sex.WOMAN);
+		Person child  = rPerson.generate();
+		
+		assertFalse(editor.setParentsChildRel(person2, person1, child));
+		
+		assertEquals(0, person1.numberOfChildren());
+		assertEquals(0, person2.numberOfChildren());
+		assertNull(child.getFather());
+		assertNull(child.getMother());
+	}
+	
+	@Test
+	public void testSetParentsChildRel_onlyMen() {
+		Person person1 = rPerson.generate(Sex.MAN);
+		Person person2 = rPerson.generate(Sex.UNKNOWN);
+		Person child  = rPerson.generate();
+		
+		assertFalse(editor.setParentsChildRel(person2, person1, child));
+		
+		assertEquals(0, person1.numberOfChildren());
+		assertEquals(0, person2.numberOfChildren());
+		assertNull(child.getFather());
+		assertNull(child.getMother());
+	}
+	
+	@Test
+	public void testSetParentsChildRel_onlyWomen() {
+		Person person1 = rPerson.generate(Sex.WOMAN);
+		Person person2 = rPerson.generate(Sex.UNKNOWN);
+		Person child  = rPerson.generate();
+		
+		assertFalse(editor.setParentsChildRel(person2, person1, child));
+		
+		assertEquals(0, person1.numberOfChildren());
+		assertEquals(0, person2.numberOfChildren());
+		assertNull(child.getFather());
+		assertNull(child.getMother());
+	}
+	
+	@Test
+	public void testSetParentsChildRel_otherParents() {
+		Person father = rPerson.generate(Sex.MAN);
+		Person mother = rPerson.generate(Sex.WOMAN);
+		Person newFather = rPerson.generate(Sex.MAN);
+		Person newMother = rPerson.generate(Sex.WOMAN);
+		Person child  = rPerson.generate();
+		
+		assertTrue(editor.setParentsChildRel(mother, father, child));
+		assertTrue(editor.setParentsChildRel(newMother, newFather, child));
+
+		assertEquals(0, father.numberOfChildren());
+		assertEquals(0, mother.numberOfChildren());
+		assertEquals(1, newFather.numberOfChildren());
+		assertEquals(1, newMother.numberOfChildren());
+		assertEquals(newFather, child.getFather());
+		assertEquals(newMother, child.getMother());
+	}
 }

@@ -39,6 +39,25 @@ public class Editor {
 		return true;
 	}
 	
+	public boolean setParentsChildRel(Person parentA, Person parentB, Person child) {
+		Person father = null;
+		Person mother = null;
+
+		Person[] parents = new Person[]{parentA, parentB};
+		
+		for(Person parent : parents) {
+			if (parent.getSex() == Sex.MAN)   father = parent;
+			if (parent.getSex() == Sex.WOMAN) mother = parent;
+		}
+		
+		if (father == null || mother == null) return false;
+		
+		setMotherChildRel(mother, child);
+		setFatherChildRel(father, child);
+		
+		return true;
+	}
+	
 	public boolean delMotherRelation(Person person) {
 		Person mother = person.getMother();
 
