@@ -14,6 +14,7 @@ import model.Person;
 import model.Person.LifeStatus;
 import model.Person.Sex;
 import model.Tree;
+import model.familyRelations.Editor;
 import tools.Tools;
 
 public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneController> {
@@ -33,6 +34,7 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 
 	@Override
 	public void afterBuild() {
+		Editor relationEditor = new Editor(tree);
 		controller.setChangeEvent(changeEvent);
 		controller.setClosePane(closePane);
 		
@@ -81,11 +83,11 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 
 		controller.addItem(new EditPersonItem(Internationalization.get("father"),
 				() -> tree,
-				(person, value) -> person.setFather(value),
+				(person, value) -> relationEditor.setFatherChildRel(value, person),
 				person -> person.getFather()));
 		controller.addItem(new EditPersonItem(Internationalization.get("mother"),
 				() -> tree,
-				(person, value) -> person.setMother(value),
+				(person, value) -> relationEditor.setMotherChildRel(value, person),
 				person -> person.getMother()));
 
 		//spouses
