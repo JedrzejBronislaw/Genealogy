@@ -251,4 +251,171 @@ public class EditorTest {
 		assertNull(child.getFather());
 	}
 
+	//-----MARRIAGE-----
+
+	@Test
+	public void testCreateMarriageRel_add() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife = rPerson.generate(Sex.WOMAN);
+		
+		assertTrue(editor.createMarriageRel(husband, wife, "01.01.2000", "Warsaw"));
+		
+		assertEquals(1, husband.numberOfMarriages());
+		assertEquals(1,    wife.numberOfMarriages());
+		
+		assertEquals(wife, husband.getSpouse(0));
+		assertEquals(husband, wife.getSpouse(0));
+		
+		assertEquals("01.01.2000", husband.getMarriage(0).getDate());
+		assertEquals("Warsaw", husband.getMarriage(0).getPlace());
+		assertEquals("01.01.2000", wife.getMarriage(0).getDate());
+		assertEquals("Warsaw", wife.getMarriage(0).getPlace());
+	}
+	
+	@Test
+	public void testCreateMarriageRel_reverseOrder() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife = rPerson.generate(Sex.WOMAN);
+		
+		assertTrue(editor.createMarriageRel(wife, husband));
+		
+		assertEquals(1, husband.numberOfMarriages());
+		assertEquals(1,    wife.numberOfMarriages());
+		
+		assertEquals(wife, husband.getSpouse(0));
+		assertEquals(husband, wife.getSpouse(0));
+	}
+
+	@Test
+	public void testCreateMarriageRel_addToTree() {
+		Tree tree = new Tree();
+		Editor editor = new Editor(tree);
+		TreeEditor treeEditor = new TreeEditor(tree);
+
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife = rPerson.generate(Sex.WOMAN);
+		
+		assertTrue(editor.createMarriageRel(husband, wife));
+		
+		assertEquals(2, tree.numberOfPersons());
+		assertTrue(treeEditor.isInTree(husband));
+		assertTrue(treeEditor.isInTree(wife));
+	}
+	
+	@Test
+	public void testCreateMarriageRel_twoMen() {
+		Person person1 = rPerson.generate(Sex.MAN);
+		Person person2 = rPerson.generate(Sex.MAN);
+		
+		assertFalse(editor.createMarriageRel(person1, person2));
+		
+		assertEquals(0, person1.numberOfMarriages());
+		assertEquals(0, person2.numberOfMarriages());
+	}
+	
+	@Test
+	public void testCreateMarriageRel_twoWomen() {
+		Person person1 = rPerson.generate(Sex.WOMAN);
+		Person person2 = rPerson.generate(Sex.WOMAN);
+		
+		assertFalse(editor.createMarriageRel(person1, person2));
+		
+		assertEquals(0, person1.numberOfMarriages());
+		assertEquals(0, person2.numberOfMarriages());
+	}
+	
+	@Test
+	public void testCreateMarriageRel_onlyMen() {
+		Person person1 = rPerson.generate(Sex.MAN);
+		Person person2 = rPerson.generate(Sex.UNKNOWN);
+		
+		assertFalse(editor.createMarriageRel(person1, person2));
+		
+		assertEquals(0, person1.numberOfMarriages());
+		assertEquals(0, person2.numberOfMarriages());
+	}
+	
+	@Test
+	public void testCreateMarriageRel_onlyWomen() {
+		Person person1 = rPerson.generate(Sex.WOMAN);
+		Person person2 = rPerson.generate(Sex.UNKNOWN);
+		
+		assertFalse(editor.createMarriageRel(person1, person2));
+		
+		assertEquals(0, person1.numberOfMarriages());
+		assertEquals(0, person2.numberOfMarriages());
+	}
+
+	//-----DEL MARRIAGE-----
+	
+	@Test
+	public void testDelMarriageRel() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife = rPerson.generate(Sex.WOMAN);
+		
+		assertTrue(editor.createMarriageRel(husband, wife));
+		assertTrue(editor.delMarriageRel(husband, wife));
+		
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(0,    wife.numberOfMarriages());
+	}
+	
+	@Test
+	public void testDelMarriageRel_reverseOrder() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife = rPerson.generate(Sex.WOMAN);
+		
+		assertTrue(editor.createMarriageRel(husband, wife));
+		assertTrue(editor.delMarriageRel(wife, husband));
+		
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(0,    wife.numberOfMarriages());
+	}
+	
+	@Test
+	public void testDelMarriageRel_noMarriage() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife = rPerson.generate(Sex.WOMAN);
+		
+		assertTrue(editor.delMarriageRel(wife, husband));
+		
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(0,    wife.numberOfMarriages());
+	}
+	
+	@Test
+	public void testDelMarriageRel_twoMarriages() {
+		Person husband1 = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person husband2 = rPerson.generate(Sex.MAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+
+		assertTrue(editor.createMarriageRel(husband1, wife1));
+		assertTrue(editor.createMarriageRel(husband2, wife2));
+		
+		assertTrue(editor.delMarriageRel(wife1, husband1));
+
+		assertEquals(0, husband1.numberOfMarriages());
+		assertEquals(0,    wife1.numberOfMarriages());
+		assertEquals(1, husband2.numberOfMarriages());
+		assertEquals(1,    wife2.numberOfMarriages());
+	}
+	
+	@Test
+	public void testDelMarriageRel_otherMarriage() {
+		Person husband1 = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person husband2 = rPerson.generate(Sex.MAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+
+		assertTrue(editor.createMarriageRel(husband1, wife1));
+		assertTrue(editor.createMarriageRel(husband2, wife2));
+		
+		assertTrue(editor.delMarriageRel(wife1, husband2));
+
+		assertEquals(1, husband1.numberOfMarriages());
+		assertEquals(1,    wife1.numberOfMarriages());
+		assertEquals(1, husband2.numberOfMarriages());
+		assertEquals(1,    wife2.numberOfMarriages());
+	}
 }
