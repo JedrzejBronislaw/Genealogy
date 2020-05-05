@@ -15,6 +15,7 @@ import model.Person.LifeStatus;
 import model.Person.Sex;
 import model.Tree;
 import model.familyRelations.Editor;
+import session.TreeSupplier;
 import tools.Tools;
 
 public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneController> {
@@ -23,9 +24,12 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 	private Consumer<Person> changeEvent;
 	@Setter
 	private Runnable closePane;
-	@Setter
-	private Tree tree;
+
+	private TreeSupplier treeSupplier = new TreeSupplier();
 	
+	public void setTree(Tree tree) {
+		treeSupplier.setTree(tree);
+	}
 
 	@Override
 	public String getFxmlFileName() {
@@ -34,7 +38,7 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 
 	@Override
 	public void afterBuild() {
-		Editor relationEditor = new Editor(tree);
+		Editor relationEditor = new Editor();
 		controller.setChangeEvent(changeEvent);
 		controller.setClosePane(closePane);
 		
@@ -82,11 +86,11 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 		//comments
 
 		controller.addItem(new EditPersonItem(Internationalization.get("father"),
-				() -> tree,
+				treeSupplier,
 				(person, value) -> relationEditor.setFatherChildRel(value, person),
 				person -> person.getFather()));
 		controller.addItem(new EditPersonItem(Internationalization.get("mother"),
-				() -> tree,
+				treeSupplier,
 				(person, value) -> relationEditor.setMotherChildRel(value, person),
 				person -> person.getMother()));
 
