@@ -14,8 +14,21 @@ public class SearchEngine {
 	
 	private List<KeyWordsItem> keyWords;
 	
+	public SearchEngine() {
+		clearKeyWords();
+	}
+	
+	private void clearKeyWords() {
+		keyWords = new ArrayList<>();
+	}
+
 	public void setTree(Tree tree)
 	{
+		if (tree == null) {
+			clearKeyWords();
+			return;
+		}
+		
 		Person[] all = tree.getAll();
 		keyWords = new ArrayList<>(all.length);
 		for (Person person : all)
@@ -35,7 +48,7 @@ public class SearchEngine {
 	}
 	
 	public void forgetTree() {
-		keyWords = new ArrayList<>();
+		clearKeyWords();
 	}
 
 	private String generateKeyWords(Person person) {
