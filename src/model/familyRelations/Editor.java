@@ -12,7 +12,8 @@ public class Editor {
 	private TreeEditor tree = null;
 
 	public Editor(Tree tree) {
-		this.tree = new TreeEditor(tree);
+		if (tree != null)
+			this.tree = new TreeEditor(tree);
 	}
 	
 	public boolean setMotherChildRel(Person mother, Person child) {
