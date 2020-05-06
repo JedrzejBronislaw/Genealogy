@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox fx:id="box" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.edit.EditPersonFieldController">
+<VBox fx:id="box" style="-fx-background-color: #0002;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.edit.EditPersonFieldController">
    <children>
       <TextField fx:id="value" />
    </children>

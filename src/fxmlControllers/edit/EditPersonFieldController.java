@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import model.Person;
 import model.Tree;
 import searchEngine.SearchEngine;
 
@@ -24,6 +25,8 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 	private SearchEngine searchEngine = new SearchEngine();
 	private SearchViewController searchController;
 	
+	private String selectedPersonID;
+	
 	public void setTree(Tree tree) {
 		this.tree = tree;
 		searchEngine.setTree(tree);
@@ -31,14 +34,16 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 
 	@Override
 	public void setOldValue(String valueText) {
-		value.setText(valueText);
-		value.setPromptText(valueText);
+		selectedPersonID = valueText;
+		String personName = tree.getPerson(selectedPersonID).nameSurname();
+		value.setText(personName);
+		value.setPromptText(personName);
 		
 		searchController.clearFields();
 	}
 	@Override
 	public String getValue() {
-		return value.getText();
+		return selectedPersonID;
 	}
 	
 	@Override
@@ -50,12 +55,17 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 	private Pane generateSearchPane() {
 		SearchViewBuilder builder = new SearchViewBuilder();
 		
-		builder.setChooseAction(person -> value.setText(tree.getID(person)));
+		builder.setChooseAction(this::selectPerson);
 		builder.setSearchEngine(searchEngine);
 		
 		builder.build();
 		
 		searchController = builder.getController();
 		return builder.getPane();
+	}
+	
+	private void selectPerson(Person person) {
+		selectedPersonID = tree.getID(person);
+		value.setText(person.nameSurname());
 	}
 }
