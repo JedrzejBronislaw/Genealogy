@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import fxmlBuilders.PaneFXMLBuilder;
 import fxmlControllers.edit.EditDateItem;
 import fxmlControllers.edit.EditEnumItem;
+import fxmlControllers.edit.EditMLTextItem;
 import fxmlControllers.edit.EditPersonItem;
 import fxmlControllers.edit.EditPersonPaneController;
 import fxmlControllers.edit.EditTextItem;
@@ -82,8 +83,12 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 				(person, value) -> person.setBurialPlace(value),
 				person -> person.getBurialPlace()));
 		
-		//contact
-		//comments
+		controller.addItem(new EditMLTextItem(Internationalization.get("contact"),
+				(person, value) -> person.setContact(value),
+				person -> person.getContact()));
+		controller.addItem(new EditMLTextItem(Internationalization.get("comments"),
+				(person, value) -> person.setComments(value),
+				person -> person.getComments()));
 
 		controller.addItem(new EditPersonItem(Internationalization.get("father"),
 				treeSupplier,
