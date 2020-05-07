@@ -38,6 +38,7 @@ public class Tree {
 	
 	public Person getPerson(String id)
 	{
+		if (id == null) return null;
 		return persons.get(id);
 	}
 	
