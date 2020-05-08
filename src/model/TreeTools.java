@@ -64,9 +64,11 @@ public class TreeTools {
 		Person copy = new Person();
 		copy.setFirstName(original.getFirstName());
 		copy.setLastName(original.getLastName());
-		copy.setBirthDate(original.getBirthDate()); //TODO copy date
+		if (original.getBirthDate() != null)
+			copy.setBirthDate(original.getBirthDate().copy());
 		copy.setBirthPlace(original.getBirthPlace());
-		copy.setDeathDate(original.getDeathDate()); //TODO copy date
+		if (original.getDeathDate() != null)
+			copy.setDeathDate(original.getDeathDate().copy());
 		copy.setDeathPlace(original.getDeathPlace());
 		copy.setLifeStatus(original.getLifeStatus());
 		copy.setSex(original.getSex());
