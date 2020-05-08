@@ -185,6 +185,10 @@ public class MyDate {
 		return outcome.substring(1);
 	}
 	
+	public MyDate copy() {
+		return new MyDate(getDay(), getMonth(), getYear());
+	}
+	
 	@Override
 	public String toString() {
 		String outcome = "";
