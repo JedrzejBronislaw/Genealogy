@@ -143,9 +143,7 @@ public class TreeToolsTest {
 	
 	@Test
 	public void testPersonsToString() {
-		List<Person> list = new ArrayList<>(2);
-		list.add(mother);
-		list.add(child1);
+		List<Person> list = Arrays.asList(mother, child1);
 		
 		String stringPersons = tools.personsToString(list);
 		String expectedA = "2" + TreeTools.LINESEPARATOR + "11";
@@ -158,10 +156,7 @@ public class TreeToolsTest {
 	
 	@Test
 	public void testPersonsToString_oneWrongPerson() {
-		List<Person> list = new ArrayList<>(3);
-		list.add(mother);
-		list.add(child1);
-		list.add(prepareFullFieldPerson());
+		List<Person> list = Arrays.asList(mother, child1, prepareFullFieldPerson());
 
 		assertNull(tools.personsToString(list));
 	}
@@ -197,12 +192,7 @@ public class TreeToolsTest {
 				"11", "2", "1", "12");
 		
 		List<Person> list = tools.stringToPersons(stringPersons);
-		
-		List<Person> expectedList = new ArrayList<>();
-		expectedList.add(child1);
-		expectedList.add(mother);
-		expectedList.add(father);
-		expectedList.add(child2);
+		List<Person> expectedList = Arrays.asList(child1, mother, father, child2);
 
 		assertEquals(expectedList, list);
 	}
@@ -239,12 +229,7 @@ public class TreeToolsTest {
 				"11", "2", "", "1", "12", "");
 		
 		List<Person> list = tools.stringToPersons(stringPersons);
-		
-		List<Person> expectedList = new ArrayList<>();
-		expectedList.add(child1);
-		expectedList.add(mother);
-		expectedList.add(father);
-		expectedList.add(child2);
+		List<Person> expectedList = Arrays.asList(child1, mother, father, child2);
 
 		assertEquals(expectedList, list);
 	}
