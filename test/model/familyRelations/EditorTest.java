@@ -729,4 +729,63 @@ public class EditorTest {
 		assertTrue(mother2.getChild(1) == child2);
 		assertTrue(mother2.getChild(2) == child3);
 	}
+
+	//-----DEL CHILDREN REL-----
+
+	@Test
+	public void delChildrenRelations_father() {
+		Person father = rPerson.generate(Sex.MAN);
+		Person child1 = rPerson.generate();
+		Person child2 = rPerson.generate();
+		Person child3 = rPerson.generate();
+		List<Person> children = Arrays.asList(child1, child2, child3);
+		
+		assertTrue(editor.setParentChildrenRel(father, children));
+		assertTrue(editor.delChildrenRelations(father));
+		
+		assertNull(child1.getFather());
+		assertNull(child2.getFather());
+		assertNull(child3.getFather());
+
+		assertEquals(0, father.numberOfChildren());
+	}
+
+	@Test
+	public void delChildrenRelations_mother() {
+		Person mother = rPerson.generate(Sex.WOMAN);
+		Person child1 = rPerson.generate();
+		Person child2 = rPerson.generate();
+		Person child3 = rPerson.generate();
+		List<Person> children = Arrays.asList(child1, child2, child3);
+		
+		assertTrue(editor.setParentChildrenRel(mother, children));
+		assertTrue(editor.delChildrenRelations(mother));
+		
+		assertNull(child1.getMother());
+		assertNull(child2.getMother());
+		assertNull(child3.getMother());
+
+		assertEquals(0, mother.numberOfChildren());
+	}
+
+	@Test
+	public void delChildrenRelations_parentWithoutChildren() {
+		Person mother = rPerson.generate(Sex.WOMAN);
+		
+		assertTrue(editor.delChildrenRelations(mother));
+		assertEquals(0, mother.numberOfChildren());
+	}
+
+	@Test
+	public void delChildrenRelations_nullParent() {
+		assertFalse(editor.delChildrenRelations(null));
+	}
+
+	@Test
+	public void delChildrenRelations_unknowSexParent() {
+		Person parent = rPerson.generate();
+		parent.setSex(Sex.UNKNOWN);
+		
+		assertTrue(editor.delChildrenRelations(parent));
+	}
 }

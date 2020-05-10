@@ -66,26 +66,33 @@ public class Editor {
 		if (parent.getSex() != Sex.MAN &&
 			parent.getSex() != Sex.WOMAN) return false;
 		
+		delChildrenRelations(parent);
 		
-		if (parent.getSex() == Sex.MAN) {
-			for (Person child : parent.getChildren())
-				delFatherRelation(child);
-			
+		if (parent.getSex() == Sex.MAN)
 			children.forEach(child -> {
 				delFatherRelation(child);
 				setFatherChildRel(parent, child);
 			});
-		}
 		
-		if (parent.getSex() == Sex.WOMAN) {
-			for (Person child : parent.getChildren())
-				delMotherRelation(child);
-		
+		if (parent.getSex() == Sex.WOMAN)
 			children.forEach(child -> {
 				delMotherRelation(child);
 				setMotherChildRel(parent, child);
 			});
-		}
+		
+		return true;
+	}
+
+	public boolean delChildrenRelations(Person parent) {
+		if (parent == null) return false;
+		
+		if (parent.getSex() == Sex.MAN)
+			for (Person child : parent.getChildren())
+				delFatherRelation(child);
+		
+		if (parent.getSex() == Sex.WOMAN)
+			for (Person child : parent.getChildren())
+				delMotherRelation(child);
 		
 		return true;
 	}
