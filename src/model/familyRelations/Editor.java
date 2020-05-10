@@ -1,5 +1,7 @@
 package model.familyRelations;
 
+import java.util.List;
+
 import lombok.NoArgsConstructor;
 import model.Person;
 import model.Person.Sex;
@@ -55,6 +57,35 @@ public class Editor {
 		
 		setMotherChildRel(mother, child);
 		setFatherChildRel(father, child);
+		
+		return true;
+	}
+
+	public boolean setParentChildrenRel(Person parent, List<Person> children) {
+		if (parent == null || children == null) return false;
+		if (parent.getSex() != Sex.MAN &&
+			parent.getSex() != Sex.WOMAN) return false;
+		
+		
+		if (parent.getSex() == Sex.MAN) {
+			for (Person child : parent.getChildren())
+				delFatherRelation(child);
+			
+			children.forEach(child -> {
+				delFatherRelation(child);
+				setFatherChildRel(parent, child);
+			});
+		}
+		
+		if (parent.getSex() == Sex.WOMAN) {
+			for (Person child : parent.getChildren())
+				delMotherRelation(child);
+		
+			children.forEach(child -> {
+				delMotherRelation(child);
+				setMotherChildRel(parent, child);
+			});
+		}
 		
 		return true;
 	}

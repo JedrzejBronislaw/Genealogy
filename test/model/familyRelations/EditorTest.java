@@ -5,6 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -540,5 +544,189 @@ public class EditorTest {
 		assertEquals(1, newMother.numberOfChildren());
 		assertEquals(newFather, child.getFather());
 		assertEquals(newMother, child.getMother());
+	}
+
+	//-----SET CHILDREN-----
+
+	@Test
+	public void testSetParentChildrenRel_father() {
+		Person father = rPerson.generate(Sex.MAN);
+		Person child1 = rPerson.generate();
+		Person child2 = rPerson.generate();
+		Person child3 = rPerson.generate();
+		List<Person> children = Arrays.asList(child1, child2, child3);
+		
+		assertTrue(editor.setParentChildrenRel(father, children));
+		
+		assertTrue(father == child1.getFather());
+		assertTrue(father == child2.getFather());
+		assertTrue(father == child3.getFather());
+
+		assertEquals(3, father.numberOfChildren());
+		assertTrue(father.getChild(0) == child1);
+		assertTrue(father.getChild(1) == child2);
+		assertTrue(father.getChild(2) == child3);
+	}
+
+	@Test
+	public void testSetParentChildrenRel_mother() {
+		Person mother = rPerson.generate(Sex.WOMAN);
+		Person child1 = rPerson.generate();
+		Person child2 = rPerson.generate();
+		Person child3 = rPerson.generate();
+		List<Person> children = Arrays.asList(child1, child2, child3);
+		
+		assertTrue(editor.setParentChildrenRel(mother, children));
+		
+		assertTrue(mother == child1.getMother());
+		assertTrue(mother == child2.getMother());
+		assertTrue(mother == child3.getMother());
+
+		assertEquals(3, mother.numberOfChildren());
+		assertTrue(mother.getChild(0) == child1);
+		assertTrue(mother.getChild(1) == child2);
+		assertTrue(mother.getChild(2) == child3);
+	}
+
+	@Test
+	public void testSetParentChildrenRel_bothParents() {
+		Person mother = rPerson.generate(Sex.WOMAN);
+		Person father = rPerson.generate(Sex.MAN);
+		Person child1 = rPerson.generate();
+		Person child2 = rPerson.generate();
+		Person child3 = rPerson.generate();
+		List<Person> children123 = Arrays.asList(child1, child2, child3);
+		
+		assertTrue(editor.setParentChildrenRel(father, children123));
+		assertTrue(editor.setParentChildrenRel(mother, children123));
+		
+		assertTrue(mother == child1.getMother());
+		assertTrue(mother == child2.getMother());
+		assertTrue(mother == child3.getMother());
+		assertTrue(father == child1.getFather());
+		assertTrue(father == child2.getFather());
+		assertTrue(father == child3.getFather());
+
+		assertEquals(3, mother.numberOfChildren());
+		assertEquals(3, father.numberOfChildren());
+
+		assertTrue(mother.getChild(0) == child1);
+		assertTrue(mother.getChild(1) == child2);
+		assertTrue(mother.getChild(2) == child3);
+		assertTrue(father.getChild(0) == child1);
+		assertTrue(father.getChild(1) == child2);
+		assertTrue(father.getChild(2) == child3);
+	}
+
+	@Test
+	public void testSetParentChildrenRel_nullParent() {
+		Person child1 = rPerson.generate();
+		Person child2 = rPerson.generate();
+		Person child3 = rPerson.generate();
+		List<Person> children = Arrays.asList(child1, child2, child3);
+		
+		assertFalse(editor.setParentChildrenRel(null, children));
+		
+		assertNull(child1.getMother());
+		assertNull(child2.getMother());
+		assertNull(child3.getMother());
+	}
+
+	@Test
+	public void testSetParentChildrenRel_mother_nullChildren() {
+		Person mother = rPerson.generate(Sex.WOMAN);
+		
+		assertFalse(editor.setParentChildrenRel(mother, null));
+		assertEquals(0, mother.numberOfChildren());
+	}
+
+	@Test
+	public void testSetParentChildrenRel_father_nullChildren() {
+		Person father = rPerson.generate(Sex.MAN);
+		
+		assertFalse(editor.setParentChildrenRel(father, null));
+		assertEquals(0, father.numberOfChildren());
+	}
+
+	@Test
+	public void testSetParentChildrenRel_emptyList() {
+		Person mother = rPerson.generate(Sex.WOMAN);
+		List<Person> children = new ArrayList<>();
+		
+		assertTrue(editor.setParentChildrenRel(mother, children));
+		assertEquals(0, mother.numberOfChildren());
+	}
+
+	@Test
+	public void testSetParentChildrenRel_unknowSexParent() {
+		Person parent = rPerson.generate(Sex.WOMAN);
+		parent.setSex(Sex.UNKNOWN);
+		Person child1 = rPerson.generate();
+		Person child2 = rPerson.generate();
+		Person child3 = rPerson.generate();
+		List<Person> children = Arrays.asList(child1, child2, child3);
+		
+		assertFalse(editor.setParentChildrenRel(parent, children));
+		
+		assertNull(child1.getMother());
+		assertNull(child2.getMother());
+		assertNull(child3.getMother());
+
+		assertEquals(0, parent.numberOfChildren());
+	}
+
+	@Test
+	public void testSetParentChildrenRel_prevChildren() {
+		Person mother = rPerson.generate(Sex.WOMAN);
+		Person childA = rPerson.generate();
+		Person childB = rPerson.generate();
+		Person child1 = rPerson.generate();
+		Person child2 = rPerson.generate();
+		Person child3 = rPerson.generate();
+		List<Person> childrenAB = Arrays.asList(childA, childB);
+		List<Person> children123 = Arrays.asList(child1, child2, child3);
+		
+		assertTrue(editor.setParentChildrenRel(mother, childrenAB));
+		assertTrue(editor.setParentChildrenRel(mother, children123));
+		
+		assertNull(childA.getMother());
+		assertNull(childB.getMother());
+		
+		assertTrue(mother == child1.getMother());
+		assertTrue(mother == child2.getMother());
+		assertTrue(mother == child3.getMother());
+
+		assertEquals(3, mother.numberOfChildren());
+		assertTrue(mother.getChild(0) == child1);
+		assertTrue(mother.getChild(1) == child2);
+		assertTrue(mother.getChild(2) == child3);
+	}
+
+	@Test
+	public void testSetParentChildrenRel_prevParents() {
+		Person mother1 = rPerson.generate(Sex.WOMAN);
+		Person mother2 = rPerson.generate(Sex.WOMAN);
+		Person child1 = rPerson.generate();
+		Person child2 = rPerson.generate();
+		Person child3 = rPerson.generate();
+		Person child4 = rPerson.generate();
+		List<Person> children124 = Arrays.asList(child1, child2, child4);
+		List<Person> children123 = Arrays.asList(child1, child2, child3);
+		
+		assertTrue(editor.setParentChildrenRel(mother1, children124));
+		assertTrue(editor.setParentChildrenRel(mother2, children123));
+		
+		assertTrue(mother2 == child1.getMother());
+		assertTrue(mother2 == child2.getMother());
+		assertTrue(mother2 == child3.getMother());
+		assertTrue(mother1 == child4.getMother());
+
+		assertEquals(1, mother1.numberOfChildren());
+		assertEquals(3, mother2.numberOfChildren());
+
+		assertTrue(mother1.getChild(0) == child4);
+		assertTrue(mother2.getChild(0) == child1);
+		assertTrue(mother2.getChild(1) == child2);
+		assertTrue(mother2.getChild(2) == child3);
 	}
 }
