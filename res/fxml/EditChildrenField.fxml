@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="box" style="-fx-background-color: #0002;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.edit.EditChildrenFieldController">
+   <children>
+      <Button fx:id="resetButton" mnemonicParsing="false" text="%reset" />
+      <VBox fx:id="childList">
+         <children>
+            <Label fx:id="value" text="Label" />
+         </children>
+      </VBox>
+   </children>
+</VBox>

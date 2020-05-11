@@ -1,8 +1,10 @@
 package fxmlBuilders.edit;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import fxmlBuilders.PaneFXMLBuilder;
+import fxmlControllers.edit.EditChildrenItem;
 import fxmlControllers.edit.EditDateItem;
 import fxmlControllers.edit.EditEnumItem;
 import fxmlControllers.edit.EditMLTextItem;
@@ -100,6 +102,10 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 				person -> person.getMother()));
 
 		//spouses
-		//children
+
+		controller.addItem(new EditChildrenItem(Internationalization.get("children"),
+				treeSupplier,
+				(person, value) -> relationEditor.setParentChildrenRel(person, value),
+				person -> Arrays.asList(person.getChildren())));
 	}
 }
