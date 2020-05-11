@@ -14,7 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.Person.Sex;
-import model.familyRelations.Editor;
+import model.familyRelations.RelationEditor;
 
 public class Tree_Equals {
 
@@ -35,7 +35,7 @@ public class Tree_Equals {
 	
 	public static Tree prepareTree() {
 		Tree tree = new Tree();
-		Editor editor = new Editor();
+		RelationEditor relationEditor = new RelationEditor();
 		
 		try {
 			tree.setLastOpen(format.parse("12:14:05 14.05.2019"));
@@ -63,8 +63,8 @@ public class Tree_Equals {
 		child.setLastName("Kowalski");
 		child.setSex(Sex.MAN);
 
-		editor.createMarriageRel(father, mother);
-		editor.setParentsChildRel(father, mother, child);
+		relationEditor.createMarriageRel(father, mother);
+		relationEditor.setParentsChildRel(father, mother, child);
 		
 		tree.addPerson("1", father);
 		tree.addPerson("2", mother);

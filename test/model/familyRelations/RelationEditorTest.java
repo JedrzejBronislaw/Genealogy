@@ -18,14 +18,14 @@ import model.Tree;
 import model.TreeEditor;
 import model.random.RandomPerson;
 
-public class EditorTest {
+public class RelationEditorTest {
 
-	private Editor editor;
+	private RelationEditor editor;
 	private RandomPerson rPerson;
 	
 	@Before
 	public void prepare() {
-		editor = new Editor();
+		editor = new RelationEditor();
 		rPerson = new RandomPerson();
 	}
 	
@@ -89,7 +89,7 @@ public class EditorTest {
 	@Test
 	public void testSetMotherChildRel_addToTree() {
 		Tree tree = new Tree();
-		Editor editor = new Editor(tree);
+		RelationEditor editor = new RelationEditor(tree);
 		TreeEditor treeEditor = new TreeEditor(tree);
 		
 		Person mother = rPerson.generate(Sex.WOMAN);
@@ -163,7 +163,7 @@ public class EditorTest {
 	@Test
 	public void testSetFatherChildRel_addToTree() {
 		Tree tree = new Tree();
-		Editor editor = new Editor(tree);
+		RelationEditor editor = new RelationEditor(tree);
 		TreeEditor treeEditor = new TreeEditor(tree);
 		
 		Person father = rPerson.generate(Sex.MAN);
@@ -293,7 +293,7 @@ public class EditorTest {
 	@Test
 	public void testCreateMarriageRel_addToTree() {
 		Tree tree = new Tree();
-		Editor editor = new Editor(tree);
+		RelationEditor editor = new RelationEditor(tree);
 		TreeEditor treeEditor = new TreeEditor(tree);
 
 		Person husband = rPerson.generate(Sex.MAN);
@@ -442,7 +442,7 @@ public class EditorTest {
 	@Test
 	public void testSetParentsChildRel_addToTree() {
 		Tree tree = new Tree();
-		Editor editor = new Editor(tree);
+		RelationEditor editor = new RelationEditor(tree);
 		TreeEditor treeEditor = new TreeEditor(tree);
 		Person father = rPerson.generate(Sex.MAN);
 		Person mother = rPerson.generate(Sex.WOMAN);

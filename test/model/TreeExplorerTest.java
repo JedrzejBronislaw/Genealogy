@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.Person.Sex;
-import model.familyRelations.Editor;
+import model.familyRelations.RelationEditor;
 import model.random.RandomPerson;
 
 public class TreeExplorerTest {
@@ -27,7 +27,7 @@ public class TreeExplorerTest {
 	public void prepare() {
 		Tree tree = new Tree();
 		explorer = new TreeExplorer(tree);
-		Editor editor = new Editor(tree);
+		RelationEditor relEditor = new RelationEditor(tree);
 		RandomPerson rPerson = new RandomPerson();
 		
 		//persons
@@ -52,22 +52,22 @@ public class TreeExplorerTest {
 		cousin = rPerson.generate();
 
 		//relations
-		editor.createMarriageRel(grandgrandfather, grandgrandmother);
-		editor.createMarriageRel(grandfatherA, grandmotherA);
-		editor.createMarriageRel(grandfatherB, grandmotherB);
-		editor.createMarriageRel(father, mother);
+		relEditor.createMarriageRel(grandgrandfather, grandgrandmother);
+		relEditor.createMarriageRel(grandfatherA, grandmotherA);
+		relEditor.createMarriageRel(grandfatherB, grandmotherB);
+		relEditor.createMarriageRel(father, mother);
 
-		editor.setMotherChildRel(grand3mother, grandgrandfather);
-		editor.setParentsChildRel(grandgrandfather, grandgrandmother, grandfatherA);
-		editor.setParentsChildRel(grandfatherA, grandmotherA, father);
-		editor.setParentsChildRel(grandfatherB, grandmotherB, mother);
+		relEditor.setMotherChildRel(grand3mother, grandgrandfather);
+		relEditor.setParentsChildRel(grandgrandfather, grandgrandmother, grandfatherA);
+		relEditor.setParentsChildRel(grandfatherA, grandmotherA, father);
+		relEditor.setParentsChildRel(grandfatherB, grandmotherB, mother);
 
-		editor.setParentsChildRel(father, mother, child1);
-		editor.setParentsChildRel(father, mother, child2);
-		editor.setParentsChildRel(father, mother, child3);
+		relEditor.setParentsChildRel(father, mother, child1);
+		relEditor.setParentsChildRel(father, mother, child2);
+		relEditor.setParentsChildRel(father, mother, child3);
 
-		editor.setParentsChildRel(grandfatherB, grandmotherB, aunt);
-		editor.setMotherChildRel(aunt, cousin);
+		relEditor.setParentsChildRel(grandfatherB, grandmotherB, aunt);
+		relEditor.setMotherChildRel(aunt, cousin);
 	}
 	
 	@Test

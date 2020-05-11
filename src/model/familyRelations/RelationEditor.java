@@ -9,11 +9,11 @@ import model.Tree;
 import model.TreeEditor;
 
 @NoArgsConstructor
-public class Editor {
+public class RelationEditor {
 
 	private TreeEditor tree = null;
 
-	public Editor(Tree tree) {
+	public RelationEditor(Tree tree) {
 		if (tree != null)
 			this.tree = new TreeEditor(tree);
 	}

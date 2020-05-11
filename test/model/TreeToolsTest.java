@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import model.Person.LifeStatus;
 import model.Person.Sex;
-import model.familyRelations.Editor;
+import model.familyRelations.RelationEditor;
 import model.random.RandomPerson;
 
 public class TreeToolsTest {
@@ -47,7 +47,7 @@ public class TreeToolsTest {
 		tree = new Tree();
 		tools = new TreeTools(tree);
 		RandomPerson rPerson = new RandomPerson();
-		Editor relationsEditor = new Editor();
+		RelationEditor relationsEditor = new RelationEditor();
 		
 		mother = rPerson.generate(Sex.WOMAN);
 		father = rPerson.generate(Sex.MAN);

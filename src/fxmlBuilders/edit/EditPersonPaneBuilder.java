@@ -17,7 +17,7 @@ import model.Person;
 import model.Person.LifeStatus;
 import model.Person.Sex;
 import model.Tree;
-import model.familyRelations.Editor;
+import model.familyRelations.RelationEditor;
 import session.TreeSupplier;
 import tools.Tools;
 
@@ -41,7 +41,7 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 
 	@Override
 	public void afterBuild() {
-		Editor relationEditor = new Editor();
+		RelationEditor relationEditor = new RelationEditor();
 		controller.setChangeEvent(changeEvent);
 		controller.setClosePane(closePane);
 		
