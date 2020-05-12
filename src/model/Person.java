@@ -143,6 +143,15 @@ public class Person {
 		return null;
 	}
 	
+	public Marriage[] getMarriages() {
+		Marriage[] outcome = new Marriage[marriages.size()];
+		
+		for(int i=0; i<marriages.size(); i++)
+			outcome[i] = marriages.get(i);
+		
+		return outcome;
+	}
+	
 	public Person getSpouse(int number) {
 		if (sex == Sex.MAN)
 			return marriages.get(number).getWife();
