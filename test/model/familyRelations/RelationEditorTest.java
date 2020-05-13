@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import model.Marriage;
 import model.Person;
 import model.Person.Sex;
 import model.Tree;
@@ -788,4 +789,404 @@ public class RelationEditorTest {
 		
 		assertTrue(editor.delChildrenRelations(parent));
 	}
+
+	//-----SET SPOUSES REL-----
+
+	@Test
+	public void setSpousesRel() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Person> wifes = Arrays.asList(wife1, wife2, wife3);
+		
+		assertTrue(editor.setSpousesRel(husband, wifes));
+
+		
+		assertEquals(3, husband.numberOfMarriages());
+		assertEquals(1, wife1.numberOfMarriages());
+		assertEquals(1, wife2.numberOfMarriages());
+		assertEquals(1, wife3.numberOfMarriages());
+		
+		assertEquals(wife1, husband.getMarriage(0).getWife());
+		assertEquals(wife2, husband.getMarriage(1).getWife());
+		assertEquals(wife3, husband.getMarriage(2).getWife());
+		
+		assertEquals(husband, wife1.getMarriage(0).getHusband());
+		assertEquals(husband, wife2.getMarriage(0).getHusband());
+		assertEquals(husband, wife3.getMarriage(0).getHusband());
+	}
+
+	@Test
+	public void setSpousesRel_femaleHusband() {
+		Person husband = rPerson.generate(Sex.WOMAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Person> wifes = Arrays.asList(wife1, wife2, wife3);
+		
+		assertFalse(editor.setSpousesRel(husband, wifes));
+
+		
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(0, wife1.numberOfMarriages());
+		assertEquals(0, wife2.numberOfMarriages());
+		assertEquals(0, wife3.numberOfMarriages());
+	}
+	
+	//-----SET MERRIAGES REL-----
+
+	@Test
+	public void setMarriagesRel_man() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife3));
+		
+		assertTrue(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(3, husband.numberOfMarriages());
+		assertEquals(1, wife1.numberOfMarriages());
+		assertEquals(1, wife2.numberOfMarriages());
+		assertEquals(1, wife3.numberOfMarriages());
+		
+		assertEquals(wife1, husband.getMarriage(0).getWife());
+		assertEquals(wife2, husband.getMarriage(1).getWife());
+		assertEquals(wife3, husband.getMarriage(2).getWife());
+		
+		assertEquals(husband, wife1.getMarriage(0).getHusband());
+		assertEquals(husband, wife2.getMarriage(0).getHusband());
+		assertEquals(husband, wife3.getMarriage(0).getHusband());
+	}
+
+	@Test
+	public void setMarriagesRel_woman() {
+		Person wife = rPerson.generate(Sex.WOMAN);
+		Person husband1 = rPerson.generate(Sex.MAN);
+		Person husband2 = rPerson.generate(Sex.MAN);
+		Person husband3 = rPerson.generate(Sex.MAN);
+		List<Marriage> husbands = Arrays.asList(
+				new Marriage(wife, husband1),
+				new Marriage(wife, husband2),
+				new Marriage(wife, husband3));
+		
+		assertTrue(editor.setMarriagesRel(wife, husbands));
+
+		
+		assertEquals(3, wife.numberOfMarriages());
+		assertEquals(1, husband1.numberOfMarriages());
+		assertEquals(1, husband2.numberOfMarriages());
+		assertEquals(1, husband3.numberOfMarriages());
+		
+		assertEquals(husband1, wife.getMarriage(0).getHusband());
+		assertEquals(husband2, wife.getMarriage(1).getHusband());
+		assertEquals(husband3, wife.getMarriage(2).getHusband());
+		
+		assertEquals(wife, husband1.getMarriage(0).getWife());
+		assertEquals(wife, husband2.getMarriage(0).getWife());
+		assertEquals(wife, husband3.getMarriage(0).getWife());
+	}
+
+	@Test
+	public void setMarriagesRel_spousesWithSpouses() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person husband2 = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife3));
+		
+		assertTrue(editor.createMarriageRel(husband2, wife1));
+		assertTrue(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(3, husband.numberOfMarriages());
+		assertEquals(2, wife1.numberOfMarriages());
+		assertEquals(1, wife2.numberOfMarriages());
+		assertEquals(1, wife3.numberOfMarriages());
+		
+		assertEquals(wife1, husband.getMarriage(0).getWife());
+		assertEquals(wife2, husband.getMarriage(1).getWife());
+		assertEquals(wife3, husband.getMarriage(2).getWife());
+		
+		assertEquals(husband2,  wife1.getMarriage(0).getHusband());
+		assertEquals(husband, wife1.getMarriage(1).getHusband());
+		assertEquals(husband,  wife2.getMarriage(0).getHusband());
+		assertEquals(husband,  wife3.getMarriage(0).getHusband());
+	}
+
+	@Test
+	public void setMarriagesRel_spouseWithMarriageWithThisPerson() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife3));
+
+		wife1.addMarriage(husband);
+		assertEquals(1, wife1.numberOfMarriages());
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(husband, wife1.getSpouse(0));
+		
+		assertTrue(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(3, husband.numberOfMarriages());
+		assertEquals(1, wife1.numberOfMarriages());
+		assertEquals(1, wife2.numberOfMarriages());
+		assertEquals(1, wife3.numberOfMarriages());
+		
+		assertEquals(wife1, husband.getMarriage(0).getWife());
+		assertEquals(wife2, husband.getMarriage(1).getWife());
+		assertEquals(wife3, husband.getMarriage(2).getWife());
+		
+		assertEquals(husband, wife1.getMarriage(0).getHusband());
+		assertEquals(husband, wife2.getMarriage(0).getHusband());
+		assertEquals(husband, wife3.getMarriage(0).getHusband());
+	}
+	
+	@Test
+	public void setMarriagesRel_existingSpouse() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife3));
+		
+		assertTrue(editor.createMarriageRel(husband, wife1));
+		assertTrue(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(3, husband.numberOfMarriages());
+		assertEquals(1, wife1.numberOfMarriages());
+		assertEquals(1, wife2.numberOfMarriages());
+		assertEquals(1, wife3.numberOfMarriages());
+		
+		assertEquals(wife1, husband.getMarriage(0).getWife());
+		assertEquals(wife2, husband.getMarriage(1).getWife());
+		assertEquals(wife3, husband.getMarriage(2).getWife());
+		
+		assertEquals(husband, wife1.getMarriage(0).getHusband());
+		assertEquals(husband, wife2.getMarriage(0).getHusband());
+		assertEquals(husband, wife3.getMarriage(0).getHusband());
+	}
+	
+	@Test
+	public void setMarriagesRel_twiceInTheList() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife3));
+		
+		assertTrue(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(3, husband.numberOfMarriages());
+		assertEquals(1, wife1.numberOfMarriages());
+		assertEquals(1, wife2.numberOfMarriages());
+		assertEquals(1, wife3.numberOfMarriages());
+		
+		assertEquals(wife1, husband.getMarriage(0).getWife());
+		assertEquals(wife2, husband.getMarriage(1).getWife());
+		assertEquals(wife3, husband.getMarriage(2).getWife());
+		
+		assertEquals(husband, wife1.getMarriage(0).getHusband());
+		assertEquals(husband, wife2.getMarriage(0).getHusband());
+		assertEquals(husband, wife3.getMarriage(0).getHusband());
+	}
+	
+	@Test
+	public void setMarriagesRel_nullPerson() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife3));
+		
+		assertFalse(editor.setMarriagesRel(null, wifes));
+
+		
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(0, wife1.numberOfMarriages());
+		assertEquals(0, wife2.numberOfMarriages());
+		assertEquals(0, wife3.numberOfMarriages());
+	}
+	
+	@Test
+	public void setMarriagesRel_nullList() {
+		Person husband = rPerson.generate(Sex.MAN);
+		
+		assertFalse(editor.setMarriagesRel(husband, null));
+		assertEquals(0, husband.numberOfMarriages());
+	}
+
+	@Test
+	public void setMarriagesRel_nullinTheList() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				null,
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife3));
+		
+		assertTrue(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(3, husband.numberOfMarriages());
+		assertEquals(1, wife1.numberOfMarriages());
+		assertEquals(1, wife2.numberOfMarriages());
+		assertEquals(1, wife3.numberOfMarriages());
+		
+		assertEquals(wife1, husband.getMarriage(0).getWife());
+		assertEquals(wife2, husband.getMarriage(1).getWife());
+		assertEquals(wife3, husband.getMarriage(2).getWife());
+		
+		assertEquals(husband, wife1.getMarriage(0).getHusband());
+		assertEquals(husband, wife2.getMarriage(0).getHusband());
+		assertEquals(husband, wife3.getMarriage(0).getHusband());
+	}
+	
+	@Test
+	public void setMarriagesRel_empty() {
+		Person husband = rPerson.generate(Sex.MAN);
+		List<Marriage> wifes = new ArrayList<>();
+		
+		assertTrue(editor.setMarriagesRel(husband, wifes));
+		
+		assertEquals(0, husband.numberOfMarriages());
+	}
+	
+	@Test
+	public void setMarriagesRel_emptyWithSpouses() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = new ArrayList<>();
+		
+		assertTrue(editor.createMarriageRel(husband, wife));
+
+		assertEquals(1, husband.numberOfMarriages());
+		assertEquals(1, wife.numberOfMarriages());
+		
+		
+		assertTrue(editor.setMarriagesRel(husband, wifes));
+		
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(0, wife.numberOfMarriages());
+	}
+	
+	@Test
+	public void setMarriagesRel_wrongHusband() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wrongHusband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(wrongHusband, wife2),
+				new Marriage(husband, wife3));
+		
+		assertFalse(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(0, wife1.numberOfMarriages());
+		assertEquals(0, wife2.numberOfMarriages());
+		assertEquals(0, wife3.numberOfMarriages());
+	}
+	
+	@Test
+	public void setMarriagesRel_femaleHusband() {
+		Person husband = rPerson.generate(Sex.WOMAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife3));
+		
+		assertFalse(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(0, wife1.numberOfMarriages());
+		assertEquals(0, wife2.numberOfMarriages());
+		assertEquals(0, wife3.numberOfMarriages());
+	}
+	
+	@Test
+	public void setMarriagesRel_wrongHusband_existingSpouse() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wrongHusband = rPerson.generate(Sex.MAN);
+		Person wife  = rPerson.generate(Sex.WOMAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(wrongHusband, wife2),
+				new Marriage(husband, wife3));
+		
+		
+		assertTrue(editor.createMarriageRel(husband, wife));
+
+		assertEquals(1, husband.numberOfMarriages());
+		assertEquals(1, wife.numberOfMarriages());
+		
+		assertFalse(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(1, husband.numberOfMarriages());
+		assertEquals(1, wife.numberOfMarriages());
+		assertEquals(0, wife1.numberOfMarriages());
+		assertEquals(0, wife2.numberOfMarriages());
+		assertEquals(0, wife3.numberOfMarriages());
+	}
+	
+	@Test
+	public void setMarriagesRel_maleWife() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.MAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1),
+				new Marriage(husband, wife2),
+				new Marriage(husband, wife3));
+		
+		assertFalse(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(0, husband.numberOfMarriages());
+		assertEquals(0, wife1.numberOfMarriages());
+		assertEquals(0, wife2.numberOfMarriages());
+		assertEquals(0, wife3.numberOfMarriages());
+	}
+	
 }

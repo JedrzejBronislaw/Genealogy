@@ -3,6 +3,8 @@ package tools;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tools {
 	
@@ -55,5 +57,17 @@ public class Tools {
 			strValues[i] = rawValues[i].toString();
 		
 		return strValues;
+	}
+	
+	public static <T> List<T> removeNullElements(List<T> list) {
+		List<T> listWithoutNulls = new ArrayList<>();
+		
+		list.forEach(element -> {
+			if (element != null)
+				listWithoutNulls.add(element);
+			});
+		list = listWithoutNulls;
+		
+		return list;
 	}
 }

@@ -1,5 +1,6 @@
 package model.familyRelations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import model.Person.Sex;
 import model.Tree;
 import model.TreeEditor;
 import model.tools.ManWoman;
+import tools.Tools;
 
 @NoArgsConstructor
 public class RelationEditor {
@@ -130,6 +132,68 @@ public class RelationEditor {
 		return true;
 	}
 
+	public boolean setSpousesRel(Person person, List<Person> spouses) {
+		List<Marriage> marriages = new ArrayList<>(spouses.size());
+		
+		spouses.forEach(spouse -> marriages.add(new Marriage(person, spouse)));
+		
+		return setMarriagesRel(person, marriages);
+	}
+
+	public boolean setMarriagesRel(Person person, List<Marriage> marriages) {
+		//validation
+		if (person == null || marriages == null) return false;
+		if (person.getSex() == Sex.UNKNOWN) return false;
+
+		marriages = Tools.removeNullElements(marriages);
+		marriages = delDoubles(marriages);
+
+		for (Marriage marriage : marriages)
+			if (marriage.getWife() == null ||
+				marriage.getHusband() == null) return false;
+			
+		for (Marriage marriage : marriages)
+			if (marriage.getWife().getSex() != Sex.WOMAN ||
+				marriage.getHusband().getSex() != Sex.MAN) return false;
+			
+		if (person.getSex() == Sex.MAN)
+			for (Marriage marriage : marriages)
+				if (marriage.getHusband() != person) return false;
+
+		if (person.getSex() == Sex.WOMAN)
+			for (Marriage marriage : marriages)
+				if (marriage.getWife() != person) return false;
+		
+		//preparing
+		delMarriagesRel(person);
+		marriages.forEach(this::delMarriageRel);
+		
+		//creating marriages
+		marriages.forEach(marriage ->
+			createMarriageRel(marriage.getHusband(), marriage.getWife()));
+		
+		return true;
+	}
+
+	private List<Marriage> delDoubles(List<Marriage> marriages) {
+		List<Marriage> newList = new ArrayList<>();
+		boolean exists;
+		
+		for(Marriage marriage : marriages) {
+			exists = false;
+			
+			for(Marriage marriageFromNewList : newList)
+				if (marriageFromNewList.getHusband() == marriage.getHusband() &&
+					marriageFromNewList.getWife() == marriage.getWife())
+					exists = true;
+
+			if (!exists)
+				newList.add(marriage);
+		}
+		
+		return newList;
+	}
+	
 	public boolean delMarriagesRel(Person person) {
 		Marriage[] marriages = person.getMarriages();
 		
