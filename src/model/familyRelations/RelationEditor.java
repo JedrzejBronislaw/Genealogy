@@ -3,6 +3,7 @@ package model.familyRelations;
 import java.util.List;
 
 import lombok.NoArgsConstructor;
+import model.Marriage;
 import model.Person;
 import model.Person.Sex;
 import model.Tree;
@@ -129,9 +130,21 @@ public class RelationEditor {
 		return true;
 	}
 
-	public boolean delMarriageRel(Person wife, Person husband) {
-		husband.delSpouseRelation(wife);
-		wife.delSpouseRelation(husband);
+	public boolean delMarriagesRel(Person person) {
+		Marriage[] marriages = person.getMarriages();
+		
+		for (Marriage marriage : marriages)	delMarriageRel(marriage);
+		
+		return true;
+	}
+
+	public boolean delMarriageRel(Marriage marriage) {
+		return delMarriageRel(marriage.getWife(), marriage.getHusband());
+	}
+
+	public boolean delMarriageRel(Person person1, Person person2) {
+		person2.delSpouseRelation(person1);
+		person1.delSpouseRelation(person2);
 		return true;
 	}
 	
