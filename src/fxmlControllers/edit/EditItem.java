@@ -43,6 +43,7 @@ public abstract class EditItem<ValueType> implements EditItemInterface{
 	}
 	@Override
 	public void refresh(Person person) {
+		beforeRefreshingPerson(person);
 		ValueType value = (person != null) ? getter.apply(person) : null;
 		String strValue = specialToString(value);
 		controller.setOldValue(strValue);
@@ -51,4 +52,5 @@ public abstract class EditItem<ValueType> implements EditItemInterface{
 	protected abstract String specialToString(ValueType value);
 	protected abstract ValueType stringToSpecial(String value);
 	protected abstract EditField createEditField();
+	protected void beforeRefreshingPerson(Person person) {};
 }
