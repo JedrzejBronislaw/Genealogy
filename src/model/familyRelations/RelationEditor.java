@@ -7,6 +7,7 @@ import model.Person;
 import model.Person.Sex;
 import model.Tree;
 import model.TreeEditor;
+import model.tools.ManWoman;
 
 @NoArgsConstructor
 public class RelationEditor {
@@ -43,18 +44,12 @@ public class RelationEditor {
 	}
 	
 	public boolean setParentsChildRel(Person parentA, Person parentB, Person child) {
-		Person father = null;
-		Person mother = null;
+		ManWoman manWoman = new ManWoman(parentA, parentB);
+		if (!manWoman.success()) return false;
+		
+		Person father = manWoman.getMan();
+		Person mother = manWoman.getWoman();
 
-		Person[] parents = new Person[]{parentA, parentB};
-		
-		for(Person parent : parents) {
-			if (parent.getSex() == Sex.MAN)   father = parent;
-			if (parent.getSex() == Sex.WOMAN) mother = parent;
-		}
-		
-		if (father == null || mother == null) return false;
-		
 		setMotherChildRel(mother, child);
 		setFatherChildRel(father, child);
 		
@@ -120,22 +115,16 @@ public class RelationEditor {
 	}
 	
 	public boolean createMarriageRel(Person spouseA, Person spouseB, String date, String place) {
-		Person husband = null;
-		Person wife = null;
+		ManWoman manWoman = new ManWoman(spouseA, spouseB);
+		if (!manWoman.success()) return false;
+		
+		Person husband = manWoman.getMan();
+		Person wife = manWoman.getWoman();
 
-		Person[] spouses = new Person[]{spouseA, spouseB};
-		
-		for(Person spouse : spouses) {
-			if (spouse.getSex() == Sex.MAN) husband = spouse;
-			if (spouse.getSex() == Sex.WOMAN)  wife = spouse;
-		}
-		
-		if (husband == null || wife == null) return false;
-		
 		husband.addMarriage(wife, date, place);
 		wife.addMarriage(husband, date, place);
 		
-		addToTree(spouses);
+		addToTree(husband, wife);
 		
 		return true;
 	}
