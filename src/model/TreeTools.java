@@ -80,4 +80,100 @@ public class TreeTools {
 		
 		return copy;
 	}
+
+	
+	public String marriageToString(Marriage marriage) {
+		if (marriage == null) return null;
+		
+		Person husband = marriage.getHusband();
+		Person wife = marriage.getWife();
+		String date = marriage.getDate();
+		String place = marriage.getPlace();
+		
+		String husbandStr = (husband == null) ? "" : tree.getID(husband);
+		String wifeStr    = (wife == null)    ? "" : tree.getID(wife);
+		String dateStr    = (date == null)    ? "" : date;
+		String placeStr   = (place == null)   ? "" : place;
+		
+		if (husbandStr == null || wifeStr == null) return null;
+		
+		String outcome = String.join(";",
+				husbandStr,
+				wifeStr,
+				dateStr,
+				placeStr
+				);
+		
+		return outcome;
+	}
+	
+	public Marriage stringToMarriage(String string) {
+		if (string == null) return null;
+		String[] parts = string.split(";");
+		
+		if (parts.length > 4) return null;
+		
+		Person husband = null;
+		Person wife = null;
+		String date = null;
+		String place = null;
+
+		Person person;
+		
+		if (parts.length > 0 && !parts[0].isEmpty()) {
+				person = tree.getPerson(parts[0]);
+				if (person == null) return null;
+				husband = person;
+			};
+		if (parts.length > 1 && !parts[1].isEmpty()) {
+				person = tree.getPerson(parts[1]);
+				if (person == null) return null;
+				wife = person;
+			};
+		
+		if (parts.length > 2 && !parts[2].isEmpty()) date  = parts[2];
+		if (parts.length > 3 && !parts[3].isEmpty()) place = parts[3];
+		
+		Marriage marriage = new Marriage();
+		marriage.setHusband(husband);
+		marriage.setWife(wife);
+		marriage.setDate(date);
+		marriage.setPlace(place);
+		
+		return marriage;
+	}
+
+	public String marriagesToString(List<Marriage> marriages) {
+		if (marriages == null) return null;
+		
+		StringBuffer sb = new StringBuffer();
+		
+		for(Marriage marriage : marriages) {
+			String marriageString = marriageToString(marriage);
+			if (marriageString == null) return null;
+			
+			sb.append(marriageString);
+			sb.append(LINESEPARATOR);
+		}
+		
+		return sb.toString().trim();
+	}
+	
+	public List<Marriage> stringToMarriages(String string) {
+		if (string == null) return null;
+
+		List<Marriage> marriageList = new ArrayList<>();
+		String[] marriagesString = string.split(LINESEPARATOR);
+		Marriage marriage;
+		
+		for(String marriageString : marriagesString) {
+			if (marriageString.isEmpty()) continue;
+			
+			marriage = stringToMarriage(marriageString);
+			if (marriage == null) return null;
+			marriageList.add(marriage);
+		}
+		
+		return marriageList;
+	}
 }
