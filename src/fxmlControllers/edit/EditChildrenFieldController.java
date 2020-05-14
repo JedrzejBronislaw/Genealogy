@@ -1,6 +1,7 @@
 package fxmlControllers.edit;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -89,6 +90,7 @@ public class EditChildrenFieldController implements EditFieldInterface, Initiali
 	}
 	
 	private void resetChildList() {
+		if (children == null) children = new ArrayList<>();
 		children.clear();
 		oldChildren.forEach(child -> children.add(child));
 	}
