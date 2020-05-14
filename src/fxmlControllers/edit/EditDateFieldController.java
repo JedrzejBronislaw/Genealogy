@@ -35,6 +35,12 @@ public class EditDateFieldController implements EditFieldInterface, Initializabl
 		return day + "." + month + "." + year;
 	}
 	
+	public void clear() {
+		dayField.setText("");
+		monthField.setText("");
+		yearField.setText("");
+	}
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 	}
