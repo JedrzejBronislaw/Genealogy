@@ -35,7 +35,8 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 	@Override
 	public void setOldValue(String valueText) {
 		selectedPersonID = valueText;
-		String personName = tree.getPerson(selectedPersonID).nameSurname();
+		Person person = tree.getPerson(selectedPersonID);
+		String personName = (person == null) ? "" : person.nameSurname();
 		value.setText(personName);
 		value.setPromptText(personName);
 		
