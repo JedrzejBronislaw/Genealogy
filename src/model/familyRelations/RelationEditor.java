@@ -23,6 +23,7 @@ public class RelationEditor {
 	}
 	
 	public boolean setMotherChildRel(Person mother, Person child) {
+		if (mother == null || child == null) return false;
 		if (mother.getSex() != Sex.WOMAN) return false;
 		
 		delMotherRelation(child);
@@ -35,6 +36,7 @@ public class RelationEditor {
 	}
 
 	public boolean setFatherChildRel(Person father, Person child) {
+		if (father == null || child == null) return false;
 		if (father.getSex() != Sex.MAN) return false;
 		
 		delFatherRelation(child);
@@ -96,6 +98,7 @@ public class RelationEditor {
 	}
 	
 	public boolean delMotherRelation(Person person) {
+		if (person == null) return false;
 		Person mother = person.getMother();
 
 		person.setMother(null);
@@ -105,6 +108,7 @@ public class RelationEditor {
 	}
 	
 	public boolean delFatherRelation(Person person) {
+		if (person == null) return false;
 		Person father = person.getFather();
 
 		person.setFather(null);

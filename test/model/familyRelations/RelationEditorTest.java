@@ -45,6 +45,27 @@ public class RelationEditorTest {
 	}
 	
 	@Test
+	public void testSetMotherChildRel_nullMother() {
+		Person child  = rPerson.generate();
+		
+		assertFalse(editor.setMotherChildRel(null, child));
+		assertNull(child.getMother());
+	}
+	
+	@Test
+	public void testSetMotherChildRel_nullChild() {
+		Person mother = rPerson.generate(Sex.WOMAN);
+		
+		assertFalse(editor.setMotherChildRel(mother, null));
+		assertEquals(0, mother.numberOfChildren());
+	}
+	
+	@Test
+	public void testSetMotherChildRel_null() {
+		assertFalse(editor.setMotherChildRel(null, null));
+	}
+	
+	@Test
 	public void testSetMotherChildRel_add() {
 		Person mother = rPerson.generate(Sex.WOMAN);
 		Person child  = rPerson.generate();
@@ -116,6 +137,27 @@ public class RelationEditorTest {
 		assertEquals(0, father.numberOfChildren());
 		assertNull(child.getFather());
 		assertNull(child.getMother());
+	}
+	
+	@Test
+	public void testSetFatherChildRel_nullFather() {
+		Person child  = rPerson.generate();
+		
+		assertFalse(editor.setFatherChildRel(null, child));
+		assertNull(child.getMother());
+	}
+	
+	@Test
+	public void testSetFatherChildRel_nullChild() {
+		Person father = rPerson.generate(Sex.MAN);
+		
+		assertFalse(editor.setFatherChildRel(father, null));
+		assertEquals(0, father.numberOfChildren());
+	}
+	
+	@Test
+	public void testSetFatherChildRel_null() {
+		assertFalse(editor.setFatherChildRel(null, null));
 	}
 	
 	@Test
@@ -195,6 +237,11 @@ public class RelationEditorTest {
 	}
 
 	@Test
+	public void testDelMotherRelation_null() {
+		assertFalse(editor.delMotherRelation(null));
+	}
+
+	@Test
 	public void testDelMotherRelation_paramMother() {
 		Person mother = rPerson.generate(Sex.WOMAN);
 		Person child  = rPerson.generate();
@@ -231,6 +278,11 @@ public class RelationEditorTest {
 		
 		assertNull(child.getFather());
 		assertEquals(0, father.numberOfChildren());
+	}
+
+	@Test
+	public void testDelFatherRelation_null() {
+		assertFalse(editor.delFatherRelation(null));
 	}
 
 	@Test
