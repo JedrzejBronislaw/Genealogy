@@ -117,6 +117,14 @@ public class RelationEditor {
 		return true;
 	}
 	
+	public boolean createMarriageRel(Marriage marriage) {
+		return createMarriageRel(
+				marriage.getHusband(),
+				marriage.getWife(),
+				marriage.getDate(),
+				marriage.getPlace());
+	}
+	
 	public boolean createMarriageRel(Person spouseA, Person spouseB) {
 		return createMarriageRel(spouseA, spouseB, null, null);
 	}
@@ -173,8 +181,7 @@ public class RelationEditor {
 		marriages.forEach(this::delMarriageRel);
 		
 		//creating marriages
-		marriages.forEach(marriage ->
-			createMarriageRel(marriage.getHusband(), marriage.getWife()));
+		marriages.forEach(this::createMarriageRel);
 		
 		return true;
 	}

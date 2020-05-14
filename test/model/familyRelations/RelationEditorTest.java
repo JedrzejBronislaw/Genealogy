@@ -917,6 +917,47 @@ public class RelationEditorTest {
 	}
 
 	@Test
+	public void setMarriagesRel_details() {
+		Person husband = rPerson.generate(Sex.MAN);
+		Person wife1 = rPerson.generate(Sex.WOMAN);
+		Person wife2 = rPerson.generate(Sex.WOMAN);
+		Person wife3 = rPerson.generate(Sex.WOMAN);
+		List<Marriage> wifes = Arrays.asList(
+				new Marriage(husband, wife1, "1.2.1990", null),
+				new Marriage(husband, wife2, null, "Warsaw"),
+				new Marriage(husband, wife3, "5.6.2000", "Poznan"));
+		
+		assertTrue(editor.setMarriagesRel(husband, wifes));
+
+		
+		assertEquals(3, husband.numberOfMarriages());
+		assertEquals(1, wife1.numberOfMarriages());
+		assertEquals(1, wife2.numberOfMarriages());
+		assertEquals(1, wife3.numberOfMarriages());
+		
+		assertEquals(wife1, husband.getMarriage(0).getWife());
+		assertEquals(wife2, husband.getMarriage(1).getWife());
+		assertEquals(wife3, husband.getMarriage(2).getWife());
+		
+		assertEquals(husband, wife1.getMarriage(0).getHusband());
+		assertEquals(husband, wife2.getMarriage(0).getHusband());
+		assertEquals(husband, wife3.getMarriage(0).getHusband());
+
+		assertEquals("1.2.1990", husband.getMarriage(0).getDate());
+		assertEquals("1.2.1990",   wife1.getMarriage(0).getDate());
+		assertNull(husband.getMarriage(0).getPlace());
+		assertNull(  wife1.getMarriage(0).getPlace());
+		assertNull(husband.getMarriage(1).getDate());
+		assertNull(  wife2.getMarriage(0).getDate());
+		assertEquals("Warsaw", husband.getMarriage(1).getPlace());
+		assertEquals("Warsaw",   wife2.getMarriage(0).getPlace());
+		assertEquals("5.6.2000", husband.getMarriage(2).getDate());
+		assertEquals("5.6.2000",   wife3.getMarriage(0).getDate());
+		assertEquals("Poznan", husband.getMarriage(2).getPlace());
+		assertEquals("Poznan",   wife3.getMarriage(0).getPlace());
+	}
+
+	@Test
 	public void setMarriagesRel_woman() {
 		Person wife = rPerson.generate(Sex.WOMAN);
 		Person husband1 = rPerson.generate(Sex.MAN);
