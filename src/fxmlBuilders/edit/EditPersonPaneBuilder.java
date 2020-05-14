@@ -8,6 +8,7 @@ import fxmlControllers.edit.EditChildrenItem;
 import fxmlControllers.edit.EditDateItem;
 import fxmlControllers.edit.EditEnumItem;
 import fxmlControllers.edit.EditMLTextItem;
+import fxmlControllers.edit.EditMarriagesItem;
 import fxmlControllers.edit.EditPersonItem;
 import fxmlControllers.edit.EditPersonPaneController;
 import fxmlControllers.edit.EditTextItem;
@@ -101,7 +102,10 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 				(person, value) -> relationEditor.setMotherChildRel(value, person),
 				person -> person.getMother()));
 
-		//spouses
+		controller.addItem(new EditMarriagesItem(Internationalization.get("marriages"),
+				treeSupplier,
+				(person, value) -> relationEditor.setMarriagesRel(person, value),
+				person -> Arrays.asList(person.getMarriages())));
 
 		controller.addItem(new EditChildrenItem(Internationalization.get("children"),
 				treeSupplier,
