@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import fxmlBuilders.SearchViewBuilder;
+import fxmlBuilders.edit.EditMarriageItemFieldBuilder;
 import fxmlControllers.SearchViewController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,6 +39,7 @@ public class EditMarriagesFieldController implements EditFieldInterface, Initial
 	
 	private List<Marriage> oldMarriages;
 	private List<Marriage> marriages;
+	private List<EditMarriageItemFieldController> fieldControllers;
 
 	private Person person = null;
 	private Sex personSex = Sex.UNKNOWN;
@@ -62,7 +64,12 @@ public class EditMarriagesFieldController implements EditFieldInterface, Initial
 	}
 	@Override
 	public String getValue() {
+		updateMarriagesDetails();
 		return tools.marriagesToString(marriages);
+	}
+
+	private void updateMarriagesDetails() {
+		fieldControllers.forEach(controller -> controller.updateValues());
 	}
 	
 	@Override
@@ -113,46 +120,27 @@ public class EditMarriagesFieldController implements EditFieldInterface, Initial
 	}
 	
 	private void refreshMarriageList() {
+		fieldControllers = new ArrayList<>();
 		marriageList.getChildren().clear();
 		marriages.forEach(this::addMarriageItem);
 	}
 	
 	private void addMarriageItem(Marriage marriage) {
-		marriageList.getChildren().add(createMarriageLabel(marriage));
-	}
-
-	private Label createMarriageLabel(Marriage marriage) {
-		Label label = new Label(generateLabelText(marriage));
+		EditMarriageItemFieldBuilder builder = new EditMarriageItemFieldBuilder();
+		EditMarriageItemFieldController controller;
 		
-		label.setOnMouseClicked(e -> {
+		builder.build();
+		controller = builder.getController();
+		controller.setPersonSex(personSex);
+		controller.setMarriage(marriage);
+		controller.setDelPressEvent(() -> {
 			delMarriage(marriage);
+			updateMarriagesDetails();
 			refreshMarriageList();
 		});
 		
-		return label;
-	}
-
-	private String generateLabelText(Marriage marriage) {
-		StringBuilder sb = new StringBuilder();
-		Person spouse = null;
-		String date  = marriage.getDate();
-		String place = marriage.getPlace();
-		
-		if (personSex == Sex.MAN)
-			spouse = marriage.getWife();
-		if (personSex == Sex.WOMAN)
-			spouse = marriage.getHusband();
-		
-		if (spouse != null) sb.append(spouse.nameSurname());
-			
-		
-		for(String detail : new String[] {date, place}) {
-			sb.append(" ");
-			if (detail != null && !detail.isEmpty())
-				sb.append(detail);
-		}
-		
-		return sb.toString();
+		fieldControllers.add(controller);
+		marriageList.getChildren().add(builder.getRegion());
 	}
 	
 	private boolean contains(List<Marriage> marriages, Person spouse) {
@@ -168,14 +156,4 @@ public class EditMarriagesFieldController implements EditFieldInterface, Initial
 			
 		return false;
 	}
-	
-//	private void remove(List<Marriage> marriages, Person spouse) {
-//		if(personSex == Sex.MAN)
-//			for(Marriage marriage : marriages)
-//				if(marriage.getWife() == spouse) marriages.remove(marriage);
-//
-//		if(personSex == Sex.WOMAN)
-//			for(Marriage marriage : marriages)
-//				if(marriage.getHusband() == spouse) marriages.remove(marriage);
-//	}
 }
