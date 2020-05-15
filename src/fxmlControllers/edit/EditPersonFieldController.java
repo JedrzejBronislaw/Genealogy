@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import lang.Internationalization;
 import model.Person;
 import model.Tree;
 import searchEngine.SearchEngine;
@@ -20,12 +21,17 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 	private VBox box;
 	@FXML
 	private Label value;
-	
+	@FXML
+	private Label showSearchLabel;
+
 	private Tree tree;
 	private SearchEngine searchEngine = new SearchEngine();
 	private SearchViewController searchController;
 	
 	private String selectedPersonID;
+
+	private Pane searchPane;
+	private boolean searchVisible;
 	
 	public void setTree(Tree tree) {
 		this.tree = tree;
@@ -46,10 +52,19 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 		return selectedPersonID;
 	}
 	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		box.getChildren().add(generateSearchPane());
+		searchPane = generateSearchPane();
+		box.getChildren().add(searchPane);
+		hideSearch();
 		
+		showSearchLabel.setOnMouseClicked(e -> {
+			if (searchVisible)
+				hideSearch();
+			else
+				showSearch();
+		});
 	}
 	
 	private Pane generateSearchPane() {
@@ -67,5 +82,19 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 	private void selectPerson(Person person) {
 		selectedPersonID = tree.getID(person);
 		value.setText(person.nameSurname());
+		hideSearch();
+	}
+
+	private void showSearch() {
+		searchPane.setManaged(true);
+		searchPane.setVisible(true);
+		searchVisible = true;
+		showSearchLabel.setText(Internationalization.get("hide_search"));
+	}
+	private void hideSearch() {
+		searchPane.setManaged(false);
+		searchPane.setVisible(false);
+		searchVisible = false;
+		showSearchLabel.setText(Internationalization.get("show_search"));
 	}
 }
