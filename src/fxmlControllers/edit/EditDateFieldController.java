@@ -20,10 +20,15 @@ public class EditDateFieldController implements EditFieldInterface, Initializabl
 	@Override
 	public void setOldValue(String value) {
 		MyDate mydate = new MyDate(value);
+		int day   = mydate.getDay();
+		int month = mydate.getMonth();
+		int year  = mydate.getYear();
+
+		clear();
 		
-		dayField.setText(mydate.getDay() + "");
-		monthField.setText(mydate.getMonth() + "");
-		yearField.setText(mydate.getYear() + "");
+		if (day   != 0) dayField.setText(day + "");
+		if (month != 0) monthField.setText(month + "");
+		if (year  != 0) yearField.setText(year + "");
 	}
 
 	@Override
