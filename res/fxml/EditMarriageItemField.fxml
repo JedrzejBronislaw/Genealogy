@@ -10,7 +10,7 @@
    <children>
       <VBox spacing="5.0" HBox.hgrow="ALWAYS">
          <children>
-            <Label fx:id="spouseLabel" text="Label" />
+            <Label fx:id="spouseLabel" styleClass="nameLabel" text="Label" />
             <VBox fx:id="detailsBox" spacing="5.0">
                <children>
                   <TextField fx:id="placeField" prefWidth="70.0" />

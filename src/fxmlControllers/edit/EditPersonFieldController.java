@@ -7,7 +7,7 @@ import fxmlBuilders.SearchViewBuilder;
 import fxmlControllers.SearchViewController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.Person;
@@ -19,7 +19,7 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 	@FXML
 	private VBox box;
 	@FXML
-	private TextField value;
+	private Label value;
 	
 	private Tree tree;
 	private SearchEngine searchEngine = new SearchEngine();
@@ -38,7 +38,6 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 		Person person = tree.getPerson(selectedPersonID);
 		String personName = (person == null) ? "" : person.nameSurname();
 		value.setText(personName);
-		value.setPromptText(personName);
 		
 		searchController.clearFields();
 	}

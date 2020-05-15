@@ -102,6 +102,7 @@ public class EditChildrenFieldController implements EditFieldInterface, Initiali
 
 	private Label createChildLabel(Person child) {
 		Label label = new Label(child.nameSurname());
+		label.getStyleClass().add("nameLabel");
 		label.setOnMouseClicked(e -> {
 			delChild(child);
 			refreshChildList();
