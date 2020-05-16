@@ -51,6 +51,8 @@ public class SearchBox extends VBox {
 		builder.build();
 		
 		searchController = builder.getController();
+		searchController.setTitleVisible(false);
+		
 		return builder.getPane();
 	}
 	
@@ -62,6 +64,8 @@ public class SearchBox extends VBox {
 
 		showSearchLabel.setText(Internationalization.get(
 				(visible) ? "hide_search" : "show_search"));
+		
+		if (visible) searchController.requestFocus();
 	}
 	
 	public void showSearch() {

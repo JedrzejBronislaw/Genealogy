@@ -8,7 +8,7 @@
 
 <VBox spacing="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.SearchViewController">
    <children>
-      <Label text="%search" />
+      <Label fx:id="title" text="%search" />
       <ListView fx:id="list" prefHeight="150.0" />
       <HBox spacing="10.0">
          <children>

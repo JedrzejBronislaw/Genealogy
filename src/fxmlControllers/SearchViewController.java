@@ -20,6 +20,9 @@ import tools.Injection;
 public class SearchViewController implements Initializable {
 
 	@FXML
+	private Label title;
+	
+	@FXML
 	private ListView<Person> list;
 	
 	@FXML
@@ -108,6 +111,11 @@ public class SearchViewController implements Initializable {
 			label = person.nameSurname() + ", " + parents;
 	
 		return label;
+	}
+	
+	public void setTitleVisible(boolean visible) {
+		title.setVisible(visible);
+		title.setManaged(visible);
 	}
 	
 	public void requestFocus() {
