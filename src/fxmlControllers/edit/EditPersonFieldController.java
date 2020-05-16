@@ -3,17 +3,12 @@ package fxmlControllers.edit;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import fxmlBuilders.SearchViewBuilder;
-import fxmlControllers.SearchViewController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import lang.Internationalization;
 import model.Person;
 import model.Tree;
-import searchEngine.SearchEngine;
 
 public class EditPersonFieldController implements EditFieldInterface, Initializable {
 
@@ -21,21 +16,16 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 	private VBox box;
 	@FXML
 	private Label value;
-	@FXML
-	private Label showSearchLabel;
 
 	private Tree tree;
-	private SearchEngine searchEngine = new SearchEngine();
-	private SearchViewController searchController;
 	
 	private String selectedPersonID;
+	private SearchBox searchBox;
 
-	private Pane searchPane;
-	private boolean searchVisible;
 	
 	public void setTree(Tree tree) {
 		this.tree = tree;
-		searchEngine.setTree(tree);
+		searchBox.setTree(tree);
 	}
 
 	@Override
@@ -45,56 +35,25 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 		String personName = (person == null) ? "" : person.nameSurname();
 		value.setText(personName);
 		
-		searchController.clearFields();
+		searchBox.clear();
 	}
 	@Override
 	public String getValue() {
 		return selectedPersonID;
 	}
 	
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		searchPane = generateSearchPane();
-		box.getChildren().add(searchPane);
-		hideSearch();
-		
-		showSearchLabel.setOnMouseClicked(e -> {
-			if (searchVisible)
-				hideSearch();
-			else
-				showSearch();
-		});
+		searchBox = new SearchBox();
+		searchBox.setSelectPerson(this::selectPerson);
+		box.getChildren().add(searchBox);
 	}
-	
-	private Pane generateSearchPane() {
-		SearchViewBuilder builder = new SearchViewBuilder();
-		
-		builder.setChooseAction(this::selectPerson);
-		builder.setSearchEngine(searchEngine);
-		
-		builder.build();
-		
-		searchController = builder.getController();
-		return builder.getPane();
-	}
-	
+
 	private void selectPerson(Person person) {
 		selectedPersonID = tree.getID(person);
 		value.setText(person.nameSurname());
-		hideSearch();
-	}
 
-	private void showSearch() {
-		searchPane.setManaged(true);
-		searchPane.setVisible(true);
-		searchVisible = true;
-		showSearchLabel.setText(Internationalization.get("hide_search"));
-	}
-	private void hideSearch() {
-		searchPane.setManaged(false);
-		searchPane.setVisible(false);
-		searchVisible = false;
-		showSearchLabel.setText(Internationalization.get("show_search"));
+		searchBox.hideSearch();
+		box.requestFocus();
 	}
 }

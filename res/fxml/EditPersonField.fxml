@@ -6,6 +6,5 @@
 <VBox fx:id="box" style="-fx-background-color: #0002;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.edit.EditPersonFieldController">
    <children>
       <Label fx:id="value" styleClass="nameLabel" text="Label" />
-      <Label fx:id="showSearchLabel" text="%show_search" />
    </children>
 </VBox>
