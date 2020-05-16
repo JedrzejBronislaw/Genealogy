@@ -5,18 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import fxmlBuilders.SearchViewBuilder;
-import fxmlControllers.SearchViewController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.Person;
 import model.Tree;
 import model.TreeTools;
-import searchEngine.SearchEngine;
 
 public class EditChildrenFieldController implements EditFieldInterface, Initializable {
 
@@ -28,17 +24,16 @@ public class EditChildrenFieldController implements EditFieldInterface, Initiali
 	private Label value;
 	@FXML
 	private Button resetButton;
+	private SearchBox searchBox = new SearchBox();
 	
 	private TreeTools tools;
-	private SearchEngine searchEngine = new SearchEngine();
-	private SearchViewController searchController;
 	
 	private List<Person> oldChildren;
 	private List<Person> children;
 	
 	public void setTree(Tree tree) {
 		tools = (tree == null) ? null : new TreeTools(tree);
-		searchEngine.setTree(tree);
+		searchBox.setTree(tree);
 	}
 
 	@Override
@@ -46,7 +41,7 @@ public class EditChildrenFieldController implements EditFieldInterface, Initiali
 		oldChildren = tools.stringToPersons(valueText);
 		resetChildList();
 		refreshChildList();
-		searchController.clearFields();
+		searchBox.clear();
 	}
 	@Override
 	public String getValue() {
@@ -55,28 +50,21 @@ public class EditChildrenFieldController implements EditFieldInterface, Initiali
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		box.getChildren().add(generateSearchPane());
+		searchBox.setSelectPerson(this::selectPerson);
+		box.getChildren().add(searchBox);
+		
 		resetButton.setOnAction(e -> {
 			resetChildList();
 			refreshChildList();
 		});
 	}
 	
-	private Pane generateSearchPane() {
-		SearchViewBuilder builder = new SearchViewBuilder();
-		
-		builder.setChooseAction(this::selectPerson);
-		builder.setSearchEngine(searchEngine);
-		
-		builder.build();
-		
-		searchController = builder.getController();
-		return builder.getPane();
-	}
-	
 	private void selectPerson(Person person) {
 		addChild(person);
 		refreshChildList();
+
+		searchBox.hideSearch();
+		box.requestFocus();
 	}
 	
 	private void addChild(Person newChild) {
