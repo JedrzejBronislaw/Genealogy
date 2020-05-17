@@ -73,7 +73,7 @@ public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 				builder.getController().clearFields();
 			});
 			session.addEditPersonListener(person -> {
-				searchEngine.refresh(person);
+				searchEngine.refreshOrAdd(person);
 			});
 		}
 		

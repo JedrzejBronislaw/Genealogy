@@ -39,12 +39,20 @@ public class SearchEngine {
 		keyWords.forEach(item -> newKeyWords.add(new KeyWordsItem(item.getPerson(), generateKeyWords(item.getPerson()))));
 		keyWords = newKeyWords;
 	}
-	public void refresh(Person person) {
+	public boolean refresh(Person person) {
 		for(int i=0; i<keyWords.size(); i++)
 			if (keyWords.get(i).getPerson() == person) {
 				keyWords.remove(i);
 				keyWords.add(new KeyWordsItem(person, generateKeyWords(person)));
+				
+				return true;
 			}
+		
+		return false;
+	}
+	public void refreshOrAdd(Person person) {
+		if (!refresh(person))
+			keyWords.add(new KeyWordsItem(person, generateKeyWords(person)));
 	}
 	
 	public void forgetTree() {
