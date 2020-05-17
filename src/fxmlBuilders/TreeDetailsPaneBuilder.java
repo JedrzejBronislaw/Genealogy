@@ -9,12 +9,16 @@ import session.Session;
 
 public class TreeDetailsPaneBuilder extends PaneFXMLBuilder<TreeDetailsPaneController> {
 	
+	private Tree tree = null;
+	
 	public void setSession(Session session) {
 		if (session == null) return;
 		
 		session.addNewTreeListener(tree -> {
-			setLabelsValue(tree);
+			this.tree = tree;
+			updateDetails();
 		});
+		session.addEditPersonListener(person -> updateDetails());
 	}
 
 	@Override
@@ -31,7 +35,7 @@ public class TreeDetailsPaneBuilder extends PaneFXMLBuilder<TreeDetailsPaneContr
 		controller.set("", "", "");
 	}
 	
-	private void setLabelsValue(Tree tree) {
+	private void updateDetails() {
 		if(tree == null) return;
 
 		final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
