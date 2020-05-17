@@ -17,7 +17,7 @@ public class EditDateItem extends EditItem<MyDate> {
 
 	@Override
 	protected String specialToString(MyDate value) {
-		return value.toString();
+		return (value == null) ? "" : value.toString();
 	}
 
 	@Override
