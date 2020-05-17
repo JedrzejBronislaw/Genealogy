@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.TreePaneController">
    <children>
       <HBox alignment="TOP_RIGHT">
@@ -20,6 +19,7 @@
       <VBox maxWidth="-Infinity" spacing="50.0">
          <children>
             <HBox fx:id="topHBox" spacing="50.0" />
+            <Button fx:id="newPersonButton" mnemonicParsing="false" text="%new_person" />
             <StackPane fx:id="searchBox" scaleShape="false" />
          </children>
       </VBox>

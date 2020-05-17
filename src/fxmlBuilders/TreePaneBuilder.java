@@ -19,6 +19,8 @@ public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 	private Consumer<Person> selectPerson;
 	@Setter
 	private Runnable closeTree;
+	@Setter
+	private Runnable createNewPerson;
 	
 	@Getter
 	private Runnable settingSearchFocus;
@@ -34,8 +36,9 @@ public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 		controller.setTreeDetailsPane(generateTreeDetailsPane());
 		controller.setCommonSurnamePane(generateCommonNamePane());
 		controller.setSearchPane(generateSearchPane());
-		
+
 		controller.setCloseTree(closeTree);
+		controller.setCreateNewPerson(createNewPerson);
 	}
 	
 	private Pane generateTreeDetailsPane() {

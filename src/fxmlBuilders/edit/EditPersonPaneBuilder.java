@@ -27,7 +27,9 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 	@Setter
 	private Consumer<Person> changeEvent;
 	@Setter
-	private Runnable closePane;
+	private Consumer<Person> closePane;
+	@Setter
+	private Consumer<Person> addToTree;
 
 	private TreeSupplier treeSupplier = new TreeSupplier();
 	
@@ -45,6 +47,7 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 		RelationEditor relationEditor = new RelationEditor();
 		controller.setChangeEvent(changeEvent);
 		controller.setClosePane(closePane);
+		controller.setAddToTree(addToTree);
 		
 		controller.addItem(new EditTextItem(Internationalization.get("first_name"),
 				(person, value) -> person.setFirstName(value),

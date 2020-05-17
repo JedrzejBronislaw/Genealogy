@@ -21,9 +21,13 @@ public class TreePaneController implements Initializable{
 	private HBox topHBox;
 	@FXML
 	private Button closeTreeButton;
-	
+	@FXML
+	private Button newPersonButton;
+
 	@Setter
 	private Runnable closeTree;
+	@Setter
+	private Runnable createNewPerson;
 
 	public void setTreeDetailsPane(Pane pane) {
 		topHBox.getChildren().add(0, pane);
@@ -42,6 +46,7 @@ public class TreePaneController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		closeTreeButton.setOnAction(e -> Injection.run(closeTree));
+		newPersonButton.setOnAction(e -> Injection.run(createNewPerson));
 	}
 
 }

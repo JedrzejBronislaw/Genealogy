@@ -17,6 +17,8 @@ import javafx.scene.layout.Pane;
 import lang.Languages;
 import lombok.Setter;
 import model.Person;
+import model.Tree;
+import model.TreeEditor;
 import nameDisplaying.SimpleNameDisplaying;
 import session.Session;
 import settings.Settings;
@@ -90,6 +92,11 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		builder.setSelectPerson(person -> {
 			cardController.setPerson(person);
 			controller.showView(Views.Card);
+		});
+		builder.setCreateNewPerson(() -> {
+			editPersonController.setPerson(new Person());
+			editPersonController.setAddToTreeWhenSaving(true);
+			controller.showView(Views.EditPerson);
 		});
 		builder.setCloseTree(() -> {
 			Injection.run(closeTree);
@@ -184,9 +191,16 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		builder.setChangeEvent(person -> {
 			session.reportPersonEdit(person);
 		});
-		builder.setClosePane(() -> {
-			cardController.refresh();
+		builder.setClosePane(person -> {
+			cardController.setPerson(person);
 			controller.showView(Views.Card);
+		});
+		builder.setAddToTree(person -> {
+			Tree tree = session.getTree();
+			if (tree == null) return;
+			
+			TreeEditor editor = new TreeEditor(tree);
+			editor.addIfIsOutside(person);
 		});
 		session.addNewTreeListener(builder::setTree);
 		builder.build();

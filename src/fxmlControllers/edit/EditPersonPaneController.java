@@ -26,8 +26,12 @@ public class EditPersonPaneController implements Initializable {
 	@Setter
 	private Consumer<Person> changeEvent;
 	@Setter
-	private Runnable closePane;
+	private Consumer<Person> closePane;
+	@Setter
+	private Consumer<Person> addToTree;
 	
+	@Setter
+	private boolean addToTreeWhenSaving = false;
 
 	private Person person;
 	
@@ -47,15 +51,20 @@ public class EditPersonPaneController implements Initializable {
 	public void save() {
 		if (person != null)
 			editItems.forEach(item -> item.saveTo(person));
+		
+		if (addToTreeWhenSaving) {
+			Injection.run(addToTree, person);
+			addToTreeWhenSaving = false;
+		}
 	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		cancelButton.setOnMouseClicked(e -> Injection.run(closePane));
+		cancelButton.setOnMouseClicked(e -> Injection.run(closePane, person));
 		okButton.setOnMouseClicked(e -> {
 			save();
 			Injection.run(changeEvent, person);
-			Injection.run(closePane);
+			Injection.run(closePane, person);
 		});
 	}
 
