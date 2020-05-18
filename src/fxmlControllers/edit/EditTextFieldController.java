@@ -6,11 +6,15 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import lombok.Setter;
 
 public class EditTextFieldController implements EditFieldInterface, Initializable {
 
 	@FXML
 	private TextField value;
+	
+	@Setter
+	private boolean autoUpperFirstCase = false;
 	
 	@Override
 	public void setOldValue(String valueText) {
@@ -25,6 +29,7 @@ public class EditTextFieldController implements EditFieldInterface, Initializabl
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		value.textProperty().addListener((o, oldValue, newValue) -> {
+			if (!autoUpperFirstCase) return;
 			if (newValue == null) return;
 			
 			if (newValue.length() == 1)

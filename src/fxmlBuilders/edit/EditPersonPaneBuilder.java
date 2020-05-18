@@ -48,27 +48,32 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 		
 		controller.addItem(new EditTextItem(Internationalization.get("first_name"),
 				(person, value) -> person.setFirstName(value),
-				person -> person.getFirstName()));
+				person -> person.getFirstName(),
+				true));
 		controller.addItem(new EditTextItem(Internationalization.get("alias"),
 				(person, value) -> person.setAlias(value),
-				person -> person.getAlias()));
+				person -> person.getAlias(),
+				true));
 		controller.addItem(new EditTextItem(Internationalization.get("last_name"),
 				(person, value) -> person.setLastName(value),
-				person -> person.getLastName()));
+				person -> person.getLastName(),
+				true));
 		
 		controller.addItem(new EditDateItem(Internationalization.get("birth_date"),
 				(person, value) -> person.setBirthDate(value),
 				person -> person.getBirthDate()));
 		controller.addItem(new EditTextItem(Internationalization.get("birth_place"),
 				(person, value) -> person.setBirthPlace(value),
-				person -> person.getBirthPlace()));
+				person -> person.getBirthPlace(),
+				true));
 
 		controller.addItem(new EditDateItem(Internationalization.get("death_date"),
 				(person, value) -> person.setDeathDate(value),
 				person -> person.getDeathDate()));
 		controller.addItem(new EditTextItem(Internationalization.get("death_place"),
 				(person, value) -> person.setDeathPlace(value),
-				person -> person.getDeathPlace()));
+				person -> person.getDeathPlace(),
+				true));
 
 		controller.addItem(new EditEnumItem(Internationalization.get("lives"),
 				Tools.getStringValues(LifeStatus.class),
@@ -81,10 +86,12 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 
 		controller.addItem(new EditTextItem(Internationalization.get("baptism_parish"),
 				(person, value) -> person.setBaptismParish(value),
-				person -> person.getBaptismParish()));
+				person -> person.getBaptismParish(),
+				false));
 		controller.addItem(new EditTextItem(Internationalization.get("burial_place"),
 				(person, value) -> person.setBurialPlace(value),
-				person -> person.getBurialPlace()));
+				person -> person.getBurialPlace(),
+				false));
 		
 		controller.addItem(new EditMLTextItem(Internationalization.get("contact"),
 				(person, value) -> person.setContact(value),
