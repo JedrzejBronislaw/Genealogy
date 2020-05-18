@@ -203,7 +203,6 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 			editor.addIfIsOutside(person);
 		});
 		builder.setSession(session);
-		session.addNewTreeListener(builder::setTree);
 		builder.build();
 		editPersonController = builder.getController();
 		

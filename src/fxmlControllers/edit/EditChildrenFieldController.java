@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import model.Person;
 import model.Tree;
 import model.TreeTools;
+import session.Session;
 
 public class EditChildrenFieldController implements EditFieldInterface, Initializable {
 
@@ -30,8 +31,16 @@ public class EditChildrenFieldController implements EditFieldInterface, Initiali
 	
 	private List<Person> oldChildren;
 	private List<Person> children;
+
 	
-	public void setTree(Tree tree) {
+	public void setSession(Session session) {
+		if (session == null) return;
+
+		session.addNewTreeListener(this::setTree);
+		session.addEditPersonListener(searchBox.getSearchEngine()::refreshOrAdd);
+	}
+	
+	private void setTree(Tree tree) {
 		tools = (tree == null) ? null : new TreeTools(tree);
 		searchBox.setTree(tree);
 	}

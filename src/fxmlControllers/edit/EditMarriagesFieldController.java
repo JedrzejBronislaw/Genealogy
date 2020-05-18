@@ -17,6 +17,7 @@ import model.Person.Sex;
 import model.Tree;
 import model.TreeTools;
 import model.tools.ManWoman;
+import session.Session;
 
 public class EditMarriagesFieldController implements EditFieldInterface, Initializable {
 
@@ -44,7 +45,14 @@ public class EditMarriagesFieldController implements EditFieldInterface, Initial
 		personSex = person.getSex();
 	}
 	
-	public void setTree(Tree tree) {
+	public void setSession(Session session) {
+		if (session == null) return;
+
+		session.addNewTreeListener(this::setTree);
+		session.addEditPersonListener(searchBox.getSearchEngine()::refreshOrAdd);
+	}
+	
+	private void setTree(Tree tree) {
 		tools = (tree == null) ? null : new TreeTools(tree);
 		searchBox.setTree(tree);
 	}

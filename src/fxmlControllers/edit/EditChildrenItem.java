@@ -9,21 +9,19 @@ import fxmlControllers.edit.EditItemController.EditField;
 import model.Person;
 import model.Tree;
 import model.TreeTools;
-import session.TreeSupplier;
+import session.Session;
 
 public class EditChildrenItem extends EditItem<List<Person>> {
-	
+
+	private Session session;
 	private TreeTools tools;
 	private EditChildrenFieldController fieldController;
 	
-	public void setTree(Tree tree) {
-		fieldController.setTree(tree);
-	}
-	
 
-	public EditChildrenItem(String label, TreeSupplier treeSupplier, BiConsumer<Person, List<Person>> setter, Function<Person, List<Person>> getter) {
+	public EditChildrenItem(String label, Session session, BiConsumer<Person, List<Person>> setter, Function<Person, List<Person>> getter) {
 		super(label, setter, getter);
-		treeSupplier.addListener(this::updateTree);
+		this.session = session;
+		session.addNewTreeListener(this::updateTreeTools);
 		build();
 	}
 
@@ -46,12 +44,11 @@ public class EditChildrenItem extends EditItem<List<Person>> {
 		EditChildrenFieldBuilder builder = new EditChildrenFieldBuilder();
 		builder.build();
 		fieldController = builder.getController();
+		fieldController.setSession(session);
 		return new EditField(builder.getRegion(), fieldController);
 	}
 	
-	private void updateTree (Tree tree) {
-		fieldController.setTree(tree);
-		
+	private void updateTreeTools(Tree tree) {
 		tools = (tree == null) ? null : new TreeTools(tree);
 	}
 }

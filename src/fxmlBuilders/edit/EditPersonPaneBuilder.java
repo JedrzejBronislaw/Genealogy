@@ -17,10 +17,8 @@ import lombok.Setter;
 import model.Person;
 import model.Person.LifeStatus;
 import model.Person.Sex;
-import model.Tree;
 import model.familyRelations.RelationEditor;
 import session.Session;
-import session.TreeSupplier;
 import tools.Tools;
 
 public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneController> {
@@ -34,12 +32,8 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 
 	@Setter
 	private Session session;
-	private TreeSupplier treeSupplier = new TreeSupplier();
-	
-	public void setTree(Tree tree) {
-		treeSupplier.setTree(tree);
-	}
 
+	
 	@Override
 	public String getFxmlFileName() {
 		return "EditPersonPane.fxml";
@@ -109,12 +103,12 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 				person -> person.getMother()));
 
 		controller.addItem(new EditMarriagesItem(Internationalization.get("marriages"),
-				treeSupplier,
+				session,
 				(person, value) -> relationEditor.setMarriagesRel(person, value),
 				person -> Arrays.asList(person.getMarriages())));
 
 		controller.addItem(new EditChildrenItem(Internationalization.get("children"),
-				treeSupplier,
+				session,
 				(person, value) -> relationEditor.setParentChildrenRel(person, value),
 				person -> Arrays.asList(person.getChildren())));
 	}

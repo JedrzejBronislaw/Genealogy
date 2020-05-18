@@ -10,17 +10,19 @@ import model.Marriage;
 import model.Person;
 import model.Tree;
 import model.TreeTools;
-import session.TreeSupplier;
+import session.Session;
 
 public class EditMarriagesItem extends EditItem<List<Marriage>> {
-	
+
+	private Session session;
 	private TreeTools tools;
 	private EditMarriagesFieldController fieldController;
 
 	
-	public EditMarriagesItem(String label, TreeSupplier treeSupplier, BiConsumer<Person, List<Marriage>> setter, Function<Person, List<Marriage>> getter) {
+	public EditMarriagesItem(String label, Session session, BiConsumer<Person, List<Marriage>> setter, Function<Person, List<Marriage>> getter) {
 		super(label, setter, getter);
-		treeSupplier.addListener(this::updateTree);
+		this.session = session;
+		session.addNewTreeListener(this::updateTreeTools);
 		build();
 	}
 
@@ -41,6 +43,7 @@ public class EditMarriagesItem extends EditItem<List<Marriage>> {
 		EditMarriagesFieldBuilder builder = new EditMarriagesFieldBuilder();
 		builder.build();
 		fieldController = builder.getController();
+		fieldController.setSession(session);
 		return new EditField(builder.getRegion(), fieldController);
 	}
 
@@ -49,8 +52,7 @@ public class EditMarriagesItem extends EditItem<List<Marriage>> {
 		fieldController.setPerson(person);
 	}
 	
-	private void updateTree(Tree tree) {
-		fieldController.setTree(tree);
+	private void updateTreeTools(Tree tree) {
 		tools = (tree == null) ? null : new TreeTools(tree);
 	}
 }
