@@ -24,5 +24,11 @@ public class EditTextFieldController implements EditFieldInterface, Initializabl
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		value.textProperty().addListener((o, oldValue, newValue) -> {
+			if (newValue == null) return;
+			
+			if (newValue.length() == 1)
+				value.setText(newValue.toUpperCase());
+		});
 	}
 }
