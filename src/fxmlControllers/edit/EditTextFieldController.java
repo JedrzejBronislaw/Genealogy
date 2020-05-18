@@ -23,7 +23,8 @@ public class EditTextFieldController implements EditFieldInterface, Initializabl
 	}
 	@Override
 	public String getValue() {
-		return value.getText();
+		String text = value.getText();
+		return (text == null) ? null : text.trim();
 	}
 	
 	@Override
