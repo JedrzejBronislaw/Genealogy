@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import lang.Internationalization;
+import lombok.Getter;
 import lombok.Setter;
 import model.Person;
 import model.Tree;
@@ -17,6 +18,7 @@ import tools.Injection;
 public class SearchBox extends VBox {
 
 	private Label showSearchLabel;
+	@Getter
 	private SearchEngine searchEngine = new SearchEngine();
 	
 	private Pane searchPane;
@@ -30,9 +32,13 @@ public class SearchBox extends VBox {
 	public void setTree(Tree tree) {
 		searchEngine.setTree(tree);
 	}
-	
+
 	
 	public SearchBox() {
+		build();
+	}
+		
+	public void build() {
 		showSearchLabel = new Label();
 		searchPane = generateSearchPane();
 		getChildren().add(showSearchLabel);

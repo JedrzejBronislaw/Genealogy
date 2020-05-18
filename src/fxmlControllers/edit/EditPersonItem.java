@@ -6,34 +6,28 @@ import java.util.function.Function;
 import fxmlBuilders.edit.EditPersonFieldBuilder;
 import fxmlControllers.edit.EditItemController.EditField;
 import model.Person;
-import model.Tree;
-import session.TreeSupplier;
+import session.Session;
 
 public class EditPersonItem extends EditItem<Person> {
 	
-	private TreeSupplier treeSupplier;
+	private Session session;
 	private EditPersonFieldController fieldController;
 	
-	public void setTree(Tree tree) {
-		fieldController.setTree(tree);
-	}
-	
 
-	public EditPersonItem(String label, TreeSupplier treeSupplier, BiConsumer<Person, Person> setter, Function<Person, Person> getter) {
+	public EditPersonItem(String label, Session session, BiConsumer<Person, Person> setter, Function<Person, Person> getter) {
 		super(label, setter, getter);
-		this.treeSupplier = treeSupplier;
-		treeSupplier.addListener(this::updateTree);
+		this.session = session;
 		build();
 	}
 
 	@Override
 	protected String specialToString(Person value) {
-		return treeSupplier.get().getID(value);
+		return session.getTree().getID(value);
 	}
 
 	@Override
 	protected Person stringToSpecial(String value) {
-		return treeSupplier.get().getPerson(value);
+		return session.getTree().getPerson(value);
 	}
 
 	@Override
@@ -41,10 +35,7 @@ public class EditPersonItem extends EditItem<Person> {
 		EditPersonFieldBuilder builder = new EditPersonFieldBuilder();
 		builder.build();
 		fieldController = builder.getController();
+		fieldController.setSession(session);
 		return new EditField(builder.getRegion(), fieldController);
-	}
-	
-	private void updateTree (Tree tree) {
-		fieldController.setTree(tree);
 	}
 }

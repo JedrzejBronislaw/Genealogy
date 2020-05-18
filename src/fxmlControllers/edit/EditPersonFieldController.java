@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import model.Person;
 import model.Tree;
+import session.Session;
 
 public class EditPersonFieldController implements EditFieldInterface, Initializable {
 
@@ -23,9 +24,11 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 	private SearchBox searchBox;
 
 	
-	public void setTree(Tree tree) {
-		this.tree = tree;
-		searchBox.setTree(tree);
+	public void setSession(Session session) {
+		if (session == null) return;
+
+		session.addNewTreeListener(this::setTree);
+		session.addEditPersonListener(searchBox.getSearchEngine()::refreshOrAdd);
 	}
 
 	@Override
@@ -47,6 +50,11 @@ public class EditPersonFieldController implements EditFieldInterface, Initializa
 		searchBox = new SearchBox();
 		searchBox.setSelectPerson(this::selectPerson);
 		box.getChildren().add(searchBox);
+	}
+	
+	private void setTree(Tree tree) {
+		this.tree = tree;
+		searchBox.setTree(tree);
 	}
 
 	private void selectPerson(Person person) {

@@ -19,6 +19,7 @@ import model.Person.LifeStatus;
 import model.Person.Sex;
 import model.Tree;
 import model.familyRelations.RelationEditor;
+import session.Session;
 import session.TreeSupplier;
 import tools.Tools;
 
@@ -31,6 +32,8 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 	@Setter
 	private Consumer<Person> addToTree;
 
+	@Setter
+	private Session session;
 	private TreeSupplier treeSupplier = new TreeSupplier();
 	
 	public void setTree(Tree tree) {
@@ -97,11 +100,11 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 				person -> person.getComments()));
 
 		controller.addItem(new EditPersonItem(Internationalization.get("father"),
-				treeSupplier,
+				session,
 				(person, value) -> relationEditor.setFatherChildRel(value, person),
 				person -> person.getFather()));
 		controller.addItem(new EditPersonItem(Internationalization.get("mother"),
-				treeSupplier,
+				session,
 				(person, value) -> relationEditor.setMotherChildRel(value, person),
 				person -> person.getMother()));
 
