@@ -23,15 +23,17 @@ public class EditEnumFieldController implements EditFieldInterface, Initializabl
 	private ToggleGroup radioGroup = new ToggleGroup();
 
 	public void addOption(String optionName) {
-		RadioButton option = generateOption(Internationalization.get(optionName));
+		RadioButton option = generateOption(optionName);
 		options.put(optionName, option);
 		box.getChildren().add(option);
 	}
 	
-	private RadioButton generateOption(String name) {
+	private RadioButton generateOption(String value) {
+		String name = Internationalization.get(value);
 		RadioButton radio = new RadioButton(name);
+		
 		radio.setToggleGroup(radioGroup);
-		radio.setOnAction(e -> value = name);
+		radio.setOnAction(e -> this.value = value);
 		return radio;
 	}
 	
