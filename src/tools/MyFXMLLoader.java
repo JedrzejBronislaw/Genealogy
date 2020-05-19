@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.LoadException;
 import javafx.scene.Node;
 import lombok.Getter;
 import lombok.NonNull;
@@ -38,6 +39,16 @@ public class MyFXMLLoader<T extends Initializable>{
     	Node node;
 		try {
 			node = fxmlLoader.load();
+		} catch (LoadException e) {
+			System.out.println("Error: Missing controller for: " + mainDir + fxmlFilePath);
+			return null;
+		} catch (IllegalStateException e) {
+			if (e.getMessage().equals("Location is not set."))
+				System.out.println("Error: Missing file: " + mainDir + fxmlFilePath);
+			else
+				e.printStackTrace();
+			
+			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
