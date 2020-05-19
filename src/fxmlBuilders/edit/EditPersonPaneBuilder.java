@@ -41,82 +41,94 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 
 	@Override
 	public void afterBuild() {
-		RelationEditor relationEditor = new RelationEditor();
 		controller.setChangeEvent(changeEvent);
 		controller.setClosePane(closePane);
 		controller.setAddToTree(addToTree);
 		
-		controller.addItem(new EditTextItem(Internationalization.get("first_name"),
+		controller.setEditItems(createEditItems());
+	}
+
+	private EditPersonLayout createEditItems() {
+		EditPersonLayout layout = new EditPersonLayout();
+		RelationEditor relationEditor = new RelationEditor();
+		
+		layout.addItem(new EditTextItem(Internationalization.get("first_name"),
 				(person, value) -> person.setFirstName(value),
 				person -> person.getFirstName(),
 				true));
-		controller.addItem(new EditTextItem(Internationalization.get("alias"),
+		layout.addItem(new EditTextItem(Internationalization.get("alias"),
 				(person, value) -> person.setAlias(value),
 				person -> person.getAlias(),
 				true));
-		controller.addItem(new EditTextItem(Internationalization.get("last_name"),
+		layout.addItem(new EditTextItem(Internationalization.get("last_name"),
 				(person, value) -> person.setLastName(value),
 				person -> person.getLastName(),
 				true));
 		
-		controller.addItem(new EditDateItem(Internationalization.get("birth_date"),
+		layout.addItem(new EditDateItem(Internationalization.get("birth_date"),
 				(person, value) -> person.setBirthDate(value),
 				person -> person.getBirthDate()));
-		controller.addItem(new EditTextItem(Internationalization.get("birth_place"),
+		layout.addItem(new EditTextItem(Internationalization.get("birth_place"),
 				(person, value) -> person.setBirthPlace(value),
 				person -> person.getBirthPlace(),
 				true));
 
-		controller.addItem(new EditDateItem(Internationalization.get("death_date"),
+		layout.addItem(new EditDateItem(Internationalization.get("death_date"),
 				(person, value) -> person.setDeathDate(value),
 				person -> person.getDeathDate()));
-		controller.addItem(new EditTextItem(Internationalization.get("death_place"),
+		layout.addItem(new EditTextItem(Internationalization.get("death_place"),
 				(person, value) -> person.setDeathPlace(value),
 				person -> person.getDeathPlace(),
 				true));
 
-		controller.addItem(new EditEnumItem(Internationalization.get("lives"),
+		layout.addItem(new EditEnumItem(Internationalization.get("lives"),
 				Tools.getStringValues(LifeStatus.class),
 				(person, value) -> person.setLifeStatus(LifeStatus.valueOf(value)),
 				person -> person.getLifeStatus().toString()));
-		controller.addItem(new EditEnumItem(Internationalization.get("sex"),
+		layout.addItem(new EditEnumItem(Internationalization.get("sex"),
 				Tools.getStringValues(Sex.class),
 				(person, value) -> person.setSex(Sex.valueOf(value)),
 				person -> person.getSex().toString()));
 
-		controller.addItem(new EditTextItem(Internationalization.get("baptism_parish"),
+		layout.addItem(new EditTextItem(Internationalization.get("baptism_parish"),
 				(person, value) -> person.setBaptismParish(value),
 				person -> person.getBaptismParish(),
 				false));
-		controller.addItem(new EditTextItem(Internationalization.get("burial_place"),
+		layout.addItem(new EditTextItem(Internationalization.get("burial_place"),
 				(person, value) -> person.setBurialPlace(value),
 				person -> person.getBurialPlace(),
 				false));
 		
-		controller.addItem(new EditMLTextItem(Internationalization.get("contact"),
-				(person, value) -> person.setContact(value),
-				person -> person.getContact()));
-		controller.addItem(new EditMLTextItem(Internationalization.get("comments"),
-				(person, value) -> person.setComments(value),
-				person -> person.getComments()));
+		layout.newColumn();
 
-		controller.addItem(new EditPersonItem(Internationalization.get("father"),
+		layout.addItem(new EditPersonItem(Internationalization.get("father"),
 				session,
 				(person, value) -> relationEditor.setFatherChildRel(value, person),
 				person -> person.getFather()));
-		controller.addItem(new EditPersonItem(Internationalization.get("mother"),
+		layout.addItem(new EditPersonItem(Internationalization.get("mother"),
 				session,
 				(person, value) -> relationEditor.setMotherChildRel(value, person),
 				person -> person.getMother()));
 
-		controller.addItem(new EditMarriagesItem(Internationalization.get("marriages"),
+		layout.addItem(new EditMarriagesItem(Internationalization.get("marriages"),
 				session,
 				(person, value) -> relationEditor.setMarriagesRel(person, value),
 				person -> Arrays.asList(person.getMarriages())));
 
-		controller.addItem(new EditChildrenItem(Internationalization.get("children"),
+		layout.addItem(new EditChildrenItem(Internationalization.get("children"),
 				session,
 				(person, value) -> relationEditor.setParentChildrenRel(person, value),
 				person -> Arrays.asList(person.getChildren())));
+		
+		layout.newColumn();
+		
+		layout.addItem(new EditMLTextItem(Internationalization.get("contact"),
+				(person, value) -> person.setContact(value),
+				person -> person.getContact()));
+		layout.addItem(new EditMLTextItem(Internationalization.get("comments"),
+				(person, value) -> person.setComments(value),
+				person -> person.getComments()));
+		
+		return layout;
 	}
 }

@@ -1,11 +1,11 @@
 package fxmlControllers.edit;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
+import fxmlBuilders.edit.EditPersonLayout;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -35,12 +35,13 @@ public class EditPersonPaneController implements Initializable {
 
 	private Person person;
 	
-	private List<EditItemInterface> editItems = new ArrayList<>();
+	private List<EditItemInterface> editItems;
 	
-	
-	public void addItem(EditItemInterface editItem) {
-		editItems.add(editItem);
-		itemsPane.getChildren().add(editItem.getPane());
+	public void setEditItems(EditPersonLayout layout) {
+		if (layout == null) return;
+		
+		editItems = layout.getEditItems();
+		layout.set(itemsPane);
 	}
 	
 	public void setPerson(Person person) {
@@ -49,8 +50,9 @@ public class EditPersonPaneController implements Initializable {
 	}
 	
 	public void save() {
-		if (person != null)
-			editItems.forEach(item -> item.saveTo(person));
+		if (person == null) return;
+		
+		editItems.forEach(item -> item.saveTo(person));
 		
 		if (addToTreeWhenSaving) {
 			Injection.run(addToTree, person);
