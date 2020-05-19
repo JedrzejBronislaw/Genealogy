@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 
 
-<HBox alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pickOnBounds="false" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.FullScreenPaneController">
+<HBox alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pickOnBounds="false" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewFX.mainWindow.fullScreen.FullScreenPaneController">
    <children>
       <Label fx:id="fullScreenLabel" text="Label" />
    </children>

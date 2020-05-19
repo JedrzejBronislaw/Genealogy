@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="200.0" vgap="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.PersonDetailsPaneController">
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="200.0" vgap="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewFX.treeGraph.personDetails.PersonDetailsPaneController">
   <columnConstraints>
     <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />

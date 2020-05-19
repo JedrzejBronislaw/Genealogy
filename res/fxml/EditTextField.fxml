@@ -3,4 +3,4 @@
 <?import javafx.scene.control.TextField?>
 
 
-<TextField fx:id="value" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.edit.EditTextFieldController" />
+<TextField fx:id="value" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewFX.editPerson.fields.text.EditTextFieldController" />

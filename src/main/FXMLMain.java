@@ -2,7 +2,6 @@ package main;
 
 import java.io.FileNotFoundException;
 
-import fxmlBuilders.MainWindowBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -12,6 +11,7 @@ import lang.Languages;
 import model.PGLFile;
 import model.Tree;
 import session.Session;
+import viewFX.mainWindow.MainWindowBuilder;
 
 public class FXMLMain extends Application {
 

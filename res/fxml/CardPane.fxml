@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox maxWidth="-Infinity" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.CardPaneController">
+<VBox maxWidth="-Infinity" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewFX.card.CardPaneController">
    <children>
       <HBox maxWidth="-Infinity" spacing="20.0">
          <children>

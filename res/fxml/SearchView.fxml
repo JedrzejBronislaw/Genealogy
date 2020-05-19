@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.SearchViewController">
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewFX.search.SearchViewController">
    <children>
       <Label fx:id="title" text="%search" />
       <ListView fx:id="list" prefHeight="150.0" />
