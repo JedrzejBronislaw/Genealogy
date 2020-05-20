@@ -6,7 +6,6 @@ import java.util.function.Function;
 import model.MyDate;
 import model.Person;
 import viewFX.editPerson.fields.EditItem;
-import viewFX.editPerson.fields.EditItemController;
 import viewFX.editPerson.fields.EditItemController.EditField;
 
 public class EditDateItem extends EditItem<MyDate> {

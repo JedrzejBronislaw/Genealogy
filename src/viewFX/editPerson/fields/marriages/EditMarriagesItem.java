@@ -10,7 +10,6 @@ import model.Tree;
 import model.TreeTools;
 import session.Session;
 import viewFX.editPerson.fields.EditItem;
-import viewFX.editPerson.fields.EditItemController;
 import viewFX.editPerson.fields.EditItemController.EditField;
 
 public class EditMarriagesItem extends EditItem<List<Marriage>> {
