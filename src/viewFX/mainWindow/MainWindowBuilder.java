@@ -31,6 +31,7 @@ import viewFX.mainWindow.fullScreen.FullScreenPaneBuilder;
 import viewFX.mainWindow.language.LanguagePaneBuilder;
 import viewFX.treeGraph.TreeGraphPaneBuilder;
 import viewFX.treeGraph.TreeGraphPaneController;
+import viewFX.treeGraph.graphOptions.GraphOptionsPaneBuilder;
 import viewFX.treeGraph.personDetails.PersonDetailsPaneBuilder;
 import viewFX.treeGraph.personDetails.PersonDetailsPaneController;
 import viewFX.treePane.TreePaneBuilder;
@@ -144,10 +145,14 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		personDetailsBuilder.build();
 		PersonDetailsPaneController personDetails = personDetailsBuilder.getController();
 		
+		GraphOptionsPaneBuilder graphOptionsBuilder = new GraphOptionsPaneBuilder();
+		graphOptionsBuilder.build();
+		
 		treeGraphController.setShowPersonDetails(person -> personDetails.setPerson(person));
 		
 		ViewPane viewPane = new ViewPane(builder.getPane(), () -> personDetails.clearFields());
 		viewPane.setLeftPane(personDetailsBuilder.getPane());
+		viewPane.setTopPane(graphOptionsBuilder.getPane());
 		return viewPane;
 	}
 	
