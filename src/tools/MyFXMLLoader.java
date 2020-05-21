@@ -40,7 +40,15 @@ public class MyFXMLLoader<T extends Initializable>{
 		try {
 			node = fxmlLoader.load();
 		} catch (LoadException e) {
-			System.out.println("Error: Missing controller for: " + mainDir + fxmlFilePath);
+			String firstLine = e.getMessage().split("\n")[0];
+			
+			if (firstLine.startsWith("Resource") && firstLine.contains("not found"))
+				System.out.println("Error in " + mainDir + fxmlFilePath + ": " + firstLine);
+			else if (firstLine.isEmpty())
+				System.out.println("Error: Missing controller for: " + mainDir + fxmlFilePath);
+			else
+				e.printStackTrace();
+			
 			return null;
 		} catch (IllegalStateException e) {
 			if (e.getMessage().equals("Location is not set."))
