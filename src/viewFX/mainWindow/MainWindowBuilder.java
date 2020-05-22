@@ -146,9 +146,12 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		PersonDetailsPaneController personDetails = personDetailsBuilder.getController();
 		
 		GraphOptionsPaneBuilder graphOptionsBuilder = new GraphOptionsPaneBuilder();
+		graphOptionsBuilder.setSession(session);
+		graphOptionsBuilder.setDrawAction(person -> showGraph(new StdDescendantsTreeGraph(), person));
 		graphOptionsBuilder.build();
 		
 		treeGraphController.setShowPersonDetails(person -> personDetails.setPerson(person));
+		treeGraphController.setOnParametersChange(person -> graphOptionsBuilder.getController().setState(person));
 		
 		ViewPane viewPane = new ViewPane(builder.getPane(), () -> personDetails.clearFields());
 		viewPane.setLeftPane(personDetailsBuilder.getPane());

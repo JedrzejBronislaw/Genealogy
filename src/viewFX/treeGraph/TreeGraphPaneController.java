@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Setter;
 import model.Person;
+import tools.Injection;
 import treeGraphs.TreeGraph;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.service.FXPainterService;
@@ -28,11 +29,15 @@ public class TreeGraphPaneController implements Initializable{
 	@Setter
 	private Consumer<Person> showPersonDetails;
 	
+	@Setter
+	private Consumer<Person> onParametersChange;
+	
 	private PainterService painterService = new FXPainterService();
 //	private PainterService painterService = new Graphics2DPainterService();
 	
 	public void setPerson(Person person) {
 		painterService.setMainPerson(person);
+		Injection.run(onParametersChange, person);
 	}
 	
 	public void setGraph(TreeGraph graph) {

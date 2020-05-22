@@ -2,17 +2,73 @@ package viewFX.treeGraph.graphOptions;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import lombok.Setter;
+import model.Person;
+import session.Session;
+import tools.Injection;
+import viewFX.editPerson.fields.SearchBox;
 
 public class GraphOptionsPaneController implements Initializable {
 
-	public void clearFields() {}
+	@FXML
+	private Label personName;
+
+	@FXML
+	private Button drawButton;
+
+	@FXML
+	private VBox personBox;
+	
+	private SearchBox searchBox = new SearchBox();
+	
+	@Setter
+	private Consumer<Person> drawAction;
+	
+	private Person person = null;
+	
+	public void setState(Person person) {
+		selectPerson(person);
+		drawButton.setDisable(true);
+	}
+
+	public void setSession(Session session) {
+		if (session == null) return;
+		
+		session.addNewTreeListener(searchBox::setTree);
+		session.addEditPersonListener(searchBox.getSearchEngine()::refreshOrAdd);
+	}
+	
+	public void clearFields() {
+		personName.setText("");
+	}
 	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		clearFields();
+		
+		personBox.getChildren().add(searchBox);
+		searchBox.setSelectPerson(this::selectPerson);
+		
+		drawButton.setOnAction(e -> {
+			drawButton.setDisable(true);
+			Injection.run(drawAction, person);
+		});
+	}
+
+	private void selectPerson(Person person) {
+		this.person = person;
+		personName.setText(person.nameSurname());
+		
+		searchBox.hideSearch();
+		drawButton.setDisable(false);
 	}
 
 }
