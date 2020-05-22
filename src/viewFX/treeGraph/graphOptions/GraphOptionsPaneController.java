@@ -13,6 +13,7 @@ import lombok.Setter;
 import model.Person;
 import session.Session;
 import tools.Injection;
+import treeGraphs.TreeGraphParameters;
 import viewFX.editPerson.fields.SearchBox;
 
 public class GraphOptionsPaneController implements Initializable {
@@ -29,12 +30,12 @@ public class GraphOptionsPaneController implements Initializable {
 	private SearchBox searchBox = new SearchBox();
 	
 	@Setter
-	private Consumer<Person> drawAction;
+	private Consumer<TreeGraphParameters> drawAction;
 	
 	private Person person = null;
 	
-	public void setState(Person person) {
-		selectPerson(person);
+	public void setState(TreeGraphParameters parameters) {
+		selectPerson(parameters.getPerson());
 		drawButton.setDisable(true);
 	}
 
@@ -59,7 +60,7 @@ public class GraphOptionsPaneController implements Initializable {
 		
 		drawButton.setOnAction(e -> {
 			drawButton.setDisable(true);
-			Injection.run(drawAction, person);
+			Injection.run(drawAction, getParameters());
 		});
 	}
 
@@ -69,6 +70,14 @@ public class GraphOptionsPaneController implements Initializable {
 		
 		searchBox.hideSearch();
 		drawButton.setDisable(false);
+	}
+	
+	private TreeGraphParameters getParameters() {
+		TreeGraphParameters parameters = TreeGraphParameters.builder()
+				.person(person)
+				.build();
+		
+		return parameters;
 	}
 
 }

@@ -43,5 +43,8 @@ public class FXPainterService extends PainterService {
 		}
 	}
 
-	
+	@Override
+	protected String painterName() {
+		return "fx";
+	}
 }

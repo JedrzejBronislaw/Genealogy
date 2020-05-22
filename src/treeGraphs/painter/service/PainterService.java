@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import model.Person;
 import treeGraphs.TreeGraph;
+import treeGraphs.TreeGraphParameters;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.Painter;
 
@@ -30,6 +31,13 @@ public abstract class PainterService {
 		}
 	}
 	
+	public TreeGraphParameters getParameters() {
+		return TreeGraphParameters.builder()
+				.person(mainPerson)
+				.painterType(painterName())
+				.build();
+	}
+	
 	public abstract Painter getPainter();
 	public abstract Node getCanvas(Pane parent);
 	public Node getCanvas() {
@@ -37,4 +45,5 @@ public abstract class PainterService {
 	}
 	public abstract GraphSaver getGraphSaver();
 	public abstract void refreshGraph();
+	protected abstract String painterName();
 }

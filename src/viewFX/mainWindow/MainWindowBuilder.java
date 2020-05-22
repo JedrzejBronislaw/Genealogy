@@ -19,6 +19,7 @@ import treeGraphs.DrawingDescendantTreeGraph;
 import treeGraphs.StdAncestorsTreeGraph;
 import treeGraphs.StdDescendantsTreeGraph;
 import treeGraphs.TreeGraph;
+import treeGraphs.TreeGraphParameters;
 import viewFX.builders.PaneFXMLBuilder;
 import viewFX.card.CardPaneBuilder;
 import viewFX.card.CardPaneController;
@@ -147,11 +148,11 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		
 		GraphOptionsPaneBuilder graphOptionsBuilder = new GraphOptionsPaneBuilder();
 		graphOptionsBuilder.setSession(session);
-		graphOptionsBuilder.setDrawAction(person -> showGraph(new StdDescendantsTreeGraph(), person));
+		graphOptionsBuilder.setDrawAction(this::showGraph);
 		graphOptionsBuilder.build();
 		
 		treeGraphController.setShowPersonDetails(person -> personDetails.setPerson(person));
-		treeGraphController.setOnParametersChange(person -> graphOptionsBuilder.getController().setState(person));
+		treeGraphController.setOnParametersChange(graphOptionsBuilder.getController()::setState);
 		
 		ViewPane viewPane = new ViewPane(builder.getPane(), () -> personDetails.clearFields());
 		viewPane.setLeftPane(personDetailsBuilder.getPane());
@@ -188,6 +189,10 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		cardController = builder.getController();
 		
 		return new ViewPane(builder.getPane());
+	}
+	
+	private void showGraph(TreeGraphParameters parameters) {
+		showGraph(new StdDescendantsTreeGraph(), parameters.getPerson());
 	}
 	
 	private void showGraph(TreeGraph graph, Person person) {

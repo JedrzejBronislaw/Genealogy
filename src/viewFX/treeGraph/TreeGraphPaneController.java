@@ -15,6 +15,7 @@ import lombok.Setter;
 import model.Person;
 import tools.Injection;
 import treeGraphs.TreeGraph;
+import treeGraphs.TreeGraphParameters;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.service.FXPainterService;
 import treeGraphs.painter.service.PainterService;
@@ -30,14 +31,15 @@ public class TreeGraphPaneController implements Initializable{
 	private Consumer<Person> showPersonDetails;
 	
 	@Setter
-	private Consumer<Person> onParametersChange;
+	private Consumer<TreeGraphParameters> onParametersChange;
 	
 	private PainterService painterService = new FXPainterService();
 //	private PainterService painterService = new Graphics2DPainterService();
 	
 	public void setPerson(Person person) {
 		painterService.setMainPerson(person);
-		Injection.run(onParametersChange, person);
+		
+		Injection.run(onParametersChange, painterService.getParameters());
 	}
 	
 	public void setGraph(TreeGraph graph) {

@@ -3,8 +3,8 @@ package viewFX.treeGraph.graphOptions;
 import java.util.function.Consumer;
 
 import lombok.Setter;
-import model.Person;
 import session.Session;
+import treeGraphs.TreeGraphParameters;
 import viewFX.builders.PaneFXMLBuilder;
 
 public class GraphOptionsPaneBuilder extends PaneFXMLBuilder<GraphOptionsPaneController> {
@@ -13,7 +13,7 @@ public class GraphOptionsPaneBuilder extends PaneFXMLBuilder<GraphOptionsPaneCon
 	private Session session;
 	
 	@Setter
-	private Consumer<Person> drawAction;
+	private Consumer<TreeGraphParameters> drawAction;
 	
 	@Override
 	public String getFxmlFileName() {

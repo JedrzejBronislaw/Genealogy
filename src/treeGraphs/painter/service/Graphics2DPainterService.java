@@ -71,4 +71,8 @@ public class Graphics2DPainterService extends PainterService {
 		SwingRefresher.refreshGraph(swingNode);
 	}
 
+	@Override
+	protected String painterName() {
+		return "graphics2D";
+	}
 }
