@@ -22,7 +22,7 @@
             <Label fx:id="personName" styleClass="nameLabel" />
          </children>
       </VBox>
-      <VBox>
+      <VBox fx:id="graphTypeBox">
          <children>
             <Label text="%graph_type" />
          </children>

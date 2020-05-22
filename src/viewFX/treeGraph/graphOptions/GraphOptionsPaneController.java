@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -13,8 +14,12 @@ import lombok.Setter;
 import model.Person;
 import session.Session;
 import tools.Injection;
+import tools.Tools;
 import treeGraphs.TreeGraphParameters;
+import treeGraphs.TreeGraphType;
 import viewFX.editPerson.fields.SearchBox;
+import viewFX.editPerson.fields.enumField.EditEnumFieldBuilder;
+import viewFX.editPerson.fields.enumField.EditEnumFieldController;
 
 public class GraphOptionsPaneController implements Initializable {
 
@@ -26,8 +31,11 @@ public class GraphOptionsPaneController implements Initializable {
 
 	@FXML
 	private VBox personBox;
+	@FXML
+	private VBox graphTypeBox;
 	
 	private SearchBox searchBox = new SearchBox();
+	private EditEnumFieldController graphTypeField;
 	
 	@Setter
 	private Consumer<TreeGraphParameters> drawAction;
@@ -35,8 +43,12 @@ public class GraphOptionsPaneController implements Initializable {
 	private Person person = null;
 	
 	public void setState(TreeGraphParameters parameters) {
+		if (parameters == null) return;
+		
 		selectPerson(parameters.getPerson());
-		drawButton.setDisable(true);
+		graphTypeField.setOldValue(parameters.getGraphType().toString());
+		
+		disableDrawButton();
 	}
 
 	public void setSession(Session session) {
@@ -50,7 +62,6 @@ public class GraphOptionsPaneController implements Initializable {
 		personName.setText("");
 	}
 	
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		clearFields();
@@ -59,25 +70,51 @@ public class GraphOptionsPaneController implements Initializable {
 		searchBox.setSelectPerson(this::selectPerson);
 		
 		drawButton.setOnAction(e -> {
-			drawButton.setDisable(true);
-			Injection.run(drawAction, getParameters());
+			TreeGraphParameters parameters = getParameters();
+			
+			if (parameters != null) {
+				disableDrawButton();
+				Injection.run(drawAction, parameters);
+			}
 		});
+		
+		graphTypeBox.getChildren().add(createGraphTypeField());
 	}
 
 	private void selectPerson(Person person) {
 		this.person = person;
-		personName.setText(person.nameSurname());
+		personName.setText((person == null) ? "" : person.nameSurname());
 		
 		searchBox.hideSearch();
-		drawButton.setDisable(false);
+		enableDrawButton();
+	}
+	
+	private Node createGraphTypeField() {
+		EditEnumFieldBuilder builder = new EditEnumFieldBuilder();
+		builder.setOptions(Tools.getStringValues(TreeGraphType.class));
+		builder.build();
+		graphTypeField = builder.getController();
+		
+		return builder.getNode();
 	}
 	
 	private TreeGraphParameters getParameters() {
-		TreeGraphParameters parameters = TreeGraphParameters.builder()
-				.person(person)
-				.build();
+		String graphType = graphTypeField.getValue();
 		
-		return parameters;
+		if (graphType == null || graphType.isEmpty()) return null;
+		
+		return TreeGraphParameters.builder()
+				.person(person)
+				.graphType(TreeGraphType.valueOf(graphType))
+				.build();
+	}
+
+	private void enableDrawButton() {
+		drawButton.setDisable(false);
+	}
+
+	private void disableDrawButton() {
+		drawButton.setDisable(true);
 	}
 
 }

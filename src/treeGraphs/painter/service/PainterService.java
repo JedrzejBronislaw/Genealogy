@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import model.Person;
 import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
+import treeGraphs.TreeGraphType;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.Painter;
 
@@ -34,6 +35,7 @@ public abstract class PainterService {
 	public TreeGraphParameters getParameters() {
 		return TreeGraphParameters.builder()
 				.person(mainPerson)
+				.graphType(TreeGraphType.get(graph.getClass()))
 				.painterType(painterName())
 				.build();
 	}

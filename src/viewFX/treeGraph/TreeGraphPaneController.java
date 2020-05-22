@@ -45,6 +45,8 @@ public class TreeGraphPaneController implements Initializable{
 	public void setGraph(TreeGraph graph) {
 		painterService.setGraph(graph);
 		graph.setPersonSingleClickAction(showPersonDetails);
+		
+		Injection.run(onParametersChange, painterService.getParameters());
 	}
 	
 	

@@ -191,8 +191,15 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		return new ViewPane(builder.getPane());
 	}
 	
-	private void showGraph(TreeGraphParameters parameters) {
-		showGraph(new StdDescendantsTreeGraph(), parameters.getPerson());
+	private boolean showGraph(TreeGraphParameters parameters) {
+		if ( parameters == null ||
+			!parameters.isReady()) return false;
+		
+		showGraph(
+				parameters.getGraphType().createGraph(),
+				parameters.getPerson());
+		
+		return true;
 	}
 	
 	private void showGraph(TreeGraph graph, Person person) {
