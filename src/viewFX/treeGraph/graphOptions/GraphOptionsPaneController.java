@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import model.Person;
+import nameDisplaying.NameDisplayingType;
 import session.Session;
 import tools.Injection;
 import treeGraphs.TreeGraphParameters;
@@ -30,9 +31,12 @@ public class GraphOptionsPaneController implements Initializable {
 	private VBox personBox;
 	@FXML
 	private VBox graphTypeBox;
+	@FXML
+	private VBox personDisplayerBox;
 	
 	private SearchBox searchBox = new SearchBox();
 	private EnumField<TreeGraphType> graphTypeField = new EnumField<>(TreeGraphType.ancestors);
+	private EnumField<NameDisplayingType> nameDisplayingField = new EnumField<>(NameDisplayingType.onlyName);
 	
 	@Setter
 	private Consumer<TreeGraphParameters> drawAction;
@@ -44,6 +48,7 @@ public class GraphOptionsPaneController implements Initializable {
 		
 		selectPerson(parameters.getPerson());
 		graphTypeField.setValue(parameters.getGraphType());
+		nameDisplayingField.setValue(parameters.getNameDisplaying());
 		
 		disableDrawButton();
 	}
@@ -77,6 +82,9 @@ public class GraphOptionsPaneController implements Initializable {
 		
 		graphTypeBox.getChildren().add(graphTypeField.getNode());
 		graphTypeField.setOnChange(v -> this.enableDrawButton());
+
+		personDisplayerBox.getChildren().add(nameDisplayingField.getNode());
+		nameDisplayingField.setOnChange(v -> this.enableDrawButton());
 	}
 
 	private void selectPerson(Person person) {
@@ -89,12 +97,14 @@ public class GraphOptionsPaneController implements Initializable {
 	
 	private TreeGraphParameters getParameters() {
 		TreeGraphType graphType = graphTypeField.getValue();
+		NameDisplayingType nameDisplaying = nameDisplayingField.getValue();
 		
 		if (graphType == null) return null;
 		
 		return TreeGraphParameters.builder()
 				.person(person)
 				.graphType(graphType)
+				.nameDisplaying(nameDisplaying)
 				.build();
 	}
 

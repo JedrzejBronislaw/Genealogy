@@ -11,6 +11,7 @@ import lombok.Setter;
 import model.Person;
 import model.Tree;
 import model.TreeEditor;
+import nameDisplaying.Name;
 import nameDisplaying.SimpleNameDisplaying;
 import session.Session;
 import settings.Settings;
@@ -164,15 +165,15 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		CardPaneBuilder builder = new CardPaneBuilder();
 		builder.setShowAncestorsTree(person -> {
 			TreeGraph graph = new StdAncestorsTreeGraph();
-			showGraph(graph, person);
+			showGraph(graph, person, null);
 		});
 		builder.setShowDescendantsTree(person -> {
 			TreeGraph graph = new StdDescendantsTreeGraph();
-			showGraph(graph, person);
+			showGraph(graph, person, null);
 		});
 		builder.setShowDrawingTree(person -> {
 			TreeGraph graph = new DrawingDescendantTreeGraph();
-			showGraph(graph, person);
+			showGraph(graph, person, null);
 		});
 		builder.setGraphClickAction(selectedPerson -> {
 			cardController.setPerson(selectedPerson);
@@ -197,13 +198,18 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		
 		showGraph(
 				parameters.getGraphType().createGraph(),
-				parameters.getPerson());
+				parameters.getPerson(),
+				parameters.getNameDisplaying().createDisplaying());
 		
 		return true;
 	}
 	
-	private void showGraph(TreeGraph graph, Person person) {
-		graph.setNameDisplay(new SimpleNameDisplaying());
+	private void showGraph(TreeGraph graph, Person person, Name nameDisplaying) {
+		Name nameDisplay;
+
+		nameDisplay = (nameDisplaying == null) ? new SimpleNameDisplaying() : nameDisplaying;
+		
+		graph.setNameDisplay(nameDisplay);
 		graph.setPersonDoubleClickAction(selectedPerson -> {
 			cardController.setPerson(selectedPerson);
 			controller.showView(Views.Card);

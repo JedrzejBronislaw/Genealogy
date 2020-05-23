@@ -27,7 +27,7 @@
             <Label text="%graph_type" />
          </children>
       </VBox>
-      <VBox>
+      <VBox fx:id="personDisplayerBox">
          <children>
             <Label text="%person_displayer" />
          </children>

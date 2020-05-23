@@ -19,6 +19,7 @@ public abstract class TreeGraph {
 	protected int height;
 	protected int width;
 
+	@Getter
 	protected Name nameDisplay = new SimpleNameDisplaying();
 	protected Painter painter;
 	
