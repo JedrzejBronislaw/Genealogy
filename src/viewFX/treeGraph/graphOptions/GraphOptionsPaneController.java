@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -14,12 +13,10 @@ import lombok.Setter;
 import model.Person;
 import session.Session;
 import tools.Injection;
-import tools.Tools;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.TreeGraphType;
 import viewFX.editPerson.fields.SearchBox;
-import viewFX.editPerson.fields.enumField.EditEnumFieldBuilder;
-import viewFX.editPerson.fields.enumField.EditEnumFieldController;
+import viewFX.editPerson.fields.enumField.control.EnumField;
 
 public class GraphOptionsPaneController implements Initializable {
 
@@ -35,7 +32,7 @@ public class GraphOptionsPaneController implements Initializable {
 	private VBox graphTypeBox;
 	
 	private SearchBox searchBox = new SearchBox();
-	private EditEnumFieldController graphTypeField;
+	private EnumField<TreeGraphType> graphTypeField = new EnumField<>(TreeGraphType.ancestors);
 	
 	@Setter
 	private Consumer<TreeGraphParameters> drawAction;
@@ -46,7 +43,7 @@ public class GraphOptionsPaneController implements Initializable {
 		if (parameters == null) return;
 		
 		selectPerson(parameters.getPerson());
-		graphTypeField.setOldValue(parameters.getGraphType().toString());
+		graphTypeField.setValue(parameters.getGraphType());
 		
 		disableDrawButton();
 	}
@@ -78,7 +75,8 @@ public class GraphOptionsPaneController implements Initializable {
 			}
 		});
 		
-		graphTypeBox.getChildren().add(createGraphTypeField());
+		graphTypeBox.getChildren().add(graphTypeField.getNode());
+		graphTypeField.setOnChange(v -> this.enableDrawButton());
 	}
 
 	private void selectPerson(Person person) {
@@ -89,23 +87,14 @@ public class GraphOptionsPaneController implements Initializable {
 		enableDrawButton();
 	}
 	
-	private Node createGraphTypeField() {
-		EditEnumFieldBuilder builder = new EditEnumFieldBuilder();
-		builder.setOptions(Tools.getStringValues(TreeGraphType.class));
-		builder.build();
-		graphTypeField = builder.getController();
-		
-		return builder.getNode();
-	}
-	
 	private TreeGraphParameters getParameters() {
-		String graphType = graphTypeField.getValue();
+		TreeGraphType graphType = graphTypeField.getValue();
 		
-		if (graphType == null || graphType.isEmpty()) return null;
+		if (graphType == null) return null;
 		
 		return TreeGraphParameters.builder()
 				.person(person)
-				.graphType(TreeGraphType.valueOf(graphType))
+				.graphType(graphType)
 				.build();
 	}
 
@@ -116,5 +105,4 @@ public class GraphOptionsPaneController implements Initializable {
 	private void disableDrawButton() {
 		drawButton.setDisable(true);
 	}
-
 }
