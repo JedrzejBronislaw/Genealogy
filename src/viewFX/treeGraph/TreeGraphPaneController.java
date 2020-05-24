@@ -26,9 +26,11 @@ public class TreeGraphPaneController implements Initializable{
 	private BorderPane treePane;
 	@FXML
 	private Button saveButton;
-	
+
 	@Setter
-	private Consumer<Person> showPersonDetails;
+	private Consumer<Person> onPersonSingleClick;
+	@Setter
+	private Consumer<Person> onPersonDoubleClick;
 	
 	@Setter
 	private Consumer<TreeGraphParameters> onParametersChange;
@@ -44,7 +46,8 @@ public class TreeGraphPaneController implements Initializable{
 	
 	public void setGraph(TreeGraph graph) {
 		painterService.setGraph(graph);
-		graph.setPersonSingleClickAction(showPersonDetails);
+		graph.setPersonSingleClickAction(person -> Injection.run(onPersonSingleClick, person));
+		graph.setPersonDoubleClickAction(person -> Injection.run(onPersonDoubleClick, person));
 		
 		Injection.run(onParametersChange, painterService.getParameters());
 	}

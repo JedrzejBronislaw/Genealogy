@@ -152,7 +152,11 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		graphOptionsBuilder.setDrawAction(this::showGraph);
 		graphOptionsBuilder.build();
 		
-		treeGraphController.setShowPersonDetails(person -> personDetails.setPerson(person));
+		treeGraphController.setOnPersonSingleClick(person -> personDetails.setPerson(person));
+		treeGraphController.setOnPersonDoubleClick(clickedPerson -> {
+			cardController.setPerson(clickedPerson);
+			controller.showView(Views.Card);
+		});
 		treeGraphController.setOnParametersChange(graphOptionsBuilder.getController()::setState);
 		
 		ViewPane viewPane = new ViewPane(builder.getPane(), () -> personDetails.clearFields());
@@ -210,10 +214,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		nameDisplay = (nameDisplaying == null) ? new SimpleNameDisplaying() : nameDisplaying;
 		
 		graph.setNameDisplay(nameDisplay);
-		graph.setPersonDoubleClickAction(selectedPerson -> {
-			cardController.setPerson(selectedPerson);
-			controller.showView(Views.Card);
-		});
+
 		treeGraphController.setGraph(graph);
 		treeGraphController.setPerson(person);
 		controller.showView(Views.Graph);
