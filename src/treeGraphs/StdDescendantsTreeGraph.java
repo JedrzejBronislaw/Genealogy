@@ -45,6 +45,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 		painter.startDrawing();
 		painter.setTextStyle(font);
+		painter.setColor(Color.BLACK);
 		
 		betweenGenerationsSpace = minParentLineLength + childArrowLength + lineMargin*2;
 		

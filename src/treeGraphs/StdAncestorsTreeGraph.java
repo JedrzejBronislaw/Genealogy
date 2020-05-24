@@ -1,5 +1,6 @@
 package treeGraphs;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import model.Person;
@@ -33,6 +34,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		painter.startDrawing();
 		
 		painter.setTextStyle(font);
+		painter.setColor(Color.BLACK);
 		
 		if (mainPerson == null)
 			return;
