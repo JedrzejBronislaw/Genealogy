@@ -217,6 +217,8 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 
 		treeGraphController.setGraph(graph);
 		treeGraphController.setPerson(person);
+		treeGraphController.refreshGraph();
+		
 		controller.showView(Views.Graph);
 	}
 	

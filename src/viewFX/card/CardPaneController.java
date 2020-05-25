@@ -171,6 +171,7 @@ public class CardPaneController implements Initializable{
 		contactArea.setText(person.getContact());
 
 		painterService.setMainPerson(person);
+		painterService.refreshGraph();
 	}
 
 	private Image getSexSymbol() {

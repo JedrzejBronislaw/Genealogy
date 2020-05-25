@@ -45,11 +45,15 @@ public class TreeGraphPaneController implements Initializable{
 	}
 	
 	public void setGraph(TreeGraph graph) {
-		painterService.setGraph(graph);
 		graph.setPersonSingleClickAction(person -> Injection.run(onPersonSingleClick, person));
 		graph.setPersonDoubleClickAction(person -> Injection.run(onPersonDoubleClick, person));
+		painterService.setGraph(graph);
 		
 		Injection.run(onParametersChange, painterService.getParameters());
+	}
+	
+	public void refreshGraph() {
+		painterService.refreshGraph();
 	}
 	
 	

@@ -27,10 +27,8 @@ public abstract class PainterService {
 	}
 	
 	private void linkGraphWithPerson() {
-		if (graph != null && mainPerson != null) {
+		if (graph != null && mainPerson != null)
 			graph.setMainPerson(mainPerson);
-			refreshGraph();
-		}
 	}
 	
 	public TreeGraphParameters getParameters() {
