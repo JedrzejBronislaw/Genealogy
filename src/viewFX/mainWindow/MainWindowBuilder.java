@@ -11,8 +11,8 @@ import lombok.Setter;
 import model.Person;
 import model.Tree;
 import model.TreeEditor;
-import nameDisplaying.Name;
-import nameDisplaying.SimpleNameDisplaying;
+import nameDisplayers.NameDisplayer;
+import nameDisplayers.SimpleNameDisplayer;
 import session.Session;
 import settings.Settings;
 import tools.Injection;
@@ -203,17 +203,14 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		showGraph(
 				parameters.getGraphType().createGraph(),
 				parameters.getPerson(),
-				parameters.getNameDisplaying().createDisplaying());
+				parameters.getNameDisplayerType().createDisplayer());
 		
 		return true;
 	}
 	
-	private void showGraph(TreeGraph graph, Person person, Name nameDisplaying) {
-		Name nameDisplay;
+	private void showGraph(TreeGraph graph, Person person, NameDisplayer nameDisplayer) {
 
-		nameDisplay = (nameDisplaying == null) ? new SimpleNameDisplaying() : nameDisplaying;
-		
-		graph.setNameDisplay(nameDisplay);
+		graph.setNameDisplayer((nameDisplayer == null) ? new SimpleNameDisplayer() : nameDisplayer);
 
 		treeGraphController.setGraph(graph);
 		treeGraphController.setPerson(person);

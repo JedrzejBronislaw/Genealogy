@@ -53,7 +53,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		columnsWidths = new int[mainPerson.rootSize()+2];
 		
 		//Calculate names max width
-		columnsWidths[0] = nameDisplay.getWidth(mainPerson);
+		columnsWidths[0] = nameDisplayer.getWidth(mainPerson);
 		parentsWidth(mainPerson, 1);
 		
 		//Calculate right bound (with place for arrows)
@@ -75,8 +75,8 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 	
 	private int parentsWidth(Person person, int generation)
 	{
-		int mother = (person.getMother()  == null) ? 0 : nameDisplay.getWidth(person.getMother());
-		int father = (person.getFather() == null) ? 0 : nameDisplay.getWidth(person.getFather());
+		int mother = (person.getMother() == null) ? 0 : nameDisplayer.getWidth(person.getMother());
+		int father = (person.getFather() == null) ? 0 : nameDisplayer.getWidth(person.getFather());
 		int wider = (father > mother) ? father : mother;
 		
 		if (columnsWidths[generation] < wider)
@@ -90,8 +90,8 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 
 	private int drawRoot(Person person, int generation, int y1)
 	{		
-		int nameHeight = nameDisplay.getHeight(person);
-		int nameWidth  = nameDisplay.getWidth(person);
+		int nameHeight = nameDisplayer.getHeight(person);
+		int nameWidth  = nameDisplayer.getWidth(person);
 
 		Person father = person.getFather();
 		Person mother = person.getMother();
@@ -116,7 +116,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 			
 			x = columnsWidths[generation];
 			y = ((motherY-fatherY) / 2) + fatherY;
-			handle = nameDisplay.print(person, x, y+nameHeight);
+			handle = nameDisplayer.print(person, x, y+nameHeight);
 			setHandleEvents(handle, person);
 			
 			//arrowhead
@@ -134,7 +134,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		} else
 		{
 			x = columnsWidths[generation];
-			handle = nameDisplay.print(person, x, y1+nameHeight);
+			handle = nameDisplayer.print(person, x, y1+nameHeight);
 			setHandleEvents(handle, person);
 			
 			y2 = y1+nameHeight+verticalOffset;

@@ -78,7 +78,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		Person spouse;
 
 		//compare own width
-		width = nameDisplay.getWidth(person);
+		width = nameDisplayer.getWidth(person);
 		if (width > columnsWidths[generation])
 			columnsWidths[generation] = width;
 
@@ -86,7 +86,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		for (int i=0; i<person.numberOfMarriages(); i++)
 		{
 			spouse = person.getSpouse(i);
-			width = nameDisplay.getWidth(spouse) + spouseIndentation;
+			width = nameDisplayer.getWidth(spouse) + spouseIndentation;
 			if (width > columnsWidths[generation])
 				columnsWidths[generation] = width;			
 		}
@@ -100,14 +100,14 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	{
 		int offset = 0;
 		int spouseOffset = 0;
-		int nameHeight  = nameDisplay.getHeight(person);
-		int nameWidth = nameDisplay.getWidth(person);
+		int nameHeight = nameDisplayer.getHeight(person);
+		int nameWidth  = nameDisplayer.getWidth(person);
 		Handle handle;
 		
 		int lineX;
 		
 		y += nameHeight;
-		handle = nameDisplay.print(person, x, y);
+		handle = nameDisplayer.print(person, x, y);
 		setHandleEvents(handle, person);
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
@@ -157,14 +157,14 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	{
 		int offset = 0;
 		int spouseOffset = 0;
-		int nameHeight  = nameDisplay.getHeight(person);
-		int nameWidth = nameDisplay.getWidth(person);
+		int nameHeight = nameDisplayer.getHeight(person);
+		int nameWidth  = nameDisplayer.getWidth(person);
 		Handle handle;
 		
 		int lineX;
 		
 		y += nameHeight;
-		handle = nameDisplay.print(person, x, y);
+		handle = nameDisplayer.print(person, x, y);
 		setHandleEvents(handle, person);
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
@@ -201,9 +201,9 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	private int drawSpouse(Person person, int x, int y)
 	{
 		Handle handle;
-		int nameHeight = nameDisplay.getHeight(person);
+		int nameHeight = nameDisplayer.getHeight(person);
 		
-		handle = nameDisplay.print(person, x+spouseIndentation, y+nameHeight);
+		handle = nameDisplayer.print(person, x+spouseIndentation, y+nameHeight);
 		setHandleEvents(handle, person);
 		drawRings(x, y, spouseIndentation, nameHeight);
 		

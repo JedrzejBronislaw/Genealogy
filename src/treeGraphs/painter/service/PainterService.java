@@ -3,7 +3,7 @@ package treeGraphs.painter.service;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import model.Person;
-import nameDisplaying.NameDisplayingType;
+import nameDisplayers.NameDisplayerType;
 import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.TreeGraphType;
@@ -35,7 +35,7 @@ public abstract class PainterService {
 		return TreeGraphParameters.builder()
 				.person(mainPerson)
 				.graphType(TreeGraphType.get(graph.getClass()))
-				.nameDisplaying(NameDisplayingType.get(graph.getNameDisplay().getClass()))
+				.nameDisplayerType(NameDisplayerType.get(graph.getNameDisplayer().getClass()))
 				.painterType(painterName())
 				.build();
 	}

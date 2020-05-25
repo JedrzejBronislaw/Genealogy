@@ -17,12 +17,12 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 import model.Tree;
-import nameDisplaying.SimpleNameDisplaying;
+import nameDisplayers.DateAndNameDisplayer;
+import nameDisplayers.SimpleNameDisplayer;
 import treeGraphs.TreeGraph;
 import treeGraphs.DrawingDescendantTreeGraph;
 import treeGraphs.StdDescendantsTreeGraph;
 import treeGraphs.StdAncestorsTreeGraph;
-import nameDisplaying.DateAndNameDisplaying;
 import visualComponents.Group;
 import visualComponents.Field;
 
@@ -59,7 +59,7 @@ public class MainWindow extends JFrame implements AncestorListener, ActionListen
 			graf = new DrawingDescendantTreeGraph();
 //		
 //			graf.setWyswietlacz(new ZDatamiWyswietlanieNazwiska());
-			graf.setNameDisplay(new SimpleNameDisplaying());
+			graf.setNameDisplayer(new SimpleNameDisplayer());
 		
 		okno.setGraf(graf);
 		okno.setOsoba(drzewo.getPerson(id));

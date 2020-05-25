@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
-import nameDisplaying.Name;
-import nameDisplaying.SimpleNameDisplaying;
+import nameDisplayers.NameDisplayer;
+import nameDisplayers.SimpleNameDisplayer;
 import tools.Injection;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.Painter;
@@ -20,7 +20,7 @@ public abstract class TreeGraph {
 	protected int width;
 
 	@Getter
-	protected Name nameDisplay = new SimpleNameDisplaying();
+	protected NameDisplayer nameDisplayer = new SimpleNameDisplayer();
 	protected Painter painter;
 	
 	public abstract void draw();
@@ -32,11 +32,11 @@ public abstract class TreeGraph {
 	
 	public void setPainter(Painter painter) {
 		this.painter = painter;
-		nameDisplay.setPainter(painter);
+		nameDisplayer.setPainter(painter);
 	}
-	public void setNameDisplay(Name nameDisplay) {
-		this.nameDisplay = nameDisplay;
-		nameDisplay.setPainter(painter);
+	public void setNameDisplayer(NameDisplayer nameDisplayer) {
+		this.nameDisplayer = nameDisplayer;
+		nameDisplayer.setPainter(painter);
 	}
 	
 	public Dimension getDimension() {

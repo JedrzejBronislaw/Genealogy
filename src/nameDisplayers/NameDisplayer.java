@@ -1,4 +1,4 @@
-package nameDisplaying;
+package nameDisplayers;
 
 import lombok.Setter;
 import model.Person;
@@ -6,13 +6,13 @@ import treeGraphs.painter.Handle;
 import treeGraphs.painter.Painter;
 import treeGraphs.painter.Point;
 
-public abstract class Name {
+public abstract class NameDisplayer {
 	
 	@Setter
 	protected Painter painter;
 	
-	public Name() {}
-	public Name(Painter painter) {
+	public NameDisplayer() {}
+	public NameDisplayer(Painter painter) {
 		setPainter(painter);
 	}
 

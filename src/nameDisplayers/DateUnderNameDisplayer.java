@@ -1,11 +1,11 @@
-package nameDisplaying;
+package nameDisplayers;
 
 import model.Person;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MultiHandle;
 import treeGraphs.painter.Point;
 
-public class DateUnderNameDisplaying extends Name {
+public class DateUnderNameDisplayer extends NameDisplayer {
 
 	private static final int verticalSpacing = 3;
 	

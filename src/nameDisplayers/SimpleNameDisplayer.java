@@ -1,10 +1,10 @@
-package nameDisplaying;
+package nameDisplayers;
 
 import model.Person;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.Point;
 
-public class SimpleNameDisplaying extends Name{
+public class SimpleNameDisplayer extends NameDisplayer{
 
 	@Override
 	public Handle print(Person person, int x, int y) {

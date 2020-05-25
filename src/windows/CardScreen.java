@@ -18,14 +18,14 @@ import javax.swing.JScrollPane;
 import model.Marriage;
 import model.Person;
 import model.Person.Sex;
-import nameDisplaying.SimpleNameDisplaying;
+import nameDisplayers.DateAndNameDisplayer;
+import nameDisplayers.SimpleNameDisplayer;
 import other.PersonDetails;
 import treeGraphs.TreeGraph;
 import treeGraphs.ClosestTreeGraph;
 import treeGraphs.DrawingDescendantTreeGraph;
 import treeGraphs.StdDescendantsTreeGraph;
 import treeGraphs.StdAncestorsTreeGraph;
-import nameDisplaying.DateAndNameDisplaying;
 import visualComponents.Group;
 import visualComponents.Field;
 import visualComponents.SimpleTextField;
@@ -284,9 +284,9 @@ public class CardScreen extends JPanel implements ActionListener {
 				graf = new DrawingDescendantTreeGraph();
 //			
 			if (datyNaGrafie.isSelected())
-				graf.setNameDisplay(new DateAndNameDisplaying());
+				graf.setNameDisplayer(new DateAndNameDisplayer());
 			else
-				graf.setNameDisplay(new SimpleNameDisplaying());
+				graf.setNameDisplayer(new SimpleNameDisplayer());
 			
 			okno.setGraf(graf);
 			okno.setOsoba(osoba);
