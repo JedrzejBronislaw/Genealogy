@@ -9,6 +9,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import treeGraphs.painter.Handle;
+import treeGraphs.painter.MyColor;
 import treeGraphs.painter.Painter;
 import treeGraphs.painter.Point;
 import treeGraphs.painter.Rectangle;
@@ -98,9 +99,9 @@ public class FxPainter extends Painter{
 		
 		pane.getChildren().add(circle);
 	}
-
+	
 	@Override
-	public void setColor(java.awt.Color color) {
+	public void setColor(MyColor color) {
 		float r = color.getRed()/255f;
 		float g = color.getGreen()/255f;
 		float b = color.getBlue()/255f;
@@ -110,9 +111,8 @@ public class FxPainter extends Painter{
 	}
 
 	@Override
-	public java.awt.Color getColor() {
-		color.getRed();
-		return new java.awt.Color(
+	public MyColor getColor() {
+		return new MyColor(
 				(float) color.getRed(),
 				(float) color.getGreen(),
 				(float) color.getBlue());

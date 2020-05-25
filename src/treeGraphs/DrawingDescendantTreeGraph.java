@@ -1,6 +1,5 @@
 package treeGraphs;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import tools.Gradient;
 import treeGraphs.DrawingDescendantTreeGraphCalculation.TreeNode;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MultiHandle;
+import treeGraphs.painter.MyColor;
 import treeGraphs.painter.Point;
 
 public class DrawingDescendantTreeGraph extends TreeGraph {
@@ -42,7 +42,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		painter.drawText("Liczba dzieci: " + mainPerson.numberOfChildren(), new Point(10, 50));		
 		
 		painter.setLineStyle(3);
-		painter.setColor(new Color(150, 75, 0));
+		painter.setColor(new MyColor(150, 75, 0));
 		
 		DrawingDescendantTreeGraphCalculation calculation = new DrawingDescendantTreeGraphCalculation(mainPerson)
 				.setSymmetricalAngle(wholeAngle)
@@ -51,7 +51,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		List<TreeNode> plan = calculation.get();
 
 //		Gradient gradinent = new Gradient(new Color(75, 38, 0), Color.GREEN);
-		Gradient gradinent = new Gradient(Color.BLACK, new Color(150, 75, 0));
+		Gradient gradinent = new Gradient(MyColor.BLACK, new MyColor(150, 75, 0));
 		Handle handle;
 		
 		for (TreeNode node : plan)
@@ -65,7 +65,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		
 		for (TreeNode node : plan) {
 			if (node.getLinks().size() == 0) {
-				handle = drawLeaf(node.getX(), node.getY(), Color.GREEN);
+				handle = drawLeaf(node.getX(), node.getY(), MyColor.GREEN);
 				setHandleEvents(handle, node.getPerson());
 			}
 			//TODO click handling for not-leafs
@@ -78,9 +78,9 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 	}
 	
 
-	private Handle drawLeaf(int x, int y, Color color)
+	private Handle drawLeaf(int x, int y, MyColor color)
 	{
-		Color oldColor = painter.getColor();
+		MyColor oldColor = painter.getColor();
 		int lineThickness = painter.getLineThickness();
 		Handle h1, h2;
 		

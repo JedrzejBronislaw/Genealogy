@@ -1,17 +1,17 @@
 package tools;
 
-import java.awt.Color;
+import treeGraphs.painter.MyColor;
 
 public class Gradient {
 
-	private Color c1, c2;
+	private MyColor c1, c2;
 
-	public Gradient(Color c1, Color c2) {
+	public Gradient(MyColor c1, MyColor c2) {
 		this.c1 = c1;
 		this.c2 = c2;
 	}
 	
-	public Color getIntermediateColor(float percent)
+	public MyColor getIntermediateColor(float percent)
 	{
 		int r, r1, r2;
 		int g, g1, g2;
@@ -28,6 +28,6 @@ public class Gradient {
 		g = (int) (g1 + (g2-g1)*percent);
 		b = (int) (b1 + (b2-b1)*percent);
 		
-		return new Color(r,g,b);
+		return new MyColor(r,g,b);
 	}
 }

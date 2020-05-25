@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 
 import lombok.Setter;
 import treeGraphs.painter.Handle;
+import treeGraphs.painter.MyColor;
 import treeGraphs.painter.Painter;
 import treeGraphs.painter.Point;
 import treeGraphs.painter.Rectangle;
@@ -87,13 +88,23 @@ public class Graphics2DPainter extends Painter {
 	}
 
 	@Override
-	public void setColor(Color color) {
-		g.setColor(color);
+	public void setColor(MyColor color) {
+		g.setColor(new Color(
+				color.getRed(),
+				color.getGreen(),
+				color.getBlue(),
+				color.getAlpha()));
 	}
 	
 	@Override
-	public Color getColor() {
-		return g.getColor();
+	public MyColor getColor() {
+		Color color = g.getColor();
+
+		return new MyColor(
+				color.getRed(),
+				color.getGreen(),
+				color.getBlue(),
+				color.getAlpha());
 	}
 
 	@Override

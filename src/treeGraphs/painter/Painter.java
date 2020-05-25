@@ -1,6 +1,5 @@
 package treeGraphs.painter;
 
-import java.awt.Color;
 import java.awt.Font;
 
 import lombok.Setter;
@@ -18,8 +17,8 @@ public abstract class Painter {
 	abstract public Handle drawCircle(Point center, float radius);
 	abstract public void drawRing(Point center, float radius);
 	
-	abstract public void setColor(Color color);
-	abstract public Color getColor();
+	abstract public void setColor(MyColor color);
+	abstract public MyColor getColor();
 	abstract public void setTextStyle(String fontName, int style, int size);
 	abstract public void setTextStyle(Font font);
 	abstract public Font getTextStyle();

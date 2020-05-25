@@ -1,6 +1,5 @@
 package treeGraphs;
 
-import java.awt.Color;
 import java.awt.Font;
 
 import lombok.Getter;
@@ -8,6 +7,7 @@ import lombok.Setter;
 import model.Person;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
+import treeGraphs.painter.MyColor;
 import treeGraphs.painter.Point;
 
 public class StdDescendantsTreeGraph extends TreeGraph{
@@ -26,7 +26,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	private static final int betwennCousisnsSpace = 20;
 
 	private Font font = new Font("Times", Font.PLAIN, 13);
-	private static final Color ringsColor = new Color(255, 215, 0);
+	private static final MyColor ringsColor = new MyColor(255, 215, 0);
 
 	@Setter @Getter
 	private SpaceType spaceType = SpaceType.OnlyBetweenSiblings;
@@ -45,7 +45,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 		painter.startDrawing();
 		painter.setTextStyle(font);
-		painter.setColor(Color.BLACK);
+		painter.setColor(MyColor.BLACK);
 		
 		betweenGenerationsSpace = minParentLineLength + childArrowLength + lineMargin*2;
 		
@@ -140,12 +140,12 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	private void drawMarriageNumber(Person child, Person parent, int x1, int y1, int lineY) {
 		if (parent.numberOfMarriages() > 1)
 		{
-			Color tempColor;
+			MyColor tempColor;
 			int marriageNumber = child.parentsMarriageNumber(parent);
 			if (marriageNumber != 0)
 			{
 				tempColor = painter.getColor();
-				painter.setColor(Color.WHITE);
+				painter.setColor(MyColor.WHITE);
 				painter.drawLine(new Point(x1+2, lineY), new Point(x1+2+painter.getTextWidth(marriageNumber+""), lineY));
 				painter.setColor(tempColor);
 				painter.drawText(marriageNumber+"", new Point(x1+3, y1));
@@ -211,7 +211,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	}
 
 	private void drawRings(int x, int y, int width, int height) {
-		Color color = painter.getColor();
+		MyColor color = painter.getColor();
 		final float commonPart = (float)0.3; 
 		float ringsRatio = (float) (2.0-commonPart);
 		float areaRatio  = width/height;

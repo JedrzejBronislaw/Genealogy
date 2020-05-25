@@ -1,11 +1,11 @@
 package treeGraphs;
 
-import java.awt.Color;
 import java.awt.Font;
 
 import model.Person;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
+import treeGraphs.painter.MyColor;
 import treeGraphs.painter.Point;
 
 public class StdAncestorsTreeGraph extends TreeGraph {
@@ -34,7 +34,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		painter.startDrawing();
 		
 		painter.setTextStyle(font);
-		painter.setColor(Color.BLACK);
+		painter.setColor(MyColor.BLACK);
 		
 		if (mainPerson == null)
 			return;
