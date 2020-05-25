@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.util.List;
 
 import other.PersonDetails;
-import tools.Gradient;
 import treeGraphs.DrawingDescendantTreeGraphCalculation.TreeNode;
+import treeGraphs.painter.Gradient;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MultiHandle;
 import treeGraphs.painter.MyColor;

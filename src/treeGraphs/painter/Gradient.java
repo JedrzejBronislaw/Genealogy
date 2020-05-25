@@ -1,6 +1,4 @@
-package tools;
-
-import treeGraphs.painter.MyColor;
+package treeGraphs.painter;
 
 public class Gradient {
 
