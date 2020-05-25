@@ -6,11 +6,11 @@ import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
-import nameDisplayers.NameDisplayer;
-import nameDisplayers.SimpleNameDisplayer;
 import tools.Injection;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.Painter;
+import treeGraphs.painter.nameDisplayers.NameDisplayer;
+import treeGraphs.painter.nameDisplayers.SimpleNameDisplayer;
 
 public abstract class TreeGraph {
 

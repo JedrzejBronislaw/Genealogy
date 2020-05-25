@@ -3,12 +3,12 @@ package treeGraphs.painter.service;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import model.Person;
-import nameDisplayers.NameDisplayerType;
 import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.TreeGraphType;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.Painter;
+import treeGraphs.painter.nameDisplayers.NameDisplayerType;
 
 public abstract class PainterService {
 

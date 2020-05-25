@@ -17,9 +17,9 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 import model.Tree;
-import nameDisplayers.DateAndNameDisplayer;
-import nameDisplayers.SimpleNameDisplayer;
 import treeGraphs.TreeGraph;
+import treeGraphs.painter.nameDisplayers.DateAndNameDisplayer;
+import treeGraphs.painter.nameDisplayers.SimpleNameDisplayer;
 import treeGraphs.DrawingDescendantTreeGraph;
 import treeGraphs.StdDescendantsTreeGraph;
 import treeGraphs.StdAncestorsTreeGraph;

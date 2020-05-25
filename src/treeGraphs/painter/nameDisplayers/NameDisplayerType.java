@@ -1,4 +1,4 @@
-package nameDisplayers;
+package treeGraphs.painter.nameDisplayers;
 
 import java.lang.reflect.InvocationTargetException;
 

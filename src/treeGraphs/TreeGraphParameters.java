@@ -3,7 +3,7 @@ package treeGraphs;
 import lombok.Builder;
 import lombok.Getter;
 import model.Person;
-import nameDisplayers.NameDisplayerType;
+import treeGraphs.painter.nameDisplayers.NameDisplayerType;
 
 @Builder
 @Getter

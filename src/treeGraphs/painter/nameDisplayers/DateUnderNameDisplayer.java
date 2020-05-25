@@ -1,4 +1,4 @@
-package nameDisplayers;
+package treeGraphs.painter.nameDisplayers;
 
 import model.Person;
 import treeGraphs.painter.Handle;
