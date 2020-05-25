@@ -8,7 +8,7 @@ public class SimpleNameDisplayer extends NameDisplayer{
 
 	@Override
 	public Handle print(Person person, int x, int y) {
-		return painter.drawText(genTekst(person), new Point(x, y));
+		return painter.drawText(genText(person), new Point(x, y));
 	}
 
 	@Override
@@ -18,10 +18,10 @@ public class SimpleNameDisplayer extends NameDisplayer{
 
 	@Override
 	public int getWidth(Person person) {
-		return painter.getTextWidth(genTekst(person));
+		return painter.getTextWidth(genText(person));
 	}
 	
-	private String genTekst(Person person)
+	private String genText(Person person)
 	{
 		return person.nameSurname();
 	}
