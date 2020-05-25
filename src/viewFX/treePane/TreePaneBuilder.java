@@ -30,12 +30,12 @@ public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "TreePane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setTreeDetailsPane(generateTreeDetailsPane());
 		controller.setCommonSurnamePane(generateCommonNamePane());
 		controller.setSearchPane(generateSearchPane());

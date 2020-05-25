@@ -5,10 +5,10 @@ import viewFX.builders.RegionFXMLBuilder;
 public class EditDateFieldBuilder extends RegionFXMLBuilder<EditDateFieldController> {
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "EditDateField.fxml";
 	}
 
 	@Override
-	public void afterBuild() {}
+	protected void afterBuild() {}
 }

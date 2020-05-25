@@ -28,12 +28,12 @@ public class LanguageItemPaneBuilder extends FXMLBuilder<LanguageItemPaneControl
 	
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "LanguageItemPane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setLanguage(language.getAbbr());
 		controller.setClick(() -> Injection.run(changeLanguage, language));
 	}

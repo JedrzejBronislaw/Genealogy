@@ -17,12 +17,12 @@ public class FileChoosePaneBuilder extends PaneFXMLBuilder<FileChoosePaneControl
 	
 	
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "FileChoosePane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setPathList(lastOpenFiles);
 		controller.setNewTreeEvent(() -> System.out.println("Create new tree"));
 		controller.setOpenTreeEvent(openFileAction);

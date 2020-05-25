@@ -12,12 +12,12 @@ public class PersonDetailsPaneBuilder extends PaneFXMLBuilder<PersonDetailsPaneC
 	private Consumer<Person> personClick;
 	
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "PersonDetailsPane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setPersonClick(personClick);
 	}
 

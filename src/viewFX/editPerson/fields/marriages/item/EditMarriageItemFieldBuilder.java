@@ -5,10 +5,10 @@ import viewFX.builders.RegionFXMLBuilder;
 public class EditMarriageItemFieldBuilder extends RegionFXMLBuilder<EditMarriageItemFieldController> {
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "EditMarriageItemField.fxml";
 	}
 
 	@Override
-	public void afterBuild() {}
+	protected void afterBuild() {}
 }

@@ -17,12 +17,12 @@ public class SearchViewBuilder extends PaneFXMLBuilder<SearchViewController> {
 	
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "SearchView.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setChooseAction(chooseAction);
 		controller.setSubmitQuery(query -> controller.setItems(searchEngine.run(query)));
 	}

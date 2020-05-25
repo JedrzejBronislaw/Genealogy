@@ -23,6 +23,6 @@ public abstract class FXMLBuilder<T extends Initializable> {
 		afterBuild();
 	}
 
-	public abstract String getFxmlFileName();
-	public abstract void afterBuild();
+	protected abstract String getFxmlFileName();
+	protected abstract void afterBuild();
 }

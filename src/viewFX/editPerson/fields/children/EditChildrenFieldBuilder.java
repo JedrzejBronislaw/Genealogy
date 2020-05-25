@@ -5,10 +5,10 @@ import viewFX.builders.RegionFXMLBuilder;
 public class EditChildrenFieldBuilder extends RegionFXMLBuilder<EditChildrenFieldController> {
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "EditChildrenField.fxml";
 	}
 
 	@Override
-	public void afterBuild() {}
+	protected void afterBuild() {}
 }

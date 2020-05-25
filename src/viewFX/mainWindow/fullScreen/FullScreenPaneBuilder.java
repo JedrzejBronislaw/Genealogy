@@ -15,12 +15,12 @@ public class FullScreenPaneBuilder extends PaneFXMLBuilder<FullScreenPaneControl
 	
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "FullScreenPane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setFullScreenAction(fullScreenAction);
 		controller.setIsFullScreen(isFullScreen);
 	}

@@ -17,11 +17,11 @@ public class CommonSurnamesItemBuilder extends PaneFXMLBuilder<CommonSurnamesIte
 	}
 	
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "CommonSurnamesItem.fxml";
 	}
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.set(number, surname);
 	}
 }

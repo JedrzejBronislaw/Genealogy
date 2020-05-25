@@ -13,13 +13,12 @@ public class LanguagePaneBuilder extends PaneFXMLBuilder<LanguagePaneController>
 
 	
 	@Override
-	public String getFxmlFileName() {
-		// TODO Auto-generated method stub
+	protected String getFxmlFileName() {
 		return "LanguagePane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setChangeLanguage(changeLanguage);
 		controller.addLanguage(Languages.POLISH);
 		controller.addLanguage(Languages.ENGLISH);

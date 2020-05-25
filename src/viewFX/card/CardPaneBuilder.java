@@ -22,12 +22,12 @@ public class CardPaneBuilder extends PaneFXMLBuilder<CardPaneController> {
 	private Consumer<Person> graphClickAction;
 	
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "CardPane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setAncestorsTreeAction(showAncestorsTree);
 		controller.setDescendantsTreeAction(showDescendantsTree);
 		controller.setDrawingTreeAction(showDrawingTree);

@@ -22,12 +22,12 @@ public class TreeDetailsPaneBuilder extends PaneFXMLBuilder<TreeDetailsPaneContr
 	}
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "TreeDetailsPane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		clearLabelsValue();
 	}
 	

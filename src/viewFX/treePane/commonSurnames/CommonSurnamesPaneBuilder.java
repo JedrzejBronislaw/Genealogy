@@ -11,12 +11,12 @@ import viewFX.treePane.commonSurnames.item.CommonSurnamesItemBuilder;
 public class CommonSurnamesPaneBuilder extends PaneFXMLBuilder<CommonSurnamesPaneController> {
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "CommonSurnamesPane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setSurnamePaneGenerator(this::surnamePaneGenerator);
 		clearSurnames();
 	}

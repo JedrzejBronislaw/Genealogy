@@ -16,12 +16,12 @@ public class GraphOptionsPaneBuilder extends PaneFXMLBuilder<GraphOptionsPaneCon
 	private Consumer<TreeGraphParameters> drawAction;
 	
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "GraphOptionsPane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setSession(session);
 		controller.setDrawAction(drawAction);
 	}

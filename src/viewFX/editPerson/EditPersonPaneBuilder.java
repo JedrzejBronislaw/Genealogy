@@ -34,12 +34,12 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 
 	
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "EditPersonPane.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setChangeEvent(changeEvent);
 		controller.setClosePane(closePane);
 		controller.setAddToTree(addToTree);

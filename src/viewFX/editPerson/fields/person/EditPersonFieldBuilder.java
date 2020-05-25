@@ -5,10 +5,10 @@ import viewFX.builders.RegionFXMLBuilder;
 public class EditPersonFieldBuilder extends RegionFXMLBuilder<EditPersonFieldController> {
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "EditPersonField.fxml";
 	}
 
 	@Override
-	public void afterBuild() {}
+	protected void afterBuild() {}
 }

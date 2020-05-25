@@ -9,12 +9,12 @@ public class EditEnumFieldBuilder extends RegionFXMLBuilder<EditEnumFieldControl
 	private String[] options;
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "EditEnumField.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		for (String name : options) controller.addOption(name);
 	}
 }

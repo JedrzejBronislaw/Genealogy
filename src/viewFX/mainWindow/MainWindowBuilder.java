@@ -59,13 +59,13 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 	private EditPersonPaneController editPersonController;
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "MainWindow.fxml";
 	}
 
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setLanguagePane(generateLanguagePane());
 		controller.setFullScreenPane(generateFullScreenPane());
 

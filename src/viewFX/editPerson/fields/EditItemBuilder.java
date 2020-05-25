@@ -10,12 +10,12 @@ public class EditItemBuilder extends PaneFXMLBuilder<EditItemController> {
 	private EditField editField;
 	
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "EditItem.fxml";
 	}
 
 	@Override
-	public void afterBuild() {
+	protected void afterBuild() {
 		controller.setEditField(editField);
 	}
 }

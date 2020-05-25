@@ -5,10 +5,10 @@ import viewFX.builders.RegionFXMLBuilder;
 public class EditTextFieldBuilder extends RegionFXMLBuilder<EditTextFieldController> {
 
 	@Override
-	public String getFxmlFileName() {
+	protected String getFxmlFileName() {
 		return "EditTextField.fxml";
 	}
 
 	@Override
-	public void afterBuild() {}
+	protected void afterBuild() {}
 }
