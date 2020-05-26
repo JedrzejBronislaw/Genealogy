@@ -47,6 +47,10 @@ public class EditEnumFieldController implements EditFieldInterface, Initializabl
 		return radio;
 	}
 	
+	public void uncheckAll() {
+		options.forEach((name, box) -> box.setSelected(false));
+	}
+	
 	@Override
 	public void setOldValue(String value) {
 		this.value = value;

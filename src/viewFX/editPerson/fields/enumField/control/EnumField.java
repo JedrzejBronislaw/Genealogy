@@ -35,7 +35,10 @@ public class EnumField<T extends Enum<T>> {
 	}
 	
 	public void setValue(T value) {
-		controller.setOldValue(value.toString());
+		if (value == null)
+			controller.uncheckAll();
+		else
+			controller.setOldValue(value.toString());
 	}
 
 	public T getValue() {
