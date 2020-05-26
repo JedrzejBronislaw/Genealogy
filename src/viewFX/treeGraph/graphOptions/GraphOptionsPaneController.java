@@ -15,6 +15,7 @@ import session.Session;
 import tools.Injection;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.TreeGraphType;
+import treeGraphs.painter.PainterServiceType;
 import treeGraphs.painter.nameDisplayers.NameDisplayerType;
 import viewFX.editPerson.fields.SearchBox;
 import viewFX.editPerson.fields.enumField.control.EnumField;
@@ -33,10 +34,13 @@ public class GraphOptionsPaneController implements Initializable {
 	private VBox graphTypeBox;
 	@FXML
 	private VBox personDisplayerBox;
+	@FXML
+	private VBox painterBox;
 	
 	private SearchBox searchBox = new SearchBox();
 	private EnumField<TreeGraphType> graphTypeField = new EnumField<>(TreeGraphType.ancestors);
 	private EnumField<NameDisplayerType> nameDisplayerField = new EnumField<>(NameDisplayerType.onlyName);
+	private EnumField<PainterServiceType> painterField = new EnumField<>(PainterServiceType.FX);
 	
 	@Setter
 	private Consumer<TreeGraphParameters> drawAction;
@@ -49,6 +53,7 @@ public class GraphOptionsPaneController implements Initializable {
 		selectPerson(parameters.getPerson());
 		graphTypeField.setValue(parameters.getGraphType());
 		nameDisplayerField.setValue(parameters.getNameDisplayerType());
+		painterField.setValue(parameters.getPainterType());
 		
 		disableDrawButton();
 	}
@@ -85,6 +90,9 @@ public class GraphOptionsPaneController implements Initializable {
 
 		personDisplayerBox.getChildren().add(nameDisplayerField.getNode());
 		nameDisplayerField.setOnChange(v -> this.enableDrawButton());
+
+		painterBox.getChildren().add(painterField.getNode());
+		painterField.setOnChange(v -> this.enableDrawButton());
 	}
 
 	private void selectPerson(Person person) {
@@ -98,6 +106,7 @@ public class GraphOptionsPaneController implements Initializable {
 	private TreeGraphParameters getParameters() {
 		TreeGraphType graphType = graphTypeField.getValue();
 		NameDisplayerType nameDisplayerType = nameDisplayerField.getValue();
+		PainterServiceType painterType = painterField.getValue();
 		
 		if (graphType == null) return null;
 		
@@ -105,6 +114,7 @@ public class GraphOptionsPaneController implements Initializable {
 				.person(person)
 				.graphType(graphType)
 				.nameDisplayerType(nameDisplayerType)
+				.painterType(painterType)
 				.build();
 	}
 

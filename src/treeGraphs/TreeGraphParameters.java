@@ -3,6 +3,7 @@ package treeGraphs;
 import lombok.Builder;
 import lombok.Getter;
 import model.Person;
+import treeGraphs.painter.PainterServiceType;
 import treeGraphs.painter.nameDisplayers.NameDisplayerType;
 
 @Builder
@@ -13,11 +14,12 @@ public class TreeGraphParameters {
 	private TreeGraphType graphType;
 	private NameDisplayerType nameDisplayerType;
 	
-	private String painterType;
+	private PainterServiceType painterType;
 
 	public boolean isReady() {
 		return person != null
 			&& graphType != null
-			&& nameDisplayerType != null;
+			&& nameDisplayerType != null
+			&& painterType != null;
 	}
 }

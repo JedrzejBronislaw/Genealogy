@@ -73,6 +73,6 @@ public class Graphics2DPainterService extends PainterService {
 
 	@Override
 	protected String painterName() {
-		return "graphics2D";
+		return "Graphics2D";
 	}
 }

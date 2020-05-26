@@ -17,7 +17,6 @@ import tools.Injection;
 import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.painter.GraphSaver;
-import treeGraphs.painter.service.FXPainterService;
 import treeGraphs.painter.service.PainterService;
 
 public class TreeGraphPaneController implements Initializable{
@@ -35,8 +34,7 @@ public class TreeGraphPaneController implements Initializable{
 	@Setter
 	private Consumer<TreeGraphParameters> onParametersChange;
 	
-	private PainterService painterService = new FXPainterService();
-//	private PainterService painterService = new Graphics2DPainterService();
+	private PainterService painterService;
 	
 	public void setPerson(Person person) {
 		painterService.setMainPerson(person);
@@ -52,6 +50,13 @@ public class TreeGraphPaneController implements Initializable{
 		Injection.run(onParametersChange, painterService.getParameters());
 	}
 	
+	public void setPainterService(PainterService painterService) {
+		this.painterService = painterService;
+		treePane.setCenter(painterService.getCanvas(treePane));
+		
+		Injection.run(onParametersChange, painterService.getParameters());
+	}
+	
 	public void refreshGraph() {
 		painterService.refreshGraph();
 	}
@@ -59,8 +64,6 @@ public class TreeGraphPaneController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		treePane.setCenter(painterService.getCanvas(treePane));
-		
 		saveButton.setOnAction(e -> {
 			saveButton.setDisable(true);
 			GraphSaver graphSaver = painterService.getGraphSaver();

@@ -5,9 +5,11 @@ import javafx.scene.layout.Pane;
 import model.Person;
 import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
+import treeGraphs.TreeGraphParameters.TreeGraphParametersBuilder;
 import treeGraphs.TreeGraphType;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.Painter;
+import treeGraphs.painter.PainterServiceType;
 import treeGraphs.painter.nameDisplayers.NameDisplayerType;
 
 public abstract class PainterService {
@@ -32,12 +34,15 @@ public abstract class PainterService {
 	}
 	
 	public TreeGraphParameters getParameters() {
-		return TreeGraphParameters.builder()
+		TreeGraphParametersBuilder builder = TreeGraphParameters.builder()
 				.person(mainPerson)
-				.graphType(TreeGraphType.get(graph.getClass()))
-				.nameDisplayerType(NameDisplayerType.get(graph.getNameDisplayer().getClass()))
-				.painterType(painterName())
-				.build();
+				.painterType(PainterServiceType.valueOf(painterName()));
+		
+		if (graph != null) builder
+			.graphType(TreeGraphType.get(graph.getClass()))
+			.nameDisplayerType(NameDisplayerType.get(graph.getNameDisplayer().getClass()));
+
+		return builder.build();
 	}
 	
 	public abstract Painter getPainter();

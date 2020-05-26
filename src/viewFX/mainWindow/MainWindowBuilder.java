@@ -21,6 +21,8 @@ import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.painter.nameDisplayers.NameDisplayer;
 import treeGraphs.painter.nameDisplayers.SimpleNameDisplayer;
+import treeGraphs.painter.service.FXPainterService;
+import treeGraphs.painter.service.PainterService;
 import viewFX.builders.PaneFXMLBuilder;
 import viewFX.card.CardPaneBuilder;
 import viewFX.card.CardPaneController;
@@ -169,15 +171,15 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		CardPaneBuilder builder = new CardPaneBuilder();
 		builder.setShowAncestorsTree(person -> {
 			TreeGraph graph = new StdAncestorsTreeGraph();
-			showGraph(graph, person, null);
+			showGraph(graph, person);
 		});
 		builder.setShowDescendantsTree(person -> {
 			TreeGraph graph = new StdDescendantsTreeGraph();
-			showGraph(graph, person, null);
+			showGraph(graph, person);
 		});
 		builder.setShowDrawingTree(person -> {
 			TreeGraph graph = new DrawingDescendantTreeGraph();
-			showGraph(graph, person, null);
+			showGraph(graph, person);
 		});
 		builder.setGraphClickAction(selectedPerson -> {
 			cardController.setPerson(selectedPerson);
@@ -203,15 +205,21 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		showGraph(
 				parameters.getGraphType().createGraph(),
 				parameters.getPerson(),
-				parameters.getNameDisplayerType().createDisplayer());
+				parameters.getNameDisplayerType().createDisplayer(),
+				parameters.getPainterType().createPainterService());
 		
 		return true;
 	}
 	
-	private void showGraph(TreeGraph graph, Person person, NameDisplayer nameDisplayer) {
+	private void showGraph(TreeGraph graph, Person person) {
+		showGraph(graph, person, null, new FXPainterService());
+	}
+	
+	private void showGraph(TreeGraph graph, Person person, NameDisplayer nameDisplayer, PainterService painterService) {
 
 		graph.setNameDisplayer((nameDisplayer == null) ? new SimpleNameDisplayer() : nameDisplayer);
 
+		treeGraphController.setPainterService(painterService);
 		treeGraphController.setGraph(graph);
 		treeGraphController.setPerson(person);
 		treeGraphController.refreshGraph();
