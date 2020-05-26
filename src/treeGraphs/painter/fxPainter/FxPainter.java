@@ -117,7 +117,8 @@ public class FxPainter extends Painter{
 		return new MyColor(
 				(float) color.getRed(),
 				(float) color.getGreen(),
-				(float) color.getBlue());
+				(float) color.getBlue(),
+				(float) color.getOpacity());
 	}
 
 	@Override

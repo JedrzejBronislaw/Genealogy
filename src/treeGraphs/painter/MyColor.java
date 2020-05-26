@@ -32,4 +32,11 @@ public class MyColor {
 		this.blue  = (int) (blue  * MAX);
 		this.alpha = MAX;
 	}
+	
+	public MyColor(float red, float green, float blue, float alpha) {
+		this.red   = (int) (red   * MAX);
+		this.green = (int) (green * MAX);
+		this.blue  = (int) (blue  * MAX);
+		this.alpha = (int) (alpha * MAX);
+	}
 }
