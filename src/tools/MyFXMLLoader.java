@@ -42,11 +42,13 @@ public class MyFXMLLoader<T extends Initializable>{
 		} catch (LoadException e) {
 			String firstLine = e.getMessage().split("\n")[0];
 			
-			if (firstLine.startsWith("Resource") && firstLine.contains("not found"))
+			if (firstLine.startsWith("Resource") && firstLine.contains("not found")) {
 				System.out.println("Error in " + mainDir + fxmlFilePath + ": " + firstLine);
-			else if (firstLine.isEmpty())
+				e.printStackTrace();
+			} else if (firstLine.isEmpty()) {
 				System.out.println("Error: Missing controller for: " + mainDir + fxmlFilePath);
-			else
+				e.printStackTrace();
+			} else
 				e.printStackTrace();
 			
 			return null;
