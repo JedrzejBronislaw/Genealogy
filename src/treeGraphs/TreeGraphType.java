@@ -24,7 +24,7 @@ public enum TreeGraphType {
 		}
 	}
 
-	boolean ifMatch(Class<? extends TreeGraph> graphClass) {
+	private boolean ifMatch(Class<? extends TreeGraph> graphClass) {
 		return this.graphClass == graphClass;
 	}
 

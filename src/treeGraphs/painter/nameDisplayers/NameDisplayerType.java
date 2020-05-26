@@ -24,7 +24,7 @@ public enum NameDisplayerType {
 		}
 	}
 
-	boolean ifMatch(Class<? extends NameDisplayer> nameClass) {
+	private boolean ifMatch(Class<? extends NameDisplayer> nameClass) {
 		return this.nameClass == nameClass;
 	}
 

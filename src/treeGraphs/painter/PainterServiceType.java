@@ -27,7 +27,7 @@ public enum PainterServiceType {
 		}
 	}
 
-	boolean ifMatch(Class<? extends PainterService> nameClass) {
+	private boolean ifMatch(Class<? extends PainterService> nameClass) {
 		return this.nameClass == nameClass;
 	}
 
