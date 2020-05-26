@@ -1,11 +1,11 @@
 package treeGraphs;
 
-import java.awt.Font;
-
 import lombok.Setter;
 import model.Person;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
+import treeGraphs.painter.MyFont;
+import treeGraphs.painter.MyFont.Style;
 import treeGraphs.painter.Point;
 
 public class ClosestTreeGraph extends TreeGraph {
@@ -24,8 +24,8 @@ public class ClosestTreeGraph extends TreeGraph {
 	private static final int aboveChildrenSpace = 30;
 	private static final int minSpaceBetweenSpousesChildrenAndSiblings = 30;
 
-	private static final Font mainPersonFont = new Font("Times", Font.BOLD, 25);
-	private static final Font familyFont   = new Font("Arial", Font.BOLD, 12);
+	private static final MyFont mainPersonFont = new MyFont("Times", Style.BOLD, 25);
+	private static final MyFont familyFont   = new MyFont("Arial", Style.BOLD, 12);
 
 
 	private int areaWidth;
@@ -199,8 +199,8 @@ public class ClosestTreeGraph extends TreeGraph {
 	
 	private void drawSiblings(Person[] siblings, int x, int y)
 	{
-		Font f = painter.getTextStyle();
-		painter.setTextStyle(f.getName(), Font.ITALIC, f.getSize());
+		MyFont f = painter.getTextStyle();
+		painter.setTextStyle(f.getName(), Style.ITALIC, f.getSize());
 
 		int height = painter.getTextHeight();
 		Handle handle;
@@ -250,8 +250,8 @@ public class ClosestTreeGraph extends TreeGraph {
 	}
 
 	private int siblingsWidth(Person[] sibilings) {
-		Font f = painter.getTextStyle();
-		painter.setTextStyle(f.getName(), Font.PLAIN, f.getSize());
+		MyFont f = painter.getTextStyle();
+		painter.setTextStyle(f.getName(), Style.ITALIC, f.getSize());
 		
 		int maxWidth = 0;
 		

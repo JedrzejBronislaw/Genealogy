@@ -10,9 +10,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MyColor;
+import treeGraphs.painter.MyFont;
 import treeGraphs.painter.Painter;
 import treeGraphs.painter.Point;
 import treeGraphs.painter.Rectangle;
+import treeGraphs.painter.MyFont.Style;
 
 public class FxPainter extends Painter{
 
@@ -119,31 +121,23 @@ public class FxPainter extends Painter{
 	}
 
 	@Override
-	public void setTextStyle(String fontName, int style, int size) {
+	public void setTextStyle(String fontName, MyFont.Style style, int size) {
 		fontfamily = fontName;
 		fontsize = size;
 		
-		fontBold   = (style & java.awt.Font.BOLD)   != 0;
-		fontItalic = (style & java.awt.Font.ITALIC) != 0;
+		fontBold   = (style == Style.BOLD   || style == Style.BOLD_ITALIC);
+		fontItalic = (style == Style.ITALIC || style == Style.BOLD_ITALIC);
 	}
 
 	@Override
-	public void setTextStyle(java.awt.Font font) {
-		fontfamily = font.getFamily();
-		fontsize = font.getSize();
+	public MyFont getTextStyle() {
+		Style style = Style.REGULAR;
 		
-		fontBold   = (font.getStyle() & java.awt.Font.BOLD)   != 0;
-		fontItalic = (font.getStyle() & java.awt.Font.ITALIC) != 0;
-	}
-
-	@Override
-	public java.awt.Font getTextStyle() {
-		int style = 0;
+		if (fontBold && fontItalic) style = Style.BOLD_ITALIC;
+		else if (fontBold) style = Style.BOLD;
+		else if (fontItalic) style = Style.ITALIC;
 		
-		if (fontBold)   style += java.awt.Font.BOLD;
-		if (fontItalic) style += java.awt.Font.ITALIC;
-		
-		return new java.awt.Font(fontfamily, style, fontsize);
+		return new MyFont(fontfamily, style, fontsize);
 	}
 
 	@Override

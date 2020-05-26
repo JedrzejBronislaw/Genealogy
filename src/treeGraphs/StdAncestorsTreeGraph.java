@@ -1,12 +1,12 @@
 package treeGraphs;
 
-import java.awt.Font;
-
 import model.Person;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MyColor;
+import treeGraphs.painter.MyFont;
 import treeGraphs.painter.Point;
+import treeGraphs.painter.MyFont.Style;
 
 public class StdAncestorsTreeGraph extends TreeGraph {
 
@@ -22,7 +22,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 	private int y2 = 0;
 	private int[] columnsWidths;
 
-	private Font font = new Font("Times", Font.PLAIN, 13);
+	private MyFont font = new MyFont("Times", Style.REGULAR, 13);
 	
 	public StdAncestorsTreeGraph() {}
 	public StdAncestorsTreeGraph(Person person) {

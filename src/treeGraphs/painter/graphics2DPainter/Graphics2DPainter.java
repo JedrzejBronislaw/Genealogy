@@ -10,6 +10,8 @@ import java.awt.RenderingHints;
 import lombok.Setter;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MyColor;
+import treeGraphs.painter.MyFont;
+import treeGraphs.painter.MyFont.Style;
 import treeGraphs.painter.Painter;
 import treeGraphs.painter.Point;
 import treeGraphs.painter.Rectangle;
@@ -108,13 +110,33 @@ public class Graphics2DPainter extends Painter {
 	}
 
 	@Override
-	public void setTextStyle(String fontName, int style, int size) {
-		g.setFont(new Font(fontName, style, size));
+	public void setTextStyle(String fontName, Style style, int size) {
+		int s = Font.PLAIN;
+		
+		if (style == Style.BOLD_ITALIC) s = Font.BOLD + Font.ITALIC; else
+		if (style == Style.BOLD) s = Font.BOLD; else
+		if (style == Style.ITALIC) s = Font.ITALIC;
+		
+		g.setFont(new Font(fontName, s, size));
 	}
 
 	@Override
-	public void setTextStyle(Font font) {
-		g.setFont(font);
+	public MyFont getTextStyle() {
+		Font font = g.getFont();
+		int style = font.getStyle();
+		
+		Style s = Style.REGULAR;
+		boolean b = false;
+		boolean i = false;
+		
+		if ((style & Font.BOLD)   != 0) b = true;
+		if ((style & Font.ITALIC) != 0) i = true;
+		
+		if (b && i) s = Style.BOLD_ITALIC;
+		else if (b) s = Style.BOLD;
+		else if (i) s = Style.ITALIC;
+		
+		return new MyFont(font.getFamily(), s, font.getSize());
 	}
 
 	@Override
@@ -137,11 +159,6 @@ public class Graphics2DPainter extends Painter {
 	public int getTextWidth(String text) {
 		FontMetrics fm = g.getFontMetrics();
 		return fm.stringWidth(text);
-	}
-
-	@Override
-	public Font getTextStyle() {
-		return g.getFont();
 	}
 
 }

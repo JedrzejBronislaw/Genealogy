@@ -1,13 +1,13 @@
 package treeGraphs;
 
-import java.awt.Font;
-
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MyColor;
+import treeGraphs.painter.MyFont;
+import treeGraphs.painter.MyFont.Style;
 import treeGraphs.painter.Point;
 
 public class StdDescendantsTreeGraph extends TreeGraph{
@@ -25,7 +25,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	private static final int betweenSiblingsSpace = 10;
 	private static final int betwennCousisnsSpace = 20;
 
-	private Font font = new Font("Times", Font.PLAIN, 13);
+	private MyFont font = new MyFont("Times", Style.REGULAR, 13);
 	private static final MyColor ringsColor = new MyColor(255, 215, 0);
 
 	@Setter @Getter

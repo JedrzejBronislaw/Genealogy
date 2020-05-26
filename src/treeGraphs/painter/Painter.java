@@ -1,7 +1,5 @@
 package treeGraphs.painter;
 
-import java.awt.Font;
-
 import lombok.Setter;
 
 public abstract class Painter {
@@ -19,9 +17,11 @@ public abstract class Painter {
 	
 	abstract public void setColor(MyColor color);
 	abstract public MyColor getColor();
-	abstract public void setTextStyle(String fontName, int style, int size);
-	abstract public void setTextStyle(Font font);
-	abstract public Font getTextStyle();
+	abstract public void setTextStyle(String fontName, MyFont.Style style, int size);
+	public void setTextStyle(MyFont font) {
+		setTextStyle(font.getName(), font.getStyle(), font.getSize());
+	}
+	abstract public MyFont getTextStyle();
 	abstract public void setLineStyle(int thickness);
 	abstract public int getLineThickness();
 
