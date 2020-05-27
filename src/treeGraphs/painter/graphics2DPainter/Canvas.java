@@ -54,44 +54,39 @@ public class Canvas extends JPanel implements MouseListener {
 			if (dimensions != null)
 				dimensions.accept(graph.getWidth(), graph.getHeight());
 
-			if ((graph.getWidth()  != getWidth()) ||
-				(graph.getHeight() != getHeight()))
-			setPreferredSize(new Dimension(graph.getWidth(), graph.getHeight()));
+			if (sizeChanged())
+				setPreferredSize(new Dimension(graph.getWidth(), graph.getHeight()));
+			
 			revalidate();
 		}
 	}
 
+	private boolean sizeChanged() {
+		return
+			(graph.getWidth()  != getWidth()) ||
+			(graph.getHeight() != getHeight());
+	}
+
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		Point p = arg0.getPoint();
-		ClickArea area = clickMap.getArea(p.x, p.y);
+	public void mouseClicked(MouseEvent click) {
+		Point point = click.getPoint();
+		ClickArea area = clickMap.getArea(point.x, point.y);
+		
 		if (area != null) {
-			if (arg0.getClickCount() == 1) area.singleClick();
-			if (arg0.getClickCount() >= 2) area.doubleClick();
+			if (click.getClickCount() == 1) area.singleClick();
+			if (click.getClickCount() >= 2) area.doubleClick();
 		}
 	}
 	
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent arg0) {}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent arg0) {}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent arg0) {}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent arg0) {}
 }
