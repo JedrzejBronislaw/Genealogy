@@ -14,15 +14,12 @@ import model.TreeEditor;
 import session.Session;
 import settings.Settings;
 import tools.Injection;
-import treeGraphs.DrawingDescendantTreeGraph;
-import treeGraphs.StdAncestorsTreeGraph;
-import treeGraphs.StdDescendantsTreeGraph;
-import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
-import treeGraphs.painter.nameDisplayers.NameDisplayer;
-import treeGraphs.painter.nameDisplayers.SimpleNameDisplayer;
-import treeGraphs.painter.service.FXPainterService;
+import treeGraphs.TreeGraphType;
+import treeGraphs.painter.PainterServiceType;
+import treeGraphs.painter.nameDisplayers.NameDisplayerType;
 import treeGraphs.painter.service.PainterService;
+import treeGraphs.painter.service.PainterServiceBuilder;
 import viewFX.builders.PaneFXMLBuilder;
 import viewFX.card.CardPaneBuilder;
 import viewFX.card.CardPaneController;
@@ -170,16 +167,13 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 	private ViewPane generateCardPane() {
 		CardPaneBuilder builder = new CardPaneBuilder();
 		builder.setShowAncestorsTree(person -> {
-			TreeGraph graph = new StdAncestorsTreeGraph();
-			showGraph(graph, person);
+			showGraph(TreeGraphType.ancestors, person);
 		});
 		builder.setShowDescendantsTree(person -> {
-			TreeGraph graph = new StdDescendantsTreeGraph();
-			showGraph(graph, person);
+			showGraph(TreeGraphType.descendants, person);
 		});
 		builder.setShowDrawingTree(person -> {
-			TreeGraph graph = new DrawingDescendantTreeGraph();
-			showGraph(graph, person);
+			showGraph(TreeGraphType.drawnig, person);
 		});
 		builder.setGraphClickAction(selectedPerson -> {
 			cardController.setPerson(selectedPerson);
@@ -202,26 +196,29 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		if ( parameters == null ||
 			!parameters.isReady()) return false;
 		
-		showGraph(
-				parameters.getGraphType().createGraph(),
-				parameters.getPerson(),
-				parameters.getNameDisplayerType().createDisplayer(),
-				parameters.getPainterType().createPainterService());
+		showGraphView(new PainterServiceBuilder().setParameters(parameters).build());
 		
 		return true;
 	}
 	
-	private void showGraph(TreeGraph graph, Person person) {
-		showGraph(graph, person, null, new FXPainterService());
+	private void showGraph(TreeGraphType graph, Person person) {
+		showGraph(graph, person, NameDisplayerType.onlyName, PainterServiceType.FX);
 	}
 	
-	private void showGraph(TreeGraph graph, Person person, NameDisplayer nameDisplayer, PainterService painterService) {
+	private void showGraph(TreeGraphType graph, Person person, NameDisplayerType nameDisplayer, PainterServiceType painterService) {
 
-		graph.setNameDisplayer((nameDisplayer == null) ? new SimpleNameDisplayer() : nameDisplayer);
+		PainterServiceBuilder builder = new PainterServiceBuilder();
+		builder.setPerson(person);
+		builder.setPainterServiceType(painterService);
+		builder.setGraphType(graph);
+		builder.setNameDisplayerType(nameDisplayer);
+		
+		showGraphView(builder.build());
+	}
 
+
+	private void showGraphView(PainterService painterService) {
 		treeGraphController.setPainterService(painterService);
-		treeGraphController.setGraph(graph);
-		treeGraphController.setPerson(person);
 		treeGraphController.refreshGraph();
 		
 		controller.showView(Views.Graph);

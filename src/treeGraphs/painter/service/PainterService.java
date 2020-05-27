@@ -2,7 +2,7 @@ package treeGraphs.painter.service;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import model.Person;
+import lombok.Getter;
 import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.TreeGraphParameters.TreeGraphParametersBuilder;
@@ -14,31 +14,20 @@ import treeGraphs.painter.nameDisplayers.NameDisplayerType;
 
 public abstract class PainterService {
 
+	@Getter
 	protected TreeGraph graph;
-	protected Person mainPerson;
 
 	public void setGraph(TreeGraph graph) {
 		this.graph = graph;
 		graph.setPainter(getPainter());
-		linkGraphWithPerson();
-	}
-	
-	public void setMainPerson(Person mainPerson) {
-		this.mainPerson = mainPerson;
-		linkGraphWithPerson();
-	}
-	
-	private void linkGraphWithPerson() {
-		if (graph != null && mainPerson != null)
-			graph.setMainPerson(mainPerson);
 	}
 	
 	public TreeGraphParameters getParameters() {
 		TreeGraphParametersBuilder builder = TreeGraphParameters.builder()
-				.person(mainPerson)
 				.painterType(PainterServiceType.valueOf(painterName()));
 		
 		if (graph != null) builder
+			.person(graph.getMainPerson())
 			.graphType(TreeGraphType.get(graph.getClass()))
 			.nameDisplayerType(NameDisplayerType.get(graph.getNameDisplayer().getClass()));
 

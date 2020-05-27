@@ -36,29 +36,21 @@ public class TreeGraphPaneController implements Initializable{
 	
 	private PainterService painterService;
 	
-	public void setPerson(Person person) {
-		painterService.setMainPerson(person);
-		
-		Injection.run(onParametersChange, painterService.getParameters());
-	}
-	
-	public void setGraph(TreeGraph graph) {
-		graph.setPersonSingleClickAction(person -> Injection.run(onPersonSingleClick, person));
-		graph.setPersonDoubleClickAction(person -> Injection.run(onPersonDoubleClick, person));
-		painterService.setGraph(graph);
-		
-		Injection.run(onParametersChange, painterService.getParameters());
-	}
 	
 	public void setPainterService(PainterService painterService) {
 		this.painterService = painterService;
 		treePane.setCenter(painterService.getCanvas(treePane));
+
+		TreeGraph graph = painterService.getGraph();
+		graph.setPersonSingleClickAction(person -> Injection.run(onPersonSingleClick, person));
+		graph.setPersonDoubleClickAction(person -> Injection.run(onPersonDoubleClick, person));
 		
 		Injection.run(onParametersChange, painterService.getParameters());
 	}
 	
 	public void refreshGraph() {
-		painterService.refreshGraph();
+		if (painterService != null)
+			painterService.refreshGraph();
 	}
 	
 	
