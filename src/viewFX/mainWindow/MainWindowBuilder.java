@@ -32,9 +32,6 @@ import viewFX.mainWindow.fullScreen.FullScreenPaneBuilder;
 import viewFX.mainWindow.language.LanguagePaneBuilder;
 import viewFX.treeGraph.TreeGraphPaneBuilder;
 import viewFX.treeGraph.TreeGraphPaneController;
-import viewFX.treeGraph.graphOptions.GraphOptionsPaneBuilder;
-import viewFX.treeGraph.personDetails.PersonDetailsPaneBuilder;
-import viewFX.treeGraph.personDetails.PersonDetailsPaneController;
 import viewFX.treePane.TreePaneBuilder;
 
 public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
@@ -135,32 +132,19 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 	
 	private ViewPane generateTreeGraphPane() {
 		TreeGraphPaneBuilder builder = new TreeGraphPaneBuilder();
-		builder.build();
-		treeGraphController = builder.getController();
-		
-		PersonDetailsPaneBuilder personDetailsBuilder = new PersonDetailsPaneBuilder();
-		personDetailsBuilder.setPersonClick(person -> {
+		builder.setSession(session);
+		builder.setPersonClick(person -> {
 			cardController.setPerson(person);
 			controller.showView(Views.Card);
 		});
-		personDetailsBuilder.build();
-		PersonDetailsPaneController personDetails = personDetailsBuilder.getController();
+		builder.setDrawGraphAction(this::showGraph);
+		builder.build();
+
+		treeGraphController = builder.getController();
 		
-		GraphOptionsPaneBuilder graphOptionsBuilder = new GraphOptionsPaneBuilder();
-		graphOptionsBuilder.setSession(session);
-		graphOptionsBuilder.setDrawAction(this::showGraph);
-		graphOptionsBuilder.build();
-		
-		treeGraphController.setOnPersonSingleClick(person -> personDetails.setPerson(person));
-		treeGraphController.setOnPersonDoubleClick(clickedPerson -> {
-			cardController.setPerson(clickedPerson);
-			controller.showView(Views.Card);
-		});
-		treeGraphController.setOnParametersChange(graphOptionsBuilder.getController()::setState);
-		
-		ViewPane viewPane = new ViewPane(builder.getPane(), () -> personDetails.clearFields());
-		viewPane.setLeftPane(personDetailsBuilder.getPane());
-		viewPane.setTopPane(graphOptionsBuilder.getPane());
+		ViewPane viewPane = new ViewPane(builder.getPane(), () -> builder.clearPersonDetailsFields());
+		viewPane.setLeftPane(builder.getPersonDetailsPane());
+		viewPane.setTopPane(builder.getGraphOptionsPane());
 		return viewPane;
 	}
 	
@@ -216,7 +200,6 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		showGraphView(builder.build());
 	}
 
-
 	private void showGraphView(PainterService painterService) {
 		treeGraphController.setPainterService(painterService);
 		treeGraphController.refreshGraph();
@@ -246,7 +229,4 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		
 		return new ViewPane(builder.getPane());
 	}
-
-
-
 }
