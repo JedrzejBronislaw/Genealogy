@@ -1,4 +1,4 @@
-package windows;
+package treeGraphs.painter.graphics2DPainter;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 
 import lombok.Setter;
 import treeGraphs.TreeGraph;
-import treeGraphs.painter.graphics2DPainter.ClickMap;
-import treeGraphs.painter.graphics2DPainter.Graphics2DPainter;
 import treeGraphs.painter.graphics2DPainter.ClickMap.ClickArea;
 
 public class Canvas extends JPanel implements MouseListener {

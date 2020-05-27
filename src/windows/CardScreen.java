@@ -20,6 +20,7 @@ import model.Person;
 import model.Person.Sex;
 import other.PersonDetails;
 import treeGraphs.TreeGraph;
+import treeGraphs.painter.graphics2DPainter.Canvas;
 import treeGraphs.painter.nameDisplayers.DateAndNameDisplayer;
 import treeGraphs.painter.nameDisplayers.SimpleNameDisplayer;
 import treeGraphs.ClosestTreeGraph;

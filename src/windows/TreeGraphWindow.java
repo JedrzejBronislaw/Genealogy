@@ -7,6 +7,7 @@ import javax.swing.JScrollPane;
 
 import model.Person;
 import treeGraphs.TreeGraph;
+import treeGraphs.painter.graphics2DPainter.Canvas;
 
 public class TreeGraphWindow extends JFrame {
 

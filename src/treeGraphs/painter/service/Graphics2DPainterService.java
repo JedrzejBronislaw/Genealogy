@@ -9,11 +9,11 @@ import tools.SwingRefresher;
 import treeGraphs.TreeGraph;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.Painter;
+import treeGraphs.painter.graphics2DPainter.Canvas;
 import treeGraphs.painter.graphics2DPainter.ClickMap;
 import treeGraphs.painter.graphics2DPainter.G2DHandleFactory;
 import treeGraphs.painter.graphics2DPainter.Graphics2DGraphSaver;
 import treeGraphs.painter.graphics2DPainter.Graphics2DPainter;
-import windows.Canvas;
 
 public class Graphics2DPainterService extends PainterService {
 

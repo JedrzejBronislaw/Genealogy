@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import treeGraphs.painter.GraphSaver;
-import windows.Canvas;
 
 @AllArgsConstructor
 public class Graphics2DGraphSaver extends GraphSaver {
