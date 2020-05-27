@@ -69,7 +69,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		controller.setFullScreenPane(generateFullScreenPane());
 
 		controller.setCardPane(generateCardPane());
-		controller.setGraphPane(generateTreeGrapfPane());
+		controller.setGraphPane(generateTreeGraphPane());
 		controller.setChooseFilePane(generateFileChoosePane());
 		controller.setTreePane(generateTreePane());
 		controller.setEditPersonPane(generateEditPersonPane());
@@ -133,7 +133,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		return new ViewPane(builder.getPane());
 	}
 	
-	private ViewPane generateTreeGrapfPane() {
+	private ViewPane generateTreeGraphPane() {
 		TreeGraphPaneBuilder builder = new TreeGraphPaneBuilder();
 		builder.build();
 		treeGraphController = builder.getController();
