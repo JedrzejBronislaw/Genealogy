@@ -1,5 +1,6 @@
 package treeGraphs;
 
+import lombok.AllArgsConstructor;
 import model.Person;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
@@ -9,18 +10,29 @@ import treeGraphs.painter.Point;
 import treeGraphs.painter.MyFont.Style;
 
 public class StdAncestorsTreeGraph extends TreeGraph {
-
-
-	private static int marginX = 20;
-	private static int marginY = 20;
-	private static int rowHeight = 40;
-//	private static int cloumnWidth = 177;
-
-	private static int verticalOffset = 15;
-	private static int horizontalOffset = 50;
 	
-	private int y2 = 0;
-	private int[] columnsWidths;
+	@AllArgsConstructor
+	private class Coords {
+		int personY;
+		int branchBottom;
+	}
+
+
+	private static final int marginX = 20;
+	private static final int marginY = 20;
+
+	private static final int betweenParents = 15;
+	private static final int emptyPersonHeight = 0;
+	private static final int arrowSpaceWidth = 50;
+
+	//arrow parameters
+	private static final int childSpace = 10;
+	private static final int parentSpace = 5;
+	private static final int parentLineLenght = 10;
+	private static final int parentsVericalLineSpace = parentLineLenght + parentSpace;
+	
+	private int[] gensWidths;
+	private int[] gensXCoordinate;
 
 	private MyFont font = new MyFont("Times", Style.REGULAR, 13);
 	
@@ -31,114 +43,145 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 	
 	@Override
 	public void draw() {
+		if (mainPerson == null) return;
+		
 		painter.startDrawing();
 		
 		painter.setTextStyle(font);
 		painter.setColor(MyColor.BLACK);
 		
-		if (mainPerson == null)
-			return;
 		
-		width = calculateColumnsWidths();
+		calculateColumnsWidthsAndXCoords();
+		width = getAllColumnsWidth();
 		
-		y2 = marginY;
-		drawRoot(mainPerson, 0, 0);
-		height  = y2-verticalOffset;
+		Coords coords;
+		coords = drawBranch(mainPerson, 0, marginY);
+		height = coords.branchBottom-betweenParents;
 		
-		height  += marginY;
-		width += marginX;
+		height += marginY;
+		width  += marginX;
 	}
 	
-	private int calculateColumnsWidths() {
-		columnsWidths = new int[mainPerson.rootSize()+2];
+	private void calculateColumnsWidthsAndXCoords() {
+		int numOfColumns = mainPerson.rootSize()+2;
+		gensWidths      = new int[numOfColumns];
+		gensXCoordinate = new int[numOfColumns];
 		
 		//Calculate names max width
-		columnsWidths[0] = nameDisplayer.getWidth(mainPerson);
-		parentsWidth(mainPerson, 1);
+		computeGenerationsWidth(mainPerson);
 		
 		//Calculate right bound (with place for arrows)
-		columnsWidths[0] += horizontalOffset;
-		for (int i=1; i<columnsWidths.length; i++)
-			columnsWidths[i] += columnsWidths[i-1] + horizontalOffset;
+		gensXCoordinate[0] += gensWidths[0] + arrowSpaceWidth;
+		for (int i=1; i<numOfColumns; i++)
+			gensXCoordinate[i] = gensWidths[i] + gensXCoordinate[i-1] + arrowSpaceWidth;
 		
 		//Calculate left bound (right bound of left neighbor)
-		for (int i=columnsWidths.length-1; i>0; i--)
-			columnsWidths[i] = columnsWidths[i-1];
-		columnsWidths[0] = 0;
+		for (int i=numOfColumns-1; i>0; i--)
+			gensXCoordinate[i] = gensXCoordinate[i-1];
+		gensXCoordinate[0] = 0;
 		
 		//move all by margin
-		for (int i=0; i<columnsWidths.length; i++)
-			columnsWidths[i] += marginX;
-
-		return columnsWidths[columnsWidths.length-1] - horizontalOffset;
+		for (int i=0; i<numOfColumns; i++)
+			gensXCoordinate[i] += marginX;
 	}
 	
-	private int parentsWidth(Person person, int generation)
-	{
-		int mother = (person.getMother() == null) ? 0 : nameDisplayer.getWidth(person.getMother());
-		int father = (person.getFather() == null) ? 0 : nameDisplayer.getWidth(person.getFather());
-		int wider = (father > mother) ? father : mother;
-		
-		if (columnsWidths[generation] < wider)
-			columnsWidths[generation] = wider;
-
-		if (person.getMother() != null) parentsWidth(person.getMother(),  generation+1);
-		if (person.getFather() != null) parentsWidth(person.getFather(), generation+1);
-		
-		return wider;
+	private int getAllColumnsWidth() {
+		return gensXCoordinate[gensXCoordinate.length-1] - arrowSpaceWidth;
 	}
 
-	private int drawRoot(Person person, int generation, int y1)
+	private void computeGenerationsWidth(Person person) {
+		computeGenerationsWidth(person, 0);
+	}
+	private void computeGenerationsWidth(Person person, int generation) {
+		if (person == null) return;
+		
+		gensWidths[generation] = Math.max(
+				gensWidths[generation],
+				nameDisplayer.getWidth(person));
+		
+		computeGenerationsWidth(person.getFather(), generation+1);
+		computeGenerationsWidth(person.getMother(), generation+1);
+	}
+	
+	private Coords drawBranch(Person person, int generation, int branchY)
 	{		
+		if (person == null)
+			return new Coords(branchY, branchY+emptyPersonHeight+betweenParents);
+		if (!hasAnyParent(person))
+			return drawLeaf(person, gensXCoordinate[generation], branchY);
+		
+		
 		int nameHeight = nameDisplayer.getHeight(person);
 		int nameWidth  = nameDisplayer.getWidth(person);
 
-		Person father = person.getFather();
-		Person mother = person.getMother();
-		int fatherY, motherY;
-		int x,y;
+		int branchX = gensXCoordinate[generation];
+		int personX, personY;
 		Handle handle;
 		
-		if ((mother != null) || (father != null))
-		{
-			if (father != null)
-				fatherY = drawRoot(father, generation+1, y2);
-			else {
-				fatherY = y1;
-				y2 = y1 + rowHeight;
-			}
-			if (mother != null)
-				motherY = drawRoot(mother, generation+1, y2);
-			else {
-				motherY = fatherY + rowHeight;
-				y2 = y2 + rowHeight;
-			}
-			
-			x = columnsWidths[generation];
-			y = ((motherY-fatherY) / 2) + fatherY;
-			handle = nameDisplayer.print(person, x, y+nameHeight);
-			setHandleEvents(handle, person);
-			
-			//arrowhead
-			painter.drawArrowhead(new Point(x+nameWidth+10, y+nameHeight/2), Direction.LEFT);
-			//line to child
-			painter.drawLine(new Point(x+nameWidth+10, y+nameHeight/2), new Point(columnsWidths[generation+1]-15, y+nameHeight/2));
-			//vertical line
-			painter.drawLine(new Point(columnsWidths[generation+1]-15, fatherY+nameHeight/2), new Point(columnsWidths[generation+1]-15, motherY+nameHeight/2));
-			//line to father
-			painter.drawLine(new Point(columnsWidths[generation+1]-15, fatherY+nameHeight/2), new Point(columnsWidths[generation+1]-5, fatherY+nameHeight/2));
-			//line to mother
-			painter.drawLine(new Point(columnsWidths[generation+1]-15, motherY+nameHeight/2), new Point(columnsWidths[generation+1]-5, motherY+nameHeight/2));
-			
-			return y;
-		} else
-		{
-			x = columnsWidths[generation];
-			handle = nameDisplayer.print(person, x, y1+nameHeight);
-			setHandleEvents(handle, person);
-			
-			y2 = y1+nameHeight+verticalOffset;
-			return y1;
-		}
+		Person father = person.getFather();
+		Person mother = person.getMother();
+		Coords fatherBranch, motherBranch;
+
+		
+		fatherBranch = drawBranch(father, generation+1, branchY);
+		motherBranch = drawBranch(mother, generation+1, fatherBranch.branchBottom);
+		
+		personX = branchX;
+		personY = middleY(fatherBranch, motherBranch);
+		
+		handle = draw(person, personX, personY);
+		setHandleEvents(handle, person);
+		
+		//Draw arrows
+		int childX        = personX + nameWidth + childSpace;
+		int verticalLineX = gensXCoordinate[generation+1] - parentsVericalLineSpace;
+		
+		int childY  = personY + nameHeight/2;
+		int fatherY = fatherBranch.personY + nameHeight/2;
+		int motherY = motherBranch.personY + nameHeight/2;
+		
+		Point childPoint         = new Point(childX, childY);
+		Point verticalLineTop    = new Point(verticalLineX, fatherY);
+		Point verticalLineBottom = new Point(verticalLineX, motherY);
+		
+		//line to child
+		painter.drawLine(childPoint, new Point(verticalLineX, childY));
+		painter.drawArrowhead(childPoint, Direction.LEFT);
+		//vertical line
+		painter.drawLine(verticalLineTop, verticalLineBottom);
+		//line to father
+		painter.drawLine(verticalLineTop, verticalLineTop.addVector(parentLineLenght, 0));
+		//line to mother
+		painter.drawLine(verticalLineBottom, verticalLineBottom.addVector(parentLineLenght, 0));
+		
+		return new Coords(personY, motherBranch.branchBottom);
+	}
+
+	private Coords drawLeaf(Person person, int leafX, int leafY) {
+		int nameHeight = nameDisplayer.getHeight(person);
+		Handle handle;
+		
+		handle = draw(person, leafX, leafY);
+		setHandleEvents(handle, person);
+		
+		return new Coords(leafY, leafY + nameHeight + betweenParents);
+	}
+	
+	private int middleY(Coords fatherBranch, Coords motherBranch) {
+		int topY    = motherBranch.personY;
+		int bottomY = fatherBranch.personY;
+		
+		return ((topY-bottomY) / 2) + bottomY;
+	}
+	
+	private Handle draw(Person person, int x, int y) {
+		int nameHeight = nameDisplayer.getHeight(person);
+		
+		return nameDisplayer.print(person, x, y+nameHeight);
+	}
+	
+	private boolean hasAnyParent(Person person) {
+		return (person.getMother() != null)
+			|| (person.getFather() != null);
 	}
 }
