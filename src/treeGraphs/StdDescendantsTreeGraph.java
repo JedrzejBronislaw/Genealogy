@@ -1,5 +1,7 @@
 package treeGraphs;
 
+import java.util.Arrays;
+
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
@@ -19,8 +21,8 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	private static final int spouseIndentation = 20;
 	private	static final int minParentLineLength = 3;
 	private	static final int childArrowLength = 15;
-	private				 int betweenGenerationsSpace;
 	private static final int lineMargin = 5;
+	private	static final int betweenGenerationsSpace = minParentLineLength + childArrowLength + lineMargin*2;
 	private static final int betweenSpousesSpace = 4;
 	private static final int betweenSiblingsSpace = 10;
 	private static final int betwennCousisnsSpace = 20;
@@ -30,6 +32,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 
 	@Setter @Getter
 	private SpaceType spaceType = SpaceType.OnlyBetweenSiblings;
+//	private SpaceType spaceType = SpaceType.BetweenSiblingsAndCousins;
 	
 	private int[] columnsWidths;
 
@@ -40,30 +43,27 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 
 	@Override
 	public void draw() {
-		
 		if (mainPerson == null) return;
 		
 		painter.startDrawing();
 		painter.setTextStyle(font);
 		painter.setColor(MyColor.BLACK);
 		
-		betweenGenerationsSpace = minParentLineLength + childArrowLength + lineMargin*2;
-		
-		width = calculateColumnsWidths();
-		if (spaceType == SpaceType.OnlyBetweenSiblings)
-			height = drawFamily(mainPerson, marginesX, marginesY, 0) - betweenSiblingsSpace;
-		else
-			height = drawFamily(mainPerson, marginesX, marginesY, 0, true);
-		
+		width = computeWidths();
+		height = drawFamily(mainPerson, marginesX, marginesY);
+
 		height += marginesY * 2;
 		width  += marginesX * 2;
 	}
+	
+	private int computeWidths() {
+		columnsWidths = new int[1 + mainPerson.descendantGenerations()];
+		computeGenerationsWidth(mainPerson, 0);
+		return calculateColumnsWidths();
+	}
 
 	private int calculateColumnsWidths() {
-		columnsWidths = new int[mainPerson.descendantGenerations()+1];
 		int totalWidth = 0;
-		
-		branchesWidth(mainPerson, 0);
 		
 		for (int i=0; i<columnsWidths.length; i++)
 			totalWidth += columnsWidths[i] + betweenGenerationsSpace;
@@ -72,142 +72,133 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		return totalWidth;
 	}	
 	
-	private void branchesWidth(Person person, int generation)
+	private void computeGenerationsWidth(Person person, int generation)
 	{
-		int width;
-		Person spouse;
-
-		//compare own width
-		width = nameDisplayer.getWidth(person);
-		if (width > columnsWidths[generation])
-			columnsWidths[generation] = width;
-
-		//compare widths all spouses
-		for (int i=0; i<person.numberOfMarriages(); i++)
-		{
-			spouse = person.getSpouse(i);
-			width = nameDisplayer.getWidth(spouse) + spouseIndentation;
-			if (width > columnsWidths[generation])
-				columnsWidths[generation] = width;			
-		}
+		checkWidth(person, generation);
 		
-		//recurring invoke for all children
-		for (int i=0; i<person.numberOfChildren(); i++)
-			branchesWidth(person.getChild(i), generation+1);
+		Arrays.asList(person.getSpouses()).forEach(spouse ->
+			checkWidth(spouse, generation, spouseIndentation));
+		
+		Arrays.asList(person.getChildren()).forEach(child ->
+			computeGenerationsWidth(child, generation+1));
+	}
+	private void checkWidth(Person person, int generation) {
+		checkWidth(person, generation, 0);
+	}
+	private void checkWidth(Person person, int generation, int appendix) {
+		columnsWidths[generation] = Math.max(
+				columnsWidths[generation],
+				nameDisplayer.getWidth(person) + appendix);
 	}
 	
-	private int drawFamily(Person person, int x, int y, int generation)
-	{
-		int offset = 0;
-		int spouseOffset = 0;
+	private int drawFamily(Person person, int x, int y) {
+		int treeHeight = drawFamily(mainPerson, marginesX, marginesY, 0, true);
+		
+		if (spaceType == SpaceType.OnlyBetweenSiblings)
+			treeHeight -= betweenSiblingsSpace;
+		
+		return treeHeight;
+	}
+	private int drawFamily(Person person, int x, int y, int generation, boolean isLastChild) {
+		
+		draw(person, x, y);
+		
+		int nameHeight     = nameDisplayer.getHeight(person);
+		int spousesHeight  = drawSpouses(person, x, y);
+		int childrenHeight = drawChildren(person, x, y, generation);
+		
+		//return
+		int parentsHeight = nameHeight + spousesHeight;
+		int familyHeight = Math.max(parentsHeight, childrenHeight);
+
+		if (spaceType == SpaceType.BetweenSiblingsAndCousins) {
+			if (person.isChildless()) {
+				familyHeight = parentsHeight;
+				if (!isLastChild) familyHeight += betweenSiblingsSpace;
+			} else if (!isLastChild)
+				familyHeight =  Math.max(parentsHeight+betweenSiblingsSpace, childrenHeight+betwennCousisnsSpace);
+		}
+		
+		return familyHeight;
+	}
+	
+	private int drawChildren(Person person, int x, int y, int generation) {
+		if (person.isChildless()) return 0;
+
+		int childHeight = 0;
+		
 		int nameHeight = nameDisplayer.getHeight(person);
 		int nameWidth  = nameDisplayer.getWidth(person);
-		Handle handle;
 		
-		int lineX;
+		int verticalLineX = x + columnsWidths[generation] + lineMargin + minParentLineLength;
+		int parentX = x + nameWidth + lineMargin;
+		int childX = verticalLineX + childArrowLength;
 		
-		y += nameHeight;
-		handle = nameDisplayer.print(person, x, y);
-		setHandleEvents(handle, person);
+		int parentY = y+nameHeight/2;
+		int childY;
+		
+		Point parentPoint = new Point(parentX, parentY);
+		Point verticalLineTop = new Point(verticalLineX, parentY);
+		Point childPoint = parentPoint;
+		Point childLinePoint = parentPoint;
+		
+		painter.drawLine(parentPoint, verticalLineTop);
+		
+		for (int i=0; i<person.numberOfChildren(); i++)
+		{
+			Person child = person.getChild(i);
+			
+			childY = y+childHeight+nameHeight/2;
+			childPoint = new Point(childX, childY);
+			childLinePoint = new Point(verticalLineX, childY);
+			
+			painter.drawLine(childPoint, childLinePoint);
+			painter.drawArrowhead(childPoint, Direction.RIGHT);
+			drawMarriageNumber(child, person, verticalLineX, y+childHeight, childY);
+			
+			childHeight += drawFamily(child, childX+lineMargin, y+childHeight, generation+1, i==person.numberOfChildren()-1);
+			
+			if (spaceType == SpaceType.OnlyBetweenSiblings)
+				childHeight += betweenSiblingsSpace;
+		}
+		
+		painter.drawLine(verticalLineTop, childLinePoint);
+
+		return childHeight;
+	}
+	
+	private int drawSpouses(Person person, int x, int y) {
+		int spousesHeight = 0;
+		int nameHeight = nameDisplayer.getHeight(person);
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
-			spouseOffset += drawSpouse(person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
-	
-		if (person.numberOfChildren() > 0)
-		{
-			lineX = x + columnsWidths[generation] + lineMargin + minParentLineLength;
-
-			//line from parent
-			painter.drawLine(new Point(x+nameWidth+lineMargin, y-nameHeight/2), new Point(lineX, y-nameHeight/2));
-			for (int i=0; i<person.numberOfChildren(); i++)
-			{
-				//line to child
-				painter.drawLine(new Point(lineX, y+offset-nameHeight/2), new Point(lineX+childArrowLength, y+offset-nameHeight/2));
-				painter.drawArrowhead(new Point(lineX+childArrowLength, y+offset-nameHeight/2), Direction.RIGHT);
-				drawMarriageNumber(person.getChild(i), person, lineX, y+offset, y+offset-nameHeight/2);
-
-				//vertical line
-				painter.drawLine(new Point(lineX, y-nameHeight/2), new Point(lineX, y-nameHeight/2+offset));
-				offset += drawFamily(person.getChild(i), lineX+childArrowLength+lineMargin, y-nameHeight+offset, generation+1) + betweenSiblingsSpace;
-			}
-		}
-
-		return Math.max(spouseOffset+nameHeight, offset);
-	
+			spousesHeight += drawSpouse(person.getSpouse(i), x, y + nameHeight + spousesHeight + betweenSpousesSpace);
 		
+		return spousesHeight;
 	}
 	
 	private void drawMarriageNumber(Person child, Person parent, int x1, int y1, int lineY) {
-		if (parent.numberOfMarriages() > 1)
-		{
-			MyColor tempColor;
-			int marriageNumber = child.parentsMarriageNumber(parent);
-			if (marriageNumber != 0)
-			{
-				tempColor = painter.getColor();
-				painter.setColor(MyColor.WHITE);
-				painter.drawLine(new Point(x1+2, lineY), new Point(x1+2+painter.getTextWidth(marriageNumber+""), lineY));
-				painter.setColor(tempColor);
-				painter.drawText(marriageNumber+"", new Point(x1+3, y1));
-			}
-		}
-	}
-	
-	private int drawFamily(Person person, int x, int y, int generation, boolean last)
-	{
-		int offset = 0;
-		int spouseOffset = 0;
-		int nameHeight = nameDisplayer.getHeight(person);
-		int nameWidth  = nameDisplayer.getWidth(person);
-		Handle handle;
+		if (parent.numberOfMarriages() < 2) return;
 		
-		int lineX;
-		
-		y += nameHeight;
-		handle = nameDisplayer.print(person, x, y);
-		setHandleEvents(handle, person);
-		
-		for (int i=0; i<person.numberOfMarriages(); i++)
-			spouseOffset += drawSpouse(person.getSpouse(i), x, y+spouseOffset+betweenSpousesSpace) + betweenSpousesSpace;
-	
-		if (person.numberOfChildren() > 0)
-		{
-			lineX = x + columnsWidths[generation] + lineMargin + minParentLineLength;
+		int marriageNumber = child.parentsMarriageNumber(parent);
+		if (marriageNumber == 0) return;
 
-			//line from parent
-			painter.drawLine(new Point(x+nameWidth+lineMargin, y-nameHeight/2), new Point(lineX, y-nameHeight/2));
-			for (int i=0; i<person.numberOfChildren(); i++)
-			{
-				//line to child
-				painter.drawLine(new Point(lineX, y+offset-nameHeight/2), new Point(lineX+childArrowLength, y+offset-nameHeight/2));
-				painter.drawArrowhead(new Point(lineX+childArrowLength, y+offset-nameHeight/2), Direction.RIGHT);
-				drawMarriageNumber(person.getChild(i), person, lineX, y+offset, y+offset-nameHeight/2);
-
-				//vertical line
-				painter.drawLine(new Point(lineX, y-nameHeight/2), new Point(lineX, y-nameHeight/2+offset));
-				offset += drawFamily(person.getChild(i), lineX+childArrowLength+lineMargin, y-nameHeight+offset, generation+1, i==person.numberOfChildren()-1);
-			}
-		}
-
-		if (last)
-			return Math.max(spouseOffset+nameHeight, offset);
+		MyColor tempColor = painter.getColor();
 		
-		if (person.numberOfChildren() == 0)
-			return spouseOffset+nameHeight+betweenSiblingsSpace;
-		
-		return Math.max(spouseOffset+nameHeight+betweenSiblingsSpace, offset+betwennCousisnsSpace);
+		painter.setColor(MyColor.WHITE);
+		painter.drawLine(new Point(x1+2, lineY), new Point(x1+2+painter.getTextWidth(marriageNumber+""), lineY));
+		painter.setColor(tempColor);
+		painter.drawText(marriageNumber+"", new Point(x1+3, y1+painter.getTextHeight()));
 	}
 	
 	private int drawSpouse(Person person, int x, int y)
 	{
-		Handle handle;
 		int nameHeight = nameDisplayer.getHeight(person);
 		
-		handle = nameDisplayer.print(person, x+spouseIndentation, y+nameHeight);
-		setHandleEvents(handle, person);
+		draw(person, x+spouseIndentation, y);
 		drawRings(x, y, spouseIndentation, nameHeight);
 		
-		return nameHeight;
+		return nameHeight + betweenSpousesSpace;
 	}
 
 	private void drawRings(int x, int y, int width, int height) {
@@ -219,14 +210,11 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		int ringsWidth;
 		int x2;
 		
-		if (ringsRatio > areaRatio)
-		{
+		if (ringsRatio > areaRatio) {
 			//width is the limit
 			ringsWidth = width;
 			ringWidth = ringHeight = (int) (ringsWidth/(2-commonPart));
-		}
-		else
-		{
+		} else {
 			//height is the limit
 			ringWidth = ringHeight = height;
 			ringsWidth = (int) (ringWidth*(2-commonPart));
@@ -234,15 +222,21 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 		painter.setColor(ringsColor);
 		
-		x += (width-ringsWidth)/2;
-		y += (height -ringHeight) /2;
+		x += (width  - ringsWidth)/2;
+		y += (height - ringHeight) /2;
 		x2 = (int)(x+(ringWidth*(1-commonPart)));
 		
-		Point ring1 = new Point(x , y);
+		Point ring1 = new Point(x,  y);
 		Point ring2 = new Point(x2, y);
 		painter.drawRing(ring1, ring1.addVector(ringWidth, ringHeight));
 		painter.drawRing(ring2, ring2.addVector(ringWidth, ringHeight));
 		
 		painter.setColor(color);
+	}
+	
+	private void draw(Person person, int x, int y) {
+		int nameHeight = nameDisplayer.getHeight(person);
+		Handle handle  = nameDisplayer.print(person, x, y+nameHeight);
+		setHandleEvents(handle, person);
 	}
 }
