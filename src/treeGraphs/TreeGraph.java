@@ -16,8 +16,8 @@ public abstract class TreeGraph {
 
 	@Setter @Getter
 	protected Person mainPerson;
-	protected int height;
-	protected int width;
+	@Getter protected int height;
+	@Getter protected int width;
 
 	@Getter
 	protected NameDisplayer nameDisplayer = new SimpleNameDisplayer();
@@ -43,14 +43,6 @@ public abstract class TreeGraph {
 		return new Dimension(width, height);
 	}
 
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-	
 	protected void setHandleEvents(Handle handle, Person person) {
 		handle.setOnMouseSingleClick(() -> Injection.run(personSingleClickAction, person));
 		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
