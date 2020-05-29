@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import model.Person;
 import treeGraphs.painter.Direction;
-import treeGraphs.painter.Handle;
 import treeGraphs.painter.MyColor;
 import treeGraphs.painter.MyFont;
 import treeGraphs.painter.MyFont.Style;
@@ -232,11 +231,5 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		painter.drawRing(ring2, ring2.addVector(ringWidth, ringHeight));
 		
 		painter.setColor(color);
-	}
-	
-	private void draw(Person person, int x, int y) {
-		int nameHeight = nameDisplayer.getHeight(person);
-		Handle handle  = nameDisplayer.print(person, x, y+nameHeight);
-		setHandleEvents(handle, person);
 	}
 }

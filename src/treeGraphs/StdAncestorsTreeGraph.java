@@ -3,11 +3,10 @@ package treeGraphs;
 import lombok.AllArgsConstructor;
 import model.Person;
 import treeGraphs.painter.Direction;
-import treeGraphs.painter.Handle;
 import treeGraphs.painter.MyColor;
 import treeGraphs.painter.MyFont;
-import treeGraphs.painter.Point;
 import treeGraphs.painter.MyFont.Style;
+import treeGraphs.painter.Point;
 
 public class StdAncestorsTreeGraph extends TreeGraph {
 	
@@ -116,7 +115,6 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 
 		int branchX = gensXCoordinate[generation];
 		int personX, personY;
-		Handle handle;
 		
 		Person father = person.getFather();
 		Person mother = person.getMother();
@@ -129,8 +127,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		personX = branchX;
 		personY = middleY(fatherBranch, motherBranch);
 		
-		handle = draw(person, personX, personY);
-		setHandleEvents(handle, person);
+		draw(person, personX, personY);
 		
 		//Draw arrows
 		int childX        = personX + nameWidth + childSpace;
@@ -159,10 +156,8 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 
 	private Coords drawLeaf(Person person, int leafX, int leafY) {
 		int nameHeight = nameDisplayer.getHeight(person);
-		Handle handle;
 		
-		handle = draw(person, leafX, leafY);
-		setHandleEvents(handle, person);
+		draw(person, leafX, leafY);
 		
 		return new Coords(leafY, leafY + nameHeight + betweenParents);
 	}
@@ -172,12 +167,6 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		int bottomY = fatherBranch.personY;
 		
 		return ((topY-bottomY) / 2) + bottomY;
-	}
-	
-	private Handle draw(Person person, int x, int y) {
-		int nameHeight = nameDisplayer.getHeight(person);
-		
-		return nameDisplayer.print(person, x, y+nameHeight);
 	}
 	
 	private boolean hasAnyParent(Person person) {
