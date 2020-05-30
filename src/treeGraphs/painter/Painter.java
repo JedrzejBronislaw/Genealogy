@@ -10,6 +10,19 @@ public abstract class Painter {
 	abstract public void startDrawing();
 	
 	abstract public void drawLine(Point start, Point end);
+	public void drawHLine(Point start, int length) {
+		drawLine(start, start.addVector(length, 0));
+	}
+	public void drawVLine(Point start, int length) {
+		drawLine(start, start.addVector(0, length));
+	}
+	public void drawHLineTo(Point start, int endX) {
+		drawLine(start, new Point(endX, start.getY()));
+	}
+	public void drawVLineTo(Point start, int endY) {
+		drawLine(start, new Point(start.getX(), endY));
+	}
+	
 	abstract public Handle drawText(String text, Point topLeft);
 	abstract public Handle drawRectangle(Point topLeft, Point bottomRight);
 	abstract public Handle drawCircle(Point center, float radius);
