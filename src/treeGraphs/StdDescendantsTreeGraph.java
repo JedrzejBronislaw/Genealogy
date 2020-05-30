@@ -124,46 +124,52 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	private int drawChildren(Person person, int x, int y, int generation) {
 		if (person.isChildless()) return 0;
 
-		int childHeight = 0;
+		int childrenHeight = 0;
 		
 		int nameHeight = nameDisplayer.getHeight(person);
 		int nameWidth  = nameDisplayer.getWidth(person);
 		
 		int verticalLineX = x + columnsWidths[generation] + lineMargin + minParentLineLength;
 		int parentX = x + nameWidth + lineMargin;
-		int childX = verticalLineX + childArrowLength;
+		int arrowHeadX = verticalLineX + childArrowLength;
 		
 		int parentY = y+nameHeight/2;
-		int childY;
+		int arrowHeadY = 0;
 		
 		Point parentPoint = new Point(parentX, parentY);
 		Point verticalLineTop = new Point(verticalLineX, parentY);
-		Point childPoint = parentPoint;
-		Point childLinePoint = parentPoint;
 		
 		painter.drawLine(parentPoint, verticalLineTop);
 		
-		for (int i=0; i<person.numberOfChildren(); i++)
-		{
+		for (int i=0; i<person.numberOfChildren(); i++) {
 			Person child = person.getChild(i);
 			
-			childY = y+childHeight+nameHeight/2;
-			childPoint = new Point(childX, childY);
-			childLinePoint = new Point(verticalLineX, childY);
+			arrowHeadY = y + childrenHeight + nameHeight/2;
+			drawChildArrow(person, child, arrowHeadX, arrowHeadY, verticalLineX);
 			
-			painter.drawLine(childPoint, childLinePoint);
-			painter.drawArrowhead(childPoint, Direction.RIGHT);
-			drawMarriageNumber(child, person, verticalLineX, childY);
-			
-			childHeight += drawFamily(child, childX+lineMargin, y+childHeight, generation+1, i==person.numberOfChildren()-1);
+			childrenHeight += drawFamily(
+					child,
+					arrowHeadX + lineMargin,
+					y + childrenHeight,
+					generation + 1,
+					i==person.numberOfChildren()-1);
 			
 			if (spaceType == SpaceType.OnlyBetweenSiblings)
-				childHeight += betweenSiblingsSpace;
+				childrenHeight += betweenSiblingsSpace;
 		}
 		
-		painter.drawLine(verticalLineTop, childLinePoint);
+		painter.drawLine(verticalLineTop, new Point(verticalLineX, arrowHeadY));
 
-		return childHeight;
+		return childrenHeight;
+	}
+	
+	private void drawChildArrow(Person person, Person child, int arrowHeadX, int arrowHeadY, int verticalLineX) {
+		Point arrowHead = new Point(arrowHeadX, arrowHeadY);
+		Point linePoint = new Point(verticalLineX, arrowHeadY);
+		
+		painter.drawLine(linePoint, arrowHead);
+		painter.drawArrowhead(arrowHead, Direction.RIGHT);
+		drawMarriageNumber(child, person, verticalLineX, arrowHeadY);
 	}
 	
 	private int drawSpouses(Person person, int x, int y) {
