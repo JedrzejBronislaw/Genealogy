@@ -17,6 +17,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	
 	private static final int marginesX = 20;
 	private static final int marginesY = 20;
+	
 	private static final int spouseIndentation = 20;
 	private	static final int minParentLineLength = 3;
 	private	static final int childArrowLength = 15;
@@ -25,6 +26,13 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	private static final int betweenSpousesSpace = 4;
 	private static final int betweenSiblingsSpace = 10;
 	private static final int betwennCousisnsSpace = 20;
+	
+	//marriage number
+	private static final int beforeMarriageNumLineLength = 2;
+	private static final int marriageNumSpace = 5;
+	private static final int marriageNumMargin = 2;
+	private static final int marriageNumOffset = beforeMarriageNumLineLength + marriageNumMargin;
+	private static final int afterMarriageNumLineLength = childArrowLength - marriageNumOffset - marriageNumSpace;
 
 	private MyFont font = new MyFont("Times", Style.REGULAR, 13);
 	private static final MyColor ringsColor = new MyColor(255, 215, 0);
@@ -48,7 +56,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		painter.setTextStyle(font);
 		painter.setColor(MyColor.BLACK);
 		
-		width = computeWidths();
+		width  = computeWidths();
 		height = drawFamily(mainPerson, marginesX, marginesY);
 
 		height += marginesY * 2;
@@ -121,6 +129,59 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		return familyHeight;
 	}
 	
+	private int drawSpouses(Person person, int x, int y) {
+		int spousesHeight = 0;
+		int nameHeight = nameDisplayer.getHeight(person);
+		
+		for (int i=0; i<person.numberOfMarriages(); i++)
+			spousesHeight += drawSpouse(person.getSpouse(i), x, y + nameHeight + spousesHeight + betweenSpousesSpace);
+		
+		return spousesHeight;
+	}
+	
+	private int drawSpouse(Person person, int x, int y)
+	{
+		int nameHeight = nameDisplayer.getHeight(person);
+		
+		draw(person, x+spouseIndentation, y);
+		drawRings(x, y, spouseIndentation, nameHeight);
+		
+		return nameHeight + betweenSpousesSpace;
+	}
+
+	private void drawRings(int x, int y, int width, int height) {
+		MyColor color = painter.getColor();
+		final float commonPart = (float)0.3;
+		float ringsRatio = (float) (2.0-commonPart);
+		float areaRatio  = width/height;
+		int ringHeight, ringWidth;
+		int ringsWidth;
+		int x2;
+		
+		if (ringsRatio > areaRatio) {
+			//width is the limit
+			ringsWidth = width;
+			ringWidth = ringHeight = (int) (ringsWidth/(2-commonPart));
+		} else {
+			//height is the limit
+			ringWidth = ringHeight = height;
+			ringsWidth = (int) (ringWidth*(2-commonPart));
+		}
+		
+		painter.setColor(ringsColor);
+		
+		x += (width  - ringsWidth)/2;
+		y += (height - ringHeight) /2;
+		x2 = (int)(x+(ringWidth*(1-commonPart)));
+		
+		Point ring1 = new Point(x,  y);
+		Point ring2 = new Point(x2, y);
+		painter.drawRing(ring1, ring1.addVector(ringWidth, ringHeight));
+		painter.drawRing(ring2, ring2.addVector(ringWidth, ringHeight));
+		
+		painter.setColor(color);
+	}
+	
 	private int drawChildren(Person person, int x, int y, int generation) {
 		if (person.isChildless()) return 0;
 
@@ -162,94 +223,40 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 
 		return childrenHeight;
 	}
-	
+
 	private void drawChildArrow(Person person, Person child, int arrowHeadX, int arrowHeadY, int verticalLineX) {
 		Point arrowHead = new Point(arrowHeadX, arrowHeadY);
 		Point linePoint = new Point(verticalLineX, arrowHeadY);
 		
-		painter.drawLine(linePoint, arrowHead);
+		if(drawMarriageNumber(child, person, verticalLineX, arrowHeadY)) {
+			painter.drawHLine(linePoint, beforeMarriageNumLineLength);
+			painter.drawHLine(arrowHead, -afterMarriageNumLineLength);
+		} else
+			painter.drawLine(linePoint, arrowHead);
+			
 		painter.drawArrowhead(arrowHead, Direction.RIGHT);
-		drawMarriageNumber(child, person, verticalLineX, arrowHeadY);
 	}
 	
-	private int drawSpouses(Person person, int x, int y) {
-		int spousesHeight = 0;
-		int nameHeight = nameDisplayer.getHeight(person);
-		
-		for (int i=0; i<person.numberOfMarriages(); i++)
-			spousesHeight += drawSpouse(person.getSpouse(i), x, y + nameHeight + spousesHeight + betweenSpousesSpace);
-		
-		return spousesHeight;
-	}
-	
-	private void drawMarriageNumber(Person child, Person parent, int lineLeft, int lineY) {
-		if (parent.numberOfMarriages() < 2) return;
+	private boolean drawMarriageNumber(Person child, Person parent, int lineLeft, int lineY) {
+		if (parent.numberOfMarriages() < 2) return false;
 		
 		String marriageNumber = child.parentsMarriageNumber(parent) + "";
-		if (marriageNumber.equals("0")) return;
+		if (marriageNumber.equals("0")) return false;
 
-		MyColor oldColor = painter.getColor();
-		MyFont  oldFont  = painter.getTextStyle();
+		MyFont oldFont  = painter.getTextStyle();
 
 		painter.setTextStyle(
 				oldFont.getName(),
 				oldFont.getStyle(),
 				(int)(oldFont.getSize()*.75));
+		
 		int textHeight = painter.getTextHeight();
-		int textWidth  = painter.getTextWidth(marriageNumber);
-		
-		int leftX  = lineLeft + 3;
-		int textLeft   = leftX;
+		int textLeft   = lineLeft + marriageNumOffset;
 		int textBotton = (int) (lineY + Math.ceil(textHeight/2f));
-		
-		painter.setColor(MyColor.WHITE);
-		painter.drawHLine(new Point(leftX, lineY), textWidth);
-		painter.setColor(oldColor);
 		
 		painter.drawText(marriageNumber, new Point(textLeft, textBotton));
 		painter.setTextStyle(oldFont);
-	}
-	
-	private int drawSpouse(Person person, int x, int y)
-	{
-		int nameHeight = nameDisplayer.getHeight(person);
 		
-		draw(person, x+spouseIndentation, y);
-		drawRings(x, y, spouseIndentation, nameHeight);
-		
-		return nameHeight + betweenSpousesSpace;
-	}
-
-	private void drawRings(int x, int y, int width, int height) {
-		MyColor color = painter.getColor();
-		final float commonPart = (float)0.3; 
-		float ringsRatio = (float) (2.0-commonPart);
-		float areaRatio  = width/height;
-		int ringHeight, ringWidth;
-		int ringsWidth;
-		int x2;
-		
-		if (ringsRatio > areaRatio) {
-			//width is the limit
-			ringsWidth = width;
-			ringWidth = ringHeight = (int) (ringsWidth/(2-commonPart));
-		} else {
-			//height is the limit
-			ringWidth = ringHeight = height;
-			ringsWidth = (int) (ringWidth*(2-commonPart));
-		}
-		
-		painter.setColor(ringsColor);
-		
-		x += (width  - ringsWidth)/2;
-		y += (height - ringHeight) /2;
-		x2 = (int)(x+(ringWidth*(1-commonPart)));
-		
-		Point ring1 = new Point(x,  y);
-		Point ring2 = new Point(x2, y);
-		painter.drawRing(ring1, ring1.addVector(ringWidth, ringHeight));
-		painter.drawRing(ring2, ring2.addVector(ringWidth, ringHeight));
-		
-		painter.setColor(color);
+		return true;
 	}
 }
