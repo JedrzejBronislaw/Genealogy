@@ -192,25 +192,24 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		
 		int verticalLineX = x + columnsWidths[generation] + lineMargin + minParentLineLength;
 		int parentX = x + nameWidth + lineMargin;
-		int arrowHeadX = verticalLineX + childArrowLength;
+		int arrowheadX = verticalLineX + childArrowLength;
 		
 		int parentY = y+nameHeight/2;
-		int arrowHeadY = 0;
+		int arrowheadY = 0;
 		
 		Point parentPoint = new Point(parentX, parentY);
 		Point verticalLineTop = new Point(verticalLineX, parentY);
 		
-		painter.drawLine(parentPoint, verticalLineTop);
 		
 		for (int i=0; i<person.numberOfChildren(); i++) {
 			Person child = person.getChild(i);
 			
-			arrowHeadY = y + childrenHeight + nameHeight/2;
-			drawChildArrow(person, child, arrowHeadX, arrowHeadY, verticalLineX);
+			arrowheadY = y + childrenHeight + nameHeight/2;
+			drawChildArrow(person, child, arrowheadX, arrowheadY, verticalLineX);
 			
 			childrenHeight += drawFamily(
 					child,
-					arrowHeadX + lineMargin,
+					arrowheadX + lineMargin,
 					y + childrenHeight,
 					generation + 1,
 					i==person.numberOfChildren()-1);
@@ -219,22 +218,23 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 				childrenHeight += betweenSiblingsSpace;
 		}
 		
-		painter.drawVLineTo(verticalLineTop, arrowHeadY);
+		painter.drawLine(parentPoint, verticalLineTop);
+		painter.drawVLineTo(verticalLineTop, arrowheadY);
 
 		return childrenHeight;
 	}
 
-	private void drawChildArrow(Person person, Person child, int arrowHeadX, int arrowHeadY, int verticalLineX) {
-		Point arrowHead = new Point(arrowHeadX, arrowHeadY);
-		Point linePoint = new Point(verticalLineX, arrowHeadY);
+	private void drawChildArrow(Person person, Person child, int arrowheadX, int arrowheadY, int verticalLineX) {
+		Point arrowhead = new Point(arrowheadX, arrowheadY);
+		Point linePoint = new Point(verticalLineX, arrowheadY);
 		
-		if(drawMarriageNumber(child, person, verticalLineX, arrowHeadY)) {
+		if(drawMarriageNumber(child, person, verticalLineX, arrowheadY)) {
 			painter.drawHLine(linePoint, beforeMarriageNumLineLength);
-			painter.drawHLine(arrowHead, -afterMarriageNumLineLength);
+			painter.drawHLine(arrowhead, -afterMarriageNumLineLength);
 		} else
-			painter.drawLine(linePoint, arrowHead);
+			painter.drawLine(linePoint, arrowhead);
 			
-		painter.drawArrowhead(arrowHead, Direction.RIGHT);
+		painter.drawArrowhead(arrowhead, Direction.RIGHT);
 	}
 	
 	private boolean drawMarriageNumber(Person child, Person parent, int lineLeft, int lineY) {
