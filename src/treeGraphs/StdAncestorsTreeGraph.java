@@ -142,14 +142,14 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		Point verticalLineBottom = new Point(verticalLineX, motherY);
 		
 		//line to child
-		painter.drawLine(childPoint, new Point(verticalLineX, childY));
+		painter.drawHLineTo(childPoint, verticalLineX);
 		painter.drawArrowhead(childPoint, Direction.LEFT);
 		//vertical line
 		painter.drawLine(verticalLineTop, verticalLineBottom);
 		//line to father
-		painter.drawLine(verticalLineTop, verticalLineTop.addVector(parentLineLenght, 0));
+		painter.drawHLine(verticalLineTop, parentLineLenght);
 		//line to mother
-		painter.drawLine(verticalLineBottom, verticalLineBottom.addVector(parentLineLenght, 0));
+		painter.drawHLine(verticalLineBottom, parentLineLenght);
 		
 		return new Coords(personY, motherBranch.branchBottom);
 	}

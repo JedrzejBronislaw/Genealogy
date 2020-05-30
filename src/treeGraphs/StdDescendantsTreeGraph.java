@@ -158,7 +158,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 				childrenHeight += betweenSiblingsSpace;
 		}
 		
-		painter.drawLine(verticalLineTop, new Point(verticalLineX, arrowHeadY));
+		painter.drawVLineTo(verticalLineTop, arrowHeadY);
 
 		return childrenHeight;
 	}
@@ -199,12 +199,11 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		int textWidth  = painter.getTextWidth(marriageNumber);
 		
 		int leftX  = lineLeft + 3;
-		int rightX = leftX + textWidth;
 		int textLeft   = leftX;
 		int textBotton = (int) (lineY + Math.ceil(textHeight/2f));
 		
 		painter.setColor(MyColor.WHITE);
-		painter.drawLine(new Point(leftX, lineY), new Point(rightX, lineY));
+		painter.drawHLine(new Point(leftX, lineY), textWidth);
 		painter.setColor(oldColor);
 		
 		painter.drawText(marriageNumber, new Point(textLeft, textBotton));
