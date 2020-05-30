@@ -149,37 +149,38 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		return nameHeight + betweenSpousesSpace;
 	}
 
-	private void drawRings(int x, int y, int width, int height) {
-		MyColor color = painter.getColor();
-		final float commonPart = (float)0.3;
-		float ringsRatio = (float) (2.0-commonPart);
-		float areaRatio  = width/height;
-		int ringHeight, ringWidth;
-		int ringsWidth;
-		int x2;
+	private void drawRings(int x, int y, final int width, final int height) {
+		final MyColor oldColor = painter.getColor();
+		final float commonPart = .3f;
+		final float ringsRatio = 2 - commonPart;
+		final float areaRatio  = width / height;
+		
+		final int ringHeight, ringWidth;
+		final int ringsWidth;
+		final int x2;
 		
 		if (ringsRatio > areaRatio) {
 			//width is the limit
 			ringsWidth = width;
-			ringWidth = ringHeight = (int) (ringsWidth/(2-commonPart));
+			ringWidth  = ringHeight = (int)(ringsWidth / ringsRatio);
 		} else {
 			//height is the limit
-			ringWidth = ringHeight = height;
-			ringsWidth = (int) (ringWidth*(2-commonPart));
+			ringWidth  = ringHeight = height;
+			ringsWidth = (int)(ringWidth * ringsRatio);
 		}
 		
 		painter.setColor(ringsColor);
 		
-		x += (width  - ringsWidth)/2;
-		y += (height - ringHeight) /2;
-		x2 = (int)(x+(ringWidth*(1-commonPart)));
+		x += (width  - ringsWidth) / 2;
+		y += (height - ringHeight) / 2;
+		x2 = (int)(x + (ringWidth * (1-commonPart)));
 		
 		Point ring1 = new Point(x,  y);
 		Point ring2 = new Point(x2, y);
 		painter.drawRing(ring1, ring1.addVector(ringWidth, ringHeight));
 		painter.drawRing(ring2, ring2.addVector(ringWidth, ringHeight));
 		
-		painter.setColor(color);
+		painter.setColor(oldColor);
 	}
 	
 	private int drawChildren(Person person, int x, int y, int generation) {
