@@ -153,7 +153,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 			
 			painter.drawLine(childPoint, childLinePoint);
 			painter.drawArrowhead(childPoint, Direction.RIGHT);
-			drawMarriageNumber(child, person, verticalLineX, y+childHeight, childY);
+			drawMarriageNumber(child, person, verticalLineX, childY);
 			
 			childHeight += drawFamily(child, childX+lineMargin, y+childHeight, generation+1, i==person.numberOfChildren()-1);
 			
@@ -176,18 +176,33 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		return spousesHeight;
 	}
 	
-	private void drawMarriageNumber(Person child, Person parent, int x1, int y1, int lineY) {
+	private void drawMarriageNumber(Person child, Person parent, int lineLeft, int lineY) {
 		if (parent.numberOfMarriages() < 2) return;
 		
-		int marriageNumber = child.parentsMarriageNumber(parent);
-		if (marriageNumber == 0) return;
+		String marriageNumber = child.parentsMarriageNumber(parent) + "";
+		if (marriageNumber.equals("0")) return;
 
-		MyColor tempColor = painter.getColor();
+		MyColor oldColor = painter.getColor();
+		MyFont  oldFont  = painter.getTextStyle();
+
+		painter.setTextStyle(
+				oldFont.getName(),
+				oldFont.getStyle(),
+				(int)(oldFont.getSize()*.75));
+		int textHeight = painter.getTextHeight();
+		int textWidth  = painter.getTextWidth(marriageNumber);
+		
+		int leftX  = lineLeft + 3;
+		int rightX = leftX + textWidth;
+		int textLeft   = leftX;
+		int textBotton = (int) (lineY + Math.ceil(textHeight/2f));
 		
 		painter.setColor(MyColor.WHITE);
-		painter.drawLine(new Point(x1+2, lineY), new Point(x1+2+painter.getTextWidth(marriageNumber+""), lineY));
-		painter.setColor(tempColor);
-		painter.drawText(marriageNumber+"", new Point(x1+3, y1+painter.getTextHeight()));
+		painter.drawLine(new Point(leftX, lineY), new Point(rightX, lineY));
+		painter.setColor(oldColor);
+		
+		painter.drawText(marriageNumber, new Point(textLeft, textBotton));
+		painter.setTextStyle(oldFont);
 	}
 	
 	private int drawSpouse(Person person, int x, int y)
