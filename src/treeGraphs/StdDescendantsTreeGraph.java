@@ -99,34 +99,16 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	}
 	
 	private int drawFamily(Person person, int x, int y) {
-		int treeHeight = drawFamily(mainPerson, marginesX, marginesY, 0, true);
-		
-		if (spaceType == SpaceType.OnlyBetweenSiblings)
-			treeHeight -= betweenSiblingsSpace;
-		
-		return treeHeight;
+		return drawFamily(person, x, y, 0, true);
 	}
 	private int drawFamily(Person person, int x, int y, int generation, boolean isLastChild) {
 		
 		draw(person, x, y);
 		
-		int nameHeight     = nameDisplayer.getHeight(person);
 		int spousesHeight  = drawSpouses(person, x, y);
 		int childrenHeight = drawChildren(person, x, y, generation);
 		
-		//return
-		int parentsHeight = nameHeight + spousesHeight;
-		int familyHeight = Math.max(parentsHeight, childrenHeight);
-
-		if (spaceType == SpaceType.BetweenSiblingsAndCousins) {
-			if (person.isChildless()) {
-				familyHeight = parentsHeight;
-				if (!isLastChild) familyHeight += betweenSiblingsSpace;
-			} else if (!isLastChild)
-				familyHeight =  Math.max(parentsHeight+betweenSiblingsSpace, childrenHeight+betwennCousisnsSpace);
-		}
-		
-		return familyHeight;
+		return computeFamilyHeight(person, isLastChild, generation, spousesHeight, childrenHeight);
 	}
 	
 	private int drawSpouses(Person person, int x, int y) {
@@ -259,5 +241,30 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		painter.setTextStyle(oldFont);
 		
 		return true;
+	}
+	
+	private int computeFamilyHeight(Person person, boolean isLastChild, int generation, int spousesHeight, int childrenHeight) {
+		int nameHeight = nameDisplayer.getHeight(person);
+		
+		int parentsHeight = nameHeight + spousesHeight;
+		int familyHeight = Math.max(parentsHeight, childrenHeight);
+		
+		
+		if (spaceType == SpaceType.OnlyBetweenSiblings) {
+			if (generation == 0)
+				familyHeight = Math.max(parentsHeight, childrenHeight - betweenSiblingsSpace);
+		}
+		
+		
+		if (spaceType == SpaceType.BetweenSiblingsAndCousins) {
+			if (person.isChildless()) {
+				familyHeight = parentsHeight;
+				if (!isLastChild) familyHeight += betweenSiblingsSpace;
+			} else if (!isLastChild)
+				familyHeight =  Math.max(parentsHeight+betweenSiblingsSpace, childrenHeight+betwennCousisnsSpace);
+		}
+		
+		
+		return familyHeight;
 	}
 }
