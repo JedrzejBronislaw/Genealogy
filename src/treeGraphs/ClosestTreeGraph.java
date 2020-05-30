@@ -1,6 +1,5 @@
 package treeGraphs;
 
-import lombok.Setter;
 import model.Person;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
@@ -15,35 +14,35 @@ public class ClosestTreeGraph extends TreeGraph {
 	private static final int marginY = 20;
 	private static final int lineMargin = 5;
 	private static final int minSpaceBetweenParents = 50;
-	private static final int underParentsSpace = 30;
+	private static final int parentsSpaceHeight = 30;
 	private static final int spaceBetweenSiblings = 7;
 	private static final int spaceBetweenSpouses = 7;
 	private static final int spaceBetweenChildren = 7;
 	private static final int spouceIndentation = 20;
 	private static final int childIndentation = 20;
 	private static final int aboveChildrenSpace = 30;
-	private static final int minSpaceBetweenSpousesChildrenAndSiblings = 30;
+	private static final int minSpaceBetweenOwnFamilyAndSiblings = 30;
 
-	private static final MyFont mainPersonFont = new MyFont("Times", Style.BOLD, 25);
-	private static final MyFont familyFont   = new MyFont("Arial", Style.BOLD, 12);
+	private static final MyFont mainPersonFont = new MyFont("Times", Style.BOLD,   25);
+	private static final MyFont familyFont     = new MyFont("Arial", Style.BOLD,   12);
+	private static final MyFont sibilingsFont  = new MyFont("Arial", Style.ITALIC, 12);
 
 
 	private int areaWidth;
-	private int xName, yName;
-	private int nameWidth, nameHeight;
+	private int mainNameX, mainNameY;
+	private int mainNameWidth, mainNameHeight;
 	private int motherNameWidth, fatherNameWidth;
-	private int textHeight;
+	private int textHeight, siblingHeight;
 	private int siblingsWidth, siblingsHeight;
 	private int spousesWidth, spousesHeight;
 	private int childrenWidth, childrenHeight;
 	
-	@Setter
-	boolean makeCalculations = true;
+	boolean calculated = false;
 	
 	@Override
 	public void setMainPerson(Person osoba) {
 		this.mainPerson = osoba;
-		makeCalculations = true;
+		calculated = false;
 	}
 	
 	public ClosestTreeGraph() {}
@@ -53,213 +52,237 @@ public class ClosestTreeGraph extends TreeGraph {
 	
 	@Override
 	public void draw() {
+		if (mainPerson == null) return;
+		
 		painter.startDrawing();
 		
-		if (mainPerson == null)
-			return;
-		
-		if(makeCalculations)
-		{
-			calculations();
-			makeCalculations = false;
-		}
-		
-		String name = mainPerson.nameSurname();
-		Person[] siblings = mainPerson.getSiblings();
+		if(!calculated) calculate();
+
+		drawLines();
 		
 		painter.setTextStyle(mainPersonFont);
-		painter.drawText(name, new Point(xName, yName));
-		
-		painter.setTextStyle(familyFont);
+		drawMainPerson();
 
-		drawLines(siblings.length > 0);
-		drawParents(areaWidth);
-		drawSiblings(siblings, marginX+areaWidth-siblingsWidth, yName);
-		drawSpouses(xName+spouceIndentation, yName);
-		drawChildren(xName+childIndentation, yName+aboveChildrenSpace-spaceBetweenChildren+spousesHeight);		
+		painter.setTextStyle(familyFont);
+		drawParents();
+		drawSiblings();
+		drawSpouses();
+		drawChildren();
 	}
 	
-	private void calculations()
-	{
+	private void calculate() {
 		Person mother = mainPerson.getMother();
 		Person father = mainPerson.getFather();
 		Person[] siblings = mainPerson.getSiblings();
 		String name = mainPerson.nameSurname();
-		String motherName  = (mother != null)  ? mother.nameSurname()  : "";
+		String motherName = (mother != null) ? mother.nameSurname() : "";
 		String fatherName = (father != null) ? father.nameSurname() : "";
 		
 		
 		painter.setTextStyle(mainPersonFont);
-		nameHeight = painter.getTextHeight();
-		nameWidth  = painter.getTextWidth(name);
+		mainNameHeight = painter.getTextHeight();
+		mainNameWidth  = painter.getTextWidth(name);
 		
-		xName = marginX;
-		yName = marginY+nameHeight;
-		if ((father != null) || (mother != null))
-			yName += underParentsSpace;
+		mainNameX = marginX;
+		mainNameY = marginY + mainNameHeight;
+		if (mainPerson.hasAnyParent())
+			mainNameY += parentsSpaceHeight;
 		
 		painter.setTextStyle(familyFont);
 		textHeight = painter.getTextHeight();
 		motherNameWidth = painter.getTextWidth(motherName);
 		fatherNameWidth = painter.getTextWidth(fatherName);
 
-		siblingsWidth = siblingsWidth(siblings);
-		siblingsHeight  = siblings.length * (textHeight+spaceBetweenSiblings);
-		spousesWidth = spousesWidth();
-		spousesHeight  = mainPerson.numberOfMarriages() * (textHeight+spaceBetweenSpouses);
-		childrenWidth = childrenWidth();
-		childrenHeight  = mainPerson.numberOfChildren() * (textHeight+spaceBetweenChildren)-spaceBetweenChildren;
+		painter.setTextStyle(sibilingsFont);
+		siblingHeight  = painter.getTextHeight();
+		siblingsWidth  = siblingsWidth(siblings);
+		siblingsHeight = siblings.length * (siblingHeight + spaceBetweenSiblings);
 		
-		areaWidth = nameWidth;
-		if (areaWidth < fatherNameWidth+motherNameWidth+minSpaceBetweenParents)
-			areaWidth = fatherNameWidth+motherNameWidth+minSpaceBetweenParents;
-		if (areaWidth < spouceIndentation+spousesWidth+minSpaceBetweenSpousesChildrenAndSiblings+siblingsWidth)
-			areaWidth = spouceIndentation+spousesWidth+minSpaceBetweenSpousesChildrenAndSiblings+siblingsWidth;
-		if (areaWidth < childIndentation+childrenWidth+minSpaceBetweenSpousesChildrenAndSiblings+siblingsWidth)
-			areaWidth = childIndentation+childrenWidth+minSpaceBetweenSpousesChildrenAndSiblings+siblingsWidth;
+		painter.setTextStyle(familyFont);
+		spousesWidth  = spousesWidth();
+		spousesHeight = mainPerson.numberOfMarriages() * (textHeight + spaceBetweenSpouses);
+		childrenWidth  = childrenWidth();
+		childrenHeight = mainPerson.numberOfChildren() * (textHeight + spaceBetweenChildren) - spaceBetweenChildren;
 		
-		height = yName+siblingsHeight;
-		if (height < yName+spousesHeight)
-			height = yName+spousesHeight;
-		if ((mainPerson.numberOfChildren() > 0) && (height < yName+spousesHeight+aboveChildrenSpace+childrenHeight))
-			height = yName+spousesHeight+aboveChildrenSpace+childrenHeight;
+		int ownFamilyWidth = Math.max(
+				spouceIndentation + spousesWidth,
+				childIndentation  + childrenWidth);
+		areaWidth = Math.max(mainNameWidth, fatherNameWidth+motherNameWidth+minSpaceBetweenParents);
+		areaWidth = Math.max(areaWidth, ownFamilyWidth + minSpaceBetweenOwnFamilyAndSiblings + siblingsWidth);
+		
+		height = Math.max(
+				mainNameY + siblingsHeight,
+				mainNameY + spousesHeight);
+		if (!mainPerson.isChildless())
+			height = Math.max(height, mainNameY + spousesHeight + aboveChildrenSpace + childrenHeight);
+
 		width = areaWidth;
 		
-		height  += marginY;	//not twice, because it is already in yName
-		width += marginX*2;
+		height += marginY;	//not twice, because it is already in mainNameY
+		width  += marginX * 2;
+		
+		calculated = true;
 	}
 	
-	private void drawLines(boolean hasSiblings)
-	{
+	private void drawLines() {
 		Person father = mainPerson.getFather();
-		Person mother  = mainPerson.getMother();
+		Person mother = mainPerson.getMother();
+		boolean hasSiblings = mainPerson.getSiblings().length > 0;
 		
-		//between parents line
-		int xFromFather = marginX+fatherNameWidth+lineMargin;
-		int xFromMother= marginX+areaWidth-motherNameWidth-lineMargin;
-		int xLine = xFromFather + (xFromMother - xFromFather)/2;
-		int yLineTop = marginY+textHeight/2;
-		int yLineBottom = marginY+underParentsSpace-lineMargin;
-		if (father != null)
-			painter.drawLine(new Point(xFromFather, yLineTop), new Point(xLine, yLineTop));
-		if (mother != null)
-			painter.drawLine(new Point(xFromMother, yLineTop), new Point(xLine, yLineTop));
+		//between parents
+		int fatherX = marginX + fatherNameWidth + lineMargin;
+		int motherX = marginX + areaWidth - motherNameWidth - lineMargin;
+		int betweenParentsX = middle(fatherX, motherX);
+		int parentsMiddleHeight = marginY + textHeight / 2;
+		int abovePersonY = marginY + parentsSpaceHeight - lineMargin;
+		
+		final Point betweenParentsPoint = new Point(betweenParentsX, parentsMiddleHeight);
 
-		//from parents line
-		if ((father != null) || (mother != null))
-		{
-			painter.drawLine(new Point(xLine, yLineTop), new Point(xLine, yLineBottom));
-			drawArrowhead(xLine, yLineBottom);
+		if (father != null) painter.drawHLineTo(betweenParentsPoint, fatherX);
+		if (mother != null) painter.drawHLineTo(betweenParentsPoint, motherX);
+
+		
+		//parents
+		if (mainPerson.hasAnyParent()) {
+			painter.drawVLineTo(betweenParentsPoint, abovePersonY);
+			drawArrowhead(betweenParentsX, abovePersonY);
 		}
 		
-		//to siblings line
-		if (hasSiblings)
-		{
-			int xAboveSiblings = marginX+areaWidth-siblingsWidth/2;
-			if (xAboveSiblings < marginX+nameWidth+(areaWidth-nameWidth)/2)
-				xAboveSiblings = marginX+nameWidth+(areaWidth-nameWidth)/2;
-			int yAboveSiblings = yName+spaceBetweenSiblings-lineMargin;
-			painter.drawLine(new Point(xLine, yLineTop+(yLineBottom-yLineTop)/2), new Point(xAboveSiblings, yLineTop+(yLineBottom-yLineTop)/2));
-			painter.drawLine(new Point(xAboveSiblings, yLineTop+(yLineBottom-yLineTop)/2), new Point(xAboveSiblings, yAboveSiblings));
-			drawArrowhead(xAboveSiblings, yAboveSiblings);
+		
+		//siblings
+		if (hasSiblings) {
+			int aboveSiblingsX = Math.max(
+					marginX + areaWidth - siblingsWidth / 2,
+					marginX + middle(areaWidth, mainNameWidth));
+			int aboveSiblingsY = mainNameY + spaceBetweenSiblings - lineMargin;
+			int betweenPersonAndParents = middle(parentsMiddleHeight, abovePersonY);
+			
+			Point parentLineCentre   = new Point(betweenParentsX, betweenPersonAndParents);
+			Point blendSibilingsLine = new Point(aboveSiblingsX,  betweenPersonAndParents);
+			Point aboveSibilings     = new Point(aboveSiblingsX,  aboveSiblingsY);
+
+			painter.drawLine(blendSibilingsLine, parentLineCentre);
+			painter.drawLine(blendSibilingsLine, aboveSibilings);
+			drawArrowhead(aboveSibilings);
 		}
 		
-		//to children line
-		if (mainPerson.numberOfChildren() > 0)
-		{
-			int xToChildren = marginX+childIndentation+childrenWidth/2;
-			int yToChildrenTop = yName+spousesHeight+lineMargin;
-			int yToChildrenBottom = yName+spousesHeight+aboveChildrenSpace-lineMargin;
-			painter.drawLine(new Point(xToChildren, yToChildrenTop), new Point(xToChildren, yToChildrenBottom));
-			drawArrowhead(xToChildren, yToChildrenBottom);
+		
+		//children
+		if (!mainPerson.isChildless()) {
+			int aboveChildrenX   = marginX + childIndentation + childrenWidth / 2;
+			int aboveChildrenY   = mainNameY + spousesHeight + aboveChildrenSpace - lineMargin;
+			int topChildrenArrow = mainNameY + spousesHeight + lineMargin;
+			
+			final Point aboveChildren = new Point(aboveChildrenX, aboveChildrenY);
+			
+			painter.drawVLineTo(aboveChildren, topChildrenArrow);
+			drawArrowhead(aboveChildren);
 		}
 	}
-	
-	private void drawArrowhead(int x, int y)
-	{
-		painter.drawArrowhead(new Point(x, y), Direction.DOWN);
+
+	private int middle(int coord1, int coord2) {
+		return coord1 + (coord2 - coord1) / 2;
+	}
+
+	private void drawArrowhead(int x, int y) {
+		drawArrowhead(new Point(x, y));
+	}
+	private void drawArrowhead(Point point) {
+		painter.drawArrowhead(point, Direction.DOWN);
+	}
+
+	private void drawMainPerson() {
+		String name = mainPerson.nameSurname();
+		painter.drawText(name, new Point(mainNameX, mainNameY));
 	}
 	
-	private void drawParents(int areaWidth)
-	{
+	private void drawParents() {
 		Handle fHandle, mHandle;
 		Person mother = mainPerson.getMother();
 		Person father = mainPerson.getFather();
-		String motherName  = (mother != null)  ? mother.nameSurname()  : "";
+		String motherName = (mother != null) ? mother.nameSurname() : "";
 		String fatherName = (father != null) ? father.nameSurname() : "";
 
-		fHandle = painter.drawText(fatherName, new Point(marginX, marginY+textHeight));
-		mHandle = painter.drawText(motherName, new Point(marginX+areaWidth-motherNameWidth, marginY+textHeight));
+		int y = marginY + textHeight;
+		fHandle = painter.drawText(fatherName, new Point(marginX, y));
+		mHandle = painter.drawText(motherName, new Point(marginX + areaWidth - motherNameWidth, y));
 		
-		if (father != null)
-			setHandleEvents(fHandle, father);
-		if (mother != null)
-			setHandleEvents(mHandle, mother);
+		if (father != null) setHandleEvents(fHandle, father);
+		if (mother != null) setHandleEvents(mHandle, mother);
 	}
 	
-	private void drawSiblings(Person[] siblings, int x, int y)
-	{
-		MyFont f = painter.getTextStyle();
-		painter.setTextStyle(f.getName(), Style.ITALIC, f.getSize());
+	private void drawSiblings() {
+		int x = marginX + areaWidth - siblingsWidth;
+		int y = mainNameY;
+		Person[] siblings = mainPerson.getSiblings();
+		
+		MyFont oldFont = painter.getTextStyle();
+		painter.setTextStyle(sibilingsFont);
 
 		int height = painter.getTextHeight();
+		int posY;
+		Person sibling;
 		Handle handle;
 		
-		for (int i=0; i<siblings.length; i++)
-		{
-			Person sibling = siblings[i];
-			width  = painter.getTextWidth(sibling.nameSurname());
-			handle = painter.drawText(sibling.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSiblings)));
+		for (int i=0; i<siblings.length; i++) {
+			sibling = siblings[i];
+			posY = y + (height + spaceBetweenSiblings) * (i+1);
+			handle = painter.drawText(sibling.nameSurname(), new Point(x, posY));
 			
 			setHandleEvents(handle, sibling);
 		}
 		
-		painter.setTextStyle(f.getName(), f.getStyle(), f.getSize());
+		painter.setTextStyle(oldFont);
 	}
 	
-	private void drawSpouses(int x, int y)
-	{
+	private void drawSpouses() {
+		int x = mainNameX + spouceIndentation;
+		int y = mainNameY;
+		
 		int height = painter.getTextHeight();
+		int posY;
+		Person spouse;
 		Handle handle;
 		
-		for (int i=0; i<mainPerson.numberOfMarriages(); i++)
-		{
-			Person spouse;
+		for (int i=0; i<mainPerson.numberOfMarriages(); i++) {
 			spouse = mainPerson.getSpouse(i);
-			width  = painter.getTextWidth(spouse.nameSurname());
-			handle = painter.drawText(spouse.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenSpouses)));
+			posY = y + (height + spaceBetweenSpouses) * (i+1);
+			handle = painter.drawText(spouse.nameSurname(), new Point(x, posY));
 			
 			setHandleEvents(handle, spouse);
 		}		
 	}
 	
-	private void drawChildren(int x, int y)
-	{
+	private void drawChildren() {
+		int x = mainNameX + childIndentation;
+		int y = mainNameY + spousesHeight + aboveChildrenSpace - spaceBetweenChildren;
+		
 		int height = painter.getTextHeight();
+		int posY;
+		Person child;
 		Handle handle;
 		
-		for (int i=0; i<mainPerson.numberOfChildren(); i++)
-		{
-			Person child;
+		for (int i=0; i<mainPerson.numberOfChildren(); i++) {
 			child  = mainPerson.getChild(i);
-			width  = painter.getTextWidth(child.nameSurname());
-			handle = painter.drawText(child.nameSurname(), new Point(x, y+(i+1)*(height+spaceBetweenChildren)));
+			posY = y + (height + spaceBetweenChildren) * (i+1);
+			handle = painter.drawText(child.nameSurname(), new Point(x, posY));
 
 			setHandleEvents(handle, child);
 		}		
 	}
 
 	private int siblingsWidth(Person[] sibilings) {
-		MyFont f = painter.getTextStyle();
-		painter.setTextStyle(f.getName(), Style.ITALIC, f.getSize());
+		MyFont oldFont = painter.getTextStyle();
+		painter.setTextStyle(sibilingsFont);
 		
 		int maxWidth = 0;
 		
-		for(Person sibiling: sibilings)
-			if (maxWidth < painter.getTextWidth(sibiling.nameSurname()))
-				maxWidth = painter.getTextWidth(sibiling.nameSurname());
+		for (Person sibiling: sibilings)
+			maxWidth = Math.max(
+					maxWidth,
+					painter.getTextWidth(sibiling.nameSurname()));
 
-		painter.setTextStyle(f);
+		painter.setTextStyle(oldFont);
 		return maxWidth;
 	}
 
@@ -267,12 +290,13 @@ public class ClosestTreeGraph extends TreeGraph {
 		int maxWidth = 0;
 		Person spouse;
 		
-		for (int i=0; i<mainPerson.numberOfMarriages(); i++)
-		{
+		for (int i=0; i<mainPerson.numberOfMarriages(); i++) {
 			spouse = mainPerson.getSpouse(i);
-			if (maxWidth < painter.getTextWidth(spouse.nameSurname()))
-				maxWidth = painter.getTextWidth(spouse.nameSurname());
+			maxWidth = Math.max(
+					maxWidth,
+					painter.getTextWidth(spouse.nameSurname()));
 		}
+		
 		return maxWidth;
 	}
 
@@ -280,12 +304,13 @@ public class ClosestTreeGraph extends TreeGraph {
 		int maxWidth = 0;
 		Person child;
 		
-		for (int i=0; i<mainPerson.numberOfChildren(); i++)
-		{
+		for (int i=0; i<mainPerson.numberOfChildren(); i++) {
 			child = mainPerson.getChild(i);
-			if (maxWidth < painter.getTextWidth(child.nameSurname()))
-				maxWidth = painter.getTextWidth(child.nameSurname());
+			maxWidth = Math.max(
+					maxWidth,
+					painter.getTextWidth(child.nameSurname()));
 		}
+		
 		return maxWidth;
 	}
 }
