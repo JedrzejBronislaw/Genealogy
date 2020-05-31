@@ -44,6 +44,8 @@ public abstract class TreeGraph {
 	}
 
 	protected void setHandleEvents(Handle handle, Person person) {
+		if (handle == null || person == null) return;
+		
 		handle.setOnMouseSingleClick(() -> Injection.run(personSingleClickAction, person));
 		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
 	}

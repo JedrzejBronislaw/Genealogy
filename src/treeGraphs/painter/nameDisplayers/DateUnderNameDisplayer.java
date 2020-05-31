@@ -10,7 +10,7 @@ public class DateUnderNameDisplayer extends NameDisplayer {
 	private static final int verticalSpacing = 3;
 	
 	@Override
-	public Handle print(Person person, int x, int y) {
+	protected Handle printPerson(Person person, int x, int y) {
 		String date = generateDate(person);
 		if (date != null)
 		{

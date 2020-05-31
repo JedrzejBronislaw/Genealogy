@@ -16,11 +16,14 @@ public abstract class NameDisplayer {
 		setPainter(painter);
 	}
 
-	abstract public Handle print(Person person, int x, int y);
+	public Handle print(Person person, int x, int y) {
+		return (person == null) ? null : printPerson(person, x, y);
+	}
 	public Handle print(Person person, Point point) {
 		return print(person, point.getX(), point.getY());
 	};
 
+	abstract protected Handle printPerson(Person person, int x, int y);
 	abstract public int getHeight(Person person);
 	abstract public int getWidth(Person person);
 }

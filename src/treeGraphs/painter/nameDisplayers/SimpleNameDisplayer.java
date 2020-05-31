@@ -7,7 +7,7 @@ import treeGraphs.painter.Point;
 public class SimpleNameDisplayer extends NameDisplayer{
 
 	@Override
-	public Handle print(Person person, int x, int y) {
+	protected Handle printPerson(Person person, int x, int y) {
 		return painter.drawText(genText(person), new Point(x, y));
 	}
 
@@ -21,8 +21,7 @@ public class SimpleNameDisplayer extends NameDisplayer{
 		return painter.getTextWidth(genText(person));
 	}
 	
-	private String genText(Person person)
-	{
+	private String genText(Person person) {
 		return person.nameSurname();
 	}
 

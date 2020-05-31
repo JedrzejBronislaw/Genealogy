@@ -7,7 +7,7 @@ import treeGraphs.painter.Point;
 public class DateAndNameDisplayer extends NameDisplayer{
 
 	@Override
-	public Handle print(Person person, int x, int y) {
+	protected Handle printPerson(Person person, int x, int y) {
 		return painter.drawText(genText(person), new Point(x, y));
 	}
 
