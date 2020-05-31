@@ -1,6 +1,7 @@
 package treeGraphs;
 
 import model.Person;
+import tools.Maxer;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MyFont;
@@ -95,13 +96,13 @@ public class ClosestTreeGraph extends TreeGraph {
 
 		painter.setTextStyle(sibilingsFont);
 		siblingHeight  = painter.getTextHeight();
-		siblingsWidth  = siblingsWidth(siblings);
+		siblingsWidth  = maxWidth(siblings);
 		siblingsHeight = siblings.length * (siblingHeight + spaceBetweenSiblings);
 		
 		painter.setTextStyle(familyFont);
-		spousesWidth  = spousesWidth();
+		spousesWidth  = maxWidth(mainPerson.getSpouses());
 		spousesHeight = mainPerson.numberOfMarriages() * (textHeight + spaceBetweenSpouses);
-		childrenWidth  = childrenWidth();
+		childrenWidth  = maxWidth(mainPerson.getChildren());
 		childrenHeight = mainPerson.numberOfChildren() * (textHeight + spaceBetweenChildren) - spaceBetweenChildren;
 		
 		int ownFamilyWidth = Math.max(
@@ -271,46 +272,12 @@ public class ClosestTreeGraph extends TreeGraph {
 		}		
 	}
 
-	private int siblingsWidth(Person[] sibilings) {
-		MyFont oldFont = painter.getTextStyle();
-		painter.setTextStyle(sibilingsFont);
+	private int maxWidth(Person[] persons) {
+		Maxer maxWidth = new Maxer();
 		
-		int maxWidth = 0;
+		for (Person person : persons)
+			maxWidth.add(painter.getTextWidth(person.nameSurname()));
 		
-		for (Person sibiling: sibilings)
-			maxWidth = Math.max(
-					maxWidth,
-					painter.getTextWidth(sibiling.nameSurname()));
-
-		painter.setTextStyle(oldFont);
-		return maxWidth;
-	}
-
-	private int spousesWidth() {
-		int maxWidth = 0;
-		Person spouse;
-		
-		for (int i=0; i<mainPerson.numberOfMarriages(); i++) {
-			spouse = mainPerson.getSpouse(i);
-			maxWidth = Math.max(
-					maxWidth,
-					painter.getTextWidth(spouse.nameSurname()));
-		}
-		
-		return maxWidth;
-	}
-
-	private int childrenWidth() {
-		int maxWidth = 0;
-		Person child;
-		
-		for (int i=0; i<mainPerson.numberOfChildren(); i++) {
-			child = mainPerson.getChild(i);
-			maxWidth = Math.max(
-					maxWidth,
-					painter.getTextWidth(child.nameSurname()));
-		}
-		
-		return maxWidth;
+		return maxWidth.get();
 	}
 }
