@@ -27,6 +27,9 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 
 	private static final int maxBranchThickness = 5;
 	private static final int fieldSize = 5;
+
+	private static final MyColor liveLeafColor = MyColor.GREEN;
+	private static final MyColor deadLeafColor = new MyColor(0, 200, 0);
 	
 	private DrawingDescendantTreeGraphCalculation calculation;
 	private List<TreeNode> plan;
@@ -92,10 +95,14 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		
 		for (TreeNode node : plan) {
 			if (node.isLeaf())
-				handle = drawLeaf(node.getCoords()); else
+				handle = drawLeaf(node.getCoords(), leafColor(node)); else
 				handle = createHandle(node.getCoords());
 			setHandleEvents(handle, node.getPerson());
 		}
+	}
+
+	private MyColor leafColor(TreeNode node) {
+		return node.getPerson().isDead() ? deadLeafColor : liveLeafColor;
 	}
 
 	private Handle createHandle(Point point) {
@@ -104,12 +111,12 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 				point.addVector( fieldSize,  fieldSize));
 	}
 
-	private Handle drawLeaf(final Point center)
+	private Handle drawLeaf(final Point center, MyColor leafColor)
 	{
 		MyColor oldColor = painter.getColor();
 		Handle h1, h2;
 		
-		painter.setColor(MyColor.GREEN);
+		painter.setColor(leafColor);
 		h1 = painter.drawCircle(center, fieldSize);
 		h2 = painter.drawRectangle(center, center.addVector(fieldSize, -fieldSize));
 		
