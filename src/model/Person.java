@@ -31,6 +31,12 @@ public class Person {
 	private List<Marriage> marriages = new ArrayList<Marriage>(); 
 	
 
+	public boolean isAlive() {
+		return lifeStatus == LifeStatus.YES;
+	}
+	public boolean isDead() {
+		return lifeStatus == LifeStatus.NO;
+	}
 	public void addChild(Person child) {
 		children.add(child);
 	}
@@ -48,8 +54,11 @@ public class Person {
 		outcome = children.toArray(outcome);
 		return outcome;
 	}
+	public boolean hasChild() {
+		return numberOfChildren() > 0;
+	}
 	public boolean isChildless() {
-		return numberOfChildren() == 0;
+		return !hasChild();
 	}
 	public boolean hasNoParents() {
 		return (getMother() == null && getFather() == null);
