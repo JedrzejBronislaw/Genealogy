@@ -1,12 +1,12 @@
 package grafyDrzewa;
 
-import static org.junit.Assert.*;
-
-import java.awt.Point;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import treeGraphs.DrawingDescendantTreeGraphCalculation;
+import treeGraphs.painter.Point;
 
 public class DrawingDescendantTreeGraphCalculationTest {
 
@@ -97,34 +97,34 @@ public class DrawingDescendantTreeGraphCalculationTest {
 	public void katRadNaPunkt_1()
 	{
 		Point punkt = DrawingDescendantTreeGraphCalculation.radAngleToPoint(0, 100, new Point(0,0));
-		assertTrue(punkt.x == 100 && punkt.y == 0);
+		assertTrue(punkt.getX() == 100 && punkt.getY() == 0);
 	}
 	@Test
 	public void katRadNaPunkt_2()
 	{
 		Point punkt = DrawingDescendantTreeGraphCalculation.radAngleToPoint(Math.PI/2, 100, new Point(0,0));
-		assertEquals(punkt.x, 0);
-		assertEquals(punkt.y, -100);
+		assertEquals(punkt.getX(), 0);
+		assertEquals(punkt.getY(), -100);
 	}
 	@Test
 	public void katRadNaPunkt_3()
 	{
 		Point punkt = DrawingDescendantTreeGraphCalculation.radAngleToPoint(Math.PI, 100, new Point(0,0));
-		assertTrue(punkt.x == -100 && punkt.y == 0);
+		assertTrue(punkt.getX() == -100 && punkt.getY() == 0);
 	}
 	@Test
 	public void katRadNaPunkt_4()
 	{
 		Point punkt = DrawingDescendantTreeGraphCalculation.radAngleToPoint(Math.PI/4, 100, new Point(0,0));
-		assertEquals(punkt.x, 70, 0);
-		assertEquals(punkt.y, -70, 0);
+		assertEquals(punkt.getX(), 70, 0);
+		assertEquals(punkt.getY(), -70, 0);
 	}
 	@Test
 	public void katRadNaPunkt_5()
 	{
 		Point punkt = DrawingDescendantTreeGraphCalculation.radAngleToPoint(0, 500, new Point(20,10));
 //		assertTrue(punkt.x == 520 && punkt.y == 10);
-		assertEquals(punkt.x, 520);
-		assertEquals(punkt.y, 10);
+		assertEquals(punkt.getX(), 520);
+		assertEquals(punkt.getY(), 10);
 	}
 }
