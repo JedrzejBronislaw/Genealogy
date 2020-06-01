@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import treeGraphs.DrawingDescendantTreeGraphCalculation;
+import treeGraphs.drawingDesTG.DrawingDescendantTreeGraphCalculation;
 import treeGraphs.painter.Point;
 
 public class DrawingDescendantTreeGraphCalculationTest {

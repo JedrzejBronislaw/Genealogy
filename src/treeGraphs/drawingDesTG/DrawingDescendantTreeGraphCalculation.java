@@ -1,4 +1,4 @@
-package treeGraphs;
+package treeGraphs.drawingDesTG;
 
 import java.awt.Dimension;
 import java.util.ArrayList;

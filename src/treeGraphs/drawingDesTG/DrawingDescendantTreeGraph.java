@@ -1,4 +1,4 @@
-package treeGraphs;
+package treeGraphs.drawingDesTG;
 
 import java.awt.Dimension;
 import java.util.List;
@@ -6,7 +6,8 @@ import java.util.List;
 import lang.Internationalization;
 import lombok.Setter;
 import other.PersonDetails;
-import treeGraphs.DrawingDescendantTreeGraphCalculation.TreeNode;
+import treeGraphs.TreeGraph;
+import treeGraphs.drawingDesTG.DrawingDescendantTreeGraphCalculation.TreeNode;
 import treeGraphs.painter.Gradient;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MultiHandle;
