@@ -12,7 +12,6 @@ import lang.Internationalization;
 import lombok.Setter;
 import model.MyDate;
 import model.Person;
-import model.Person.LifeStatus;
 import tools.Injection;
 
 public class PersonDetailsPaneController implements Initializable {
@@ -49,9 +48,9 @@ public class PersonDetailsPaneController implements Initializable {
 			setParentLabel(fatherLabel, person.getFather());
 			setParentLabel(motherLabel, person.getMother());
 			if (birthDate != null) birthDateLabel.setText(birthDate.toString());
-			if (person.getLifeStatus() == LifeStatus.NO)
+			if (person.isDead())
 				if (deathDate != null) deathDateLabel.setText(deathDate.toString());
-			if (person.getLifeStatus() == LifeStatus.YES)
+			if (person.isAlive())
 				deathDateLabel.setText(Internationalization.get("lives"));
 		});
 	}

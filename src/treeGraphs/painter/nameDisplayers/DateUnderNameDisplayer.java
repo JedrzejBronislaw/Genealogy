@@ -49,7 +49,7 @@ public class DateUnderNameDisplayer extends NameDisplayer {
 		
 		outcome = null;
 		
-		if (person.getLifeStatus() != Person.LifeStatus.NO)
+		if (!person.isDead())
 		{
 			dates = person.getBirthDate().toString();
 			if (!dates.isEmpty()) outcome = "(" + person.getBirthDate() + ")";

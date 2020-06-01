@@ -125,7 +125,7 @@ public class ClosestTreeGraph extends TreeGraph {
 		Maxer maxheight = new Maxer().add(
 				mainNameY + siblingsHeight,
 				mainNameY + spousesHeight);
-		if (!mainPerson.isChildless())
+		if (mainPerson.hasChild())
 			maxheight.add(mainNameY + spousesHeight + aboveChildrenSpace + childrenHeight);
 
 		width  = areaWidth       + marginX * 2;
@@ -184,7 +184,7 @@ public class ClosestTreeGraph extends TreeGraph {
 		
 		
 		//children
-		if (!mainPerson.isChildless()) {
+		if (mainPerson.hasChild()) {
 			int aboveChildrenX   = marginX + childIndentation + childrenWidth / 2;
 			int aboveChildrenY   = mainNameY + spousesHeight + aboveChildrenSpace - lineMargin;
 			int topChildrenArrow = mainNameY + spousesHeight + lineMargin;

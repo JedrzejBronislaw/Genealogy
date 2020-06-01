@@ -20,7 +20,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import model.Person;
-import model.Person.LifeStatus;
 import model.Person.Sex;
 import other.PersonDetails;
 import tools.Injection;
@@ -184,10 +183,8 @@ public class CardPaneController implements Initializable{
 	}
 	
 	private Image getLiveSymbol() {
-		if (person.getLifeStatus() == LifeStatus.YES)
-			return star;
-		if (person.getLifeStatus() == LifeStatus.NO)
-			return cross;
+		if (person.isAlive()) return star;
+		if (person.isDead())  return cross;
 		else
 			return null;
 	}

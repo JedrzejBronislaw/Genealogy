@@ -28,7 +28,7 @@ public class DateAndNameDisplayer extends NameDisplayer{
 		
 		outcome = person.nameSurname();
 		
-		if (person.getLifeStatus() != Person.LifeStatus.NO)
+		if (!person.isDead())
 		{
 			dates = person.getBirthDate().toString();
 			if (!dates.isEmpty()) outcome += " (" + person.getBirthDate() + ")";
