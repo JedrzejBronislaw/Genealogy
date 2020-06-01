@@ -9,11 +9,12 @@ public class MyColor {
 	
 	public static final int MAX = 255;
 	
-	public static final MyColor BLACK = new MyColor(0,   0,   0,   MAX);
-	public static final MyColor WHITE = new MyColor(MAX, MAX, MAX, MAX);
-	public static final MyColor GREEN = new MyColor(0,   MAX, 0,   MAX);
+	public static final MyColor TRANSPARENT = new MyColor(0,   0,   0,   0);
+	public static final MyColor BLACK       = new MyColor(0,   0,   0,   MAX);
+	public static final MyColor WHITE       = new MyColor(MAX, MAX, MAX, MAX);
+	public static final MyColor GREEN       = new MyColor(0,   MAX, 0,   MAX);
 	
-	public static final MyColor BROWN = new MyColor(150, 75,  0,   MAX);
+	public static final MyColor BROWN       = new MyColor(150, 75,  0,   MAX);
 	
 
 	private int red = 0;

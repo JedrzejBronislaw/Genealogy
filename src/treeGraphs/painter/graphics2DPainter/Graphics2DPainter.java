@@ -161,4 +161,8 @@ public class Graphics2DPainter extends Painter {
 		return fm.stringWidth(text);
 	}
 
+	@Override
+	public Handle createHandle(Point topLeft, Point bottomRight) {
+		return handleFactory.createHandle(topLeft, bottomRight);
+	}
 }

@@ -169,4 +169,14 @@ public class FxPainter extends Painter{
 		return (int) textFX.getBoundsInLocal().getWidth();
 	}
 
+	@Override
+	public Handle createHandle(Point topLeft, Point bottomRight) {
+		MyColor oldColor = getColor();
+		setColor(MyColor.TRANSPARENT);
+		
+		Handle handle = drawRectangle(topLeft, bottomRight);
+		
+		setColor(oldColor);
+		return handle;
+	}
 }

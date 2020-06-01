@@ -63,6 +63,8 @@ public abstract class Painter {
 		drawCircle(Point.middle(topLeft, bottomRight), radius);
 	}
 	
+	abstract public Handle createHandle(Point topLeft, Point bottomRight);
+	
 	public void drawArrowhead(Point vertex, Direction side) {
 		int a, b, c, d;
 		int dx, dy;
