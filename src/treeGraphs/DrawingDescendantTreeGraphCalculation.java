@@ -29,7 +29,15 @@ public class DrawingDescendantTreeGraphCalculation {
 			this.x = x;
 			this.y = y;
 			links = new ArrayList<TreeNode>();
-		}		
+		}
+		
+		public boolean isLeaf() {
+			return links.size() == 0;
+		}
+
+		public treeGraphs.painter.Point getCoords() {
+			return new treeGraphs.painter.Point(x, y);
+		}
 	}
 
 	private int InitialDistanceBetweenGenerations = 50;
@@ -50,6 +58,8 @@ public class DrawingDescendantTreeGraphCalculation {
 	private int offsetX = 0;
 	private int offsetY = 0;
 	
+	@Getter
+	private int descendantGenerations;
 	
 	
 	public DrawingDescendantTreeGraphCalculation setBranchLengthDifferenceToParent(int difference) {
@@ -107,6 +117,7 @@ public class DrawingDescendantTreeGraphCalculation {
 	
 	private void calculate()
 	{
+		descendantGenerations = mainPerson.descendantGenerations();
 		drawBranch(mainPerson, 1, 0, 0, 0);
 		computeDimension();
 		
@@ -229,5 +240,9 @@ public class DrawingDescendantTreeGraphCalculation {
 		this.offsetY = offsetY;
 
 		return this;
+	}
+
+	public int generations() {
+		return descendantGenerations;
 	}
 }

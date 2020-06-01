@@ -3,6 +3,8 @@ package treeGraphs;
 import java.awt.Dimension;
 import java.util.List;
 
+import lang.Internationalization;
+import lombok.Setter;
 import other.PersonDetails;
 import treeGraphs.DrawingDescendantTreeGraphCalculation.TreeNode;
 import treeGraphs.painter.Gradient;
@@ -13,87 +15,111 @@ import treeGraphs.painter.Point;
 
 public class DrawingDescendantTreeGraph extends TreeGraph {
 
-//	private float startAngle = 155;
-	private float wholeAngle = 130;
+	@Setter
+	private float wholeAngle = 150;
+
+	private static final int marginX = 50;
+	private static final int marginY = 50;
+
+	private static final int detailsX = 10;
+	private static final int detailsY = 10;
+	private static final int detailsLineHeight = 10;
+
+	private static final int maxBranchThickness = 5;
 	
-//	public void setStartAngle(float angleInDegrees) {
-//		this.startAngle = angleInDegrees;
-//	}
-	public void setWholeAngle(float angleInDegrees) {
-		this.wholeAngle = angleInDegrees;
-	}
-	public void setSymmetricalAngle(float widthInDegrees) {
-		this.wholeAngle = widthInDegrees;
-	}
+	private DrawingDescendantTreeGraphCalculation calculation;
+	private List<TreeNode> plan;
 	
-	public DrawingDescendantTreeGraph() {
-		setSymmetricalAngle(150);
-	}
 	
 	@Override
 	public void draw() {
-		int marginX = 50, marginY = 50;
-		
 		painter.startDrawing();
-			
-		painter.drawText(mainPerson.nameSurname(), new Point(10, 20));
-		painter.drawText("Pokoleñ potomków: " + mainPerson.descendantGenerations()+"", new Point(10, 30));
-		painter.drawText("Szerokoœæ: " + PersonDetails.descendantsBranchesWidth(mainPerson)+"", new Point(10, 40));
-		painter.drawText("Liczba dzieci: " + mainPerson.numberOfChildren(), new Point(10, 50));		
 		
-		painter.setLineStyle(3);
-		painter.setColor(new MyColor(150, 75, 0));
-		
-		DrawingDescendantTreeGraphCalculation calculation = new DrawingDescendantTreeGraphCalculation(mainPerson)
+		calculate();
+		drawDetails();
+		drawTree();
+
+		setDimensions();
+	}
+
+	private void calculate() {
+		calculation = new DrawingDescendantTreeGraphCalculation(mainPerson)
 				.setSymmetricalAngle(wholeAngle)
 				.setSpaceBetweenYoungestGeneration(15)
 				.setOffset(marginX, marginY);
-		List<TreeNode> plan = calculation.get();
+		plan = calculation.get();
+	}
+	
+	private void drawDetails() {
+		Point coords = new Point(detailsY, detailsX);
+		
+		coords = drawDetail(mainPerson.nameSurname(), coords);
+		coords = drawDetail(Internationalization.get("descendant_generations") + ": " +calculation.generations(), coords);
+		coords = drawDetail(Internationalization.get("tree_width") + ": " + PersonDetails.descendantsBranchesWidth(mainPerson), coords);
+		coords = drawDetail(Internationalization.get("children_number") + ": " + mainPerson.numberOfChildren(), coords);
+		coords = drawDetail(Internationalization.get("persons_number") + ": " + plan.size(), coords);
+	}
+	private Point drawDetail(String text, Point coords) {
+		painter.drawText(text, coords);
+		return coords.addVector(0, detailsLineHeight);
+	}
+	
+	private void drawTree() {
+		drawBranches();
+		drawPersons();
+	}
 
-//		Gradient gradinent = new Gradient(new Color(75, 38, 0), Color.GREEN);
-		Gradient gradinent = new Gradient(MyColor.BLACK, new MyColor(150, 75, 0));
-		Handle handle;
+	private void drawBranches() {
+		Gradient gradinent = new Gradient(MyColor.BLACK, MyColor.BROWN);
 		
 		for (TreeNode node : plan)
-			for (TreeNode child : node.getLinks())
-			{
-				painter.setColor(gradinent.getIntermediateColor((float)node.getGeneration()/mainPerson.descendantGenerations()));
-				painter.setLineStyle(5-5*node.getGeneration()/mainPerson.descendantGenerations());
-				painter.drawLine(new Point(node.getX(), node.getY()), new Point(child.getX(), child.getY()));
-				painter.setLineStyle(1);
+			for (TreeNode child : node.getLinks()) {
+				float percent = (float) node.getGeneration() / calculation.generations();
+				float fThickness = maxBranchThickness * (1-percent);
+
+				int thickness = (int) Math.ceil(fThickness);
+				
+				painter.setColor(gradinent.getIntermediateColor(percent));
+				painter.setLineStyle(thickness);
+				painter.drawLine(node.getCoords(), child.getCoords());
 			}
+		painter.setLineStyle(1);
+	}
+
+	private void drawPersons() {
+		Handle handle;
 		
 		for (TreeNode node : plan) {
-			if (node.getLinks().size() == 0) {
-				handle = drawLeaf(node.getX(), node.getY(), MyColor.GREEN);
+			if (node.isLeaf()) {
+				handle = drawLeaf(node.getCoords(), MyColor.GREEN);
 				setHandleEvents(handle, node.getPerson());
 			}
 			//TODO click handling for not-leafs
 		}
-
-		Dimension dimension = calculation.getDimension();
-
-		height  = dimension.height + marginY * 2;
-		width = dimension.width  + marginX * 2;	
 	}
-	
 
-	private Handle drawLeaf(int x, int y, MyColor color)
+	private Handle drawLeaf(final Point center, final MyColor color)
 	{
 		MyColor oldColor = painter.getColor();
-		int lineThickness = painter.getLineThickness();
+		int oldThickness = painter.getLineThickness();
 		Handle h1, h2;
 		
 		painter.setColor(color);
 		painter.setLineStyle(1);
-		Point center = new Point(x, y);
 		h1 = painter.drawCircle(center, 5);
 		h2 = painter.drawRectangle(center, center.addVector(5, -5));
 		
 		painter.setColor(oldColor);
-		painter.setLineStyle(lineThickness);
+		painter.setLineStyle(oldThickness);
 		
 		return new MultiHandle(h1, h2);
 	}
+
 	
+	private void setDimensions() {
+		Dimension dimension = calculation.getDimension();
+
+		height = dimension.height + marginY * 2;
+		width  = dimension.width  + marginX * 2;
+	}
 }
