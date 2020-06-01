@@ -7,7 +7,6 @@ import lang.Internationalization;
 import lombok.Setter;
 import other.PersonDetails;
 import treeGraphs.TreeGraph;
-import treeGraphs.drawingDesTG.DrawingDescendantTreeGraphCalculation.TreeNode;
 import treeGraphs.painter.Gradient;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.MultiHandle;
