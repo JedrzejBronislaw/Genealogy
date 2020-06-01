@@ -26,6 +26,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 	private static final int detailsLineHeight = 10;
 
 	private static final int maxBranchThickness = 5;
+	private static final int fieldSize = 5;
 	
 	private DrawingDescendantTreeGraphCalculation calculation;
 	private List<TreeNode> plan;
@@ -90,27 +91,29 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 		Handle handle;
 		
 		for (TreeNode node : plan) {
-			if (node.isLeaf()) {
-				handle = drawLeaf(node.getCoords(), MyColor.GREEN);
-				setHandleEvents(handle, node.getPerson());
-			}
-			//TODO click handling for not-leafs
+			if (node.isLeaf())
+				handle = drawLeaf(node.getCoords()); else
+				handle = createHandle(node.getCoords());
+			setHandleEvents(handle, node.getPerson());
 		}
 	}
 
-	private Handle drawLeaf(final Point center, final MyColor color)
+	private Handle createHandle(Point point) {
+		return painter.createHandle(
+				point.addVector(-fieldSize, -fieldSize),
+				point.addVector( fieldSize,  fieldSize));
+	}
+
+	private Handle drawLeaf(final Point center)
 	{
 		MyColor oldColor = painter.getColor();
-		int oldThickness = painter.getLineThickness();
 		Handle h1, h2;
 		
-		painter.setColor(color);
-		painter.setLineStyle(1);
-		h1 = painter.drawCircle(center, 5);
-		h2 = painter.drawRectangle(center, center.addVector(5, -5));
+		painter.setColor(MyColor.GREEN);
+		h1 = painter.drawCircle(center, fieldSize);
+		h2 = painter.drawRectangle(center, center.addVector(fieldSize, -fieldSize));
 		
 		painter.setColor(oldColor);
-		painter.setLineStyle(oldThickness);
 		
 		return new MultiHandle(h1, h2);
 	}
