@@ -24,6 +24,10 @@ public abstract class Painter {
 	}
 	
 	abstract public Handle drawText(String text, Point topLeft);
+	public Handle drawText(String text, int top, int left) {
+		return drawText(text, new Point(top, left));
+	}
+	
 	abstract public Handle drawRectangle(Point topLeft, Point bottomRight);
 	abstract public Handle drawCircle(Point center, float radius);
 	abstract public void drawRing(Point center, float radius);
