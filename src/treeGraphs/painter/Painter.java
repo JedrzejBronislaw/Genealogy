@@ -27,6 +27,16 @@ public abstract class Painter {
 	public Handle drawText(String text, int top, int left) {
 		return drawText(text, new Point(top, left));
 	}
+	public Handle drawMultilineText(Point topLeft, int lineHeight, String... lines) {
+		MultiHandle handles = new MultiHandle();
+		
+		for(String line : lines) {
+			handles.addHandle(drawText(line, topLeft));
+			topLeft = topLeft.addVector(0, lineHeight);
+		}
+		
+		return handles;
+	}
 	
 	abstract public Handle drawRectangle(Point topLeft, Point bottomRight);
 	abstract public Handle drawCircle(Point center, float radius);

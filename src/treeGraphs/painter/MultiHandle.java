@@ -1,11 +1,19 @@
 package treeGraphs.painter;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class MultiHandle extends Handle {
 
-	private Handle[] handles;
+	private List<Handle> handles = new LinkedList<>();
 
 	public MultiHandle(Handle... handles) {
-		this.handles = handles;
+		for (Handle handle : handles)
+			this.handles.add(handle);
+	}
+	
+	public void addHandle(Handle handle) {
+		handles.add(handle);
 	}
 
 	@Override

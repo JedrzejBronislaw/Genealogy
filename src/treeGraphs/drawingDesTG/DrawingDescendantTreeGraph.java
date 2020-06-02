@@ -57,15 +57,13 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 	private void drawDetails() {
 		Point coords = new Point(detailsY, detailsX);
 		
-		coords = drawDetail(mainPerson.nameSurname(), coords);
-		coords = drawDetail(Internationalization.get("descendant_generations") + ": " +calculation.generations(), coords);
-		coords = drawDetail(Internationalization.get("tree_width") + ": " + PersonDetails.descendantsBranchesWidth(mainPerson), coords);
-		coords = drawDetail(Internationalization.get("children_number") + ": " + mainPerson.numberOfChildren(), coords);
-		coords = drawDetail(Internationalization.get("persons_number") + ": " + plan.size(), coords);
-	}
-	private Point drawDetail(String text, Point coords) {
-		painter.drawText(text, coords);
-		return coords.addVector(0, detailsLineHeight);
+		painter.drawMultilineText(coords, detailsLineHeight,
+				mainPerson.nameSurname(),
+				Internationalization.get("descendant_generations") + ": " +calculation.generations(),
+				Internationalization.get("tree_width") + ": " + PersonDetails.descendantsBranchesWidth(mainPerson),
+				Internationalization.get("children_number") + ": " + mainPerson.numberOfChildren(),
+				Internationalization.get("persons_number") + ": " + plan.size()
+			);
 	}
 	
 	private void drawTree() {
