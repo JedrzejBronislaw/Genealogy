@@ -25,7 +25,7 @@ class INISection {
 	}
 	
 	public void addKey(String name, String value) {
-		keys.put(name, value);
+		keys.put(name.trim(), value.trim());
 	}
 	
 	public String getValue(String keyName) {

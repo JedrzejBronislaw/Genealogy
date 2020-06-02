@@ -18,10 +18,13 @@ import model.Person;
 import model.Person.LifeStatus;
 import model.Person.Sex;
 import model.Tree;
+import model.pgl.reader.Relation.Type;
 import tools.Tools;
 
 public class PGLReader {
 
+	private static final String MAIN_SECTION_NAME = "MAIN";
+	
 	@AllArgsConstructor
 	class IndexedString {
 		int i;
@@ -54,37 +57,22 @@ public class PGLReader {
 	public boolean load(Tree tree)
 	{
 		String line;
-		String[] splitting;
 		INISection section = null;
 		List<Relation> relations = new ArrayList<Relation>();
 		
 		try{
-			line = brFile.readLine();
-			while (line != null) {
+			while ((line = brFile.readLine()) != null) {
+				
 				line = line.trim();
-				if	((line.length() >= 2) &&
-					((line.charAt(0) == '[') && (line.charAt(line.length()-1) == ']')))
-				{
-					//section save
-					if (section != null)
-						if (section.name.toUpperCase().equals("MAIN"))
-							loadMetadataToTree(tree, section);
-						else
-							loadDataToTree(tree, section, relations);
-					
-					//section opening
-					section = new INISection(line.substring(1, line.length()-1));
-					
-				} else if (section != null) {
-					splitting = line.split("=", 2);
-					if (splitting.length == 2)
-						section.addKey(splitting[0], splitting[1]);
-				}
-				line = brFile.readLine();
+				if (isSectionHeader(line)) {
+					saveSection(section, tree, relations);
+					section = new INISection(sectionName(line));
+				} else
+					addValue(line, section);
+				
 			}
-			
-			if (section != null)
-				loadDataToTree(tree, section, relations);
+
+			saveSection(section, tree, relations);
 			
 		} catch (IOException e) {
 			return false;
@@ -93,6 +81,40 @@ public class PGLReader {
 		relations.forEach(relation -> relation.applyFor(tree));
 		
 		return true;
+	}
+
+	private void addValue(String line, INISection section) {
+		if (section == null) return;
+		
+		String[] keyValue = line.split("=", 2);
+		
+		if (keyValue.length == 2)
+			section.addKey(keyValue[0], keyValue[1]);
+	}
+
+	private String sectionName(String line) {
+		if (isSectionHeader(line))
+			return line.substring(1, line.length()-1);
+		else
+			return null;
+	}
+
+	private void saveSection(INISection section, Tree tree, List<Relation> relations) {
+		if (section == null) return;
+		
+		if (isMainSection(section))
+			loadMetadataToTree(tree, section);
+		else
+			loadDataToTree(tree, section, relations);
+	}
+
+	private boolean isMainSection(INISection section) {
+		return section.name.toUpperCase().equals(MAIN_SECTION_NAME);
+	}
+
+	private boolean isSectionHeader(String line) {
+		return line.startsWith("[")
+			&& line.endsWith("]");
 	}
 
 	private void loadMetadataToTree(Tree tree, INISection section) {
@@ -156,14 +178,14 @@ public class PGLReader {
 		value = section.getValue("uwagi");          if (value != null) person.setComments(value.replace("$", "\n"));
 		
 
-		value = section.getValue("ojciec");         if (value != null) relations.add(new Relation(value, Relation.Type.FATHER, section.name));
-		value = section.getValue("matka");          if (value != null) relations.add(new Relation(value, Relation.Type.MOTHER, section.name));
+		value = section.getValue("ojciec");         if (value != null) relations.add(new Relation(value, Type.FATHER, section.name));
+		value = section.getValue("matka");          if (value != null) relations.add(new Relation(value, Type.MOTHER, section.name));
 		value = section.getValue("dzieci");         if (value != null) numOfChildren  = strToInt(value, 0);
 		value = section.getValue("malzenstwa");     if (value != null) numOfMarriages = strToInt(value, 0);
-		multiVal(section, "dziecko",  numOfChildren). forEach(    v -> relations.add(new Relation(v.value, Relation.Type.CHILD,  section.name, v.i)));
-		multiVal(section, "malzonek", numOfMarriages).forEach(    v -> relations.add(new Relation(v.value, Relation.Type.SPOUSE, section.name, v.i)));
-		multiVal(section, "malzdata", numOfMarriages).forEach(    v -> Relation.addDateToRelation( relations, section.name, Relation.Type.SPOUSE, v.i, v.value));
-		multiVal(section, "malzmjsc", numOfMarriages).forEach(    v -> Relation.addPlaceToRelation(relations, section.name, Relation.Type.SPOUSE, v.i, v.value));
+		multiVal(section, "dziecko",  numOfChildren). forEach(    v -> relations.add(new Relation(v.value, Type.CHILD,  section.name, v.i)));
+		multiVal(section, "malzonek", numOfMarriages).forEach(    v -> relations.add(new Relation(v.value, Type.SPOUSE, section.name, v.i)));
+		multiVal(section, "malzdata", numOfMarriages).forEach(    v -> Relation.addDateToRelation( relations, section.name, Type.SPOUSE, v.i, v.value));
+		multiVal(section, "malzmjsc", numOfMarriages).forEach(    v -> Relation.addPlaceToRelation(relations, section.name, Type.SPOUSE, v.i, v.value));
 
 		tree.addPerson(section.name, person);		
 	}
