@@ -13,15 +13,26 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
-import model.Person.Sex;
+import lombok.AllArgsConstructor;
 import model.Person.LifeStatus;
+import model.Person.Sex;
 import tools.Tools;
 
 public class PGLFile {
 
-	private class INISection
-	{
+	private class INISection {
+		
+		@AllArgsConstructor
+		private class NullValidator {
+			private String value;
+			
+			public void ifNotNull(Consumer<String> action) {
+				if (value != null) action.accept(value);
+			}
+		}
+		
 		String name;
 		private Map<String, String> keys = new HashMap<String, String>();
 		
@@ -29,24 +40,28 @@ public class PGLFile {
 			this.name = name;
 		}
 		
-		public void addKey(String name, String value)
-		{
+		public void addKey(String name, String value) {
 			keys.put(name, value);
 		}
 		
-		public String getValue(String keyName)
-		{
+		public String getValue(String keyName) {
 			return keys.get(keyName);
 		}
+
+		public NullValidator value(String keyName) {
+			return new NullValidator(getValue(keyName));
+		}
 	}
+	
 	private static class Relation {
 		public enum Type {FATHER, MOTHER, CHILD, SPOUSE};
-		String subject;
-		Type type;
-		String object;
-		int number;
-		String date;
-		String place;
+		
+		private String subject;
+		private Type type;
+		private String object;
+		private int number;
+		private String date;
+		private String place;
 
 		public Relation(String subject, Type type, String object) {
 			this.subject = subject;
@@ -61,29 +76,42 @@ public class PGLFile {
 		}
 
 
-		static void addDateToRelation(List<Relation> relationList, String object, Type relationType, int number, String date)
-		{
-			for (Relation r : relationList)
-				if ((r.object.equals(object)) && (r.type.equals(relationType)) && (r.number == number))
-				{
-					r.date = date;
-					return;
-				}
+		public boolean equals(String object, Type relationType, int number) {
+			return
+				this.object.equals(object) &&
+				this.type.equals(relationType) &&
+				this.number == number;
 		}
 
-		static void addPlaceToRelation(List<Relation> relationList, String object, Type relationType, int number, String place)
-		{
-			for (Relation r : relationList)
-				if ((r.object.equals(object)) && (r.type.equals(relationType)) && (r.number == number))
-				{
-					r.place = place;
-					return;
-				}
+		
+		static void addDateToRelation(List<Relation> list, String object, Type type, int number, String date) {
+			Relation relation = find(list, object, type, number);
+			if (relation != null) relation.date = date;
+
+		}
+
+		static void addPlaceToRelation(List<Relation> list, String object, Type type, int number, String place) {
+			Relation relation = find(list, object, type, number);
+			if (relation != null) relation.place = place;
+		}
+		
+		static Relation find(List<Relation> list, String object, Type type, int number) {
+			for (Relation relation : list)
+				if (relation.equals(object, type, number))
+					return relation;
+
+			return null;
 		}
 	}
 	
-//	private DataInputStream file;
-	BufferedReader brFile;
+	@AllArgsConstructor
+	class IndexedString {
+		int i;
+		String value;
+	}
+	
+	
+	private BufferedReader brFile;
     
 	
 	public PGLFile(String path) throws FileNotFoundException {
@@ -101,7 +129,6 @@ public class PGLFile {
 		fis = new FileInputStream(path);
 		dis = new DataInputStream(fis);
 		
-//		file = dis;		
 		brFile = new BufferedReader(new InputStreamReader(dis));
 	}
 	
@@ -111,7 +138,6 @@ public class PGLFile {
 		String line;
 		String[] splitting;
 		INISection section = null;
-//		Person p = null;
 		List<Relation> relations = new ArrayList<Relation>();
 		
 		try{
@@ -131,8 +157,7 @@ public class PGLFile {
 					//section opening
 					section = new INISection(line.substring(1, line.length()-1));
 					
-				} else if (section != null)
-				{
+				} else if (section != null) {
 					splitting = line.split("=", 2);
 					if (splitting.length == 2)
 						section.addKey(splitting[0], splitting[1]);
@@ -143,13 +168,11 @@ public class PGLFile {
 			if (section != null)
 				loadDataToTree(tree, section, relations);
 			
-		} catch (IOException e)
-		{
+		} catch (IOException e) {
 			return false;
 		}
 		
-		for (Relation r : relations)
-		{
+		for (Relation r : relations) {
 			if (r.type == Relation.Type.FATHER)	tree.getPerson(r.object).setFather(tree.getPerson(r.subject)); else
 			if (r.type == Relation.Type.MOTHER)	tree.getPerson(r.object).setMother(tree.getPerson(r.subject)); else
 			if (r.type == Relation.Type.CHILD)	tree.getPerson(r.object).addChild(tree.getPerson(r.subject)); else
@@ -164,28 +187,21 @@ public class PGLFile {
 		return true;
 	}
 
-	private void loadMetadataToTree(Tree tree, INISection section)
-	{
-		String value;
+	private void loadMetadataToTree(Tree tree, INISection section) {
+		section.value("ost_otw").ifNotNull(v -> tree.setLastOpen(loadDate(v)));
+		section.value("wersja"). ifNotNull(v -> tree.setLastModification(loadDate(v)));
+		section.value("ile").    ifNotNull(v -> {
+			try {
+				tree.setNumberOfPersons(Integer.parseInt(v));
+			} catch (NumberFormatException e) {}
+		});
 		
-		value = section.getValue("ost_otw");
-		if (value != null)
-			tree.setLastOpen(loadDate(value));
-		
-		value = section.getValue("wersja");
-		if (value != null)
-			tree.setLastModification(loadDate(value));
-		
-		value = section.getValue("ile");
-		if (value != null)
-			try {tree.setNumberOfPersons(Integer.parseInt(value));} catch (NumberFormatException e) {}
-		
-		for (int i=1; i<=10; i++)
-			{value = section.getValue("nazw"+i);	if ((value != null) && (!value.equals(""))) tree.addCommonSurname(value);}
+		multiVal(section, "nazw", 10).forEach(surname -> {
+			if (!surname.value.isEmpty()) tree.addCommonSurname(surname.value);
+		});
 	}
 
 	private Date loadDate(String textDate) {
-
 		final SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
 		final SimpleDateFormat sdf2 = new SimpleDateFormat("hh:mm:ss dd.MM.yyyy");
 		
@@ -211,44 +227,51 @@ public class PGLFile {
 	
 	private void loadDataToTree(Tree tree, INISection section, List<Relation> relations)
 	{
-		Person person =  new Person();
+		Person person = new Person();
 		String value;
-		int numOfChildren=0, numOfMarriages=0;
+		int numOfChildren  = 0;
+		int numOfMarriages = 0;
 		
-		value = section.getValue("imie");			if (value != null) person.setFirstName(value);
-		value = section.getValue("nazwisko");		if (value != null) person.setLastName(value);
-		value = section.getValue("datur");			if (value != null) person.setBirthDate(new MyDate(value));
-		value = section.getValue("datsm");			if (value != null) person.setDeathDate(new MyDate(value));
-		value = section.getValue("miejur");		if (value != null) person.setBirthPlace(value);
-		value = section.getValue("miejsm");		if (value != null) person.setDeathPlace(value);
-		value = section.getValue("zyje");			if (value != null) person.setLifeStatus(value.equals("0") ? LifeStatus.NO : LifeStatus.YES);
-		value = section.getValue("plec");			if (value != null) person.setSex(value.equals("0") ? Sex.WOMAN : Sex.MAN);
-		value = section.getValue("ps");			if (value != null) person.setAlias(value);
-		value = section.getValue("parafia");		if (value != null) person.setBaptismParish(value);
-		value = section.getValue("mpoch");			if (value != null) person.setBurialPlace(value);
+		value = section.getValue("imie");           if (value != null) person.setFirstName(value);
+		value = section.getValue("nazwisko");       if (value != null) person.setLastName(value);
+		value = section.getValue("datur");          if (value != null) person.setBirthDate(new MyDate(value));
+		value = section.getValue("datsm");          if (value != null) person.setDeathDate(new MyDate(value));
+		value = section.getValue("miejur");         if (value != null) person.setBirthPlace(value);
+		value = section.getValue("miejsm");         if (value != null) person.setDeathPlace(value);
+		value = section.getValue("zyje");           if (value != null) person.setLifeStatus(value.equals("0") ? LifeStatus.NO : LifeStatus.YES);
+		value = section.getValue("plec");           if (value != null) person.setSex(value.equals("0") ? Sex.WOMAN : Sex.MAN);
+		value = section.getValue("ps");             if (value != null) person.setAlias(value);
+		value = section.getValue("parafia");        if (value != null) person.setBaptismParish(value);
+		value = section.getValue("mpoch");          if (value != null) person.setBurialPlace(value);
 
-		value = section.getValue("kontakt");		if (value != null) person.setContact(value.replace("$", "\n"));
-		value = section.getValue("uwagi");			if (value != null) person.setComments(value.replace("$", "\n"));
+		value = section.getValue("kontakt");        if (value != null) person.setContact( value.replace("$", "\n"));
+		value = section.getValue("uwagi");          if (value != null) person.setComments(value.replace("$", "\n"));
 		
 
-		value = section.getValue("ojciec");		if (value != null) relations.add(new Relation(value, Relation.Type.FATHER, section.name));
-		value = section.getValue("matka");			if (value != null) relations.add(new Relation(value, Relation.Type.MOTHER, section.name));
-		value = section.getValue("dzieci");		if (value != null) numOfChildren = strToInt(value,0);
-		value = section.getValue("malzenstwa");	if (value != null) numOfMarriages = strToInt(value,0);
-		for (int i=1; i<=numOfChildren; i++)
-			{value = section.getValue("dziecko"+i);	if (value != null) relations.add(new Relation(value, Relation.Type.CHILD, section.name, i));}
-		for (int i=1; i<=numOfMarriages; i++)
-			{value = section.getValue("malzonek"+i);	if (value != null) relations.add(new Relation(value, Relation.Type.SPOUSE, section.name, i));}
-		for (int i=1; i<=numOfMarriages; i++)
-			{value = section.getValue("malzdata"+i);	if (value != null) Relation.addDateToRelation(relations, section.name, Relation.Type.SPOUSE, i, value);}
-		for (int i=1; i<=numOfMarriages; i++)
-			{value = section.getValue("malzmjsc"+i);	if (value != null) Relation.addPlaceToRelation(relations, section.name, Relation.Type.SPOUSE, i, value);}
+		value = section.getValue("ojciec");         if (value != null) relations.add(new Relation(value, Relation.Type.FATHER, section.name));
+		value = section.getValue("matka");          if (value != null) relations.add(new Relation(value, Relation.Type.MOTHER, section.name));
+		value = section.getValue("dzieci");         if (value != null) numOfChildren  = strToInt(value, 0);
+		value = section.getValue("malzenstwa");     if (value != null) numOfMarriages = strToInt(value, 0);
+		multiVal(section, "dziecko",  numOfChildren). forEach(    v -> relations.add(new Relation(v.value, Relation.Type.CHILD,  section.name, v.i)));
+		multiVal(section, "malzonek", numOfMarriages).forEach(    v -> relations.add(new Relation(v.value, Relation.Type.SPOUSE, section.name, v.i)));
+		multiVal(section, "malzdata", numOfMarriages).forEach(    v -> Relation.addDateToRelation( relations, section.name, Relation.Type.SPOUSE, v.i, v.value));
+		multiVal(section, "malzmjsc", numOfMarriages).forEach(    v -> Relation.addPlaceToRelation(relations, section.name, Relation.Type.SPOUSE, v.i, v.value));
 
 		tree.addPerson(section.name, person);		
 	}
 	
-	
-	
+	private List<IndexedString> multiVal(INISection section, String key, int size) {
+		String value;
+		List<IndexedString> list = new ArrayList<>();
+		
+		for (int i=1; i<=size; i++) {
+			value = section.getValue(key + i);
+			if (value != null) list.add(new IndexedString(i, value));
+		}
+		
+		return list;
+	}
+
 	private int strToInt(String stringValue, int defaultValue)
 	{
 		int integerValue;
