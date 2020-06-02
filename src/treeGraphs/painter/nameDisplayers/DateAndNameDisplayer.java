@@ -1,6 +1,7 @@
 package treeGraphs.painter.nameDisplayers;
 
 import model.Person;
+import other.PersonDetails;
 import treeGraphs.painter.Handle;
 import treeGraphs.painter.Point;
 
@@ -21,24 +22,12 @@ public class DateAndNameDisplayer extends NameDisplayer{
 		return painter.getTextWidth(genText(person));
 	}
 	
-	private String genText(Person person)
-	{
-		String dates;
-		String outcome;
+	private String genText(Person person) {
+		String text = person.nameSurname();
+		String dates = PersonDetails.LifeDates(person);
 		
-		outcome = person.nameSurname();
+		if (!dates.isEmpty()) text += " (" + dates + ")";
 		
-		if (!person.isDead())
-		{
-			dates = person.getBirthDate().toString();
-			if (!dates.isEmpty()) outcome += " (" + person.getBirthDate() + ")";
-		}
-		else
-		{
-			dates = person.getBirthDate().toString() + " - " + person.getDeathDate().toString();
-			if (!dates.equals(" - ")) outcome += " (" + dates + ")";
-		}
-		
-		return outcome;
+		return text;
 	}
 }

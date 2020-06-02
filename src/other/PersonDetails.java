@@ -60,4 +60,21 @@ public class PersonDetails {
 			return 1;
 	}
 	
+	public static String LifeDates(Person person)
+	{
+		String outcome = "";
+		MyDate birthDate = person.getBirthDate();
+		MyDate deathDate = person.getDeathDate();
+		
+		if (!person.isDead()) {
+			if (!MyDate.isEmpty(birthDate))
+				outcome = birthDate.toString();
+		} else {
+			if (!MyDate.isEmpty(birthDate) ||
+				!MyDate.isEmpty(deathDate))
+				outcome = birthDate + " - " + deathDate;
+		}
+		
+		return outcome;
+	}
 }

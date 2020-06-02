@@ -189,8 +189,20 @@ public class MyDate {
 		return new MyDate(getDay(), getMonth(), getYear());
 	}
 	
+	public boolean isEmpty() {
+		return (day   == 0 &&
+				month == 0 &&
+				year  == 0);
+	}
+	
+	public static boolean isEmpty(MyDate date) {
+		return date == null || date.isEmpty();
+	}
+	
 	@Override
 	public String toString() {
+		if (isEmpty()) return "";
+		
 		String outcome = "";
 		
 		if (day != 0)   outcome += day;
