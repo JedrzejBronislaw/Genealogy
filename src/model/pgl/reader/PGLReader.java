@@ -90,7 +90,7 @@ public class PGLReader {
 			return false;
 		}
 		
-		for (Relation r : relations) r.apply(tree);
+		relations.forEach(relation -> relation.applyFor(tree));
 		
 		return true;
 	}

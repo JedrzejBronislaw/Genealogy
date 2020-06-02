@@ -3,6 +3,7 @@ package model.pgl.reader;
 import java.util.List;
 
 import lombok.Getter;
+import model.Person;
 import model.Tree;
 
 @Getter
@@ -29,16 +30,15 @@ class Relation {
 	}
 
 
-	public void apply(Tree tree) {
-		Relation r = this;
-		
-		if (r.type == Relation.Type.FATHER) tree.getPerson(r.object).setFather(tree.getPerson(r.subject)); else
-		if (r.type == Relation.Type.MOTHER) tree.getPerson(r.object).setMother(tree.getPerson(r.subject)); else
-		if (r.type == Relation.Type.CHILD)  tree.getPerson(r.object).addChild(tree.getPerson(r.subject)); else
-		if (r.type == Relation.Type.SPOUSE) {
-				tree.getPerson(r.object).addMarriage(tree.getPerson(r.subject));
-				tree.getPerson(r.object).addWeddingDate(tree.getPerson(r.subject), r.date);
-				tree.getPerson(r.object).addWeddingVenue(tree.getPerson(r.subject), r.place);
+	public void applyFor(Tree tree) {
+		Person person  = tree.getPerson(object);
+		Person person2 = tree.getPerson(subject);
+
+		switch (type) {
+			case FATHER: person.setFather(person2); break;
+			case MOTHER: person.setMother(person2); break;
+			case CHILD:  person.addChild(person2);  break;
+			case SPOUSE: person.addMarriage(person2, date, place);
 		}
 	}
 	
