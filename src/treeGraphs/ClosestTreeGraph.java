@@ -116,11 +116,11 @@ public class ClosestTreeGraph extends TreeGraph {
 		int ownFamilyWidth = Math.max(
 				spouceIndentation + spousesWidth,
 				childIndentation  + childrenWidth);
-		areaWidth = new Maxer().add(
+		areaWidth = Maxer.max(
 				mainNameWidth,
 				fatherNameWidth + motherNameWidth + minSpaceBetweenParents,
 				ownFamilyWidth + minSpaceBetweenOwnFamilyAndSiblings + siblingsWidth
-				).getMax();
+				);
 		
 		Maxer maxheight = new Maxer().add(
 				mainNameY + siblingsHeight,

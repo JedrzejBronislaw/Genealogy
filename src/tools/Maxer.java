@@ -21,4 +21,8 @@ public class Maxer {
 	public int get() {
 		return max;
 	}
+	
+	public static int max(int... values) {
+		return new Maxer().add(values).get();
+	}
 }
