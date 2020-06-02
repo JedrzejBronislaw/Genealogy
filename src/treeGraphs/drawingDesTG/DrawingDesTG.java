@@ -13,7 +13,7 @@ import treeGraphs.painter.MultiHandle;
 import treeGraphs.painter.MyColor;
 import treeGraphs.painter.Point;
 
-public class DrawingDescendantTreeGraph extends TreeGraph {
+public class DrawingDesTG extends TreeGraph {
 
 	@Setter
 	private float wholeAngle = 150;
@@ -31,7 +31,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 	private static final MyColor liveLeafColor = MyColor.GREEN;
 	private static final MyColor deadLeafColor = new MyColor(0, 200, 0);
 	
-	private DrawingDescendantTreeGraphCalculation calculation;
+	private DrawingDesTGCalculation calculation;
 	private List<TreeNode> plan;
 	
 	
@@ -47,7 +47,7 @@ public class DrawingDescendantTreeGraph extends TreeGraph {
 	}
 
 	private void calculate() {
-		calculation = new DrawingDescendantTreeGraphCalculation(mainPerson)
+		calculation = new DrawingDesTGCalculation(mainPerson)
 				.setSymmetricalAngle(wholeAngle)
 				.setSpaceBetweenYoungestGeneration(15)
 				.setOffset(marginX, marginY);

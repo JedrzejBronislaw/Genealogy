@@ -2,12 +2,12 @@ package treeGraphs;
 
 import java.lang.reflect.InvocationTargetException;
 
-import treeGraphs.drawingDesTG.DrawingDescendantTreeGraph;
+import treeGraphs.drawingDesTG.DrawingDesTG;
 
 public enum TreeGraphType {
 	ancestors(StdAncestorsTreeGraph.class),
 	descendants(StdDescendantsTreeGraph.class),
-	drawnig(DrawingDescendantTreeGraph.class);
+	drawnig(DrawingDesTG.class);
 	
 	private Class<? extends TreeGraph> graphClass;
 	

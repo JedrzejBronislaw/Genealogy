@@ -10,7 +10,7 @@ import model.Person;
 import other.PersonDetails;
 import treeGraphs.painter.Point;
 
-public class DrawingDescendantTreeGraphCalculation {
+public class DrawingDesTGCalculation {
 	
 	enum BranchType {Deterministic, Random}
 
@@ -36,47 +36,47 @@ public class DrawingDescendantTreeGraphCalculation {
 	private int descendantGenerations;
 	
 	
-	public DrawingDescendantTreeGraphCalculation setBranchLengthDifferenceToParent(int difference) {
+	public DrawingDesTGCalculation setBranchLengthDifferenceToParent(int difference) {
 		branchLengthDifferenceToParent = difference;
 		return this;
 	}
 	
-	public DrawingDescendantTreeGraphCalculation setInitialDistanceBetweenGenerations(int initialDistance) {
+	public DrawingDesTGCalculation setInitialDistanceBetweenGenerations(int initialDistance) {
 		this.InitialDistanceBetweenGenerations = initialDistance;
 		return this;
 	}
-	public DrawingDescendantTreeGraphCalculation setSpaceBetweenYoungestGeneration(int distance) {
+	public DrawingDesTGCalculation setSpaceBetweenYoungestGeneration(int distance) {
 		float x = (distance-InitialDistanceBetweenGenerations)/(mainPerson.descendantGenerations()-1);
 		
 		branchLengthDifferenceToParent = x;
 		return this;
 	}
 	
-	public DrawingDescendantTreeGraphCalculation setBranchLength(BranchType branchLength) {
+	public DrawingDesTGCalculation setBranchLength(BranchType branchLength) {
 		this.branchLength = branchLength;
 		return this;
 	}
-	public DrawingDescendantTreeGraphCalculation setBranchAngle(BranchType branchAngle) {
+	public DrawingDesTGCalculation setBranchAngle(BranchType branchAngle) {
 		this.branchAngle = branchAngle;
 		return this;
 	}
 	
-	public DrawingDescendantTreeGraphCalculation setStartAngle(float angleInDegrees) {
+	public DrawingDesTGCalculation setStartAngle(float angleInDegrees) {
 		this.startAngle = angleInDegrees;
 		return this;
 	}
-	public DrawingDescendantTreeGraphCalculation setWholeAngle(float angleInDegrees) {
+	public DrawingDesTGCalculation setWholeAngle(float angleInDegrees) {
 		this.wholeAngle = angleInDegrees;
 		return this;
 	}
-	public DrawingDescendantTreeGraphCalculation setSymmetricalAngle(float widthInDegrees) {
+	public DrawingDesTGCalculation setSymmetricalAngle(float widthInDegrees) {
 		this.wholeAngle = widthInDegrees;
 		this.startAngle = 180-(180-wholeAngle)/2;
 		
 		return this;
 	}
 
-	public DrawingDescendantTreeGraphCalculation setOffset(int offsetX, int offsetY) {
+	public DrawingDesTGCalculation setOffset(int offsetX, int offsetY) {
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
 
@@ -92,7 +92,7 @@ public class DrawingDescendantTreeGraphCalculation {
 	}
 	
 	
-	public DrawingDescendantTreeGraphCalculation(Person mainPerson) {
+	public DrawingDesTGCalculation(Person mainPerson) {
 		this.mainPerson = mainPerson;
 	}
 
