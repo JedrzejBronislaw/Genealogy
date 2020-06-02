@@ -26,7 +26,11 @@ public class DateUnderNameDisplayer extends NameDisplayer {
 	@Override
 	public int getHeight(Person person) {
 		int height = painter.getTextHeight();
-		return height * (generateDate(person)==null ? 1 : 2) + verticalSpacing;
+		
+		if (generateDate(person) != null)
+			height = 2 * height + verticalSpacing;
+
+		return height;
 	}
 
 	@Override

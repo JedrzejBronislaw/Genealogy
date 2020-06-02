@@ -14,6 +14,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 	private class Coords {
 		int personY;
 		int branchBottom;
+		int personHeight;
 	}
 
 
@@ -105,7 +106,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 	private Coords drawBranch(Person person, int generation, int branchY)
 	{		
 		if (person == null)
-			return new Coords(branchY, branchY+emptyPersonHeight+betweenParents);
+			return new Coords(branchY, branchY+emptyPersonHeight+betweenParents, emptyPersonHeight);
 		if (!hasAnyParent(person))
 			return drawLeaf(person, gensXCoordinate[generation], branchY);
 		
@@ -125,7 +126,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		motherBranch = drawBranch(mother, generation+1, fatherBranch.branchBottom);
 		
 		personX = branchX;
-		personY = middleY(fatherBranch, motherBranch);
+		personY = middleY(fatherBranch, motherBranch) - nameHeight/2;
 		
 		draw(person, personX, personY);
 		
@@ -134,8 +135,8 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		int verticalLineX = gensXCoordinate[generation+1] - parentsVericalLineSpace;
 		
 		int childY  = personY + nameHeight/2;
-		int fatherY = fatherBranch.personY + nameHeight/2;
-		int motherY = motherBranch.personY + nameHeight/2;
+		int fatherY = arrowY(fatherBranch);
+		int motherY = arrowY(motherBranch);
 		
 		Point childPoint         = new Point(childX, childY);
 		Point verticalLineTop    = new Point(verticalLineX, fatherY);
@@ -151,7 +152,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		//line to mother
 		painter.drawHLine(verticalLineBottom, parentLineLenght);
 		
-		return new Coords(personY, motherBranch.branchBottom);
+		return new Coords(personY, motherBranch.branchBottom, nameHeight);
 	}
 
 	private Coords drawLeaf(Person person, int leafX, int leafY) {
@@ -159,14 +160,18 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 		
 		draw(person, leafX, leafY);
 		
-		return new Coords(leafY, leafY + nameHeight + betweenParents);
+		return new Coords(leafY, leafY + nameHeight + betweenParents, nameHeight);
+	}
+	
+	private int arrowY(Coords branch) {
+		return branch.personY + branch.personHeight/2;
 	}
 	
 	private int middleY(Coords fatherBranch, Coords motherBranch) {
-		int topY    = motherBranch.personY;
-		int bottomY = fatherBranch.personY;
+		int topY    = arrowY(motherBranch);
+		int bottomY = arrowY(fatherBranch);
 		
-		return ((topY-bottomY) / 2) + bottomY;
+		return ((bottomY-topY) / 2) + topY;
 	}
 	
 	private boolean hasAnyParent(Person person) {

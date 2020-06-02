@@ -187,7 +187,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		for (int i=0; i<person.numberOfChildren(); i++) {
 			Person child = person.getChild(i);
 			
-			arrowheadY = y + childrenHeight + nameHeight/2;
+			arrowheadY = y + childrenHeight + nameDisplayer.getHeight(child)/2;
 			drawChildArrow(person, child, arrowheadX, arrowheadY, verticalLineX);
 			
 			childrenHeight += drawFamily(
