@@ -1,4 +1,4 @@
-package model;
+package model.pgl;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -14,9 +14,14 @@ import java.util.List;
 
 import org.junit.Test;
 
+import model.MyDate;
+import model.Person;
+import model.Tree;
 import model.Person.LifeStatus;
 import model.Person.Sex;
 import model.familyRelations.RelationEditor;
+import model.pgl.PGLWriter;
+import model.pgl.reader.PGLReader;
 
 public class PGLWriterTest {
 
@@ -96,7 +101,7 @@ public class PGLWriterTest {
 		File file = null;
 		Tree treeFromFile = new Tree();
 		PGLWriter writer;
-		PGLFile pglFile = null;
+		PGLReader pglFile = null;
 		
 		try {
 			file = File.createTempFile("pglWriterTest", ".pgl");
@@ -111,7 +116,7 @@ public class PGLWriterTest {
 		
 		
 		try {
-			pglFile = new PGLFile(file.getAbsolutePath());
+			pglFile = new PGLReader(file.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			fail("Opening file error");
 		}

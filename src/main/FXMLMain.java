@@ -8,8 +8,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lang.Internationalization;
 import lang.Languages;
-import model.PGLFile;
 import model.Tree;
+import model.pgl.reader.PGLReader;
 import session.Session;
 import viewFX.mainWindow.MainWindowBuilder;
 
@@ -85,7 +85,7 @@ public class FXMLMain extends Application {
 		Tree tree = new Tree();
 		
 		try {
-			PGLFile file = new PGLFile(path);
+			PGLReader file = new PGLReader(path);
 			file.load(tree);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found (" + path + ").");

@@ -1,4 +1,4 @@
-package model;
+package model.pgl.reader;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -6,10 +6,12 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import model.Person;
+import model.Tree;
 import model.Person.LifeStatus;
 import model.Person.Sex;
 
-public class PGLFileTest_SinglePerson {
+public class PGLReaderTest_SinglePerson {
 	private static PGLFilePreparation preparation = new PGLFilePreparation("singlePerson");
 	private static String content = String.join("\n",
 			"[1]",

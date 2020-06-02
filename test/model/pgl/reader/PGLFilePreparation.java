@@ -1,4 +1,4 @@
-package model;
+package model.pgl.reader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import model.Tree;
+import model.pgl.reader.PGLReader;
 
 @RequiredArgsConstructor
 public class PGLFilePreparation {
@@ -28,16 +30,16 @@ public class PGLFilePreparation {
 	}
 
 	protected Tree loadTreeFromFile() {
-		PGLFile pglFile = null;
+		PGLReader pglReader = null;
 		Tree tree = new Tree();
 
 		try {
-			pglFile = new PGLFile(file.getAbsolutePath());
+			pglReader = new PGLReader(file.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		
-		pglFile.load(tree);
+		pglReader.load(tree);
 		
 		return tree;
 	}

@@ -1,4 +1,4 @@
-package model;
+package model.pgl.reader;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -16,11 +16,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import lombok.AllArgsConstructor;
+import model.MyDate;
+import model.Person;
+import model.Tree;
 import model.Person.LifeStatus;
 import model.Person.Sex;
 import tools.Tools;
 
-public class PGLFile {
+public class PGLReader {
 
 	private class INISection {
 		
@@ -114,7 +117,7 @@ public class PGLFile {
 	private BufferedReader brFile;
     
 	
-	public PGLFile(String path) throws FileNotFoundException {
+	public PGLReader(String path) throws FileNotFoundException {
 		openFile(path);
 	}
 	

@@ -1,4 +1,4 @@
-package model;
+package model.pgl;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,6 +8,9 @@ import java.util.List;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import model.MyDate;
+import model.Person;
+import model.Tree;
 import model.Person.LifeStatus;
 import model.Person.Sex;
 
