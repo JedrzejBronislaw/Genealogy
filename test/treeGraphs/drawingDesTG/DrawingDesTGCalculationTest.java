@@ -1,130 +1,125 @@
 package treeGraphs.drawingDesTG;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import treeGraphs.drawingDesTG.DrawingDesTGCalculation;
 import treeGraphs.painter.Point;
 
 public class DrawingDesTGCalculationTest {
 
-
-	@Test
-	public void stNaRad_0()
-	{
-		assertEquals(DrawingDesTGCalculation.degreeToRad(0),   0, 0);
-	}
-	@Test
-	public void stNaRad_180()
-	{
-		assertEquals(DrawingDesTGCalculation.degreeToRad(180), Math.PI,   0);
-	}
-	@Test
-	public void stNaRad_90()
-	{
-		assertEquals(DrawingDesTGCalculation.degreeToRad(90),  Math.PI/2, 0);
-	}
-	@Test
-	public void stNaRad_360()
-	{
-		assertEquals(DrawingDesTGCalculation.degreeToRad(360), 0, 0);
+	private double degreeToRad(double degree) {
+		return DrawingDesTGCalculation.degreeToRad(degree);
 	}
 	
 	@Test
-	public void procOkreguNaRad_0()
-	{
-		assertEquals(DrawingDesTGCalculation.circlePercentageToRad(0), 0, 0);
+	public void degreeToRad_0() {
+		assertEquals(0, degreeToRad(0), 0);
 	}
+	
 	@Test
-	public void procOkreguNaRad_pol()
-	{
-		assertEquals(DrawingDesTGCalculation.circlePercentageToRad(0.5), Math.PI, 0);
+	public void degreeToRad_180() {
+		assertEquals(Math.PI, degreeToRad(180), 0);
+	}
+	
+	@Test
+	public void degreeToRad_90() {
+		assertEquals(Math.PI/2, degreeToRad(90), 0);
+	}
+	
+	@Test
+	public void degreeToRad_360() {
+		assertEquals(0, degreeToRad(360), 0);
+	}
+	
+	
+	
+	private double circlePercentageToRad(double percent) {
+		return DrawingDesTGCalculation.circlePercentageToRad(percent);
+	}
+	
+	@Test
+	public void circlePercToRad_0() {
+		assertEquals(0, circlePercentageToRad(0), 0);
+	}
+	
+	@Test
+	public void circlePercToRad_half() {
+		assertEquals(Math.PI, circlePercentageToRad(0.5), 0);
+	}
+
+	
+	
+	private DrawingDesTGCalculation graph(float startAngle, float wholeAngle) {
+		DrawingDesTGCalculation graph = new DrawingDesTGCalculation(null);
+		graph.setStartAngle(startAngle);
+		graph.setWholeAngle(wholeAngle);
+		return graph;
 	}
 
 	@Test
-	public void procObszaruNaRad_180_180_0()
-	{
-		DrawingDesTGCalculation graf = new DrawingDesTGCalculation(null);
-		graf.setStartAngle(180);
-		graf.setWholeAngle(180);
-		assertEquals(graf.areaPercentageToRad(0), 0, 0);
+	public void areaPercToRad_180_180_0() {
+		assertEquals(0, graph(180, 180).areaPercentageToRad(0), 0);
 	}
+	
 	@Test
-	public void procObszaruNaRad_180_180_05()
-	{
-		DrawingDesTGCalculation graf = new DrawingDesTGCalculation(null);
-		graf.setStartAngle(180);
-		graf.setWholeAngle(180);
-		assertEquals(graf.areaPercentageToRad(0.5), Math.PI/2, 0);
+	public void areaPercToRad_180_180_05() {
+		assertEquals(Math.PI/2, graph(180, 180).areaPercentageToRad(0.5), 0);
 	}
+	
 	@Test
-	public void procObszaruNaRad_180_180_1()
-	{
-		DrawingDesTGCalculation graf = new DrawingDesTGCalculation(null);
-		graf.setStartAngle(180);
-		graf.setWholeAngle(180);
-		assertEquals(graf.areaPercentageToRad(1), Math.PI, 0);
+	public void areaPercToRad_180_180_1() {
+		assertEquals(Math.PI, graph(180, 180).areaPercentageToRad(1), 0);
 	}
 
 	@Test
-	public void procObszaruNaRad_135_90_0()
-	{
-		DrawingDesTGCalculation graf = new DrawingDesTGCalculation(null);
-		graf.setStartAngle(135);
-		graf.setWholeAngle(90);
-		assertEquals(graf.areaPercentageToRad(0), Math.PI/4, 0);
+	public void areaPercToRad_135_90_0() {
+		assertEquals(Math.PI/4, graph(135, 90).areaPercentageToRad(0), 0);
 	}
+	
 	@Test
-	public void procObszaruNaRad_135_90_08()
-	{
-		DrawingDesTGCalculation graf = new DrawingDesTGCalculation(null);
-		graf.setStartAngle(135);
-		graf.setWholeAngle(90);
-		assertEquals(graf.areaPercentageToRad(0.8), DrawingDesTGCalculation.degreeToRad(117), 0);
+	public void areaPercToRad_135_90_08() {
+		assertEquals(DrawingDesTGCalculation.degreeToRad(117), graph(135, 90).areaPercentageToRad(0.8), 0);
 	}
+	
 	@Test
-	public void procObszaruNaRad_135_90_1()
-	{
-		DrawingDesTGCalculation graf = new DrawingDesTGCalculation(null);
-		graf.setStartAngle(135);
-		graf.setWholeAngle(90);
-		assertEquals(graf.areaPercentageToRad(1), Math.PI*3/4, 0);
+	public void areaPercToRad_135_90_1() {
+		assertEquals(Math.PI*3/4, graph(135, 90).areaPercentageToRad(1), 0);
 	}
 
-	@Test
-	public void katRadNaPunkt_1()
-	{
-		Point punkt = DrawingDesTGCalculation.radAngleToPoint(0, 100, new Point(0,0));
-		assertTrue(punkt.getX() == 100 && punkt.getY() == 0);
+	
+
+	private Point radAngleToPoint(double angle, double distance, Point point) {
+		return DrawingDesTGCalculation.radAngleToPoint(angle, distance, point);
 	}
+	
 	@Test
-	public void katRadNaPunkt_2()
-	{
-		Point punkt = DrawingDesTGCalculation.radAngleToPoint(Math.PI/2, 100, new Point(0,0));
-		assertEquals(punkt.getX(), 0);
-		assertEquals(punkt.getY(), -100);
+	public void angleToPoint_1() {
+		Point point = radAngleToPoint(0, 100, new Point(0, 0));
+		assertEquals(new Point(100, 0), point);
 	}
+	
 	@Test
-	public void katRadNaPunkt_3()
-	{
-		Point punkt = DrawingDesTGCalculation.radAngleToPoint(Math.PI, 100, new Point(0,0));
-		assertTrue(punkt.getX() == -100 && punkt.getY() == 0);
+	public void angleToPoint_2() {
+		Point point = radAngleToPoint(Math.PI/2, 100, new Point(0, 0));
+		assertEquals(new Point(0, -100), point);
 	}
+	
 	@Test
-	public void katRadNaPunkt_4()
-	{
-		Point punkt = DrawingDesTGCalculation.radAngleToPoint(Math.PI/4, 100, new Point(0,0));
-		assertEquals(punkt.getX(), 70, 0);
-		assertEquals(punkt.getY(), -70, 0);
+	public void angleToPoint_3() {
+		Point point = radAngleToPoint(Math.PI, 100, new Point(0, 0));
+		assertEquals(new Point(-100, 0), point);
 	}
+	
 	@Test
-	public void katRadNaPunkt_5()
-	{
-		Point punkt = DrawingDesTGCalculation.radAngleToPoint(0, 500, new Point(20,10));
-//		assertTrue(punkt.x == 520 && punkt.y == 10);
-		assertEquals(punkt.getX(), 520);
-		assertEquals(punkt.getY(), 10);
+	public void angleToPoint_4() {
+		Point point = radAngleToPoint(Math.PI/4, 100, new Point(0, 0));
+		assertEquals(new Point(70, -70), point);
+	}
+	
+	@Test
+	public void angleToPoint_5() {
+		Point point = radAngleToPoint(0, 500, new Point(20, 10));
+		assertEquals(new Point(520, 10), point);
 	}
 }
