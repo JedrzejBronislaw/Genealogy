@@ -132,7 +132,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 	}
 
 	private void drawRings(int x, int y, final int width, final int height) {
-		final MyColor oldColor = painter.getColor();
+		final MyColor oldColor;
 		final float commonPart = .3f;
 		final float ringsRatio = 2 - commonPart;
 		final float areaRatio  = width / height;
@@ -151,7 +151,7 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 			ringsWidth = (int)(ringWidth * ringsRatio);
 		}
 		
-		painter.setColor(ringsColor);
+		oldColor = painter.changeColor(ringsColor);
 		
 		x += (width  - ringsWidth) / 2;
 		y += (height - ringHeight) / 2;

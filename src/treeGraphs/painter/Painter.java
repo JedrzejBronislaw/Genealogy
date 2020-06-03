@@ -44,6 +44,12 @@ public abstract class Painter {
 	
 	abstract public void setColor(MyColor color);
 	abstract public MyColor getColor();
+	public MyColor changeColor(MyColor color) {
+		MyColor oldColor = getColor();
+		setColor(color);
+		return oldColor;
+	}
+	
 	abstract public void setTextStyle(String fontName, MyFont.Style style, int size);
 	public void setTextStyle(MyFont font) {
 		setTextStyle(font.getName(), font.getStyle(), font.getSize());

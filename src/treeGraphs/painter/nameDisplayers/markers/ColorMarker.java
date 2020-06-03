@@ -9,8 +9,7 @@ abstract public class ColorMarker extends NameMarker {
 
 	@Override
 	protected final void prepare(Person person) {
-		oldColor = painter.getColor();
-		painter.setColor(getColor(person));
+		oldColor = painter.changeColor(getColor(person));
 	}
 	
 	@Override

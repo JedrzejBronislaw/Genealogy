@@ -111,12 +111,9 @@ public class DrawingDesTG extends TreeGraph {
 
 	private Handle drawLeaf(final Point center, MyColor leafColor)
 	{
-		MyColor oldColor = painter.getColor();
-		Handle h1, h2;
-		
-		painter.setColor(leafColor);
-		h1 = painter.drawCircle(center, fieldSize);
-		h2 = painter.drawRectangle(center, center.addVector(fieldSize, -fieldSize));
+		MyColor oldColor = painter.changeColor(leafColor);
+		Handle h1 = painter.drawCircle(center, fieldSize);
+		Handle h2 = painter.drawRectangle(center, center.addVector(fieldSize, -fieldSize));
 		
 		painter.setColor(oldColor);
 		
