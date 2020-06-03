@@ -63,6 +63,7 @@ public class FxPainter extends Painter{
 		textFX.setX(topLeft.getX());
 		textFX.setY(topLeft.getY());
 		textFX.setFont(currentFont());
+		textFX.setFill(color);
 
 		pane.getChildren().add(textFX);
 
