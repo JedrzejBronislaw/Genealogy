@@ -8,6 +8,8 @@ import treeGraphs.TreeGraphType;
 import treeGraphs.painter.PainterServiceType;
 import treeGraphs.painter.nameDisplayers.NameDisplayer;
 import treeGraphs.painter.nameDisplayers.NameDisplayerType;
+import treeGraphs.painter.nameDisplayers.markers.DeadMarker;
+import treeGraphs.painter.nameDisplayers.markers.SexMarker;
 
 @Setter
 public class PainterServiceBuilder {
@@ -43,6 +45,9 @@ public class PainterServiceBuilder {
 		graph.setNameDisplayer(nameDisplayer);
 		graph.setMainPerson(person);
 		service.setGraph(graph);
+
+		nameDisplayer.addMarker(new DeadMarker());
+		nameDisplayer.addMarker(new SexMarker());
 		
 		return service;
 	}
