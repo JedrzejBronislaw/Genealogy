@@ -43,8 +43,6 @@ public class PainterServiceBuilder {
 		graph.setNameDisplayer(nameDisplayer);
 		graph.setMainPerson(person);
 		service.setGraph(graph);
-			
-//		Injection.run(onParametersChange, painterService.getParameters());
 		
 		return service;
 	}
