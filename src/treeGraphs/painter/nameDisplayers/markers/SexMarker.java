@@ -4,9 +4,7 @@ import model.Person;
 import model.Person.Sex;
 import treeGraphs.painter.MyColor;
 
-public class SexMarker extends NameMarker {
-
-	private MyColor oldColor = MyColor.BLACK;
+public class SexMarker extends ColorMarker {
 
 	@Override
 	public boolean check(Person person) {
@@ -14,20 +12,14 @@ public class SexMarker extends NameMarker {
 	}
 
 	@Override
-	protected void prepare(Person person) {
-		oldColor = painter.getColor();
-		
+	protected MyColor getColor(Person person) {
 		switch (person.getSex()) {
 			case MAN:
-				painter.setColor(new MyColor(0, 0, 153)); break;
+				return new MyColor(0, 0, 153);
 			case WOMAN:
-				painter.setColor(new MyColor(153, 0, 0)); break;
-			default: break;
+				return new MyColor(153, 0, 0);
+			default:
+				return null;
 		}
-	}
-	
-	@Override
-	protected void clean() {
-		painter.setColor(oldColor);
 	}
 }
