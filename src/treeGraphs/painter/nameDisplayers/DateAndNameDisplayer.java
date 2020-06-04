@@ -13,12 +13,12 @@ public class DateAndNameDisplayer extends NameDisplayer{
 	}
 
 	@Override
-	public int getHeight(Person person) {
+	protected int height(Person person) {
 		return painter.getTextHeight();
 	}
 
 	@Override
-	public int getWidth(Person person) {
+	protected int width(Person person) {
 		return painter.getTextWidth(genText(person));
 	}
 	

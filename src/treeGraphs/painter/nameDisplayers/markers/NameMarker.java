@@ -1,5 +1,7 @@
 package treeGraphs.painter.nameDisplayers.markers;
 
+import java.util.function.Supplier;
+
 import lombok.Setter;
 import model.Person;
 import treeGraphs.painter.Handle;
@@ -13,16 +15,25 @@ abstract public class NameMarker {
 	protected Painter painter;
 	
 	public Handle print(Person person, int x, int y) {
+		return execute(person, () -> displayer.display(person, x, y));
+	}
+	
+	public <T> T get(Person person, Supplier<T> supplier) {
+		return execute(person, supplier);
+	}
+	
+	private <T> T execute(Person person, Supplier<T> supplier) {
 		if (displayer == null ||
 			painter   == null ||
+			supplier  == null ||
 			!check(person))
 			return null;
 			
 		prepare(person);
-		Handle handle = displayer.display(person, x, y);
+		T outcom = supplier.get();
 		clean();
 		
-		return handle;
+		return outcom;
 	}
 	
 	abstract public boolean check(Person person);

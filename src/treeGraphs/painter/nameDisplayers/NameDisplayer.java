@@ -28,11 +28,20 @@ public abstract class NameDisplayer {
 	}
 	public Handle print(Person person, Point point) {
 		return print(person, point.getX(), point.getY());
-	};
+	}
 
+
+	public int getHeight(Person person) {
+		return (person == null) ? 0 : markerList.get(person, () -> height(person));
+	}
+	
+	public int getWidth(Person person) {
+		return (person == null) ? 0 : markerList.get(person, () -> width(person));
+	}
+	
 	abstract protected Handle printPerson(Person person, int x, int y);
-	abstract public int getHeight(Person person);
-	abstract public int getWidth(Person person);
+	abstract protected int height(Person person);
+	abstract protected int width(Person person);
 	
 	public void addMarker(NameMarker marker) {
 		markerList.add(marker);

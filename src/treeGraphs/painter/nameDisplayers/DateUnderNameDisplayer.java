@@ -24,7 +24,7 @@ public class DateUnderNameDisplayer extends NameDisplayer {
 
 
 	@Override
-	public int getHeight(Person person) {
+	protected int height(Person person) {
 		int height = painter.getTextHeight();
 		
 		if (generateDate(person) != null)
@@ -34,7 +34,7 @@ public class DateUnderNameDisplayer extends NameDisplayer {
 	}
 
 	@Override
-	public int getWidth(Person person) {
+	protected int width(Person person) {
 		String date = generateDate(person);
 		String name = generateName(person);
 		
