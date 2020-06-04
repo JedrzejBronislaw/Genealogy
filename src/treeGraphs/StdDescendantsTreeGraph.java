@@ -2,6 +2,7 @@ package treeGraphs;
 
 import java.util.Arrays;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import model.Person;
@@ -12,6 +13,19 @@ import treeGraphs.painter.MyFont.Style;
 import treeGraphs.painter.Point;
 
 public class StdDescendantsTreeGraph extends TreeGraph{
+	
+	@AllArgsConstructor
+	private static class Coords {
+		int arrowY;
+		int familyHeight;
+		
+		static final Coords EMPTY = new Coords(0, 0);
+		
+		public boolean isEmpty() {
+			return familyHeight == 0;
+		}
+	}
+
 
 	public enum SpaceType {OnlyBetweenSiblings, BetweenSiblingsAndCousins};
 	
@@ -57,8 +71,8 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		painter.setColor(MyColor.BLACK);
 		
 		width  = computeWidths();
-		height = drawFamily(mainPerson, marginesX, marginesY);
-
+		height = drawFamily(mainPerson, marginesX, marginesY).familyHeight;
+		
 		height += marginesY * 2;
 		width  += marginesX * 2;
 	}
@@ -98,25 +112,31 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 				nameDisplayer.getWidth(person) + appendix);
 	}
 	
-	private int drawFamily(Person person, int x, int y) {
+	private Coords drawFamily(Person person, int x, int y) {
 		return drawFamily(person, x, y, 0, true);
 	}
-	private int drawFamily(Person person, int x, int y, int generation, boolean isLastChild) {
+	private Coords drawFamily(Person person, int x, int y, int generation, boolean isLastChild) {
 		
-		draw(person, x, y);
+		int nameHeight = nameDisplayer.getHeight(person);
 		
-		int spousesHeight  = drawSpouses(person, x, y);
-		int childrenHeight = drawChildren(person, x, y, generation);
+		Coords childrenCoords = drawChildren(person, x, y, generation);
 		
-		return computeFamilyHeight(person, isLastChild, generation, spousesHeight, childrenHeight);
+
+		int personY = (childrenCoords.isEmpty()) ? y : childrenCoords.arrowY-nameHeight/2;
+		draw(person, x, personY);
+		int spousesHeight  = drawSpouses(person, x, personY + nameHeight + betweenSpousesSpace);
+
+		int personHeight = y - personY + nameHeight;
+		int familyHeight = computeFamilyHeight(person, isLastChild, generation, personHeight, spousesHeight, childrenCoords.familyHeight);
+
+		return new Coords(personY + nameHeight/2, familyHeight);
 	}
 	
 	private int drawSpouses(Person person, int x, int y) {
 		int spousesHeight = 0;
-		int nameHeight = nameDisplayer.getHeight(person);
 		
 		for (int i=0; i<person.numberOfMarriages(); i++)
-			spousesHeight += drawSpouse(person.getSpouse(i), x, y + nameHeight + spousesHeight + betweenSpousesSpace);
+			spousesHeight += drawSpouse(person.getSpouse(i), x, y + spousesHeight);
 		
 		return spousesHeight;
 	}
@@ -165,46 +185,51 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		painter.setColor(oldColor);
 	}
 	
-	private int drawChildren(Person person, int x, int y, int generation) {
-		if (person.isChildless()) return 0;
+	private Coords drawChildren(Person person, int x, int y, int generation) {
+		if (person.isChildless()) return Coords.EMPTY;
 
 		int childrenHeight = 0;
 		
-		int nameHeight = nameDisplayer.getHeight(person);
 		int nameWidth  = nameDisplayer.getWidth(person);
 		
 		int verticalLineX = x + columnsWidths[generation] + lineMargin + minParentLineLength;
 		int parentX = x + nameWidth + lineMargin;
 		int arrowheadX = verticalLineX + childArrowLength;
 		
-		int parentY = y+nameHeight/2;
 		int arrowheadY = 0;
 		
-		Point parentPoint = new Point(parentX, parentY);
-		Point verticalLineTop = new Point(verticalLineX, parentY);
-		
+		int firstChildArrowY = 0;
 		
 		for (int i=0; i<person.numberOfChildren(); i++) {
 			Person child = person.getChild(i);
 			
-			arrowheadY = y + childrenHeight + nameDisplayer.getHeight(child)/2;
-			drawChildArrow(person, child, arrowheadX, arrowheadY, verticalLineX);
-			
-			childrenHeight += drawFamily(
+			Coords coords = drawFamily(
 					child,
 					arrowheadX + lineMargin,
 					y + childrenHeight,
 					generation + 1,
 					i==person.numberOfChildren()-1);
 			
+			arrowheadY = coords.arrowY;
+			drawChildArrow(person, child, arrowheadX, arrowheadY, verticalLineX);
+			
+			if (i == 0)
+				firstChildArrowY = arrowheadY;
+
+			childrenHeight += coords.familyHeight;
+					
 			if (spaceType == SpaceType.OnlyBetweenSiblings)
 				childrenHeight += betweenSiblingsSpace;
 		}
 		
+		int parentY = firstChildArrowY;
+		Point parentPoint = new Point(parentX, parentY);
+		Point verticalLineTop = new Point(verticalLineX, parentY);
+		
 		painter.drawLine(parentPoint, verticalLineTop);
 		painter.drawVLineTo(verticalLineTop, arrowheadY);
 
-		return childrenHeight;
+		return new Coords(firstChildArrowY, childrenHeight);
 	}
 
 	private void drawChildArrow(Person person, Person child, int arrowheadX, int arrowheadY, int verticalLineX) {
@@ -238,10 +263,8 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		return true;
 	}
 	
-	private int computeFamilyHeight(Person person, boolean isLastChild, int generation, int spousesHeight, int childrenHeight) {
-		int nameHeight = nameDisplayer.getHeight(person);
-		
-		int parentsHeight = nameHeight + spousesHeight;
+	private int computeFamilyHeight(Person person, boolean isLastChild, int generation, int personHeight, int spousesHeight, int childrenHeight) {
+		int parentsHeight = personHeight + spousesHeight;
 		int familyHeight = Math.max(parentsHeight, childrenHeight);
 		
 		
