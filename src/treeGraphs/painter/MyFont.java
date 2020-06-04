@@ -12,5 +12,17 @@ public class MyFont {
 	private String name;
 	private Style style;
 	private int size;
-	
+
+	public MyFont copy(String name) {
+		return new MyFont(name, style, size);
+	}
+	public MyFont copy(Style style) {
+		return new MyFont(name, style, size);
+	}
+	public MyFont copy(int size) {
+		return new MyFont(name, style, size);
+	}
+	public MyFont copy(double sizeFactor) {
+		return new MyFont(name, style, (int)(size*sizeFactor));
+	}
 }

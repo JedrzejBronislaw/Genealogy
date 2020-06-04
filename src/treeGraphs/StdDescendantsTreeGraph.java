@@ -226,19 +226,14 @@ public class StdDescendantsTreeGraph extends TreeGraph{
 		String marriageNumber = child.parentsMarriageNumber(parent) + "";
 		if (marriageNumber.equals("0")) return false;
 
-		MyFont oldFont  = painter.getTextStyle();
-
-		painter.setTextStyle(
-				oldFont.getName(),
-				oldFont.getStyle(),
-				(int)(oldFont.getSize()*.75));
+		int oldFontSize  = painter.changeTextSize(.75);
 		
 		int textHeight = painter.getTextHeight();
 		int textLeft   = lineLeft + marriageNumOffset;
 		int textBotton = (int) (lineY + Math.ceil(textHeight/2f));
 		
 		painter.drawText(marriageNumber, new Point(textLeft, textBotton));
-		painter.setTextStyle(oldFont);
+		painter.setTextSize(oldFontSize);
 		
 		return true;
 	}

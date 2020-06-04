@@ -24,8 +24,8 @@ public class ClosestTreeGraph extends TreeGraph {
 	private static final int minSpaceBetweenOwnFamilyAndSiblings = 30;
 
 	private static final MyFont mainPersonFont = new MyFont("Times", Style.BOLD,   25);
-	private static final MyFont familyFont     = new MyFont("Arial", Style.BOLD,   12);
-	private static final MyFont siblingsFont   = new MyFont("Arial", Style.ITALIC, 12);
+	private static final MyFont familyFont     = mainPersonFont.copy("Arial").copy(12);
+	private static final MyFont siblingsFont   = familyFont.copy(Style.ITALIC);
 
 
 	private int areaWidth;

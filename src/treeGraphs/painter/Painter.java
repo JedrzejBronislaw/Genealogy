@@ -1,6 +1,7 @@
 package treeGraphs.painter;
 
 import lombok.Setter;
+import treeGraphs.painter.MyFont.Style;
 
 public abstract class Painter {
 	
@@ -54,6 +55,49 @@ public abstract class Painter {
 	public void setTextStyle(MyFont font) {
 		setTextStyle(font.getName(), font.getStyle(), font.getSize());
 	}
+	public void bold() {
+		MyFont font = getTextStyle();
+		Style style = font.getStyle();
+		
+		style = (style == Style.ITALIC ||
+				 style == Style.BOLD_ITALIC) ? Style.BOLD_ITALIC : Style.BOLD;
+		
+		setTextStyle(font.getName(), style, font.getSize());
+	}
+	public void unbold() {
+		MyFont font = getTextStyle();
+		Style style = font.getStyle();
+		
+		style = (style == Style.ITALIC ||
+				 style == Style.BOLD_ITALIC) ? Style.ITALIC : Style.REGULAR;
+		
+		setTextStyle(font.copy(style));
+	}
+	public void setTextSize(int size) {
+		setTextStyle(getTextStyle().copy(size));
+	}
+	public int changeTextSize(int size) {
+		int oldSize = getTextStyle().getSize();
+		setTextSize(size);
+		return oldSize;
+	}
+	public void setTextSize(double size) {
+		setTextStyle(getTextStyle().copy(size));
+	}
+	public int changeTextSize(double size) {
+		int oldSize = getTextStyle().getSize();
+		setTextSize(size);
+		return oldSize;
+	}
+	public void setFontName(String fontName) {
+		setTextStyle(getTextStyle().copy(fontName));
+	}
+	public String changeFontName(String fontName) {
+		String oldName = getTextStyle().getName();
+		setFontName(fontName);
+		return oldName;
+	}
+	
 	abstract public MyFont getTextStyle();
 	abstract public void setLineStyle(int thickness);
 	abstract public int getLineThickness();
