@@ -50,9 +50,11 @@ public abstract class TreeGraph {
 		handle.setOnMouseDoubleClick(() -> Injection.run(personDoubleClickAction, person));
 	}
 	
-	protected void draw(Person person, int x, int y) {
+	protected int draw(Person person, int x, int y) {
 		int nameHeight = nameDisplayer.getHeight(person);
 		Handle handle  = nameDisplayer.print(person, x, y+nameHeight);
 		setHandleEvents(handle, person);
+		
+		return nameHeight;
 	}
 }

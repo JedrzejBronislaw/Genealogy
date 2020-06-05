@@ -222,36 +222,24 @@ public class ClosestTreeGraph extends TreeGraph {
 		int x = marginX + areaWidth - siblingsWidth;
 		int y = mainNameY + spaceBetweenSiblings;
 		
-		int height = painter.getTextHeight();
-		
-		for (Person sibling : siblings) {
-			draw(sibling, x, y);
-			y += height + spaceBetweenSiblings;
-		}
+		for (Person sibling : siblings)
+			y += draw(sibling, x, y) + spaceBetweenSiblings;
 	}
 	
 	private void drawSpouses() {
 		int x = mainNameX + spouceIndentation;
 		int y = mainNameY + spaceBetweenSpouses;
 		
-		int height = painter.getTextHeight();
-
-		for (Person spouse : mainPerson.getSpouses()) {
-			draw(spouse, x, y);
-			y += height + spaceBetweenSpouses;
-		}		
+		for (Person spouse : mainPerson.getSpouses())
+			y += draw(spouse, x, y) + spaceBetweenSpouses;
 	}
 	
 	private void drawChildren() {
 		int x = mainNameX + childIndentation;
 		int y = mainNameY + spousesHeight + aboveChildrenSpace;
 		
-		int height = painter.getTextHeight();
-		
-		for (Person child : mainPerson.getChildren()) {
-			draw(child, x, y);
-			y += height + spaceBetweenChildren;
-		}
+		for (Person child : mainPerson.getChildren())
+			y += draw(child, x, y) + spaceBetweenChildren;
 	}
 
 	private int maxWidth(Person[] persons) {

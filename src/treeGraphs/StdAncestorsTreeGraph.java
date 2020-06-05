@@ -156,10 +156,7 @@ public class StdAncestorsTreeGraph extends TreeGraph {
 	}
 
 	private Coords drawLeaf(Person person, int leafX, int leafY) {
-		int nameHeight = nameDisplayer.getHeight(person);
-		
-		draw(person, leafX, leafY);
-		
+		int nameHeight = draw(person, leafX, leafY);
 		return new Coords(leafY, leafY + nameHeight + betweenParents, nameHeight);
 	}
 	
