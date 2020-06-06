@@ -65,11 +65,11 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		controller.setLanguagePane(generateLanguagePane());
 		controller.setFullScreenPane(generateFullScreenPane());
 
-		controller.setCardPane(generateCardPane());
-		controller.setGraphPane(generateTreeGraphPane());
-		controller.setChooseFilePane(generateFileChoosePane());
-		controller.setTreePane(generateTreePane());
-		controller.setEditPersonPane(generateEditPersonPane());
+		controller.addPane(Views.Card, generateCardPane());
+		controller.addPane(Views.Graph, generateTreeGraphPane());
+		controller.addPane(Views.ChooseFile, generateFileChoosePane());
+		controller.addPane(Views.Tree, generateTreePane());
+		controller.addPane(Views.EditPerson, generateEditPersonPane());
 		
 		controller.showView(Views.ChooseFile);
 	}

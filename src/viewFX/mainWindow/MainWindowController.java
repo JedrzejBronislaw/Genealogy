@@ -1,6 +1,8 @@
 package viewFX.mainWindow;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -40,42 +42,18 @@ public class MainWindowController implements Initializable {
 	@FXML
 	private StackPane topPane;
 	
-	@Setter
-	private ViewPane chooseFilePane;
-	@Setter
-	private ViewPane cardPane;
-	@Setter
-	private ViewPane treePane;
-	@Setter
-	private ViewPane graphPane;
-	@Setter
-	private ViewPane editPersonPane;
+	private Map<Views, ViewPane> panes = new HashMap<>();
+	
+	public void addPane(Views viewType, ViewPane viewPane) {
+		panes.put(viewType, viewPane);
+	}
 	
 	private Views currentView;
 	
 	public void showView(Views view) {
 		ViewPane selected;
 		
-		switch (view) {
-		case ChooseFile:
-			selected = chooseFilePane;
-			break;
-		case Tree:
-			selected = treePane;
-			break;
-		case Card:
-			selected = cardPane;
-			break;
-		case Graph:
-			selected = graphPane;
-			break;
-		case EditPerson:
-			selected = editPersonPane;
-			break;
-
-		default:
-			selected = null;
-		}
+		selected = panes.get(view);
 		
 		if(selected != null && view != currentView) {
 			currentView = view;
