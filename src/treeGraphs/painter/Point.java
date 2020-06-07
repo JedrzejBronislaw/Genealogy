@@ -11,6 +11,13 @@ public class Point {
 	
 	public Point addVector(int x, int y) {
 		return new Point(this.x + x, this.y + y);
+		
+	}
+	
+	public boolean equals(int x, int y) {
+		return
+			this.x == x &&
+			this.y == y;
 	}
 	
 	@Override
@@ -18,7 +25,7 @@ public class Point {
 		if (!(obj instanceof Point)) return false;
 		Point p = (Point) obj;
 		
-		return (p.x == x && p.y == y);
+		return equals(p.x, p.y);
 	}
 
 	public static Point middle(Point topLeft, Point bottomRight) {
