@@ -174,8 +174,8 @@ public class PGLReader {
 		value = section.getValue("parafia");        if (value != null) person.setBaptismParish(value);
 		value = section.getValue("mpoch");          if (value != null) person.setBurialPlace(value);
 
-		value = section.getValue("kontakt");        if (value != null) person.setContact( value.replace("$", "\n"));
-		value = section.getValue("uwagi");          if (value != null) person.setComments(value.replace("$", "\n"));
+		value = section.getValue("kontakt");        if (value != null) person.setContact( value.replace("$", System.lineSeparator()));
+		value = section.getValue("uwagi");          if (value != null) person.setComments(value.replace("$", System.lineSeparator()));
 		
 
 		value = section.getValue("ojciec");         if (value != null) relations.add(new Relation(value, Type.FATHER, section.name));

@@ -109,7 +109,9 @@ public class PGLReaderTest_SinglePerson {
 
 	@Test
 	public void comments() {
-		assertEquals("professor of physics\ndoctor of chemistry", person.getComments());
+		assertEquals(
+			"professor of physics" + System.lineSeparator() + "doctor of chemistry",
+			person.getComments());
 	}
 
 	@Test

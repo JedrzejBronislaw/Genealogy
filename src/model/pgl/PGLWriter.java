@@ -10,9 +10,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import model.MyDate;
 import model.Person;
-import model.Tree;
 import model.Person.LifeStatus;
 import model.Person.Sex;
+import model.Tree;
 
 @RequiredArgsConstructor
 public class PGLWriter {
@@ -106,7 +106,7 @@ public class PGLWriter {
 	private void saveProperty(String name, String value) throws IOException {
 		if (value == null || value.isEmpty()) return;
 		
-		writer.write(name + "=" + value);
+		writer.write(name + "=" + value.replace(System.lineSeparator(), "$"));
 		writeNewLine();
 	}
 

@@ -58,8 +58,8 @@ public class PGLWriterTest {
 		person.setDeathDate(new MyDate("3.4.2010"));
 		person.setBirthPlace("Poznan");
 		person.setDeathPlace("Krakow");
-		person.setContact("contact");
-		person.setComments("comments");
+		person.setContact("contact" + System.lineSeparator() + "line 2");
+		person.setComments("comments" + System.lineSeparator() + "line 2");
 		person.setBaptismParish("parish");
 		person.setBurialPlace("cemetery");
 		
