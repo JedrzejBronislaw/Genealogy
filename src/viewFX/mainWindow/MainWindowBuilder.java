@@ -18,8 +18,6 @@ import treeGraphs.TreeGraphParameters;
 import treeGraphs.TreeGraphType;
 import treeGraphs.painter.PainterServiceType;
 import treeGraphs.painter.nameDisplayers.NameDisplayerType;
-import treeGraphs.painter.service.PainterService;
-import treeGraphs.painter.service.PainterServiceBuilder;
 import viewFX.builders.PaneFXMLBuilder;
 import viewFX.card.CardPaneBuilder;
 import viewFX.card.CardPaneController;
@@ -180,24 +178,25 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		if ( parameters == null ||
 			!parameters.isReady()) return false;
 		
-		showGraphView(new PainterServiceBuilder().setParameters(parameters).build());
+		showGraphView(parameters);
 		
 		return true;
 	}
 	
 	private void showGraph(TreeGraphType graph, Person person) {
-		PainterServiceBuilder builder = new PainterServiceBuilder();
-		builder.setPerson(person);
-		builder.setPainterServiceType(PainterServiceType.FX);
-		builder.setGraphType(graph);
-		builder.setNameDisplayerType(NameDisplayerType.onlyName);
-		builder.setMarkers(true);
+		TreeGraphParameters parameters = TreeGraphParameters.builder()
+				.person(person)
+				.graphType(graph)
+				.painterType(PainterServiceType.FX)
+				.nameDisplayerType(NameDisplayerType.onlyName)
+				.markers(true)
+				.build();
 		
-		showGraphView(builder.build());
+		showGraphView(parameters);
 	}
 
-	private void showGraphView(PainterService painterService) {
-		treeGraphController.setPainterService(painterService);
+	private void showGraphView(TreeGraphParameters parameters) {
+		treeGraphController.setPainterService(parameters);
 		treeGraphController.refreshGraph();
 		
 		controller.showView(Views.Graph);

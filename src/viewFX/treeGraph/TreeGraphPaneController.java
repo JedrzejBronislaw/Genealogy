@@ -18,6 +18,7 @@ import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.service.PainterService;
+import treeGraphs.painter.service.PainterServiceBuilder;
 
 public class TreeGraphPaneController implements Initializable{
 
@@ -37,15 +38,15 @@ public class TreeGraphPaneController implements Initializable{
 	private PainterService painterService;
 	
 	
-	public void setPainterService(PainterService painterService) {
-		this.painterService = painterService;
+	public void setPainterService(TreeGraphParameters parameters) {
+		this.painterService = new PainterServiceBuilder().setParameters(parameters).build();
 		treePane.setCenter(painterService.getCanvas(treePane));
 
 		TreeGraph graph = painterService.getGraph();
 		graph.setPersonSingleClickAction(person -> Injection.run(onPersonSingleClick, person));
 		graph.setPersonDoubleClickAction(person -> Injection.run(onPersonDoubleClick, person));
 		
-		Injection.run(onParametersChange, painterService.getParameters());
+		Injection.run(onParametersChange, parameters);
 	}
 	
 	public void refreshGraph() {
