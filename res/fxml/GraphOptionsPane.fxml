@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -35,6 +36,12 @@
       <VBox fx:id="painterBox">
          <children>
             <Label text="%painter" />
+         </children>
+      </VBox>
+      <VBox fx:id="painterBox1">
+         <children>
+            <Label text="%markers" />
+            <CheckBox fx:id="markersBox" mnemonicParsing="false" text="%markers" />
          </children>
       </VBox>
    </children>

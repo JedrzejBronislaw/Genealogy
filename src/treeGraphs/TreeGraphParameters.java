@@ -13,6 +13,7 @@ public class TreeGraphParameters {
 	private Person person;
 	private TreeGraphType graphType;
 	private NameDisplayerType nameDisplayerType;
+	private boolean markers;
 	
 	private PainterServiceType painterType;
 

@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
@@ -36,6 +37,8 @@ public class GraphOptionsPaneController implements Initializable {
 	private VBox personDisplayerBox;
 	@FXML
 	private VBox painterBox;
+	@FXML
+	private CheckBox markersBox;
 	
 	private SearchBox searchBox = new SearchBox();
 	private EnumField<TreeGraphType> graphTypeField = new EnumField<>(TreeGraphType.ancestors);
@@ -54,6 +57,7 @@ public class GraphOptionsPaneController implements Initializable {
 		graphTypeField.setValue(parameters.getGraphType());
 		nameDisplayerField.setValue(parameters.getNameDisplayerType());
 		painterField.setValue(parameters.getPainterType());
+		markersBox.setSelected(parameters.isMarkers());
 		
 		disableDrawButton();
 	}
@@ -93,6 +97,8 @@ public class GraphOptionsPaneController implements Initializable {
 
 		painterBox.getChildren().add(painterField.getNode());
 		painterField.setOnChange(v -> this.enableDrawButton());
+		
+		markersBox.setOnAction(v -> this.enableDrawButton());
 	}
 
 	private void selectPerson(Person person) {
@@ -107,6 +113,7 @@ public class GraphOptionsPaneController implements Initializable {
 		TreeGraphType graphType = graphTypeField.getValue();
 		NameDisplayerType nameDisplayerType = nameDisplayerField.getValue();
 		PainterServiceType painterType = painterField.getValue();
+		boolean markers = markersBox.isSelected();
 		
 		if (graphType == null) return null;
 		
@@ -115,6 +122,7 @@ public class GraphOptionsPaneController implements Initializable {
 				.graphType(graphType)
 				.nameDisplayerType(nameDisplayerType)
 				.painterType(painterType)
+				.markers(markers)
 				.build();
 	}
 

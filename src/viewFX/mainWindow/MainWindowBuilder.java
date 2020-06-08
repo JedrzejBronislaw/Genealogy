@@ -186,16 +186,17 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 	}
 	
 	private void showGraph(TreeGraphType graph, Person person) {
-		showGraph(graph, person, NameDisplayerType.onlyName, PainterServiceType.FX);
+		showGraph(graph, person, NameDisplayerType.onlyName, PainterServiceType.FX, true);
 	}
 	
-	private void showGraph(TreeGraphType graph, Person person, NameDisplayerType nameDisplayer, PainterServiceType painterService) {
+	private void showGraph(TreeGraphType graph, Person person, NameDisplayerType nameDisplayer, PainterServiceType painterService, boolean markers) {
 
 		PainterServiceBuilder builder = new PainterServiceBuilder();
 		builder.setPerson(person);
 		builder.setPainterServiceType(painterService);
 		builder.setGraphType(graph);
 		builder.setNameDisplayerType(nameDisplayer);
+		builder.setMarkers(markers);
 		
 		showGraphView(builder.build());
 	}

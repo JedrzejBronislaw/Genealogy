@@ -18,12 +18,14 @@ public class PainterServiceBuilder {
 	private Person person;
 	private NameDisplayerType nameDisplayerType;
 	private PainterServiceType painterServiceType;
+	private boolean markers;
 	
 	public PainterServiceBuilder setParameters(TreeGraphParameters parameters) {
 		graphType = parameters.getGraphType();
 		person = parameters.getPerson();
 		nameDisplayerType = parameters.getNameDisplayerType();
 		painterServiceType = parameters.getPainterType();
+		markers = parameters.isMarkers();
 		
 		return this;
 	}
@@ -46,8 +48,10 @@ public class PainterServiceBuilder {
 		graph.setMainPerson(person);
 		service.setGraph(graph);
 
-		nameDisplayer.addMarker(new DeadMarker());
-		nameDisplayer.addMarker(new SexMarker());
+		if (markers) {
+			nameDisplayer.addMarker(new DeadMarker());
+			nameDisplayer.addMarker(new SexMarker());
+		}
 		
 		return service;
 	}
