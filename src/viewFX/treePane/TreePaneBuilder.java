@@ -20,6 +20,11 @@ public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 	
 	@Setter
 	private Consumer<Person> selectPerson;
+
+	@Setter
+	private Runnable saveTree;
+	@Setter
+	private Runnable saveTreeAs;
 	@Setter
 	private Runnable closeTree;
 	@Setter
@@ -40,6 +45,8 @@ public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 		controller.setCommonSurnamePane(generateCommonNamePane());
 		controller.setSearchPane(generateSearchPane());
 
+		controller.setSaveTree(saveTree);
+		controller.setSaveTreeAs(saveTreeAs);
 		controller.setCloseTree(closeTree);
 		controller.setCreateNewPerson(createNewPerson);
 	}

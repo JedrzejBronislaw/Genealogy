@@ -20,10 +20,18 @@ public class TreePaneController implements Initializable{
 	@FXML
 	private HBox topHBox;
 	@FXML
+	private Button saveTreeButton;
+	@FXML
+	private Button saveTreeAsButton;
+	@FXML
 	private Button closeTreeButton;
 	@FXML
 	private Button newPersonButton;
 
+	@Setter
+	private Runnable saveTree;
+	@Setter
+	private Runnable saveTreeAs;
 	@Setter
 	private Runnable closeTree;
 	@Setter
@@ -45,6 +53,8 @@ public class TreePaneController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		saveTreeButton.setOnAction(e -> Injection.run(saveTree));
+		saveTreeAsButton.setOnAction(e -> Injection.run(saveTreeAs));
 		closeTreeButton.setOnAction(e -> Injection.run(closeTree));
 		newPersonButton.setOnAction(e -> Injection.run(createNewPerson));
 	}

@@ -8,8 +8,10 @@
 
 <StackPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewFX.treePane.TreePaneController">
    <children>
-      <HBox alignment="TOP_RIGHT">
+      <HBox alignment="TOP_RIGHT" spacing="5.0">
          <children>
+            <Button fx:id="saveTreeButton" mnemonicParsing="false" text="%save_tree" />
+            <Button fx:id="saveTreeAsButton" mnemonicParsing="false" text="%save_tree_as" />
             <Button fx:id="closeTreeButton" mnemonicParsing="false" text="%close_tree" />
          </children>
          <padding>

@@ -69,6 +69,8 @@ public class FXMLMain extends Application {
 		mainWindowBuilder.setFullScreenAction(this::setFullScreen);
 		mainWindowBuilder.setIsFullScreen(stage::isFullScreen);
 		mainWindowBuilder.setCloseTree(() -> session.setTree(null));
+		mainWindowBuilder.setSaveTree(() -> System.out.println("Save"));
+		mainWindowBuilder.setSaveTreeAs(() -> System.out.println("Save as"));
 		mainWindowBuilder.build();
 		
 		Scene scene = new Scene(mainWindowBuilder.getPane());

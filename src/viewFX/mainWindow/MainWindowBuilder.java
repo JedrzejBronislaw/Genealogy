@@ -45,6 +45,11 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 	private Consumer<Boolean> fullScreenAction;
 	@Setter
 	private Supplier<Boolean> isFullScreen;
+
+	@Setter
+	private Runnable saveTree;
+	@Setter
+	private Runnable saveTreeAs;
 	@Setter
 	private Runnable closeTree;
 	
@@ -105,6 +110,12 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		builder.setCloseTree(() -> {
 			Injection.run(closeTree);
 			controller.showView(Views.ChooseFile);
+		});
+		builder.setSaveTree(() -> {
+			Injection.run(saveTree);
+		});
+		builder.setSaveTreeAs(() -> {
+			Injection.run(saveTreeAs);
 		});
 		builder.build();
 		
