@@ -2,6 +2,7 @@ package model.pgl;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class PGLWriterTest {
 		
 		Person father = prepareFather();
 		Person mother = prepareMother();
-		Person child = prepareChild();
+		Person child  = prepareChild();
 		
 		relationEditor.createMarriageRel(father, mother);
 		relationEditor.setParentsChildRel(father, mother, child);
@@ -176,5 +177,32 @@ public class PGLWriterTest {
 		List.of(ids).forEach(id ->
 			assertEquals("id="+id, tree.getPerson(id), treeFromFile.getPerson(id))
 		);
+	}
+
+	@Test
+	public void relations() {
+		Tree treeFromFile = saveAndLoadTree(prepareTree());
+
+		Person father = treeFromFile.getPerson("0");
+		Person mother = treeFromFile.getPerson("1");
+		Person child  = treeFromFile.getPerson("2");
+		
+		assertEquals(1, father.numberOfMarriages());
+		assertEquals(1, mother.numberOfMarriages());
+		assertEquals(0, child.numberOfMarriages());
+		
+		assertEquals(mother, father.getSpouse(0));
+		assertEquals(father, mother.getSpouse(0));
+
+		assertEquals(1, father.numberOfChildren());
+		assertEquals(1, mother.numberOfChildren());
+		assertEquals(0, child.numberOfChildren());
+		
+		assertEquals(father, child.getFather());
+		assertEquals(mother, child.getMother());
+		assertNull(father.getFather());
+		assertNull(father.getMother());
+		assertNull(mother.getFather());
+		assertNull(mother.getMother());
 	}
 }
