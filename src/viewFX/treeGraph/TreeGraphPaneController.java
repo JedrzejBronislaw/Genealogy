@@ -39,7 +39,7 @@ public class TreeGraphPaneController implements Initializable{
 	
 	
 	public void setPainterService(TreeGraphParameters parameters) {
-		this.painterService = new PainterServiceBuilder().setParameters(parameters).build();
+		this.painterService = PainterServiceBuilder.build(parameters);
 		treePane.setCenter(painterService.getCanvas(treePane));
 
 		TreeGraph graph = painterService.getGraph();

@@ -1,58 +1,50 @@
 package treeGraphs.painter.service;
 
-import lombok.Setter;
-import model.Person;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
-import treeGraphs.TreeGraphType;
-import treeGraphs.painter.PainterServiceType;
 import treeGraphs.painter.nameDisplayers.NameDisplayer;
-import treeGraphs.painter.nameDisplayers.NameDisplayerType;
 import treeGraphs.painter.nameDisplayers.markers.DeadMarker;
 import treeGraphs.painter.nameDisplayers.markers.SexMarker;
 
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PainterServiceBuilder {
 
-	private TreeGraphType graphType;
-	private Person person;
-	private NameDisplayerType nameDisplayerType;
-	private PainterServiceType painterServiceType;
-	private boolean markers;
+	private TreeGraphParameters params;
 	
 	public PainterServiceBuilder setParameters(TreeGraphParameters parameters) {
-		graphType = parameters.getGraphType();
-		person = parameters.getPerson();
-		nameDisplayerType = parameters.getNameDisplayerType();
-		painterServiceType = parameters.getPainterType();
-		markers = parameters.isMarkers();
-		
+		this.params = parameters;
 		return this;
 	}
 	
 	public boolean isReady() {
-		return	graphType != null &&
-				person != null &&
-				nameDisplayerType != null &&
-				painterServiceType != null;
+		return
+			params != null &&
+			params.isReady();
 	}
 	
 	public PainterService build() {
 		if (!isReady()) return null;
 		
-		PainterService service = painterServiceType.createPainterService();
-		NameDisplayer nameDisplayer = nameDisplayerType.createDisplayer();
-		TreeGraph graph = graphType.createGraph();
+		PainterService service      = params.getPainterType().createPainterService();
+		NameDisplayer nameDisplayer = params.getNameDisplayerType().createDisplayer();
+		TreeGraph graph             = params.getGraphType().createGraph();
 		
 		graph.setNameDisplayer(nameDisplayer);
-		graph.setMainPerson(person);
+		graph.setMainPerson(params.getPerson());
 		service.setGraph(graph);
 
-		if (markers) {
+		if (params.isMarkers()) {
 			nameDisplayer.addMarker(new DeadMarker());
 			nameDisplayer.addMarker(new SexMarker());
 		}
 		
 		return service;
+	}
+	
+	public static PainterService build(TreeGraphParameters parameters) {
+		return new PainterServiceBuilder(parameters).build();
 	}
 }
