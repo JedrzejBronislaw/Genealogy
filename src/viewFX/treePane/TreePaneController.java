@@ -12,9 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Setter;
+import tools.FxDialogs;
 import tools.Injection;
 
 public class TreePaneController implements Initializable{
@@ -61,19 +60,9 @@ public class TreePaneController implements Initializable{
 		newPersonButton.setOnAction(e -> Injection.run(createNewPerson));
 		saveTreeButton.setOnAction(e -> Injection.run(saveTree));
 		saveTreeAsButton.setOnAction(e -> {
-			File file = selectFile();
+			File file = FxDialogs.savePGL();
 			if (file != null)
 				Injection.run(saveTreeAs, file);
 		});
-	}
-	
-	private File selectFile() {
-		FileChooser chooser = new FileChooser();
-		File file;
-		
-		chooser.getExtensionFilters().add(new ExtensionFilter("PGL Trees", "*.pgl"));
-		file = chooser.showSaveDialog(null);
-		
-		return file;
 	}
 }

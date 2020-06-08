@@ -11,10 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Setter;
 import settings.RecentFile;
+import tools.FxDialogs;
 import tools.Injection;
 
 public class FileChoosePaneController implements Initializable {
@@ -42,7 +41,7 @@ public class FileChoosePaneController implements Initializable {
 		});
 		
 		browseButton.setOnAction(e -> {
-			File treeFile = selectTree();
+			File treeFile = FxDialogs.openPGL();
 			if (treeFile != null)
 				Injection.run(openTreeEvent, treeFile);
 		});
@@ -69,16 +68,5 @@ public class FileChoosePaneController implements Initializable {
 		        	setText(file.getPath());
 			}
 		});
-	}
-
-	
-	private File selectTree() {
-		FileChooser chooser = new FileChooser();
-		File file;
-		
-		chooser.getExtensionFilters().add(new ExtensionFilter("PGL Trees", "*.pgl"));
-		file = chooser.showOpenDialog(null);
-		
-		return file;
 	}
 }

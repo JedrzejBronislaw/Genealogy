@@ -9,10 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Setter;
 import model.Person;
+import tools.FxDialogs;
 import tools.Injection;
 import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
@@ -60,16 +59,9 @@ public class TreeGraphPaneController implements Initializable{
 		saveButton.setOnAction(e -> {
 			saveButton.setDisable(true);
 			GraphSaver graphSaver = painterService.getGraphSaver();
-			
-			if (graphSaver != null) {
-				FileChooser chooser = new FileChooser();
-				File file;
-				
-				chooser.getExtensionFilters().add(new ExtensionFilter("PNG Files", "*.png"));
-				file = chooser.showSaveDialog(null);
-				
+			File file = FxDialogs.savePNG();
+			if (graphSaver != null && file != null)
 				graphSaver.save(file);
-			}
 			saveButton.setDisable(false);
 		});
 	}
