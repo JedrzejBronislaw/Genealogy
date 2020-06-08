@@ -1,5 +1,6 @@
 package viewFX.treePane;
 
+import java.io.File;
 import java.util.function.Consumer;
 
 import javafx.scene.layout.Pane;
@@ -24,7 +25,7 @@ public class TreePaneBuilder extends PaneFXMLBuilder<TreePaneController> {
 	@Setter
 	private Runnable saveTree;
 	@Setter
-	private Runnable saveTreeAs;
+	private Consumer<File> saveTreeAs;
 	@Setter
 	private Runnable closeTree;
 	@Setter

@@ -1,7 +1,9 @@
 package viewFX.treePane;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Setter;
 import tools.Injection;
 
@@ -31,7 +35,7 @@ public class TreePaneController implements Initializable{
 	@Setter
 	private Runnable saveTree;
 	@Setter
-	private Runnable saveTreeAs;
+	private Consumer<File> saveTreeAs;
 	@Setter
 	private Runnable closeTree;
 	@Setter
@@ -53,10 +57,23 @@ public class TreePaneController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		saveTreeButton.setOnAction(e -> Injection.run(saveTree));
-		saveTreeAsButton.setOnAction(e -> Injection.run(saveTreeAs));
 		closeTreeButton.setOnAction(e -> Injection.run(closeTree));
 		newPersonButton.setOnAction(e -> Injection.run(createNewPerson));
+		saveTreeButton.setOnAction(e -> Injection.run(saveTree));
+		saveTreeAsButton.setOnAction(e -> {
+			File file = selectFile();
+			if (file != null)
+				Injection.run(saveTreeAs, file);
+		});
 	}
-
+	
+	private File selectFile() {
+		FileChooser chooser = new FileChooser();
+		File file;
+		
+		chooser.getExtensionFilters().add(new ExtensionFilter("PGL Trees", "*.pgl"));
+		file = chooser.showSaveDialog(null);
+		
+		return file;
+	}
 }

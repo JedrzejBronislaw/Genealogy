@@ -49,7 +49,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 	@Setter
 	private Runnable saveTree;
 	@Setter
-	private Runnable saveTreeAs;
+	private Consumer<File> saveTreeAs;
 	@Setter
 	private Runnable closeTree;
 	
@@ -114,8 +114,8 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		builder.setSaveTree(() -> {
 			Injection.run(saveTree);
 		});
-		builder.setSaveTreeAs(() -> {
-			Injection.run(saveTreeAs);
+		builder.setSaveTreeAs(file -> {
+			Injection.run(saveTreeAs, file);
 		});
 		builder.build();
 		

@@ -1,5 +1,6 @@
 package main;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import javafx.application.Application;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 import lang.Internationalization;
 import lang.Languages;
 import model.Tree;
+import model.pgl.PGLWriter;
 import model.pgl.reader.PGLReader;
 import session.Session;
 import viewFX.mainWindow.MainWindowBuilder;
@@ -69,8 +71,8 @@ public class FXMLMain extends Application {
 		mainWindowBuilder.setFullScreenAction(this::setFullScreen);
 		mainWindowBuilder.setIsFullScreen(stage::isFullScreen);
 		mainWindowBuilder.setCloseTree(() -> session.setTree(null));
-		mainWindowBuilder.setSaveTree(() -> System.out.println("Save"));
-		mainWindowBuilder.setSaveTreeAs(() -> System.out.println("Save as"));
+		mainWindowBuilder.setSaveTree(this::saveTree);
+		mainWindowBuilder.setSaveTreeAs(this::saveTreeAs);
 		mainWindowBuilder.build();
 		
 		Scene scene = new Scene(mainWindowBuilder.getPane());
@@ -95,5 +97,19 @@ public class FXMLMain extends Application {
 		}		
 		
 		return tree;
+	}
+	
+	private boolean saveTree() {
+		System.out.println("Save");
+		return false;
+	}
+	
+	private boolean saveTreeAs(File file) {
+		System.out.println("Save as");
+
+		Tree tree = session.getTree();
+		PGLWriter writer = new PGLWriter(file);
+
+		return writer.save(tree);
 	}
 }
