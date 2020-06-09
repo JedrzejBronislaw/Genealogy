@@ -11,10 +11,11 @@ import viewFX.builders.PaneFXMLBuilder;
 public class FileChoosePaneBuilder extends PaneFXMLBuilder<FileChoosePaneController> {
 
 	@Setter
+	private Runnable newTreeEvent;
+	@Setter
 	private Consumer<File> openFileAction;
 	@Setter
 	private List<RecentFile> lastOpenFiles;
-	
 	
 	@Override
 	protected String getFxmlFileName() {
@@ -24,8 +25,7 @@ public class FileChoosePaneBuilder extends PaneFXMLBuilder<FileChoosePaneControl
 	@Override
 	protected void afterBuild() {
 		controller.setPathList(lastOpenFiles);
-		controller.setNewTreeEvent(() -> System.out.println("Create new tree"));
+		controller.setNewTreeEvent(newTreeEvent);
 		controller.setOpenTreeEvent(openFileAction);
 	}
-
 }

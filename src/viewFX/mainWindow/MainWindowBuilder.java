@@ -125,7 +125,11 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 	private ViewPane generateFileChoosePane() {
 		Settings settings = session.getSettings();
 		FileChoosePaneBuilder builder = new FileChoosePaneBuilder();
-		
+
+		builder.setNewTreeEvent(() -> {
+			session.setTree(new Tree());
+			controller.showView(Views.Tree);
+		});
 		builder.setOpenFileAction(file -> {
 			if(loadTree != null && loadTree.apply(file)) {
 					controller.showView(Views.Tree);
