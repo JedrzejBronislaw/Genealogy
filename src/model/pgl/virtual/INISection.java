@@ -1,23 +1,25 @@
-package model.pgl.reader;
+package model.pgl.virtual;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-class INISection {
+public class INISection {
 	
 	@AllArgsConstructor
-	class NullValidator {
-		private String value;
+	public class NullValidator {
+		@Getter private String value;
 		
 		public void ifNotNull(Consumer<String> action) {
 			if (value != null) action.accept(value);
 		}
 	}
 	
-	String name;
+	@Getter private String name;
+	
 	private Map<String, String> keys = new HashMap<String, String>();
 	
 	public INISection(String name) {

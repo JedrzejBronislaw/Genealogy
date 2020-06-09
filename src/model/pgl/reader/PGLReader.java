@@ -19,6 +19,8 @@ import model.Person.LifeStatus;
 import model.Person.Sex;
 import model.Tree;
 import model.pgl.reader.Relation.Type;
+import model.pgl.virtual.INISection;
+import model.pgl.virtual.VirtualPGL;
 import tools.Tools;
 
 public class PGLReader {
@@ -59,20 +61,20 @@ public class PGLReader {
 		String line;
 		INISection section = null;
 		List<Relation> relations = new ArrayList<Relation>();
+		VirtualPGL virtualPGL = new VirtualPGL();
 		
 		try{
 			while ((line = brFile.readLine()) != null) {
 				
 				line = line.trim();
-				if (isSectionHeader(line)) {
-					saveSection(section, tree, relations);
-					section = new INISection(sectionName(line));
-				} else
+				if (isSectionHeader(line))
+					section = virtualPGL.newSection(sectionName(line));
+				else
 					addValue(line, section);
 				
 			}
 
-			saveSection(section, tree, relations);
+			loadToTree(tree, virtualPGL, relations);
 			
 		} catch (IOException e) {
 			return false;
@@ -99,17 +101,8 @@ public class PGLReader {
 			return null;
 	}
 
-	private void saveSection(INISection section, Tree tree, List<Relation> relations) {
-		if (section == null) return;
-		
-		if (isMainSection(section))
-			loadMetadataToTree(tree, section);
-		else
-			loadDataToTree(tree, section, relations);
-	}
-
 	private boolean isMainSection(INISection section) {
-		return section.name.toUpperCase().equals(MAIN_SECTION_NAME);
+		return section.getName().toUpperCase().equals(MAIN_SECTION_NAME);
 	}
 
 	private boolean isSectionHeader(String line) {
@@ -155,8 +148,20 @@ public class PGLReader {
 		return date;
 	}
 	
+	private void loadToTree(Tree tree, VirtualPGL virtualPGL, List<Relation> relations) {
+		virtualPGL.get(MAIN_SECTION_NAME).ifPresent(mainSection ->
+			loadMetadataToTree(tree, mainSection)
+		);
+		
+		virtualPGL.forEachSession(section ->
+			loadDataToTree(tree, section, relations)
+		);
+	}
+	
 	private void loadDataToTree(Tree tree, INISection section, List<Relation> relations)
 	{
+		if (isMainSection(section)) return;
+		
 		Person person = new Person();
 		String value;
 		int numOfChildren  = 0;
@@ -178,16 +183,16 @@ public class PGLReader {
 		value = section.getValue("uwagi");          if (value != null) person.setComments(value.replace("$", System.lineSeparator()));
 		
 
-		value = section.getValue("ojciec");         if (value != null) relations.add(new Relation(value, Type.FATHER, section.name));
-		value = section.getValue("matka");          if (value != null) relations.add(new Relation(value, Type.MOTHER, section.name));
+		value = section.getValue("ojciec");         if (value != null) relations.add(new Relation(value, Type.FATHER, section.getName()));
+		value = section.getValue("matka");          if (value != null) relations.add(new Relation(value, Type.MOTHER, section.getName()));
 		value = section.getValue("dzieci");         if (value != null) numOfChildren  = strToInt(value, 0);
 		value = section.getValue("malzenstwa");     if (value != null) numOfMarriages = strToInt(value, 0);
-		multiVal(section, "dziecko",  numOfChildren). forEach(    v -> relations.add(new Relation(v.value, Type.CHILD,  section.name, v.i)));
-		multiVal(section, "malzonek", numOfMarriages).forEach(    v -> relations.add(new Relation(v.value, Type.SPOUSE, section.name, v.i)));
-		multiVal(section, "malzdata", numOfMarriages).forEach(    v -> Relation.addDateToRelation( relations, section.name, Type.SPOUSE, v.i, v.value));
-		multiVal(section, "malzmjsc", numOfMarriages).forEach(    v -> Relation.addPlaceToRelation(relations, section.name, Type.SPOUSE, v.i, v.value));
+		multiVal(section, "dziecko",  numOfChildren). forEach(    v -> relations.add(new Relation(v.value, Type.CHILD,  section.getName(), v.i)));
+		multiVal(section, "malzonek", numOfMarriages).forEach(    v -> relations.add(new Relation(v.value, Type.SPOUSE, section.getName(), v.i)));
+		multiVal(section, "malzdata", numOfMarriages).forEach(    v -> Relation.addDateToRelation( relations, section.getName(), Type.SPOUSE, v.i, v.value));
+		multiVal(section, "malzmjsc", numOfMarriages).forEach(    v -> Relation.addPlaceToRelation(relations, section.getName(), Type.SPOUSE, v.i, v.value));
 
-		tree.addPerson(section.name, person);		
+		tree.addPerson(section.getName(), person);
 	}
 	
 	private List<IndexedString> multiVal(INISection section, String key, int size) {
