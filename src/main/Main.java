@@ -15,7 +15,7 @@ import model.pgl.reader.PGLReader;
 import session.Session;
 import viewFX.mainWindow.MainWindowBuilder;
 
-public class FXMLMain extends Application {
+public class Main extends Application {
 
 	private static final String WINDOW_TITLE = "Pogologia";
 	private Stage stage;
@@ -23,7 +23,7 @@ public class FXMLMain extends Application {
 	private Session session = new Session();
 		
 	public static void main(String[] args) {
-		FXMLMain.launch(args);
+		Main.launch(args);
 	}
 	
 	@Override
