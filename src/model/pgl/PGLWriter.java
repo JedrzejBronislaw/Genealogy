@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import lombok.NonNull;
@@ -44,23 +45,16 @@ public class PGLWriter {
 	}
 
 	private void writeMainSection(Tree tree) throws IOException {
-		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
-
 		writer.write("[Main]");
-		
 		writeNewLine();
-		writer.write("ost_otw=" + format.format(tree.getLastOpen()));
-		writeNewLine();
-		writer.write("wersja=" + format.format(tree.getLastModification()));
-		writeNewLine();
-		writer.write("ile=" + tree.numberOfPersons());
-		writeNewLine();
+
+		saveProperty("ost_otw", tree.getLastOpen());
+		saveProperty("wersja",  tree.getLastModification());
+		saveProperty("ile",     tree.numberOfPersons());
 
 		String[] names = tree.getCommonSurnames();
-		for(int i=0; i<names.length; i++) {
-			writer.write("nazw" + (i+1) + "=" + names[i]);
-			writeNewLine();			
-		}
+		for(int i=0; i<names.length; i++)
+			saveProperty("nazw" + (i+1), names[i]);
 	}
 
 	private boolean writePerson(String id, Person person) {
@@ -119,6 +113,14 @@ public class PGLWriter {
 		if (value == null) return;
 		
 		writer.write(name + "=" + value.toString());
+		writeNewLine();
+	}
+	
+	private void saveProperty(String name, Date value) throws IOException {
+		if (value == null) return;
+		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
+		
+		writer.write(name + "=" + format.format(value));
 		writeNewLine();
 	}
 
