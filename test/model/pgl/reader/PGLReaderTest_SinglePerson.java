@@ -26,7 +26,7 @@ public class PGLReaderTest_SinglePerson {
 			"ps=Adam",
 			"parafia=sw. Jana z Murami",
 			"mpoch=Poznan Junikowo",
-			"kontakt=Poznan ul. Poznanska 1",
+			"kontakt=Poznan ul. Poznanska 1 ",
 			"uwagi=professor of physics$doctor of chemistry"
 			);
 	
