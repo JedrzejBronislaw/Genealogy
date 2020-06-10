@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lang.Internationalization;
 import lang.Languages;
@@ -33,6 +34,7 @@ public class Main extends Application {
 	}
 	
 	private void buildView() {
+		setIcon();
 		stage.setScene(buildScene());
 		stage.setWidth(1000);
 		stage.setHeight(600);
@@ -43,6 +45,13 @@ public class Main extends Application {
 		});
 		
 		stage.show();
+	}
+
+	private void setIcon() {
+		try {
+			Image icon = new Image("img/pogologia.png");
+			stage.getIcons().add(icon);
+		} catch (IllegalArgumentException e) {}
 	}
 	
 	private void changeLanguage(Languages language) {
