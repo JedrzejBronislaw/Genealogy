@@ -1,8 +1,5 @@
 package viewFX.card;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
@@ -118,25 +115,18 @@ public class CardPaneController implements Initializable{
 		graph.setPersonDoubleClickAction(person -> Injection.run(graphClickAction, person));
 		painterService.setGraph(graph);
 
-		star = loadImage("res/img/star.jpg");
-		cross = loadImage("res/img/cross.jpg");
-		venus = loadImage("res/img/venus.jpg");
-		mars = loadImage("res/img/mars.jpg");
+		star = loadImage("img/star.jpg");
+		cross = loadImage("img/cross.jpg");
+		venus = loadImage("img/venus.jpg");
+		mars = loadImage("img/mars.jpg");
 	}
 
 	private Image loadImage(String path) {
 		Image image = null;
+		try {
+			image = new Image(path);
+		} catch (IllegalArgumentException e) {}
 		
-		try (FileInputStream input = new FileInputStream(path)) {
-			image = new Image(input);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
 		return image;
 	}
 
