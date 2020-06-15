@@ -35,4 +35,14 @@ public class VirtualPGL {
 	public int size() {
 		return sections.size();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (!(obj instanceof VirtualPGL)) return false;
+		
+		VirtualPGL pgl = (VirtualPGL) obj;
+		
+		return sections.equals(pgl.sections);
+	}
 }
