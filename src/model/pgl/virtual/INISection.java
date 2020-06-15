@@ -27,4 +27,15 @@ public class INISection {
 	public Optional<String> value(String keyName) {
 		return Optional.ofNullable(getValue(keyName));
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (!(obj instanceof INISection)) return false;
+		
+		INISection section = (INISection) obj;
+		
+		return name.equals(section.name) &&
+		       keys.equals(section.keys);
+	}
 }
