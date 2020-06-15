@@ -55,7 +55,7 @@ public class INISectionTest {
 		section.addKey("abc", "def");
 		final ValueBox value = new ValueBox();
 		
-		section.value("abc").ifNotNull(v -> value.setValue(v));
+		section.value("abc").ifPresent(value::setValue);
 		assertEquals("def", value.getValue());
 	}
 	
@@ -64,7 +64,7 @@ public class INISectionTest {
 		INISection section = new INISection("");
 		final ValueBox value = new ValueBox();
 		
-		section.value("abc").ifNotNull(v -> value.setValue(v));
+		section.value("abc").ifPresent(value::setValue);
 		assertNull(value.getValue());
 	}
 }

@@ -2,21 +2,11 @@ package model.pgl.virtual;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.Optional;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class INISection {
-	
-	@AllArgsConstructor
-	public class NullValidator {
-		@Getter private String value;
-		
-		public void ifNotNull(Consumer<String> action) {
-			if (value != null) action.accept(value);
-		}
-	}
 	
 	@Getter private String name;
 	
@@ -34,7 +24,7 @@ public class INISection {
 		return keys.get(keyName);
 	}
 
-	public NullValidator value(String keyName) {
-		return new NullValidator(getValue(keyName));
+	public Optional<String> value(String keyName) {
+		return Optional.ofNullable(getValue(keyName));
 	}
 }

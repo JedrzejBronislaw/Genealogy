@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import model.MyDate;
@@ -111,33 +112,24 @@ public class PGLReader {
 	}
 
 	private void loadMetadataToTree(Tree tree, INISection section) {
-		section.value("ost_otw").ifNotNull(v -> tree.setLastOpen(loadDate(v)));
-		section.value("wersja"). ifNotNull(v -> tree.setLastModification(loadDate(v)));
-		section.value("ile").    ifNotNull(v -> {
-			try {
-				tree.setNumberOfPersons(Integer.parseInt(v));
-			} catch (NumberFormatException e) {}
-		});
+		section.value("ost_otw").flatMap(this::loadDate).ifPresent(tree::setLastOpen);
+		section.value("wersja") .flatMap(this::loadDate).ifPresent(tree::setLastModification);
+		section.value("ile")    .flatMap(this::strToInt).ifPresent(tree::setNumberOfPersons);
 		
 		multiVal(section, "nazw", 10).forEach(surname -> {
 			if (!surname.value.isEmpty()) tree.addCommonSurname(surname.value);
 		});
 	}
 
-	private Date loadDate(String textDate) {
+	private Optional<Date> loadDate(String textDate) {
 		final SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
 		final SimpleDateFormat sdf2 = new SimpleDateFormat("hh:mm:ss dd.MM.yyyy");
 		
-		Date date;
-		
-		date = tryLoadDate(textDate, sdf1);
-		if(date == null)
-			date = tryLoadDate(textDate, sdf2);
-
-		return date;
+		return     tryLoadDate(textDate, sdf1).
+		  or(() -> tryLoadDate(textDate, sdf2));
 	}
 
-	private Date tryLoadDate(String textDate, SimpleDateFormat format) {
+	private Optional<Date> tryLoadDate(String textDate, SimpleDateFormat format) {
 		Date date;
 		try {
 			date = format.parse(textDate);
@@ -145,7 +137,7 @@ public class PGLReader {
 			date = null;
 		}
 		
-		return date;
+		return Optional.ofNullable(date);
 	}
 	
 	private void loadToTree(Tree tree, VirtualPGL virtualPGL, List<Relation> relations) {
@@ -158,41 +150,52 @@ public class PGLReader {
 		);
 	}
 	
-	private void loadDataToTree(Tree tree, INISection section, List<Relation> relations)
-	{
+	private void loadDataToTree(Tree tree, INISection section, List<Relation> relations) {
 		if (isMainSection(section)) return;
 		
 		Person person = new Person();
-		String value;
+		String personId = section.getName();
 		int numOfChildren  = 0;
 		int numOfMarriages = 0;
 		
-		value = section.getValue("imie");           if (value != null) person.setFirstName(value);
-		value = section.getValue("nazwisko");       if (value != null) person.setLastName(value);
-		value = section.getValue("datur");          if (value != null) person.setBirthDate(new MyDate(value));
-		value = section.getValue("datsm");          if (value != null) person.setDeathDate(new MyDate(value));
-		value = section.getValue("miejur");         if (value != null) person.setBirthPlace(value);
-		value = section.getValue("miejsm");         if (value != null) person.setDeathPlace(value);
-		value = section.getValue("zyje");           if (value != null) person.setLifeStatus(value.equals("0") ? LifeStatus.NO : LifeStatus.YES);
-		value = section.getValue("plec");           if (value != null) person.setSex(value.equals("0") ? Sex.WOMAN : Sex.MAN);
-		value = section.getValue("ps");             if (value != null) person.setAlias(value);
-		value = section.getValue("parafia");        if (value != null) person.setBaptismParish(value);
-		value = section.getValue("mpoch");          if (value != null) person.setBurialPlace(value);
+		section.value("imie")                      .ifPresent(person::setFirstName);
+		section.value("nazwisko")                  .ifPresent(person::setLastName);
+		section.value("datur").map(MyDate::new)    .ifPresent(person::setBirthDate);
+		section.value("datsm").map(MyDate::new)    .ifPresent(person::setDeathDate);
+		section.value("miejur")                    .ifPresent(person::setBirthPlace);
+		section.value("miejsm")                    .ifPresent(person::setDeathPlace);
+		section.value("zyje").map(this::lifeStatus).ifPresent(person::setLifeStatus);
+		section.value("plec").map(this::sex)       .ifPresent(person::setSex);
+		section.value("ps")                        .ifPresent(person::setAlias);
+		section.value("parafia")                   .ifPresent(person::setBaptismParish);
+		section.value("mpoch")                     .ifPresent(person::setBurialPlace);
 
-		value = section.getValue("kontakt");        if (value != null) person.setContact( value.replace("$", System.lineSeparator()));
-		value = section.getValue("uwagi");          if (value != null) person.setComments(value.replace("$", System.lineSeparator()));
+		section.value("kontakt").map(this::splitLine).ifPresent(person::setContact);
+		section.value("uwagi")  .map(this::splitLine).ifPresent(person::setComments);
 		
+		section.value("ojciec").ifPresent(v -> relations.add(new Relation(v, Type.FATHER, personId)));
+		section.value("matka") .ifPresent(v -> relations.add(new Relation(v, Type.MOTHER, personId)));
+		numOfChildren  = section.value("dzieci")    .flatMap(this::strToInt).orElse(0);
+		numOfMarriages = section.value("malzenstwa").flatMap(this::strToInt).orElse(0);
 
-		value = section.getValue("ojciec");         if (value != null) relations.add(new Relation(value, Type.FATHER, section.getName()));
-		value = section.getValue("matka");          if (value != null) relations.add(new Relation(value, Type.MOTHER, section.getName()));
-		value = section.getValue("dzieci");         if (value != null) numOfChildren  = strToInt(value, 0);
-		value = section.getValue("malzenstwa");     if (value != null) numOfMarriages = strToInt(value, 0);
-		multiVal(section, "dziecko",  numOfChildren). forEach(    v -> relations.add(new Relation(v.value, Type.CHILD,  section.getName(), v.i)));
-		multiVal(section, "malzonek", numOfMarriages).forEach(    v -> relations.add(new Relation(v.value, Type.SPOUSE, section.getName(), v.i)));
-		multiVal(section, "malzdata", numOfMarriages).forEach(    v -> Relation.addDateToRelation( relations, section.getName(), Type.SPOUSE, v.i, v.value));
-		multiVal(section, "malzmjsc", numOfMarriages).forEach(    v -> Relation.addPlaceToRelation(relations, section.getName(), Type.SPOUSE, v.i, v.value));
+		multiVal(section, "dziecko",  numOfChildren). forEach(v -> relations.add(new Relation(v.value, Type.CHILD,  personId, v.i)));
+		multiVal(section, "malzonek", numOfMarriages).forEach(v -> relations.add(new Relation(v.value, Type.SPOUSE, personId, v.i)));
+		multiVal(section, "malzdata", numOfMarriages).forEach(v -> Relation.addDateToRelation( relations, personId, Type.SPOUSE, v.i, v.value));
+		multiVal(section, "malzmjsc", numOfMarriages).forEach(v -> Relation.addPlaceToRelation(relations, personId, Type.SPOUSE, v.i, v.value));
 
-		tree.addPerson(section.getName(), person);
+		tree.addPerson(personId, person);
+	}
+
+	private LifeStatus lifeStatus(String status) {
+		return status.equals("0") ? LifeStatus.NO : LifeStatus.YES;
+	}
+
+	private Sex sex(String sex) {
+		return sex.equals("0") ? Sex.WOMAN : Sex.MAN;
+	}
+	
+	private String splitLine(String test) {
+		return test.replace("$", System.lineSeparator());
 	}
 	
 	private List<IndexedString> multiVal(INISection section, String key, int size) {
@@ -206,14 +209,13 @@ public class PGLReader {
 		
 		return list;
 	}
-
-	private int strToInt(String stringValue, int defaultValue)
-	{
-		int integerValue;
+	
+	private Optional<Integer> strToInt(String stringValue) {
+		Optional<Integer> integerValue;
 		try{
-			integerValue = Integer.parseInt(stringValue);
+			integerValue = Optional.of(Integer.parseInt(stringValue));
 		} catch (NumberFormatException e) {
-			integerValue = defaultValue;
+			integerValue = Optional.empty();
 		}
 		
 		return integerValue;
