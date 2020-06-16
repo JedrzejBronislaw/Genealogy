@@ -1,5 +1,6 @@
 package model.pgl.virtual;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -11,6 +12,10 @@ public class INISection {
 	@Getter private String name;
 	
 	private Map<String, String> keys = new HashMap<String, String>();
+	
+	Map<String, String> getKeys() {
+		return Collections.unmodifiableMap(keys);
+	}
 	
 	public INISection(String name) {
 		this.name = name;

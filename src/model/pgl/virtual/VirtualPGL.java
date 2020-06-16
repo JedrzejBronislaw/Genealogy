@@ -1,6 +1,7 @@
 package model.pgl.virtual;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -8,6 +9,10 @@ import java.util.function.Consumer;
 public class VirtualPGL {
 
 	private List<INISection> sections = new ArrayList<>();
+	
+	List<INISection> getSections() {
+		return Collections.unmodifiableList(sections);
+	}
 	
 	public INISection newSection(String name) {
 		INISection section = new INISection(name);
