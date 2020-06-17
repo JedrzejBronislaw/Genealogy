@@ -21,7 +21,7 @@ public class VirtualPGLtoFileWriter {
 	public boolean save(VirtualPGL pgl) throws IOException {
 		writer = new FileWriter(file);
 		
-		pgl.forEachSession(this::saveSection);
+		pgl.forEachSection(this::saveSection);
 		if (error != null) throw error;
 		
 		writer.close();

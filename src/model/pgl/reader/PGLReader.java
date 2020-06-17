@@ -145,7 +145,7 @@ public class PGLReader {
 			loadMetadataToTree(tree, mainSection)
 		);
 		
-		virtualPGL.forEachSession(section ->
+		virtualPGL.forEachSection(section ->
 			loadDataToTree(tree, section, relations)
 		);
 	}

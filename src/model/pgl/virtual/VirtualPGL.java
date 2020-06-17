@@ -33,7 +33,7 @@ public class VirtualPGL {
 		return section.get().getValue(keyName);
 	}
 	
-	public void forEachSession(Consumer<INISection> action) {
+	public void forEachSection(Consumer<INISection> action) {
 		sections.forEach(action);
 	}
 	
