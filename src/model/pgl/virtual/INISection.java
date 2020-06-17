@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 import lombok.Getter;
 
@@ -42,5 +43,9 @@ public class INISection {
 		
 		return name.equals(section.name) &&
 		       keys.equals(section.keys);
+	}
+
+	public void forEachKey(BiConsumer<String, String> action) {
+		keys.forEach(action);
 	}
 }
