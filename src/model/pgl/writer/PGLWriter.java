@@ -1,4 +1,4 @@
-package model.pgl;
+package model.pgl.writer;
 
 import java.io.File;
 import java.io.IOException;

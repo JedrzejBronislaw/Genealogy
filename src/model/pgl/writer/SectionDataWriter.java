@@ -1,4 +1,4 @@
-package model.pgl;
+package model.pgl.writer;
 
 import java.util.Date;
 
@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import model.LifeStatus;
 import model.MyDate;
 import model.Sex;
+import model.pgl.PGLFields;
 import model.pgl.virtual.INISection;
 
 @RequiredArgsConstructor

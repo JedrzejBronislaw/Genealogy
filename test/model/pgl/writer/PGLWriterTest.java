@@ -1,4 +1,4 @@
-package model.pgl;
+package model.pgl.writer;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -22,6 +22,7 @@ import model.Sex;
 import model.Tree;
 import model.familyRelations.RelationEditor;
 import model.pgl.reader.PGLReader;
+import model.pgl.writer.PGLWriter;
 
 public class PGLWriterTest {
 

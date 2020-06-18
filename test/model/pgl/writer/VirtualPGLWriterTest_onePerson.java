@@ -1,4 +1,4 @@
-package model.pgl;
+package model.pgl.writer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +11,9 @@ import model.MyDate;
 import model.Person;
 import model.Sex;
 import model.Tree;
+import model.pgl.PGLFields;
 import model.pgl.virtual.VirtualPGL;
+import model.pgl.writer.VirtualPGLWriter;
 
 public class VirtualPGLWriterTest_onePerson {
 

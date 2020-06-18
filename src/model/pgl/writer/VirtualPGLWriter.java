@@ -1,4 +1,4 @@
-package model.pgl;
+package model.pgl.writer;
 
 import java.util.stream.Stream;
 
@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import model.Person;
 import model.Tree;
+import model.pgl.PGLFields;
 import model.pgl.virtual.INISection;
 import model.pgl.virtual.VirtualPGL;
 

@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 import lang.Internationalization;
 import lang.Languages;
 import model.Tree;
-import model.pgl.PGLWriter;
 import model.pgl.reader.PGLReader;
+import model.pgl.writer.PGLWriter;
 import session.Session;
 import viewFX.mainWindow.MainWindowBuilder;
 

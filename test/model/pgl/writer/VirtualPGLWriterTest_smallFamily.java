@@ -1,4 +1,4 @@
-package model.pgl;
+package model.pgl.writer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -12,7 +12,9 @@ import model.Person;
 import model.Sex;
 import model.Tree;
 import model.familyRelations.RelationEditor;
+import model.pgl.PGLFields;
 import model.pgl.virtual.VirtualPGL;
+import model.pgl.writer.VirtualPGLWriter;
 import model.random.RandomPerson;
 
 public class VirtualPGLWriterTest_smallFamily {
