@@ -6,10 +6,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import model.LifeStatus;
 import model.MyDate;
 import model.Person;
-import model.Person.LifeStatus;
-import model.Person.Sex;
+import model.Sex;
 import model.Tree;
 import model.pgl.virtual.VirtualPGL;
 

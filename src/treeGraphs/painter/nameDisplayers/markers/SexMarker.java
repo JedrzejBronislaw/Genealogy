@@ -1,7 +1,7 @@
 package treeGraphs.painter.nameDisplayers.markers;
 
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 import treeGraphs.painter.MyColor;
 
 public class SexMarker extends ColorMarker {

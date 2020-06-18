@@ -7,9 +7,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import model.Person.LifeStatus;
-import model.Person.Sex;
-
 public class PersonTest_Equals {
 
 	private static Person expectedPerson;

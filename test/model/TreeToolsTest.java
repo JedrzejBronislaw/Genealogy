@@ -12,8 +12,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Person.LifeStatus;
-import model.Person.Sex;
 import model.familyRelations.RelationEditor;
 import model.random.RandomPerson;
 

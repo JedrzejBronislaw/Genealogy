@@ -9,9 +9,9 @@ import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
+import model.LifeStatus;
 import model.MyDate;
-import model.Person.LifeStatus;
-import model.Person.Sex;
+import model.Sex;
 import model.pgl.virtual.INISection;
 
 public class SectionDataWriterTest {

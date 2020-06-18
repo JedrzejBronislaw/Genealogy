@@ -15,13 +15,12 @@ import java.util.List;
 
 import org.junit.Test;
 
+import model.LifeStatus;
 import model.MyDate;
 import model.Person;
+import model.Sex;
 import model.Tree;
-import model.Person.LifeStatus;
-import model.Person.Sex;
 import model.familyRelations.RelationEditor;
-import model.pgl.PGLWriter;
 import model.pgl.reader.PGLReader;
 
 public class PGLWriterTest {

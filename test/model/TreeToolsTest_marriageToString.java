@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Person.Sex;
 import model.random.RandomPerson;
 
 public class TreeToolsTest_marriageToString {

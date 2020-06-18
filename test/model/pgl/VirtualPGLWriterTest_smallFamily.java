@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import model.MyDate;
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 import model.Tree;
 import model.familyRelations.RelationEditor;
 import model.pgl.virtual.VirtualPGL;

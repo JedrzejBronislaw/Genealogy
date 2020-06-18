@@ -14,7 +14,7 @@ import javafx.scene.text.FontWeight;
 import lombok.Setter;
 import model.Marriage;
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 import tools.Injection;
 import viewFX.editPerson.fields.date.EditDateFieldBuilder;
 import viewFX.editPerson.fields.date.EditDateFieldController;

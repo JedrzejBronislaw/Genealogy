@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import model.Marriage;
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 import model.Tree;
 import model.TreeTools;
 import model.tools.ManWoman;

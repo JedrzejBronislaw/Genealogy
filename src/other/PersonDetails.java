@@ -2,7 +2,7 @@ package other;
 
 import model.MyDate;
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 
 public class PersonDetails {
 	

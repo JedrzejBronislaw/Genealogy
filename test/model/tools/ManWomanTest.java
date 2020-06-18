@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 import model.random.RandomPerson;
 
 public class ManWomanTest {

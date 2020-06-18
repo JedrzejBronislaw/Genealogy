@@ -7,7 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 import model.Tree;
 import model.pgl.PGLFields;
 

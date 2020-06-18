@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
+import model.LifeStatus;
 import model.MyDate;
 import model.Person;
-import model.Person.LifeStatus;
-import model.Person.Sex;
+import model.Sex;
 import model.Tree;
 import model.pgl.PGLFields;
 import model.pgl.reader.Relation.Type;

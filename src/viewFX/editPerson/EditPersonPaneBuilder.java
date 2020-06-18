@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 
 import lang.Internationalization;
 import lombok.Setter;
+import model.LifeStatus;
 import model.Person;
-import model.Person.LifeStatus;
-import model.Person.Sex;
+import model.Sex;
 import model.familyRelations.RelationEditor;
 import session.Session;
 import tools.Tools;

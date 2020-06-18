@@ -17,7 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 import other.PersonDetails;
 import tools.Injection;
 import treeGraphs.ClosestTreeGraph;

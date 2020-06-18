@@ -8,9 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Person {
-	public enum LifeStatus{YES, NO, UNKNOWN};
-	public enum Sex{WOMAN, MAN, UNKNOWN};
-	
 	@Setter @Getter private String firstName;
 	@Setter @Getter private String lastName;
 	@Setter @Getter private String alias;

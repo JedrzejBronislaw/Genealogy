@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.NoArgsConstructor;
 import model.Marriage;
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 import model.Tree;
 import model.TreeEditor;
 import model.tools.ManWoman;

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 import model.Tree;
 import other.Diminutives;
 import tools.Tools;

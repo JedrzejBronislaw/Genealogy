@@ -3,9 +3,9 @@ package model.pgl;
 import java.util.Date;
 
 import lombok.RequiredArgsConstructor;
+import model.LifeStatus;
 import model.MyDate;
-import model.Person.LifeStatus;
-import model.Person.Sex;
+import model.Sex;
 import model.pgl.virtual.INISection;
 
 @RequiredArgsConstructor

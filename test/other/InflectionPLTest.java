@@ -1,11 +1,11 @@
 package other;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 
 public class InflectionPLTest {
 

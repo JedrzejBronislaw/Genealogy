@@ -2,7 +2,7 @@ package model.tools;
 
 import lombok.Getter;
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 
 public class ManWoman {
 

@@ -6,11 +6,11 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import model.LifeStatus;
 import model.Person;
+import model.Sex;
 import model.Tree;
 import model.pgl.PGLFields;
-import model.Person.LifeStatus;
-import model.Person.Sex;
 
 public class PGLReaderTest_SinglePerson {
 	private static PGLFilePreparation preparation = new PGLFilePreparation("singlePerson");

@@ -3,7 +3,7 @@ package model.random;
 import java.util.Random;
 
 import model.Person;
-import model.Person.Sex;
+import model.Sex;
 
 public class RandomPerson {
 
