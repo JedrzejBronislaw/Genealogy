@@ -164,8 +164,8 @@ public class PGLReader {
 		section.value(PGLFields.deathDate).map(MyDate::new)      .ifPresent(person::setDeathDate);
 		section.value(PGLFields.birthPlace)                      .ifPresent(person::setBirthPlace);
 		section.value(PGLFields.deathPlace)                      .ifPresent(person::setDeathPlace);
-		section.value(PGLFields.lifeStatus).map(this::lifeStatus).ifPresent(person::setLifeStatus);
-		section.value(PGLFields.sex).map(this::sex)              .ifPresent(person::setSex);
+		section.value(PGLFields.lifeStatus).map(LifeStatus::get) .ifPresent(person::setLifeStatus);
+		section.value(PGLFields.sex).map(Sex::get)               .ifPresent(person::setSex);
 		section.value(PGLFields.alias)                           .ifPresent(person::setAlias);
 		section.value(PGLFields.baptismParish)                   .ifPresent(person::setBaptismParish);
 		section.value(PGLFields.burialPlace)                     .ifPresent(person::setBurialPlace);
@@ -184,14 +184,6 @@ public class PGLReader {
 		multiVal(section, PGLFields.weddingPlace, numOfMarriages).forEach(v -> Relation.addPlaceToRelation(relations, personId, Type.SPOUSE, v.i, v.value));
 
 		tree.addPerson(personId, person);
-	}
-
-	private LifeStatus lifeStatus(String status) {
-		return status.equals("0") ? LifeStatus.NO : LifeStatus.YES;
-	}
-
-	private Sex sex(String sex) {
-		return sex.equals("0") ? Sex.WOMAN : Sex.MAN;
 	}
 	
 	private String splitLine(String test) {

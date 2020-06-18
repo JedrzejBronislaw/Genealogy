@@ -80,14 +80,14 @@ public class SectionDataWriterTest {
 	public void lifeStatus_yes() {
 		prepare();
 		writer.saveProperty(LifeStatus.YES);
-		assertEquals("1", section.getValue(PGLFields.lifeStatus));
+		assertEquals(LifeStatus.YES.toString(), section.getValue(PGLFields.lifeStatus));
 	}
 	
 	@Test
 	public void lifeStatus_no() {
 		prepare();
-		writer.saveProperty(LifeStatus.YES);
-		assertEquals("1", section.getValue(PGLFields.lifeStatus));
+		writer.saveProperty(LifeStatus.NO);
+		assertEquals(LifeStatus.NO.toString(), section.getValue(PGLFields.lifeStatus));
 	}
 	
 	@Test
@@ -103,14 +103,14 @@ public class SectionDataWriterTest {
 	public void propertySex_woman() {
 		prepare();
 		writer.saveProperty(Sex.WOMAN);
-		assertEquals("0", section.getValue(PGLFields.sex));
+		assertEquals(Sex.WOMAN.toString(), section.getValue(PGLFields.sex));
 	}
 
 	@Test
 	public void propertySex_man() {
 		prepare();
 		writer.saveProperty(Sex.MAN);
-		assertEquals("1", section.getValue(PGLFields.sex));
+		assertEquals(Sex.MAN.toString(), section.getValue(PGLFields.sex));
 	}
 
 	@Test

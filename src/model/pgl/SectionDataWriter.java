@@ -34,15 +34,11 @@ public class SectionDataWriter {
 
 	public void saveProperty(LifeStatus value) {
 		if (value == null || value == LifeStatus.UNKNOWN) return;
-
-		if (value == LifeStatus.NO)  saveProperty(PGLFields.lifeStatus, 0);
-		if (value == LifeStatus.YES) saveProperty(PGLFields.lifeStatus, 1);
+		saveProperty(PGLFields.lifeStatus, value.toString());
 	}
 
 	public void saveProperty(Sex value) {
 		if (value == null || value == Sex.UNKNOWN) return;
-
-		if (value == Sex.WOMAN) saveProperty(PGLFields.sex, 0);
-		if (value == Sex.MAN)   saveProperty(PGLFields.sex, 1);
+		saveProperty(PGLFields.sex, value.toString());
 	}
 }

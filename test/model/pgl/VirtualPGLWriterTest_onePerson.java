@@ -117,12 +117,12 @@ public class VirtualPGLWriterTest_onePerson {
 	
 	@Test
 	public void testLifeStatus() {
-		assertEquals("0", virtualPGL.getValue(ID, PGLFields.lifeStatus));
+		assertEquals(LifeStatus.NO.toString(), virtualPGL.getValue(ID, PGLFields.lifeStatus));
 	}
 	
 	@Test
 	public void testSex() {
-		assertEquals("1", virtualPGL.getValue(ID, PGLFields.sex));
+		assertEquals(Sex.MAN.toString(), virtualPGL.getValue(ID, PGLFields.sex));
 	}
 
 	
