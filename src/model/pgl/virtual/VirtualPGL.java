@@ -50,4 +50,16 @@ public class VirtualPGL {
 		
 		return sections.equals(pgl.sections);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		
+		forEachSection(section -> {
+			buffer.append("[" + section.getName() + "]" + System.lineSeparator());
+			section.forEachKey((k, v) -> buffer.append(k + "=" + v + System.lineSeparator()));
+		});
+		
+		return buffer.toString();
+	}
 }
