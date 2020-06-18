@@ -15,8 +15,9 @@ public class PGLReaderTest_SmallFamily {
 			"[1]",
 			"imie=Adam",
 			"nazwisko=Kowalski",
+			"plec=1",
 			"malzenstwa=1",
-			"malzonek=2",
+			"malzonek1=2",
 			"dzieci=3",
 			"dziecko1=3",
 			"dziecko2=4",
@@ -24,8 +25,9 @@ public class PGLReaderTest_SmallFamily {
 			"[2]",
 			"imie=Ewa",
 			"nazwisko=Nowak",
+			"plec=0",
 			"malzenstwa=1",
-			"malzonek=1",
+			"malzonek1=1",
 			"dzieci=3",
 			"dziecko1=3",
 			"dziecko2=4",
@@ -132,4 +134,25 @@ public class PGLReaderTest_SmallFamily {
 			assertArrayEquals(expectedChildren[i], persons[i].getChildren());
 	}
 
+	@Test
+	public void numOfMarriages() {
+		int[] expectedMarriages = {1, 1, 0, 0, 0};
+		int[] actualMarriages = new int[persons.length];
+
+		for(int i=0; i<persons.length; i++)
+			actualMarriages[i] = persons[i].numberOfMarriages();
+
+		assertArrayEquals(expectedMarriages, actualMarriages);
+	}
+
+	@Test
+	public void firstSpouses() {
+		Person[] expectedSpouses = {persons[1], persons[0], null, null, null};
+		Person[] actualSpouses = new Person[persons.length];
+
+		for(int i=0; i<persons.length; i++)
+			actualSpouses[i] = persons[i].getSpouse(0);
+
+		assertArrayEquals(expectedSpouses, actualSpouses);
+	}
 }
