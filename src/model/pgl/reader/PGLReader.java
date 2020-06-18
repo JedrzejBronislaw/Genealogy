@@ -19,6 +19,7 @@ import model.Person;
 import model.Person.LifeStatus;
 import model.Person.Sex;
 import model.Tree;
+import model.pgl.PGLFields;
 import model.pgl.reader.Relation.Type;
 import model.pgl.virtual.INISection;
 import model.pgl.virtual.VirtualPGL;
@@ -26,8 +27,6 @@ import tools.Tools;
 
 public class PGLReader {
 
-	private static final String MAIN_SECTION_NAME = "MAIN";
-	
 	@AllArgsConstructor
 	class IndexedString {
 		int i;
@@ -103,7 +102,7 @@ public class PGLReader {
 	}
 
 	private boolean isMainSection(INISection section) {
-		return section.getName().toUpperCase().equals(MAIN_SECTION_NAME);
+		return section.getName().toUpperCase().equals(PGLFields.mainSectionName);
 	}
 
 	private boolean isSectionHeader(String line) {
@@ -125,7 +124,8 @@ public class PGLReader {
 		final SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
 		final SimpleDateFormat sdf2 = new SimpleDateFormat("hh:mm:ss dd.MM.yyyy");
 		
-		return     tryLoadDate(textDate, sdf1).
+		return     tryLoadDate(textDate, PGLFields.dataFormat).
+		  or(() -> tryLoadDate(textDate, sdf1)).
 		  or(() -> tryLoadDate(textDate, sdf2));
 	}
 
@@ -141,7 +141,7 @@ public class PGLReader {
 	}
 	
 	private void loadToTree(Tree tree, VirtualPGL virtualPGL, List<Relation> relations) {
-		virtualPGL.get(MAIN_SECTION_NAME).ifPresent(mainSection ->
+		virtualPGL.get(PGLFields.mainSectionName).ifPresent(mainSection ->
 			loadMetadataToTree(tree, mainSection)
 		);
 		
@@ -195,7 +195,7 @@ public class PGLReader {
 	}
 	
 	private String splitLine(String test) {
-		return test.replace("$", System.lineSeparator());
+		return test.replace(PGLFields.lineSeparator, System.lineSeparator());
 	}
 	
 	private List<IndexedString> multiVal(INISection section, String key, int size) {

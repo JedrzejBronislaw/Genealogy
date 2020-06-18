@@ -71,7 +71,7 @@ public class SectionDataWriterTest {
 		Date date = new GregorianCalendar(2020, Calendar.JUNE, 17).getTime();
 
 		writer.saveProperty("a", date);
-		assertEquals(SectionDataWriter.dataFormat.format(date), section.getValue("a"));
+		assertEquals(PGLFields.dataFormat.format(date), section.getValue("a"));
 	}
 
 

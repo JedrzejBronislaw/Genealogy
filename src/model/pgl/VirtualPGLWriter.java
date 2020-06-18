@@ -12,8 +12,6 @@ import model.pgl.virtual.VirtualPGL;
 @RequiredArgsConstructor
 public class VirtualPGLWriter {
 
-	private static final String MAIN_SECTION_NAME = "MAIN";
-
 	private Tree tree;
 	private VirtualPGL pgl;
 
@@ -21,7 +19,7 @@ public class VirtualPGLWriter {
 		pgl = new VirtualPGL();
 		this.tree = tree;
 		
-		writeMainSection(tree, pgl.newSection(MAIN_SECTION_NAME));
+		writeMainSection(tree, pgl.newSection(PGLFields.mainSectionName));
 		Stream.of(tree.getIDs()).forEach(this::writePerson);
 		
 		return pgl;
@@ -89,7 +87,7 @@ public class VirtualPGLWriter {
 		}
 	}
 
-	private void saveChildren(SectionDataWriter writer, Person person) {//throws IOException {
+	private void saveChildren(SectionDataWriter writer, Person person) {
 		writer.saveProperty("dzieci", person.numberOfChildren());
 
 		for(int i=0; i<person.numberOfChildren(); i++)

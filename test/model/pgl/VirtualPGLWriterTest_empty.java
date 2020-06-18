@@ -21,7 +21,7 @@ public class VirtualPGLWriterTest_empty {
 	
 	@Test
 	public void testMainSection() {
-		assertTrue(virtualPGL.get("Main").isPresent());
+		assertTrue(virtualPGL.get(PGLFields.mainSectionName).isPresent());
 	}
 	
 	@Test

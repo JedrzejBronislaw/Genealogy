@@ -1,6 +1,5 @@
 package model.pgl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.RequiredArgsConstructor;
@@ -13,12 +12,10 @@ import model.pgl.virtual.INISection;
 public class SectionDataWriter {
 
 	private final INISection section;
-	public static final SimpleDateFormat dataFormat = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
-	public static final String lineSeparator = "$";
 
 	public void saveProperty(String name, String value) {
 		if (value == null || value.isEmpty()) return;
-		section.addKey(name, value.replace(System.lineSeparator(), lineSeparator));
+		section.addKey(name, value.replace(System.lineSeparator(), PGLFields.lineSeparator));
 	}
 
 	public void saveProperty(String name, int value) {
@@ -32,7 +29,7 @@ public class SectionDataWriter {
 
 	public void saveProperty(String name, Date value) {
 		if (value == null) return;
-		section.addKey(name, dataFormat.format(value));
+		section.addKey(name, PGLFields.dataFormat.format(value));
 	}
 
 	public void saveProperty(LifeStatus value) {

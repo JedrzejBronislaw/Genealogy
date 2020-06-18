@@ -56,8 +56,8 @@ public class VirtualPGLWriterTest_onePerson {
 	
 	@Test
 	public void testMainSection() {
-		assertTrue(virtualPGL.get("Main").isPresent());
-		assertEquals("1", virtualPGL.getValue("Main", "ile"));
+		assertTrue(virtualPGL.get(PGLFields.mainSectionName).isPresent());
+		assertEquals("1", virtualPGL.getValue(PGLFields.mainSectionName, "ile"));
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class VirtualPGLWriterTest_onePerson {
 	
 	@Test
 	public void testComments() {
-		assertEquals("comments" + SectionDataWriter.lineSeparator + "line2", virtualPGL.getValue(ID, "uwagi"));
+		assertEquals("comments" + PGLFields.lineSeparator + "line2", virtualPGL.getValue(ID, "uwagi"));
 	}
 	
 	@Test

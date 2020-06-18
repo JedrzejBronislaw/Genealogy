@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import model.Person;
 import model.Tree;
+import model.pgl.PGLFields;
 import model.Person.LifeStatus;
 import model.Person.Sex;
 
@@ -27,7 +28,7 @@ public class PGLReaderTest_SinglePerson {
 			"parafia=sw. Jana z Murami",
 			"mpoch=Poznan Junikowo",
 			"kontakt=Poznan ul. Poznanska 1 ",
-			"uwagi=professor of physics$doctor of chemistry"
+			"uwagi=professor of physics" + PGLFields.lineSeparator + "doctor of chemistry"
 			);
 	
 	private static Tree tree;

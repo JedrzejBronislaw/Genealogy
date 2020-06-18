@@ -72,8 +72,8 @@ public class VirtualPGLWriterTest_smallFamily {
 	
 	@Test
 	public void testMainSection() {
-		assertTrue(virtualPGL.get("Main").isPresent());
-		assertEquals("7", virtualPGL.getValue("Main", "ile"));
+		assertTrue(virtualPGL.get(PGLFields.mainSectionName).isPresent());
+		assertEquals("7", virtualPGL.getValue(PGLFields.mainSectionName, "ile"));
 	}
 	
 	@Test
