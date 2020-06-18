@@ -16,19 +16,19 @@ public class PGLReaderTest_SinglePerson {
 	private static PGLFilePreparation preparation = new PGLFilePreparation("singlePerson");
 	private static String content = String.join("\n",
 			"[1]",
-			"imie=Jan",
-			"nazwisko=Kowalski",
-			"miejur=Poznan",
-			"miejsm=Krakow",
-			"datur=2.4.1930",
-			"datsm=5.7.2000",
-			"zyje=0",
-			"plec=1",
-			"ps=Adam",
-			"parafia=sw. Jana z Murami",
-			"mpoch=Poznan Junikowo",
-			"kontakt=Poznan ul. Poznanska 1 ",
-			"uwagi=professor of physics" + PGLFields.lineSeparator + "doctor of chemistry"
+			PGLFields.firstName +     "=Jan",
+			PGLFields.lastName +      "=Kowalski",
+			PGLFields.birthPlace +    "=Poznan",
+			PGLFields.deathPlace +    "=Krakow",
+			PGLFields.birthDate +     "=2.4.1930",
+			PGLFields.deathDate +     "=5.7.2000",
+			PGLFields.lifeStatus +    "=0",
+			PGLFields.sex +           "=1",
+			PGLFields.alias +         "=Adam",
+			PGLFields.baptismParish + "=sw. Jana z Murami",
+			PGLFields.burialPlace +   "=Poznan Junikowo",
+			PGLFields.contact +       "=Poznan ul. Poznanska 1 ",
+			PGLFields.comments +      "=professor of physics" + PGLFields.lineSeparator + "doctor of chemistry"
 			);
 	
 	private static Tree tree;

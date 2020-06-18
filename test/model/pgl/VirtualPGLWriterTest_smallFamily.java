@@ -73,74 +73,74 @@ public class VirtualPGLWriterTest_smallFamily {
 	@Test
 	public void testMainSection() {
 		assertTrue(virtualPGL.get(PGLFields.mainSectionName).isPresent());
-		assertEquals("7", virtualPGL.getValue(PGLFields.mainSectionName, "ile"));
+		assertEquals("7", virtualPGL.getValue(PGLFields.mainSectionName, PGLFields.numberOfPersons));
 	}
 	
 	@Test
 	public void testMothers() {
-		assertNull(virtualPGL.getValue(GM_ID, "matka"));
-		assertNull(virtualPGL.getValue(GF_ID, "matka"));
-		assertNull(virtualPGL.getValue(M_ID,  "matka"));
-		assertNull(virtualPGL.getValue(H2_ID, "matka"));
+		assertNull(virtualPGL.getValue(GM_ID, PGLFields.mother));
+		assertNull(virtualPGL.getValue(GF_ID, PGLFields.mother));
+		assertNull(virtualPGL.getValue(M_ID,  PGLFields.mother));
+		assertNull(virtualPGL.getValue(H2_ID, PGLFields.mother));
 		
-		assertEquals(GM_ID, virtualPGL.getValue(F_ID,  "matka"));
-		assertEquals(M_ID,  virtualPGL.getValue(C1_ID, "matka"));
-		assertEquals(M_ID,  virtualPGL.getValue(C2_ID, "matka"));
+		assertEquals(GM_ID, virtualPGL.getValue(F_ID,  PGLFields.mother));
+		assertEquals(M_ID,  virtualPGL.getValue(C1_ID, PGLFields.mother));
+		assertEquals(M_ID,  virtualPGL.getValue(C2_ID, PGLFields.mother));
 	}
 	
 	@Test
 	public void testFathers() {
-		assertNull(virtualPGL.getValue(GM_ID, "ojciec"));
-		assertNull(virtualPGL.getValue(GF_ID, "ojciec"));
-		assertNull(virtualPGL.getValue(F_ID,  "ojciec"));
-		assertNull(virtualPGL.getValue(H2_ID, "ojciec"));
+		assertNull(virtualPGL.getValue(GM_ID, PGLFields.father));
+		assertNull(virtualPGL.getValue(GF_ID, PGLFields.father));
+		assertNull(virtualPGL.getValue(F_ID,  PGLFields.father));
+		assertNull(virtualPGL.getValue(H2_ID, PGLFields.father));
 		
-		assertEquals(GF_ID, virtualPGL.getValue(M_ID,  "ojciec"));
-		assertEquals(F_ID,  virtualPGL.getValue(C1_ID, "ojciec"));
-		assertEquals(F_ID,  virtualPGL.getValue(C2_ID, "ojciec"));
+		assertEquals(GF_ID, virtualPGL.getValue(M_ID,  PGLFields.father));
+		assertEquals(F_ID,  virtualPGL.getValue(C1_ID, PGLFields.father));
+		assertEquals(F_ID,  virtualPGL.getValue(C2_ID, PGLFields.father));
 	}
 	
 	@Test
 	public void testChildren() {
-		assertEquals("1", virtualPGL.getValue(GM_ID, "dzieci"));
-		assertEquals("1", virtualPGL.getValue(GF_ID, "dzieci"));
-		assertEquals("2", virtualPGL.getValue(F_ID,  "dzieci"));
-		assertEquals("2", virtualPGL.getValue(M_ID,  "dzieci"));
-		assertEquals("0", virtualPGL.getValue(H2_ID, "dzieci"));
-		assertEquals("0", virtualPGL.getValue(C1_ID,  "dzieci"));
-		assertEquals("0", virtualPGL.getValue(C2_ID,  "dzieci"));
+		assertEquals("1", virtualPGL.getValue(GM_ID, PGLFields.children));
+		assertEquals("1", virtualPGL.getValue(GF_ID, PGLFields.children));
+		assertEquals("2", virtualPGL.getValue(F_ID,  PGLFields.children));
+		assertEquals("2", virtualPGL.getValue(M_ID,  PGLFields.children));
+		assertEquals("0", virtualPGL.getValue(H2_ID, PGLFields.children));
+		assertEquals("0", virtualPGL.getValue(C1_ID, PGLFields.children));
+		assertEquals("0", virtualPGL.getValue(C2_ID, PGLFields.children));
 		
-		assertEquals(F_ID,  virtualPGL.getValue(GM_ID, "dziecko1"));
-		assertEquals(M_ID,  virtualPGL.getValue(GF_ID, "dziecko1"));
-		assertEquals(C1_ID, virtualPGL.getValue(M_ID,  "dziecko1"));
-		assertEquals(C2_ID, virtualPGL.getValue(M_ID,  "dziecko2"));
-		assertEquals(C1_ID, virtualPGL.getValue(F_ID,  "dziecko1"));
-		assertEquals(C2_ID, virtualPGL.getValue(F_ID,  "dziecko2"));
+		assertEquals(F_ID,  virtualPGL.getValue(GM_ID, PGLFields.child(1)));
+		assertEquals(M_ID,  virtualPGL.getValue(GF_ID, PGLFields.child(1)));
+		assertEquals(C1_ID, virtualPGL.getValue(M_ID,  PGLFields.child(1)));
+		assertEquals(C2_ID, virtualPGL.getValue(M_ID,  PGLFields.child(2)));
+		assertEquals(C1_ID, virtualPGL.getValue(F_ID,  PGLFields.child(1)));
+		assertEquals(C2_ID, virtualPGL.getValue(F_ID,  PGLFields.child(2)));
 	}
 
 	@Test
 	public void testMarriages() {
-		assertEquals("0", virtualPGL.getValue(GM_ID, "malzenstwa"));
-		assertEquals("0", virtualPGL.getValue(GF_ID, "malzenstwa"));
-		assertEquals("2", virtualPGL.getValue(M_ID,  "malzenstwa"));
-		assertEquals("1", virtualPGL.getValue(F_ID,  "malzenstwa"));
-		assertEquals("1", virtualPGL.getValue(H2_ID, "malzenstwa"));
-		assertEquals("0", virtualPGL.getValue(C1_ID, "malzenstwa"));
-		assertEquals("0", virtualPGL.getValue(C2_ID, "malzenstwa"));
+		assertEquals("0", virtualPGL.getValue(GM_ID, PGLFields.marriages));
+		assertEquals("0", virtualPGL.getValue(GF_ID, PGLFields.marriages));
+		assertEquals("2", virtualPGL.getValue(M_ID,  PGLFields.marriages));
+		assertEquals("1", virtualPGL.getValue(F_ID,  PGLFields.marriages));
+		assertEquals("1", virtualPGL.getValue(H2_ID, PGLFields.marriages));
+		assertEquals("0", virtualPGL.getValue(C1_ID, PGLFields.marriages));
+		assertEquals("0", virtualPGL.getValue(C2_ID, PGLFields.marriages));
 
-		assertEquals(F_ID,  virtualPGL.getValue(M_ID,  "malzonek1"));
-		assertEquals(M_ID,  virtualPGL.getValue(F_ID,  "malzonek1"));
-		assertEquals(H2_ID, virtualPGL.getValue(M_ID,  "malzonek2"));
-		assertEquals(M_ID,  virtualPGL.getValue(H2_ID, "malzonek1"));
+		assertEquals(F_ID,  virtualPGL.getValue(M_ID,  PGLFields.spouse(1)));
+		assertEquals(M_ID,  virtualPGL.getValue(F_ID,  PGLFields.spouse(1)));
+		assertEquals(H2_ID, virtualPGL.getValue(M_ID,  PGLFields.spouse(2)));
+		assertEquals(M_ID,  virtualPGL.getValue(H2_ID, PGLFields.spouse(1)));
 
-		assertEquals(marriageDate,  virtualPGL.getValue(M_ID, "malzdata1"));
-		assertEquals(marriageDate,  virtualPGL.getValue(F_ID, "malzdata1"));
-		assertNull(virtualPGL.getValue(M_ID,  "malzdata2"));
-		assertNull(virtualPGL.getValue(H2_ID, "malzdata1"));
+		assertEquals(marriageDate,  virtualPGL.getValue(M_ID, PGLFields.weddingDate(1)));
+		assertEquals(marriageDate,  virtualPGL.getValue(F_ID, PGLFields.weddingDate(1)));
+		assertNull(virtualPGL.getValue(M_ID,  PGLFields.weddingDate(2)));
+		assertNull(virtualPGL.getValue(H2_ID, PGLFields.weddingDate(1)));
 
-		assertEquals("place",  virtualPGL.getValue(M_ID,  "malzmjsc1"));
-		assertEquals("place",  virtualPGL.getValue(F_ID,  "malzmjsc1"));
-		assertEquals("place2", virtualPGL.getValue(M_ID,  "malzmjsc2"));
-		assertEquals("place2", virtualPGL.getValue(H2_ID, "malzmjsc1"));
+		assertEquals("place",  virtualPGL.getValue(M_ID,  PGLFields.weddingPlace(1)));
+		assertEquals("place",  virtualPGL.getValue(F_ID,  PGLFields.weddingPlace(1)));
+		assertEquals("place2", virtualPGL.getValue(M_ID,  PGLFields.weddingPlace(2)));
+		assertEquals("place2", virtualPGL.getValue(H2_ID, PGLFields.weddingPlace(1)));
 	}
 }

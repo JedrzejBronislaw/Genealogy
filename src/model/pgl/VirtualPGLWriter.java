@@ -28,38 +28,38 @@ public class VirtualPGLWriter {
 	private void writeMainSection(Tree tree, INISection mainSection) {
 		SectionDataWriter writer = new SectionDataWriter(mainSection);
 		
-		writer.saveProperty("ost_otw", tree.getLastOpen());
-		writer.saveProperty("wersja",  tree.getLastModification());
-		writer.saveProperty("ile",     tree.numberOfPersons());
+		writer.saveProperty(PGLFields.lastOpen,         tree.getLastOpen());
+		writer.saveProperty(PGLFields.lastModification, tree.getLastModification());
+		writer.saveProperty(PGLFields.numberOfPersons,  tree.numberOfPersons());
 
 		String[] names = tree.getCommonSurnames();
 		for(int i=0; i<names.length; i++)
-			writer.saveProperty("nazw" + (i+1), names[i]);
+			writer.saveProperty(PGLFields.commonSurname(i+1), names[i]);
 	}
 
 	private boolean writePerson(String id) {
 		Person person = tree.getPerson(id);
 		SectionDataWriter writer = new SectionDataWriter(pgl.newSection(id));
 		
-		writer.saveProperty("imie", person.getFirstName());
-		writer.saveProperty("nazwisko", person.getLastName());
-		writer.saveProperty("ps", person.getAlias());
+		writer.saveProperty(PGLFields.firstName, person.getFirstName());
+		writer.saveProperty(PGLFields.lastName,  person.getLastName());
+		writer.saveProperty(PGLFields.alias,     person.getAlias());
 		
-		writer.saveProperty("datur", person.getBirthDate());
-		writer.saveProperty("miejur", person.getBirthPlace());
-		writer.saveProperty("datsm", person.getDeathDate());
-		writer.saveProperty("miejsm", person.getDeathPlace());
+		writer.saveProperty(PGLFields.birthDate,  person.getBirthDate());
+		writer.saveProperty(PGLFields.birthPlace, person.getBirthPlace());
+		writer.saveProperty(PGLFields.deathDate,  person.getDeathDate());
+		writer.saveProperty(PGLFields.deathPlace, person.getDeathPlace());
 		
 		writer.saveProperty(person.getLifeStatus());
 		writer.saveProperty(person.getSex());
-		writer.saveProperty("parafia", person.getBaptismParish());
-		writer.saveProperty("mpoch", person.getBurialPlace());
+		writer.saveProperty(PGLFields.baptismParish, person.getBaptismParish());
+		writer.saveProperty(PGLFields.burialPlace,   person.getBurialPlace());
 		
-		writer.saveProperty("kontakt", person.getContact());
-		writer.saveProperty("uwagi", person.getComments());
+		writer.saveProperty(PGLFields.contact,  person.getContact());
+		writer.saveProperty(PGLFields.comments, person.getComments());
 		
-		saveProperty(writer, "ojciec", person.getFather());
-		saveProperty(writer, "matka", person.getMother());
+		saveProperty(writer, PGLFields.father, person.getFather());
+		saveProperty(writer, PGLFields.mother, person.getMother());
 		
 		saveMarriages(writer, person);
 		saveChildren(writer, person);
@@ -78,19 +78,19 @@ public class VirtualPGLWriter {
 	}
 
 	private void saveMarriages(SectionDataWriter writer, Person person) {
-		writer.saveProperty("malzenstwa", person.numberOfMarriages());
+		writer.saveProperty(PGLFields.marriages, person.numberOfMarriages());
 
 		for(int i=0; i<person.numberOfMarriages(); i++) {
-			writer.saveProperty("malzonek" + (i+1), tree.getID(person.getSpouse(i)));
-			writer.saveProperty("malzdata" + (i+1), person.getMarriage(i).getDate());
-			writer.saveProperty("malzmjsc" + (i+1), person.getMarriage(i).getPlace());
+			writer.saveProperty(PGLFields.spouse(i+1),       tree.getID(person.getSpouse(i)));
+			writer.saveProperty(PGLFields.weddingDate(i+1),  person.getMarriage(i).getDate());
+			writer.saveProperty(PGLFields.weddingPlace(i+1), person.getMarriage(i).getPlace());
 		}
 	}
 
 	private void saveChildren(SectionDataWriter writer, Person person) {
-		writer.saveProperty("dzieci", person.numberOfChildren());
+		writer.saveProperty(PGLFields.children, person.numberOfChildren());
 
 		for(int i=0; i<person.numberOfChildren(); i++)
-			writer.saveProperty("dziecko" + (i+1), tree.getID(person.getChild(i)));
+			writer.saveProperty(PGLFields.child(i+1), tree.getID(person.getChild(i)));
 	}
 }

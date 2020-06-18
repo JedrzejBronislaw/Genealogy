@@ -111,11 +111,11 @@ public class PGLReader {
 	}
 
 	private void loadMetadataToTree(Tree tree, INISection section) {
-		section.value("ost_otw").flatMap(this::loadDate).ifPresent(tree::setLastOpen);
-		section.value("wersja") .flatMap(this::loadDate).ifPresent(tree::setLastModification);
-		section.value("ile")    .flatMap(this::strToInt).ifPresent(tree::setNumberOfPersons);
+		section.value(PGLFields.lastOpen)        .flatMap(this::loadDate).ifPresent(tree::setLastOpen);
+		section.value(PGLFields.lastModification).flatMap(this::loadDate).ifPresent(tree::setLastModification);
+		section.value(PGLFields.numberOfPersons) .flatMap(this::strToInt).ifPresent(tree::setNumberOfPersons);
 		
-		multiVal(section, "nazw", 10).forEach(surname -> {
+		multiVal(section, PGLFields.commonSurname, 10).forEach(surname -> {
 			if (!surname.value.isEmpty()) tree.addCommonSurname(surname.value);
 		});
 	}
@@ -158,30 +158,30 @@ public class PGLReader {
 		int numOfChildren  = 0;
 		int numOfMarriages = 0;
 		
-		section.value("imie")                      .ifPresent(person::setFirstName);
-		section.value("nazwisko")                  .ifPresent(person::setLastName);
-		section.value("datur").map(MyDate::new)    .ifPresent(person::setBirthDate);
-		section.value("datsm").map(MyDate::new)    .ifPresent(person::setDeathDate);
-		section.value("miejur")                    .ifPresent(person::setBirthPlace);
-		section.value("miejsm")                    .ifPresent(person::setDeathPlace);
-		section.value("zyje").map(this::lifeStatus).ifPresent(person::setLifeStatus);
-		section.value("plec").map(this::sex)       .ifPresent(person::setSex);
-		section.value("ps")                        .ifPresent(person::setAlias);
-		section.value("parafia")                   .ifPresent(person::setBaptismParish);
-		section.value("mpoch")                     .ifPresent(person::setBurialPlace);
+		section.value(PGLFields.firstName)                       .ifPresent(person::setFirstName);
+		section.value(PGLFields.lastName)                        .ifPresent(person::setLastName);
+		section.value(PGLFields.birthDate).map(MyDate::new)      .ifPresent(person::setBirthDate);
+		section.value(PGLFields.deathDate).map(MyDate::new)      .ifPresent(person::setDeathDate);
+		section.value(PGLFields.birthPlace)                      .ifPresent(person::setBirthPlace);
+		section.value(PGLFields.deathPlace)                      .ifPresent(person::setDeathPlace);
+		section.value(PGLFields.lifeStatus).map(this::lifeStatus).ifPresent(person::setLifeStatus);
+		section.value(PGLFields.sex).map(this::sex)              .ifPresent(person::setSex);
+		section.value(PGLFields.alias)                           .ifPresent(person::setAlias);
+		section.value(PGLFields.baptismParish)                   .ifPresent(person::setBaptismParish);
+		section.value(PGLFields.burialPlace)                     .ifPresent(person::setBurialPlace);
 
-		section.value("kontakt").map(this::splitLine).ifPresent(person::setContact);
-		section.value("uwagi")  .map(this::splitLine).ifPresent(person::setComments);
+		section.value(PGLFields.contact) .map(this::splitLine).ifPresent(person::setContact);
+		section.value(PGLFields.comments).map(this::splitLine).ifPresent(person::setComments);
 		
-		section.value("ojciec").ifPresent(v -> relations.add(new Relation(v, Type.FATHER, personId)));
-		section.value("matka") .ifPresent(v -> relations.add(new Relation(v, Type.MOTHER, personId)));
-		numOfChildren  = section.value("dzieci")    .flatMap(this::strToInt).orElse(0);
-		numOfMarriages = section.value("malzenstwa").flatMap(this::strToInt).orElse(0);
+		section.value(PGLFields.father).ifPresent(v -> relations.add(new Relation(v, Type.FATHER, personId)));
+		section.value(PGLFields.mother).ifPresent(v -> relations.add(new Relation(v, Type.MOTHER, personId)));
+		numOfChildren  = section.value(PGLFields.children) .flatMap(this::strToInt).orElse(0);
+		numOfMarriages = section.value(PGLFields.marriages).flatMap(this::strToInt).orElse(0);
 
-		multiVal(section, "dziecko",  numOfChildren). forEach(v -> relations.add(new Relation(v.value, Type.CHILD,  personId, v.i)));
-		multiVal(section, "malzonek", numOfMarriages).forEach(v -> relations.add(new Relation(v.value, Type.SPOUSE, personId, v.i)));
-		multiVal(section, "malzdata", numOfMarriages).forEach(v -> Relation.addDateToRelation( relations, personId, Type.SPOUSE, v.i, v.value));
-		multiVal(section, "malzmjsc", numOfMarriages).forEach(v -> Relation.addPlaceToRelation(relations, personId, Type.SPOUSE, v.i, v.value));
+		multiVal(section, PGLFields.child,  numOfChildren). forEach(v -> relations.add(new Relation(v.value, Type.CHILD,  personId, v.i)));
+		multiVal(section, PGLFields.spouse, numOfMarriages).forEach(v -> relations.add(new Relation(v.value, Type.SPOUSE, personId, v.i)));
+		multiVal(section, PGLFields.weddingDate,  numOfMarriages).forEach(v -> Relation.addDateToRelation( relations, personId, Type.SPOUSE, v.i, v.value));
+		multiVal(section, PGLFields.weddingPlace, numOfMarriages).forEach(v -> Relation.addPlaceToRelation(relations, personId, Type.SPOUSE, v.i, v.value));
 
 		tree.addPerson(personId, person);
 	}
