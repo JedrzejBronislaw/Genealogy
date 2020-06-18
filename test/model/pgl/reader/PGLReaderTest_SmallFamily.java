@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.Person;
+import model.Person.Sex;
 import model.Tree;
 
 public class PGLReaderTest_SmallFamily {
@@ -154,5 +155,16 @@ public class PGLReaderTest_SmallFamily {
 			actualSpouses[i] = persons[i].getSpouse(0);
 
 		assertArrayEquals(expectedSpouses, actualSpouses);
+	}
+
+	@Test
+	public void sex() {
+		Sex[] expectedSexes = {Sex.MAN, Sex.WOMAN, Sex.UNKNOWN, Sex.UNKNOWN, Sex.UNKNOWN};
+		Sex[] actualSexes = new Sex[persons.length];
+
+		for(int i=0; i<persons.length; i++)
+			actualSexes[i] = persons[i].getSex();
+
+		assertArrayEquals(expectedSexes, actualSexes);
 	}
 }
