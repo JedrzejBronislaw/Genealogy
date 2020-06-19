@@ -22,7 +22,10 @@ import model.Tree;
 import model.pgl.PGLFields;
 import model.pgl.reader.Relation.Type;
 import model.pgl.virtual.INISection;
+import model.pgl.virtual.PGLDiffReport;
 import model.pgl.virtual.VirtualPGL;
+import model.pgl.virtual.VirtualPGLDiff;
+import model.pgl.writer.VirtualPGLWriter;
 import tools.Tools;
 
 public class PGLReader {
@@ -55,34 +58,51 @@ public class PGLReader {
 		brFile = new BufferedReader(new InputStreamReader(dis));
 	}
 	
-	
+
 	public boolean load(Tree tree)
+	{
+		try{
+			loadFromFile(tree);
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public PGLDiffReport loadAndAnalize(Tree tree)
+	{
+		try{
+			VirtualPGL virtualPGL = loadFromFile(tree);
+			return analize(tree, virtualPGL);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+	
+	private VirtualPGL loadFromFile(Tree tree) throws IOException
 	{
 		String line;
 		INISection section = null;
 		List<Relation> relations = new ArrayList<Relation>();
 		VirtualPGL virtualPGL = new VirtualPGL();
 		
-		try{
-			while ((line = brFile.readLine()) != null) {
-				
-				line = line.trim();
-				if (isSectionHeader(line))
-					section = virtualPGL.newSection(sectionName(line));
-				else
-					addValue(line, section);
-				
-			}
-
-			loadToTree(tree, virtualPGL, relations);
+		while ((line = brFile.readLine()) != null) {
+			line = line.trim();
 			
-		} catch (IOException e) {
-			return false;
+			if (isSectionHeader(line))
+				section = virtualPGL.newSection(sectionName(line));
+			else
+				addValue(line, section);
 		}
 		
+		loadToTree(tree, virtualPGL, relations);
 		relations.forEach(relation -> relation.applyFor(tree));
-		
-		return true;
+
+		return virtualPGL;
+	}
+
+	private PGLDiffReport analize(Tree tree, VirtualPGL virtualPGL) {
+		return new PGLDiffReport(new VirtualPGLDiff(virtualPGL, new VirtualPGLWriter().write(tree)).check());
 	}
 
 	private void addValue(String line, INISection section) {

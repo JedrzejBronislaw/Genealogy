@@ -12,6 +12,7 @@ import lang.Internationalization;
 import lang.Languages;
 import model.Tree;
 import model.pgl.reader.PGLReader;
+import model.pgl.virtual.PGLDiffReport;
 import model.pgl.writer.PGLWriter;
 import session.Session;
 import viewFX.mainWindow.MainWindowBuilder;
@@ -99,7 +100,8 @@ public class Main extends Application {
 		
 		try {
 			PGLReader file = new PGLReader(path);
-			file.load(tree);
+			PGLDiffReport analysis = file.loadAndAnalize(tree);
+			System.out.println(analysis);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found (" + path + ").");
 			return null;
