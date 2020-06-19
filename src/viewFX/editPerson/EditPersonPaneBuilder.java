@@ -83,11 +83,11 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 		layout.addItem(new EditEnumItem(Internationalization.get("lives"),
 				Tools.getStringValues(LifeStatus.class),
 				(person, value) -> person.setLifeStatus(LifeStatus.valueOf(value)),
-				person -> person.getLifeStatus().toString()));
+				person -> person.getLifeStatus().name()));
 		layout.addItem(new EditEnumItem(Internationalization.get("sex"),
 				Tools.getStringValues(Sex.class),
 				(person, value) -> person.setSex(Sex.valueOf(value)),
-				person -> person.getSex().toString()));
+				person -> person.getSex().name()));
 
 		layout.addItem(new EditTextItem(Internationalization.get("baptism_parish"),
 				(person, value) -> person.setBaptismParish(value),

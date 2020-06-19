@@ -54,7 +54,7 @@ public class Tools {
 		String[] strValues = new String[rawValues.length];
 		
 		for(int i=0; i<rawValues.length; i++)
-			strValues[i] = rawValues[i].toString();
+			strValues[i] = rawValues[i].name();
 		
 		return strValues;
 	}
