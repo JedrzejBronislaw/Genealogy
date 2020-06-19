@@ -24,7 +24,7 @@ import model.pgl.reader.Relation.Type;
 import model.pgl.virtual.INISection;
 import model.pgl.virtual.PGLDiffReport;
 import model.pgl.virtual.VirtualPGL;
-import model.pgl.virtual.VirtualPGLDiff;
+import model.pgl.virtual.PGLComparator;
 import model.pgl.writer.VirtualPGLWriter;
 import tools.Tools;
 
@@ -102,7 +102,7 @@ public class PGLReader {
 	}
 
 	private PGLDiffReport analize(Tree tree, VirtualPGL virtualPGL) {
-		return new PGLDiffReport(new VirtualPGLDiff(virtualPGL, new VirtualPGLWriter().write(tree)).check());
+		return new PGLDiffReport(new PGLComparator(virtualPGL, new VirtualPGLWriter().write(tree)).compare());
 	}
 
 	private void addValue(String line, INISection section) {

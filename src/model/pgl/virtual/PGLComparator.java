@@ -12,25 +12,13 @@ import model.pgl.virtual.Differences.AdditionalSection;
 import model.pgl.virtual.Differences.OtherValue;
 
 @RequiredArgsConstructor
-public class VirtualPGLDiff {
+public class PGLComparator {
 	
 	@NonNull private final VirtualPGL pgl1, pgl2;
 	@Getter  private Differences differences = new Differences();
 	
-	public List<OtherValue> getOtherValues() {
-		return differences.getOtherValues();
-	}
 	
-	public List<AdditionalKey> getAdditionalKeys() {
-		return differences.getAdditionalKeys();
-	}
-	
-	public List<AdditionalSection> getAdditionalSections() {
-		return differences.getAdditionalSections();
-	}
-	
-	
-	public Differences check() {
+	public Differences compare() {
 		if (pgl1.equals(pgl2)) return differences.clear();
 
 		checkSections(pgl1, pgl2);
