@@ -6,12 +6,14 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 public class Differences {
 	
 	@EqualsAndHashCode
 	@ToString
+	@Getter
 	@AllArgsConstructor
 	public static class OtherValue {
 		private String section;
@@ -20,6 +22,7 @@ public class Differences {
 
 	@EqualsAndHashCode
 	@ToString
+	@Getter
 	@AllArgsConstructor
 	public static class AdditionalKey {
 		private VirtualPGL pgl;
@@ -29,6 +32,7 @@ public class Differences {
 
 	@EqualsAndHashCode
 	@ToString
+	@Getter
 	@AllArgsConstructor
 	public static class AdditionalSection {
 		private VirtualPGL pgl;
