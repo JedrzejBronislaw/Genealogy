@@ -17,6 +17,13 @@ public class PGLComparator {
 	@NonNull private final VirtualPGL pgl1, pgl2;
 	@Getter  private Differences differences = new Differences();
 	
+	public PGLComparator(@NonNull VirtualPGL pgl1, String pgl1Name, @NonNull VirtualPGL pgl2, String pgl2Name) {
+		this.pgl1 = pgl1;
+		this.pgl2 = pgl2;
+
+		differences.setPGLName(pgl1, pgl1Name);
+		differences.setPGLName(pgl2, pgl2Name);
+	}
 	
 	public Differences compare() {
 		if (pgl1.equals(pgl2)) return differences.clear();

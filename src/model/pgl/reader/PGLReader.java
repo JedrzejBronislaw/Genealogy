@@ -102,7 +102,10 @@ public class PGLReader {
 	}
 
 	private PGLDiffReport analize(Tree tree, VirtualPGL virtualPGL) {
-		return new PGLDiffReport(new PGLComparator(virtualPGL, new VirtualPGLWriter().write(tree)).compare());
+		return new PGLDiffReport(new PGLComparator(
+				virtualPGL, "file",
+				new VirtualPGLWriter().write(tree), "loaded")
+				.compare());
 	}
 
 	private void addValue(String line, INISection section) {

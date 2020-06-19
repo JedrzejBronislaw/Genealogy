@@ -2,11 +2,14 @@ package model.pgl.virtual;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 public class Differences {
@@ -44,6 +47,16 @@ public class Differences {
 	private List<AdditionalSection> additionalSections = new ArrayList<>();
 	
 
+	private Map<VirtualPGL, String> pglNames = new HashMap<>(2);
+	
+	public void setPGLName(@NonNull VirtualPGL pgl, String pglName) {
+		pglNames.put(pgl, pglName);
+	}
+	public String getPGLName(VirtualPGL pgl) {
+		String name = pglNames.get(pgl);
+		return name != null ? name : "";
+	}
+	
 	public List<OtherValue> getOtherValues() {
 		return Collections.unmodifiableList(otherValues);
 	}

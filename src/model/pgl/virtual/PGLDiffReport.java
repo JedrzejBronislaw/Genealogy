@@ -30,11 +30,11 @@ public class PGLDiffReport {
 	
 	
 	private String toString(AdditionalSection d) {
-		return "S: " + d.getSection();
+		return "S: " + diff.getPGLName(d.getPgl()) + " - " + d.getSection();
 	}
 	
 	private String toString(AdditionalKey d) {
-		return "K: " + d.getSection() + " - " + d.getKeyName();
+		return "K: " + diff.getPGLName(d.getPgl()) + " - " + d.getSection() + " - " + d.getKeyName();
 	}
 	
 	private String toString(OtherValue d) {
