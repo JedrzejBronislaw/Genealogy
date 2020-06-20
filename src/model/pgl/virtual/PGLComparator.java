@@ -50,6 +50,10 @@ public class PGLComparator {
 		return sections.stream().anyMatch(sec -> sec.equals(name));
 	}
 
+	private boolean hasKey(VirtualPGL pgl, String section, String key) {
+		return pgl.getValue(section, key) != null;
+	}
+
 //-----
 
 	private void checkSections(VirtualPGL pgl1, VirtualPGL pgl2) {
@@ -111,6 +115,7 @@ public class PGLComparator {
 		Set<String> keys1 = pgl1.get(section).get().getKeys().keySet();
 		
 		keys1.stream().
+			filter(key -> hasKey(pgl2, section, key)).
 			filter(key -> !equalValue(pgl1, pgl2, section, key)).
 			map(key -> new OtherValue(section, key)).
 			forEach(differences::add);
