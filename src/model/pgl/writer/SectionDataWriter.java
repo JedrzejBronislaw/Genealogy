@@ -24,7 +24,7 @@ public class SectionDataWriter {
 	}
 
 	public void saveProperty(String name, MyDate value) {
-		if (value == null) return;
+		if (value == null || value.isEmpty()) return;
 		section.addKey(name, value.toString());
 	}
 
