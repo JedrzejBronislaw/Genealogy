@@ -34,11 +34,14 @@ public class PGLDiffReport {
 	}
 	
 	private String toString(AdditionalKey d) {
-		return "K: " + diff.getPGLName(d.getPgl()) + " - " + d.getSection() + " - " + d.getKeyName();
+		return "K: " + diff.getPGLName(d.getPgl()) + " - " + d.getSection() + " - " + d.getKeyName() + " - " +
+				d.getPgl().getValue(d.getSection(), d.getKeyName());
 	}
 	
 	private String toString(OtherValue d) {
-		return "V: " + d.getSection() + " - " + d.getKeyName();
+		return "V: " + d.getSection() + " - " + d.getKeyName() + " - " +
+				diff.getPgl1().getValue(d.getSection(), d.getKeyName()) + "=/=" +
+				diff.getPgl2().getValue(d.getSection(), d.getKeyName());
 	}
 
 

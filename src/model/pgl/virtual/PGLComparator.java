@@ -21,6 +21,9 @@ public class PGLComparator {
 		this.pgl1 = pgl1;
 		this.pgl2 = pgl2;
 
+		differences.setPgl1(pgl1);
+		differences.setPgl2(pgl2);
+		
 		differences.setPGLName(pgl1, pgl1Name);
 		differences.setPGLName(pgl2, pgl2Name);
 	}

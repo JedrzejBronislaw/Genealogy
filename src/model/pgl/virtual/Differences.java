@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.ToString;
 
 public class Differences {
@@ -42,6 +44,10 @@ public class Differences {
 		private String section;
 	}
 
+	@Getter
+	@Setter(value = AccessLevel.PACKAGE)
+	private VirtualPGL pgl1, pgl2;
+	
 	private List<OtherValue> otherValues               = new ArrayList<>();
 	private List<AdditionalKey> additionalKeys         = new ArrayList<>();
 	private List<AdditionalSection> additionalSections = new ArrayList<>();
