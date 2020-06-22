@@ -147,6 +147,9 @@ public class PGLDiffReport {
 			 value.equals(".0.0") || value.equals("0..0") || value.equals("0.0."))) {
 			return true;
 		}
+		
+		if (!PGLFields.contains(name)) return true;
+		
 		return false;
 	}
 
