@@ -108,9 +108,9 @@ public class VirtualPGLWriterTest_smallFamily {
 		assertEquals("1", virtualPGL.getValue(GF_ID, PGLFields.children));
 		assertEquals("2", virtualPGL.getValue(F_ID,  PGLFields.children));
 		assertEquals("2", virtualPGL.getValue(M_ID,  PGLFields.children));
-		assertEquals("0", virtualPGL.getValue(H2_ID, PGLFields.children));
-		assertEquals("0", virtualPGL.getValue(C1_ID, PGLFields.children));
-		assertEquals("0", virtualPGL.getValue(C2_ID, PGLFields.children));
+		assertNull(virtualPGL.getValue(H2_ID, PGLFields.children));
+		assertNull(virtualPGL.getValue(C1_ID, PGLFields.children));
+		assertNull(virtualPGL.getValue(C2_ID, PGLFields.children));
 		
 		assertEquals(F_ID,  virtualPGL.getValue(GM_ID, PGLFields.child(1)));
 		assertEquals(M_ID,  virtualPGL.getValue(GF_ID, PGLFields.child(1)));
@@ -122,13 +122,13 @@ public class VirtualPGLWriterTest_smallFamily {
 
 	@Test
 	public void testMarriages() {
-		assertEquals("0", virtualPGL.getValue(GM_ID, PGLFields.marriages));
-		assertEquals("0", virtualPGL.getValue(GF_ID, PGLFields.marriages));
 		assertEquals("2", virtualPGL.getValue(M_ID,  PGLFields.marriages));
 		assertEquals("1", virtualPGL.getValue(F_ID,  PGLFields.marriages));
 		assertEquals("1", virtualPGL.getValue(H2_ID, PGLFields.marriages));
-		assertEquals("0", virtualPGL.getValue(C1_ID, PGLFields.marriages));
-		assertEquals("0", virtualPGL.getValue(C2_ID, PGLFields.marriages));
+		assertNull(virtualPGL.getValue(GM_ID, PGLFields.marriages));
+		assertNull(virtualPGL.getValue(GF_ID, PGLFields.marriages));
+		assertNull(virtualPGL.getValue(C1_ID, PGLFields.marriages));
+		assertNull(virtualPGL.getValue(C2_ID, PGLFields.marriages));
 
 		assertEquals(F_ID,  virtualPGL.getValue(M_ID,  PGLFields.spouse(1)));
 		assertEquals(M_ID,  virtualPGL.getValue(F_ID,  PGLFields.spouse(1)));
