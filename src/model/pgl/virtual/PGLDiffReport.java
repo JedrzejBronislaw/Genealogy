@@ -18,7 +18,7 @@ public class PGLDiffReport {
 	private List<AdditionalKey>    emptyAdditionalKeys = new ArrayList<>();
 	private List<OtherValue> similarOtherValues = new ArrayList<>();
 	private List<OtherValue>    realOtherValues = new ArrayList<>();
-
+	
 	public PGLDiffReport(Differences diff) {
 		this.diff = diff;
 		
@@ -121,7 +121,17 @@ public class PGLDiffReport {
 		
 		return sb;
 	}
+
 	
+	private boolean isIgnored(String key) {
+		if (key.equals(PGLFields.lastOpen) ||
+			key.equals(PGLFields.lastModification) ||
+			key.equals(PGLFields.numberOfPersons) ||
+			PGLFields.isListElement(PGLFields.commonSurname, key))
+			return true;
+		
+		return false;
+	}
 	
 	private boolean emptyKeyFilter(AdditionalKey diff) {
 		String name = diff.getKeyName();
@@ -150,6 +160,8 @@ public class PGLDiffReport {
 		
 		if (!PGLFields.contains(name)) return true;
 		
+		if (isIgnored(name)) return true;
+		
 		return false;
 	}
 
@@ -162,6 +174,8 @@ public class PGLDiffReport {
 		if ((key.equals(PGLFields.birthDate) || key.equals(PGLFields.deathDate) || key.startsWith(PGLFields.weddingDate)) &&
 			(compareDates(value1, value2)))
 			return true;
+
+		if (isIgnored(key)) return true;
 		
 		return false;
 	}
