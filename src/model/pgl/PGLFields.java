@@ -59,4 +59,55 @@ public class PGLFields {
 	public static String weddingPlace(int number) {
 		return weddingPlace + number;
 	}
+	
+	public static boolean contains(String field) {
+		return (mainContains(field) ||
+				personContains(field));
+	}
+	
+	public static boolean mainContains(String field) {
+		return (field.equals(lastOpen) ||
+				field.equals(lastModification) ||
+				field.equals(numberOfPersons) ||
+				checkListField(commonSurname, field));
+	}
+	
+	public static boolean personContains(String field) {
+		return (field.equals(firstName) ||
+				field.equals(lastName) ||
+				field.equals(alias) ||
+				field.equals(sex) ||
+				field.equals(birthDate) ||
+				field.equals(birthPlace) ||
+				field.equals(deathDate) ||
+				field.equals(deathPlace) ||
+				field.equals(lifeStatus) ||
+				field.equals(baptismParish) ||
+				field.equals(burialPlace) ||
+				field.equals(contact) ||
+				field.equals(comments) ||
+				field.equals(father) ||
+				field.equals(mother) ||
+				field.equals(children) ||
+				field.equals(marriages) ||
+				checkListField(child, field) ||
+				checkListField(spouse, field) ||
+				checkListField(weddingDate, field) ||
+				checkListField(weddingPlace, field));
+	}
+	
+	private static boolean checkListField(String fieldName, String text) {
+		if (!text.startsWith(fieldName)) return false;
+		
+		String strNumber = text.substring(fieldName.length());
+		int number;
+		
+		try {
+			number = Integer.parseInt(strNumber);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
+		return (number > 0);
+	}
 }
