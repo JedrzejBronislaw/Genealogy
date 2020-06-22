@@ -79,9 +79,13 @@ public class VirtualPGLWriter {
 	}
 
 	private void saveMarriages(SectionDataWriter writer, Person person) {
-		writer.saveProperty(PGLFields.marriages, person.numberOfMarriages());
+		int numberOfMarriages = person.numberOfMarriages();
 
-		for(int i=0; i<person.numberOfMarriages(); i++) {
+		if (numberOfMarriages < 1) return;
+		
+		writer.saveProperty(PGLFields.marriages, numberOfMarriages);
+
+		for(int i=0; i<numberOfMarriages; i++) {
 			writer.saveProperty(PGLFields.spouse(i+1),       tree.getID(person.getSpouse(i)));
 			writer.saveProperty(PGLFields.weddingDate(i+1),  person.getMarriage(i).getDate());
 			writer.saveProperty(PGLFields.weddingPlace(i+1), person.getMarriage(i).getPlace());
@@ -89,9 +93,13 @@ public class VirtualPGLWriter {
 	}
 
 	private void saveChildren(SectionDataWriter writer, Person person) {
-		writer.saveProperty(PGLFields.children, person.numberOfChildren());
+		int numberOfChildren = person.numberOfChildren();
+		
+		if (numberOfChildren < 1) return;
+		
+		writer.saveProperty(PGLFields.children, numberOfChildren);
 
-		for(int i=0; i<person.numberOfChildren(); i++)
+		for(int i=0; i<numberOfChildren; i++)
 			writer.saveProperty(PGLFields.child(i+1), tree.getID(person.getChild(i)));
 	}
 }
