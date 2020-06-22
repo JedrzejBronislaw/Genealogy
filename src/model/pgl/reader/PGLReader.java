@@ -125,7 +125,8 @@ public class PGLReader {
 	}
 
 	private boolean isMainSection(INISection section) {
-		return section.getName().toUpperCase().equals(PGLFields.mainSectionName);
+		return section.getName().toUpperCase().equals(
+				PGLFields.mainSectionName.toUpperCase());
 	}
 
 	private boolean isSectionHeader(String line) {

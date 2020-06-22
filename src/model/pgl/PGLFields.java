@@ -7,7 +7,7 @@ public class PGLFields {
 	public static final SimpleDateFormat dataFormat = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
 	public static final String lineSeparator = "$";
 
-	public static final String mainSectionName = "MAIN";
+	public static final String mainSectionName = "Main";
 
 	public static final String lastOpen         = "ost_otw";
 	public static final String lastModification = "wersja";
