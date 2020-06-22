@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 
 public class PGLFields {
 
-	public static final SimpleDateFormat dataFormat = new SimpleDateFormat("hh:mm:ss yyyy-MM-dd");
+	public static final SimpleDateFormat dataFormat = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
 	public static final String lineSeparator = "$";
 
 	public static final String mainSectionName = "Main";
