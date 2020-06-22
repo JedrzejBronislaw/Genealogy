@@ -115,7 +115,7 @@ public class PGLDiffReport {
 		}
 		
 		if ((name.equals(PGLFields.children) || name.equals(PGLFields.marriages)) &&
-			(value.equals("0"))) {
+			(value.equals("0") || value.startsWith("-"))) {
 			return true;
 		}
 		
