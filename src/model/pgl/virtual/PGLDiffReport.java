@@ -16,11 +16,14 @@ public class PGLDiffReport {
 	@NonNull Differences diff;
 	private List<AdditionalKey> notEmptyAdditionalKeys = new ArrayList<>();
 	private List<AdditionalKey>    emptyAdditionalKeys = new ArrayList<>();
+	private List<OtherValue> similarOtherValues = new ArrayList<>();
+	private List<OtherValue>    realOtherValues = new ArrayList<>();
 
 	public PGLDiffReport(Differences diff) {
 		this.diff = diff;
 		
 		splitAdditionalKeyList();
+		splitOtherValueList();
 	}
 	
 	private void splitAdditionalKeyList() {
@@ -33,9 +36,28 @@ public class PGLDiffReport {
 				notEmptyAdditionalKeys.add(key);
 		}
 	}
+	
+	private void splitOtherValueList() {
+		for(int i=0; i<values().size(); i++) {
+			OtherValue value = values().get(i);
+			
+			if (equalValueFilter(value))
+				similarOtherValues.add(value);
+			else
+				realOtherValues.add(value);
+		}
+	}
 
 	private List<OtherValue> values() {
 		return diff.getOtherValues();
+	}
+
+	private List<OtherValue> otherValues() {
+		return realOtherValues;
+	}
+
+	private List<OtherValue> similarValues() {
+		return similarOtherValues;
 	}
 
 	private List<AdditionalKey> keys() {
@@ -91,11 +113,11 @@ public class PGLDiffReport {
 		return sb;
 	}
 
-	private StringBuffer valuesList() {
+	private StringBuffer otherValuesList() {
 		StringBuffer sb = new StringBuffer();
 		
-		for(int i=0; i<values().size(); i++)
-			sb.append((i+1) + ". " + toString(values().get(i)) + newLine);
+		for(int i=0; i<otherValues().size(); i++)
+			sb.append((i+1) + ". " + toString(otherValues().get(i)) + newLine);
 		
 		return sb;
 	}
@@ -127,6 +149,44 @@ public class PGLDiffReport {
 		}
 		return false;
 	}
+
+	private boolean equalValueFilter(OtherValue d) {
+		String section = d.getSection();
+		String key = d.getKeyName();
+		String value1 = diff.getPgl1().getValue(section, key);
+		String value2 = diff.getPgl2().getValue(section, key);
+
+		if ((key.equals(PGLFields.birthDate) || key.equals(PGLFields.deathDate) || key.startsWith(PGLFields.weddingDate)) &&
+			(compareDates(value1, value2)))
+			return true;
+		
+		return false;
+	}
+	
+	private boolean compareDates(String date1, String date2) {
+		String[] d1 = date1.split("[.]");
+		String[] d2 = date2.split("[.]");
+		
+		int len1 = d1.length;
+		int len2 = d2.length;
+		
+		if (len1 != len2) return false;
+		
+		for (int i=0; i<len1; i++)
+			if (!cutBeginZeros(d1[i]).equals(cutBeginZeros(d2[i])))
+				return false;
+		
+		return true;
+	}
+	
+	private String cutBeginZeros(String text) {
+		int zeros =  0;
+		
+		for (int i=0; i<text.length(); i++)
+			if (text.charAt(i) == '0') zeros++;
+		
+		return text.substring(zeros);
+	}
 	
 	
 	@Override
@@ -138,7 +198,8 @@ public class PGLDiffReport {
 		sb.append("sections: " + sections().size() + " ");
 		sb.append("keys: " + keys().size() + " ");
 		sb.append("[" + emptyKeys().size() + " empty] ");
-		sb.append("value: " + values().size());
+		sb.append("value: " + values().size() + " ");
+		sb.append("[" + similarValues().size() + " similar]");
 		sb.append(")");
 		sb.append(newLine);
 		
@@ -150,8 +211,8 @@ public class PGLDiffReport {
 		sb.append(nEmptyKeyList());
 		sb.append(newLine);
 		
-		sb.append("  Values:" + newLine);
-		sb.append(valuesList());
+		sb.append("  Real other values:" + newLine);
+		sb.append(otherValuesList());
 		sb.append(newLine + newLine);
 		
 		return sb.toString();
