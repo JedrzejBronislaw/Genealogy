@@ -6,38 +6,50 @@ import org.junit.Test;
 
 public class PGLFieldsTest_containsList {
 
+	private boolean check(String keyName, String sufix) {
+		return PGLFields.isListElement(PGLFields.child, PGLFields.child + sufix);
+	}
+	
 	@Test
-	public void test_positive() {
-		assertTrue(PGLFields.contains(PGLFields.child + "1"));
-		assertTrue(PGLFields.contains(PGLFields.child + "2"));
-		assertTrue(PGLFields.contains(PGLFields.child + "3"));
+	public void positive() {
+		assertTrue(check(PGLFields.child, "1"));
+		assertTrue(check(PGLFields.child, "2"));
+		assertTrue(check(PGLFields.child, "3"));
 		
-		assertTrue(PGLFields.contains(PGLFields.spouse + "3"));
-		assertTrue(PGLFields.contains(PGLFields.weddingDate + "3"));
-		assertTrue(PGLFields.contains(PGLFields.weddingPlace + "3"));
+		assertTrue(check(PGLFields.spouse, "3"));
+		assertTrue(check(PGLFields.weddingDate, "3"));
+		assertTrue(check(PGLFields.weddingPlace, "3"));
 	}
 	
 	@Test
-	public void test_nonPositive() {
-		assertFalse(PGLFields.contains(PGLFields.child + "0"));
-		assertFalse(PGLFields.contains(PGLFields.child + "-1"));
-		assertFalse(PGLFields.contains(PGLFields.child + "-2"));
+	public void nonPositive() {
+		assertFalse(check(PGLFields.child, "0"));
+		assertFalse(check(PGLFields.child, "-1"));
+		assertFalse(check(PGLFields.child, "-2"));
 		
-		assertFalse(PGLFields.contains(PGLFields.spouse + "0"));
-		assertFalse(PGLFields.contains(PGLFields.weddingDate + "-3"));
-		assertFalse(PGLFields.contains(PGLFields.weddingPlace + "-1"));
+		assertFalse(check(PGLFields.spouse, "0"));
+		assertFalse(check(PGLFields.weddingDate, "-3"));
+		assertFalse(check(PGLFields.weddingPlace, "-1"));
 	}
 	
 	@Test
-	public void test_noNumber() {
-		assertFalse(PGLFields.contains(PGLFields.child + ""));
+	public void noNumber() {
+		assertFalse(check(PGLFields.child, ""));
 	}
 	
 	@Test
-	public void test_nonNumeral() {
-		assertFalse(PGLFields.contains(PGLFields.child + "a"));
-		assertFalse(PGLFields.contains(PGLFields.spouse + "zero"));
-		assertFalse(PGLFields.contains(PGLFields.weddingPlace + " "));
+	public void nonNumeral() {
+		assertFalse(check(PGLFields.child, "a"));
+		assertFalse(check(PGLFields.spouse, "zero"));
+		assertFalse(check(PGLFields.weddingPlace, " "));
 	}
-
+	
+	@Test
+	public void wrongKeyName() {
+		int len = PGLFields.child.length();
+		String wrongName = PGLFields.child.substring(0, len-1) + "x";
+		
+		assertFalse(PGLFields.isListElement(PGLFields.child, wrongName + "1"));
+		assertFalse(PGLFields.contains(wrongName + "1"));
+	}
 }

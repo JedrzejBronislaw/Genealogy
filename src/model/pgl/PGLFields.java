@@ -69,7 +69,7 @@ public class PGLFields {
 		return (field.equals(lastOpen) ||
 				field.equals(lastModification) ||
 				field.equals(numberOfPersons) ||
-				checkListField(commonSurname, field));
+				isListElement(commonSurname, field));
 	}
 	
 	public static boolean personContains(String field) {
@@ -90,16 +90,16 @@ public class PGLFields {
 				field.equals(mother) ||
 				field.equals(children) ||
 				field.equals(marriages) ||
-				checkListField(child, field) ||
-				checkListField(spouse, field) ||
-				checkListField(weddingDate, field) ||
-				checkListField(weddingPlace, field));
+				isListElement(child, field) ||
+				isListElement(spouse, field) ||
+				isListElement(weddingDate, field) ||
+				isListElement(weddingPlace, field));
 	}
 	
-	private static boolean checkListField(String fieldName, String text) {
-		if (!text.startsWith(fieldName)) return false;
+	public static boolean isListElement(String listName, String field) {
+		if (!field.startsWith(listName)) return false;
 		
-		String strNumber = text.substring(fieldName.length());
+		String strNumber = field.substring(listName.length());
 		int number;
 		
 		try {
