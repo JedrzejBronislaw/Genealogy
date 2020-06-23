@@ -43,7 +43,18 @@ public class PGLFields {
 	public static final String weddingDate  = "malzdata";
 	public static final String weddingPlace = "malzmjsc";
 
-
+	
+	public static String[] fields = new String[] {
+			lastOpen, lastModification, numberOfPersons, commonSurname,
+			
+			firstName, lastName, alias, sex,
+			birthDate, birthPlace, deathDate, deathPlace, lifeStatus, baptismParish, burialPlace,
+			contact, comments,
+			father, mother, children, marriages,
+			child, spouse, weddingDate, weddingPlace
+			};
+	
+	
 	public static String spouse(int number) {
 		return spouse + number;
 	}
