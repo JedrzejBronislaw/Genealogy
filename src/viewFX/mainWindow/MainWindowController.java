@@ -18,7 +18,7 @@ import tools.Injection;
 
 public class MainWindowController implements Initializable {
 
-	public enum Views{ChooseFile, Tree, Card, Graph, EditPerson}
+	public enum Views{ChooseFile, OpenError, Tree, Card, Graph, EditPerson}
 	
 	@RequiredArgsConstructor
 	public static class ViewPane{
@@ -80,8 +80,13 @@ public class MainWindowController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		titleLabel.setOnMouseClicked(e -> {
-			if (currentView != null && currentView != Views.ChooseFile)
+			if (currentView != null &&
+				currentView != Views.ChooseFile &&
+				currentView != Views.OpenError)
 				showView(Views.Tree);
+			
+			if (currentView == Views.OpenError)
+				showView(Views.ChooseFile);
 		});
 	}
 }
