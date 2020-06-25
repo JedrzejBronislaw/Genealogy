@@ -3,6 +3,7 @@ package model.pgl.virtual;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
 import lombok.NonNull;
 import model.pgl.PGLFields;
 import model.pgl.virtual.Differences.AdditionalKey;
@@ -13,19 +14,30 @@ public class PGLDiffReport {
 	
 	public static final String newLine = System.lineSeparator();
 
+	public static final PGLDiffReport FILENOTFOUND = new PGLDiffReport(false);
+
 	@NonNull Differences diff;
 	private List<AdditionalKey> notEmptyAdditionalKeys = new ArrayList<>();
 	private List<AdditionalKey>    emptyAdditionalKeys = new ArrayList<>();
 	private List<OtherValue> similarOtherValues = new ArrayList<>();
 	private List<OtherValue>    realOtherValues = new ArrayList<>();
 	
+	@Getter
+	private boolean permissionToOpen = false;
+	
+	private PGLDiffReport(boolean permissionToOpen) {
+		this.diff = new Differences();
+		this.permissionToOpen = permissionToOpen;
+	}
+	
 	public PGLDiffReport(Differences diff) {
 		this.diff = diff;
 		
 		splitAdditionalKeyList();
 		splitOtherValueList();
+		setPermissionToOpen();
 	}
-	
+
 	private void splitAdditionalKeyList() {
 		for(int i=0; i<keys().size(); i++) {
 			AdditionalKey key = keys().get(i);
@@ -46,6 +58,13 @@ public class PGLDiffReport {
 			else
 				realOtherValues.add(value);
 		}
+	}
+	
+	private void setPermissionToOpen() {
+		permissionToOpen =
+				sections().size()    == 0 &&
+				nEmptyKeys().size()  == 0 &&
+				otherValues().size() == 0;
 	}
 
 	private List<OtherValue> values() {
