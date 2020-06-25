@@ -73,9 +73,10 @@ public class Main extends Application {
 		MainWindowBuilder mainWindowBuilder = new MainWindowBuilder();
 		mainWindowBuilder.setSession(session);
 		mainWindowBuilder.setLoadTree(treeFile -> {
-			Tree tree = loadTree(treeFile.getPath());
-			session.setTree(tree);
-			return tree != null;
+			TreeAndReport treeAndReport = loadTree(treeFile.getPath());
+			if (treeAndReport.getReport().isPermissionToOpen())
+				session.setTree(treeAndReport.getTree());
+			return treeAndReport.getReport();
 		});
 		mainWindowBuilder.setChangeLanguage(this::changeLanguage);
 		mainWindowBuilder.setFullScreenAction(this::setFullScreen);
@@ -94,20 +95,21 @@ public class Main extends Application {
 		stage.setFullScreen(fullscreen);
 	}
 	
-	private static Tree loadTree(String path)
+	private static TreeAndReport loadTree(String path)
 	{
 		Tree tree = new Tree();
+		PGLDiffReport report;
 		
 		try {
 			PGLReader file = new PGLReader(path);
-			PGLDiffReport analysis = file.loadAndAnalize(tree);
-			System.out.println(analysis);
+			report = file.loadAndAnalize(tree);
+			System.out.println(report);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found (" + path + ").");
-			return null;
+			return new TreeAndReport(null, PGLDiffReport.FILENOTFOUND);
 		}		
 		
-		return tree;
+		return new TreeAndReport(tree, report);
 	}
 	
 	private boolean saveTree() {

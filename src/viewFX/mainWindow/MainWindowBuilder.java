@@ -11,6 +11,7 @@ import lombok.Setter;
 import model.Person;
 import model.Tree;
 import model.TreeEditor;
+import model.pgl.virtual.PGLDiffReport;
 import session.Session;
 import settings.Settings;
 import tools.Injection;
@@ -28,6 +29,7 @@ import viewFX.mainWindow.MainWindowController.ViewPane;
 import viewFX.mainWindow.MainWindowController.Views;
 import viewFX.mainWindow.fullScreen.FullScreenPaneBuilder;
 import viewFX.mainWindow.language.LanguagePaneBuilder;
+import viewFX.openError.OpenErrorPaneBuilder;
 import viewFX.treeGraph.TreeGraphPaneBuilder;
 import viewFX.treeGraph.TreeGraphPaneController;
 import viewFX.treePane.TreePaneBuilder;
@@ -38,7 +40,7 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 	private Session session;
 
 	@Setter
-	private Function<File, Boolean> loadTree;
+	private Function<File, PGLDiffReport> loadTree;
 	@Setter
 	private Consumer<Languages> changeLanguage;
 	@Setter
@@ -73,7 +75,8 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		controller.addPane(Views.ChooseFile, generateFileChoosePane());
 		controller.addPane(Views.Tree, generateTreePane());
 		controller.addPane(Views.EditPerson, generateEditPersonPane());
-		
+		controller.addPane(Views.OpenError, generateOpenErrorPane());
+
 		controller.showView(Views.ChooseFile);
 	}
 
@@ -131,11 +134,12 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 			controller.showView(Views.Tree);
 		});
 		builder.setOpenFileAction(file -> {
-			if(loadTree != null && loadTree.apply(file)) {
+			if(loadTree != null && loadTree.apply(file).isPermissionToOpen()) {
 					controller.showView(Views.Tree);
 					settings.getRecentFiles().add(file);
 					settings.save();
-			}
+			} else
+				controller.showView(Views.OpenError);
 		});
 		builder.setLastOpenFiles(settings.getRecentFiles().copyList());
 		builder.build();
@@ -236,6 +240,13 @@ public class MainWindowBuilder extends PaneFXMLBuilder<MainWindowController> {
 		builder.setSession(session);
 		builder.build();
 		editPersonController = builder.getController();
+		
+		return new ViewPane(builder.getPane());
+	}
+	
+	private ViewPane generateOpenErrorPane() {
+		OpenErrorPaneBuilder builder = new OpenErrorPaneBuilder();
+		builder.build();
 		
 		return new ViewPane(builder.getPane());
 	}
