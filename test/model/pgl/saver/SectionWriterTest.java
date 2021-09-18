@@ -1,4 +1,4 @@
-package model.pgl.writer;
+package model.pgl.saver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -12,18 +12,18 @@ import org.junit.Test;
 import model.LifeStatus;
 import model.MyDate;
 import model.Sex;
+import model.pgl.Section;
+import model.pgl.saver.SectionWriter;
 import model.pgl.PGLFields;
-import model.pgl.virtual.INISection;
-import model.pgl.writer.SectionDataWriter;
 
-public class SectionDataWriterTest {
+public class SectionWriterTest {
 
-	private INISection section;
-	private SectionDataWriter writer;
+	private Section section;
+	private SectionWriter writer;
 	
 	private void prepare() {
-		section = new INISection("A");
-		writer = new SectionDataWriter(section);
+		section = new Section("A");
+		writer = new SectionWriter(section);
 	}
 	
 	@Test

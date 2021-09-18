@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 import lang.Internationalization;
 import lang.Languages;
 import model.Tree;
-import model.pgl.reader.PGLReader;
-import model.pgl.virtual.PGLDiffReport;
-import model.pgl.writer.PGLWriter;
+import model.pgl.comparator.PGLDiffReport;
+import model.pgl.loader.PGLLoader;
+import model.pgl.saver.TreeSaver;
 import session.Session;
 import viewFX.mainWindow.MainWindowBuilder;
 
@@ -101,7 +101,7 @@ public class Main extends Application {
 		PGLDiffReport report;
 		
 		try {
-			PGLReader file = new PGLReader(path);
+			PGLLoader file = new PGLLoader(path);
 			report = file.loadAndAnalize(tree);
 			System.out.println(report);
 		} catch (FileNotFoundException e) {
@@ -121,7 +121,7 @@ public class Main extends Application {
 		System.out.println("Save as");
 
 		Tree tree = session.getTree();
-		PGLWriter writer = new PGLWriter(file);
+		TreeSaver writer = new TreeSaver(file);
 
 		return writer.save(tree);
 	}

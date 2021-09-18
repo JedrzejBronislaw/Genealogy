@@ -1,4 +1,4 @@
-package model.pgl.virtual;
+package model.pgl.comparator;
 
 import java.util.List;
 import java.util.Set;
@@ -7,17 +7,18 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import model.pgl.virtual.Differences.AdditionalKey;
-import model.pgl.virtual.Differences.AdditionalSection;
-import model.pgl.virtual.Differences.OtherValue;
+import model.pgl.PGL;
+import model.pgl.comparator.PGLDiffContainer.AdditionalKey;
+import model.pgl.comparator.PGLDiffContainer.AdditionalSection;
+import model.pgl.comparator.PGLDiffContainer.OtherValue;
 
 @RequiredArgsConstructor
 public class PGLComparator {
 	
-	@NonNull private final VirtualPGL pgl1, pgl2;
-	@Getter  private Differences differences = new Differences();
+	@NonNull private final PGL pgl1, pgl2;
+	@Getter  private PGLDiffContainer differences = new PGLDiffContainer();
 	
-	public PGLComparator(@NonNull VirtualPGL pgl1, String pgl1Name, @NonNull VirtualPGL pgl2, String pgl2Name) {
+	public PGLComparator(@NonNull PGL pgl1, String pgl1Name, @NonNull PGL pgl2, String pgl2Name) {
 		this.pgl1 = pgl1;
 		this.pgl2 = pgl2;
 
@@ -28,7 +29,7 @@ public class PGLComparator {
 		differences.setPGLName(pgl2, pgl2Name);
 	}
 	
-	public Differences compare() {
+	public PGLDiffContainer compare() {
 		if (pgl1.equals(pgl2)) return differences.clear();
 
 		checkSections(pgl1, pgl2);
@@ -39,7 +40,7 @@ public class PGLComparator {
 	}
 	
 	
-	private List<String> sectionsNames(VirtualPGL pgl1) {
+	private List<String> sectionsNames(PGL pgl1) {
 
 		return pgl1.getSections().stream().
 				map(section -> section.getName()).
@@ -50,13 +51,13 @@ public class PGLComparator {
 		return sections.stream().anyMatch(sec -> sec.equals(name));
 	}
 
-	private boolean hasKey(VirtualPGL pgl, String section, String key) {
+	private boolean hasKey(PGL pgl, String section, String key) {
 		return pgl.getValue(section, key) != null;
 	}
 
 //-----
 
-	private void checkSections(VirtualPGL pgl1, VirtualPGL pgl2) {
+	private void checkSections(PGL pgl1, PGL pgl2) {
 		List<String> sections1 = sectionsNames(pgl1);
 		List<String> sections2 = sectionsNames(pgl2);
 
@@ -64,7 +65,7 @@ public class PGLComparator {
 		checkSections(sections2, sections1, pgl2);
 	}
 
-	private void checkSections(List<String> sections1, List<String> sections2, VirtualPGL pgl1) {
+	private void checkSections(List<String> sections1, List<String> sections2, PGL pgl1) {
 		
 		sections1.stream().
 			filter(section -> !hasSection(sections2, section)).
@@ -74,7 +75,7 @@ public class PGLComparator {
 
 //-----
 
-	private void checkKeys(VirtualPGL pgl1, VirtualPGL pgl2) {
+	private void checkKeys(PGL pgl1, PGL pgl2) {
 
 		List<String> sections1 = sectionsNames(pgl1);
 		List<String> sections2 = sectionsNames(pgl2);
@@ -87,7 +88,7 @@ public class PGLComparator {
 			});
 	}
 	
-	private void checkKeys(VirtualPGL pgl1, VirtualPGL pgl2, String section) {
+	private void checkKeys(PGL pgl1, PGL pgl2, String section) {
 
 		Set<String> keys1 = pgl1.get(section).get().getKeys().keySet();
 		Set<String> keys2 = pgl2.get(section).get().getKeys().keySet();
@@ -100,7 +101,7 @@ public class PGLComparator {
 
 //-----
 	
-	private void checkValues(VirtualPGL pgl1, VirtualPGL pgl2) {
+	private void checkValues(PGL pgl1, PGL pgl2) {
 
 		List<String> sections1 = sectionsNames(pgl1);
 		List<String> sections2 = sectionsNames(pgl2);
@@ -110,7 +111,7 @@ public class PGLComparator {
 			forEach(sec -> checkValues(pgl1, pgl2, sec));
 	}
 	
-	private void checkValues(VirtualPGL pgl1, VirtualPGL pgl2, String section) {
+	private void checkValues(PGL pgl1, PGL pgl2, String section) {
 
 		Set<String> keys1 = pgl1.get(section).get().getKeys().keySet();
 		
@@ -121,7 +122,7 @@ public class PGLComparator {
 			forEach(differences::add);
 	}
 
-	private boolean equalValue(VirtualPGL pgl1, VirtualPGL pgl2, String section, String key) {
+	private boolean equalValue(PGL pgl1, PGL pgl2, String section, String key) {
 		String key1Value = pgl1.getValue(section, key);
 		String key2Value = pgl2.getValue(section, key);
 		

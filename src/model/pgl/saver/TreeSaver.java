@@ -1,4 +1,4 @@
-package model.pgl.writer;
+package model.pgl.saver;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import model.Tree;
 
 @RequiredArgsConstructor
-public class PGLWriter {
+public class TreeSaver {
 	
 	@NonNull
 	private File file;
@@ -17,7 +17,7 @@ public class PGLWriter {
 		try {
 			if (tree == null) return false;
 			
-			new VirtualPGLtoFileWriter(file).save(new VirtualPGLWriter().write(tree));
+			new PGLSaver(file).save(new TreeToPGLMapper().map(tree));
 			
 		} catch (IOException e) {
 			e.printStackTrace();

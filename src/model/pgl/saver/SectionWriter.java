@@ -1,4 +1,4 @@
-package model.pgl.writer;
+package model.pgl.saver;
 
 import java.util.Date;
 
@@ -6,13 +6,13 @@ import lombok.RequiredArgsConstructor;
 import model.LifeStatus;
 import model.MyDate;
 import model.Sex;
+import model.pgl.Section;
 import model.pgl.PGLFields;
-import model.pgl.virtual.INISection;
 
 @RequiredArgsConstructor
-public class SectionDataWriter {
+public class SectionWriter {
 
-	private final INISection section;
+	private final Section section;
 
 	public void saveProperty(String name, String value) {
 		if (value == null || value.isEmpty()) return;

@@ -1,4 +1,4 @@
-package model.pgl.reader;
+package model.pgl.loader;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -11,7 +11,7 @@ import model.Sex;
 import model.Tree;
 import model.pgl.PGLFields;
 
-public class PGLReaderTest_SmallFamily {
+public class PGLLoaderTest_SmallFamily {
 	private static PGLFilePreparation preparation = new PGLFilePreparation("smallFamily");
 	private static String content = String.join("\n",
 			"[1]",

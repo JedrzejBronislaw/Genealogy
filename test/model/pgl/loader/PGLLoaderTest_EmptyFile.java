@@ -1,4 +1,4 @@
-package model.pgl.reader;
+package model.pgl.loader;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import model.Tree;
 
-public class PGLReaderTest_EmptyFile {
+public class PGLLoaderTest_EmptyFile {
 	
 	static PGLFilePreparation preparation = new PGLFilePreparation("emptyFile");
 	static String content = "";

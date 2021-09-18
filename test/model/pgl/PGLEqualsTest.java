@@ -1,25 +1,28 @@
-package model.pgl.virtual;
+package model.pgl;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class VirtualPGLEqualsTest {
+import model.pgl.Section;
+import model.pgl.PGL;
 
-	private VirtualPGL prepareExample() {
-		VirtualPGL example = new VirtualPGL();
+public class PGLEqualsTest {
 
-		INISection sectionA = example.newSection("A");
+	private PGL prepareExample() {
+		PGL example = new PGL();
+
+		Section sectionA = example.newSection("A");
 		sectionA.addKey("a", "1");
 		sectionA.addKey("b", "2");
 		sectionA.addKey("c", "3");
 
-		INISection sectionB = example.newSection("B");
+		Section sectionB = example.newSection("B");
 		sectionB.addKey("d", "4");
 		sectionB.addKey("e", "5");
 		sectionB.addKey("f", "6");
 
-		INISection sectionC = example.newSection("C");
+		Section sectionC = example.newSection("C");
 		sectionC.addKey("g", "7");
 		sectionC.addKey("h", "8");
 		sectionC.addKey("i", "9");
@@ -29,30 +32,30 @@ public class VirtualPGLEqualsTest {
 	
 	@Test
 	public void notEqualsNull() {
-		VirtualPGL pgl = prepareExample();
+		PGL pgl = prepareExample();
 		
 		assertFalse(pgl.equals(null));
 	}
 	
 	@Test
 	public void theSame() {
-		VirtualPGL pgl1 = prepareExample();
+		PGL pgl1 = prepareExample();
 		
 		assertEquals(pgl1, pgl1);
 	}
 	
 	@Test
 	public void twoEqual() {
-		VirtualPGL pgl1 = prepareExample();
-		VirtualPGL pgl2 = prepareExample();
+		PGL pgl1 = prepareExample();
+		PGL pgl2 = prepareExample();
 		
 		assertEquals(pgl1, pgl2);
 	}
 	
 	@Test
 	public void oneAdditionalSection() {
-		VirtualPGL pgl1 = prepareExample();
-		VirtualPGL pgl2 = prepareExample();
+		PGL pgl1 = prepareExample();
+		PGL pgl2 = prepareExample();
 		
 		pgl2.newSection("");
 		
@@ -62,8 +65,8 @@ public class VirtualPGLEqualsTest {
 	
 	@Test
 	public void oneDiffValue() {
-		VirtualPGL pgl1 = prepareExample();
-		VirtualPGL pgl2 = prepareExample();
+		PGL pgl1 = prepareExample();
+		PGL pgl2 = prepareExample();
 		
 		pgl2.get("A").get().addKey("a", "0");
 		
@@ -73,8 +76,8 @@ public class VirtualPGLEqualsTest {
 	
 	@Test
 	public void oneAdditionalKey() {
-		VirtualPGL pgl1 = prepareExample();
-		VirtualPGL pgl2 = prepareExample();
+		PGL pgl1 = prepareExample();
+		PGL pgl2 = prepareExample();
 		
 		pgl2.get("B").get().addKey("a", "0");
 		
@@ -84,8 +87,8 @@ public class VirtualPGLEqualsTest {
 	
 	@Test
 	public void twoValueChanges_noDiff() {
-		VirtualPGL pgl1 = prepareExample();
-		VirtualPGL pgl2 = prepareExample();
+		PGL pgl1 = prepareExample();
+		PGL pgl2 = prepareExample();
 		
 		pgl2.get("A").get().addKey("a", "0");
 		pgl2.get("A").get().addKey("a", "1");
@@ -96,8 +99,8 @@ public class VirtualPGLEqualsTest {
 	
 	@Test
 	public void oneAdditionalSectionWithExistingName() {
-		VirtualPGL pgl1 = prepareExample();
-		VirtualPGL pgl2 = prepareExample();
+		PGL pgl1 = prepareExample();
+		PGL pgl2 = prepareExample();
 		
 		pgl2.newSection("C");
 		
@@ -107,10 +110,10 @@ public class VirtualPGLEqualsTest {
 	
 	@Test
 	public void additionalSectionCopy() {
-		VirtualPGL pgl1 = prepareExample();
-		VirtualPGL pgl2 = prepareExample();
+		PGL pgl1 = prepareExample();
+		PGL pgl2 = prepareExample();
 		
-		INISection sectionC = pgl2.newSection("C");
+		Section sectionC = pgl2.newSection("C");
 		sectionC.addKey("g", "7");
 		sectionC.addKey("h", "8");
 		sectionC.addKey("i", "9");

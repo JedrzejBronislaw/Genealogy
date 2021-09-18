@@ -1,30 +1,34 @@
-package model.pgl.virtual;
+package model.pgl.comparator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
-import model.pgl.virtual.Differences.AdditionalKey;
-import model.pgl.virtual.Differences.AdditionalSection;
-import model.pgl.virtual.Differences.OtherValue;
+import model.pgl.Section;
+import model.pgl.PGL;
+import model.pgl.comparator.PGLDiffContainer;
+import model.pgl.comparator.PGLComparator;
+import model.pgl.comparator.PGLDiffContainer.AdditionalKey;
+import model.pgl.comparator.PGLDiffContainer.AdditionalSection;
+import model.pgl.comparator.PGLDiffContainer.OtherValue;
 
-public class VirtualPGLDiffTest {
+public class PGLComparatorTest {
 
-	private VirtualPGL preparePGLExample() {
-		VirtualPGL example = new VirtualPGL();
+	private PGL preparePGLExample() {
+		PGL example = new PGL();
 
-		INISection sectionA = example.newSection("A");
+		Section sectionA = example.newSection("A");
 		sectionA.addKey("a", "1");
 		sectionA.addKey("b", "2");
 		sectionA.addKey("c", "3");
 
-		INISection sectionB = example.newSection("B");
+		Section sectionB = example.newSection("B");
 		sectionB.addKey("d", "4");
 		sectionB.addKey("e", "5");
 		sectionB.addKey("f", "6");
 
-		INISection sectionC = example.newSection("C");
+		Section sectionC = example.newSection("C");
 		sectionC.addKey("g", "7");
 		sectionC.addKey("h", "8");
 		sectionC.addKey("i", "9");
@@ -32,15 +36,15 @@ public class VirtualPGLDiffTest {
 		return example;
 	}
 	
-	private Differences prepareDiffExample() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+	private PGLDiffContainer prepareDiffExample() {
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
 		PGLComparator diff = new PGLComparator(pgl1, pgl2);
 		return diff.compare();
 	}
 
-	private void chceckSizes(Differences diff, int allDifferences, int otherValues, int additionalKeys, int additionalSections) {
+	private void chceckSizes(PGLDiffContainer diff, int allDifferences, int otherValues, int additionalKeys, int additionalSections) {
 		assertEquals(allDifferences,     diff.size());
 		assertEquals(otherValues,        diff.getOtherValues().size());
 		assertEquals(additionalKeys,     diff.getAdditionalKeys().size());
@@ -56,12 +60,12 @@ public class VirtualPGLDiffTest {
 	
 	@Test(expected = UnsupportedOperationException.class)
 	public void unmodifiableList_AdditionalKeys() {
-		prepareDiffExample().getAdditionalKeys().add(new AdditionalKey(new VirtualPGL(), "", ""));
+		prepareDiffExample().getAdditionalKeys().add(new AdditionalKey(new PGL(), "", ""));
 	}
 	
 	@Test(expected = UnsupportedOperationException.class)
 	public void unmodifiableList_AdditionalSections() {
-		prepareDiffExample().getAdditionalSections().add(new AdditionalSection(new VirtualPGL(), ""));
+		prepareDiffExample().getAdditionalSections().add(new AdditionalSection(new PGL(), ""));
 	}
 	
 //-----null PGL
@@ -82,8 +86,8 @@ public class VirtualPGLDiffTest {
 
 	@Test
 	public void theSame() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
 		PGLComparator diff = new PGLComparator(pgl1, pgl2);
 
@@ -92,7 +96,7 @@ public class VirtualPGLDiffTest {
 
 //-----OtherValue
 
-	private Differences changeValueOfKeyAinSectionAinSecondPGL(VirtualPGL pgl1, VirtualPGL pgl2) {
+	private PGLDiffContainer changeValueOfKeyAinSectionAinSecondPGL(PGL pgl1, PGL pgl2) {
 		pgl2.get("A").get().addKey("a", "0");
 		
 		return new PGLComparator(pgl1, pgl2).compare();
@@ -100,10 +104,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void otherValue() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = changeValueOfKeyAinSectionAinSecondPGL(pgl1, pgl2);
+		PGLDiffContainer diff = changeValueOfKeyAinSectionAinSecondPGL(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 1, 0, 0);
 		assertEquals(new OtherValue("A", "a"), diff.getOtherValues().get(0));
@@ -111,10 +115,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void otherValue_otherPGL() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = changeValueOfKeyAinSectionAinSecondPGL(pgl2, pgl1);
+		PGLDiffContainer diff = changeValueOfKeyAinSectionAinSecondPGL(pgl2, pgl1);
 
 		chceckSizes(diff, 1, 1, 0, 0);
 		assertEquals(new OtherValue("A", "a"), diff.getOtherValues().get(0));
@@ -122,10 +126,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void otherValue_wrongSection() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = changeValueOfKeyAinSectionAinSecondPGL(pgl1, pgl2);
+		PGLDiffContainer diff = changeValueOfKeyAinSectionAinSecondPGL(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 1, 0, 0);
 		assertNotEquals(new OtherValue("Z", "a"), diff.getOtherValues().get(0));
@@ -133,10 +137,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void otherValue_wrongKey() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = changeValueOfKeyAinSectionAinSecondPGL(pgl1, pgl2);
+		PGLDiffContainer diff = changeValueOfKeyAinSectionAinSecondPGL(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 1, 0, 0);
 		assertNotEquals(new OtherValue("A", "z"), diff.getOtherValues().get(0));
@@ -144,7 +148,7 @@ public class VirtualPGLDiffTest {
 
 //-----AdditionalKey
 
-	private Differences addKeyZtoSectionAinSecondPGL(VirtualPGL pgl1, VirtualPGL pgl2) {
+	private PGLDiffContainer addKeyZtoSectionAinSecondPGL(PGL pgl1, PGL pgl2) {
 		pgl2.get("A").get().addKey("z", "0");
 		
 		return new PGLComparator(pgl1, pgl2).compare();
@@ -152,10 +156,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalKey() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = addKeyZtoSectionAinSecondPGL(pgl1, pgl2);
+		PGLDiffContainer diff = addKeyZtoSectionAinSecondPGL(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 0, 1, 0);
 		assertEquals(new AdditionalKey(pgl2, "A", "z"), diff.getAdditionalKeys().get(0));
@@ -163,10 +167,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalKey_otherPGL() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = addKeyZtoSectionAinSecondPGL(pgl2, pgl1);
+		PGLDiffContainer diff = addKeyZtoSectionAinSecondPGL(pgl2, pgl1);
 
 		chceckSizes(diff, 1, 0, 1, 0);
 		assertEquals(new AdditionalKey(pgl1, "A", "z"), diff.getAdditionalKeys().get(0));
@@ -174,10 +178,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalKey_wrongPGL() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = addKeyZtoSectionAinSecondPGL(pgl1, pgl2);
+		PGLDiffContainer diff = addKeyZtoSectionAinSecondPGL(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 0, 1, 0);
 		assertNotEquals(new AdditionalKey(pgl1, "A", "z"), diff.getAdditionalKeys().get(0));
@@ -185,10 +189,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalKey_wrongSection() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = addKeyZtoSectionAinSecondPGL(pgl1, pgl2);
+		PGLDiffContainer diff = addKeyZtoSectionAinSecondPGL(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 0, 1, 0);
 		assertNotEquals(new AdditionalKey(pgl2, "Z", "z"), diff.getAdditionalKeys().get(0));
@@ -196,10 +200,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalKey_wrongKey() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = addKeyZtoSectionAinSecondPGL(pgl1, pgl2);
+		PGLDiffContainer diff = addKeyZtoSectionAinSecondPGL(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 0, 1, 0);
 		assertNotEquals(new AdditionalKey(pgl2, "A", "x"), diff.getAdditionalKeys().get(0));
@@ -207,7 +211,7 @@ public class VirtualPGLDiffTest {
 
 //-----AdditionalSection
 
-	private Differences addSectionDtoPGL2(VirtualPGL pgl1, VirtualPGL pgl2) {
+	private PGLDiffContainer addSectionDtoPGL2(PGL pgl1, PGL pgl2) {
 		pgl2.newSection("D");
 
 		return new PGLComparator(pgl1, pgl2).compare();
@@ -215,10 +219,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalSection() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = addSectionDtoPGL2(pgl1, pgl2);
+		PGLDiffContainer diff = addSectionDtoPGL2(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 0, 0, 1);
 		assertEquals(new AdditionalSection(pgl2, "D"), diff.getAdditionalSections().get(0));
@@ -226,10 +230,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalSection_otherPGL() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = addSectionDtoPGL2(pgl2, pgl1);
+		PGLDiffContainer diff = addSectionDtoPGL2(pgl2, pgl1);
 
 		chceckSizes(diff, 1, 0, 0, 1);
 		assertEquals(new AdditionalSection(pgl1, "D"), diff.getAdditionalSections().get(0));
@@ -237,10 +241,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalSection_wrongPGL() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = addSectionDtoPGL2(pgl1, pgl2);
+		PGLDiffContainer diff = addSectionDtoPGL2(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 0, 0, 1);
 		assertNotEquals(new AdditionalSection(pgl1, "D"), diff.getAdditionalSections().get(0));
@@ -248,10 +252,10 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalSection_wrongSection() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
-		Differences diff = addSectionDtoPGL2(pgl1, pgl2);
+		PGLDiffContainer diff = addSectionDtoPGL2(pgl1, pgl2);
 
 		chceckSizes(diff, 1, 0, 0, 1);
 		assertNotEquals(new AdditionalSection(pgl2, "E"), diff.getAdditionalSections().get(0));
@@ -261,14 +265,14 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void all3Diff() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
 		pgl2.newSection("D");
 		pgl2.get("A").get().addKey("z", "0");
 		pgl2.get("A").get().addKey("a", "0");
 
-		Differences diff = new PGLComparator(pgl1, pgl2).compare();
+		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
 		chceckSizes(diff, 3, 1, 1, 1);
 		assertEquals(new AdditionalSection(pgl2, "D"), diff.getAdditionalSections().get(0));
@@ -280,13 +284,13 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void additionalKeyInAdditionalSection() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
 		pgl2.newSection("D");
 		pgl2.get("D").get().addKey("d", "0");
 
-		Differences diff = new PGLComparator(pgl1, pgl2).compare();
+		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
 		chceckSizes(diff, 1, 0, 0, 1);
 		assertEquals(new AdditionalSection(pgl2, "D"), diff.getAdditionalSections().get(0));
@@ -294,14 +298,14 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void threeAdditionalSection() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 
 		pgl2.newSection("D");
 		pgl2.newSection("E");
 		pgl2.newSection("F");
 
-		Differences diff = new PGLComparator(pgl1, pgl2).compare();
+		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
 		chceckSizes(diff, 3, 0, 0, 3);
 		assertEquals(new AdditionalSection(pgl2, "D"), diff.getAdditionalSections().get(0));
@@ -311,14 +315,14 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void threeAdditionalKeys() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
 		pgl2.get("A").get().addKey("d", "0");
 		pgl2.get("A").get().addKey("e", "0");
 		pgl2.get("A").get().addKey("f", "0");
 
-		Differences diff = new PGLComparator(pgl1, pgl2).compare();
+		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
 		chceckSizes(diff, 3, 0, 3, 0);
 		assertEquals(new AdditionalKey(pgl2, "A", "d"), diff.getAdditionalKeys().get(0));
@@ -328,14 +332,14 @@ public class VirtualPGLDiffTest {
 	
 	@Test
 	public void threeOtherValues() {
-		VirtualPGL pgl1 = preparePGLExample();
-		VirtualPGL pgl2 = preparePGLExample();
+		PGL pgl1 = preparePGLExample();
+		PGL pgl2 = preparePGLExample();
 		
 		pgl2.get("B").get().addKey("d", "0");
 		pgl2.get("B").get().addKey("e", "0");
 		pgl2.get("B").get().addKey("f", "0");
 
-		Differences diff = new PGLComparator(pgl1, pgl2).compare();
+		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
 		chceckSizes(diff, 3, 3, 0, 0);
 		assertEquals(new OtherValue("B", "d"), diff.getOtherValues().get(0));

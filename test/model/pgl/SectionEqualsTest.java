@@ -1,13 +1,15 @@
-package model.pgl.virtual;
+package model.pgl;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class INISectionEqualsTest {
+import model.pgl.Section;
 
-	private INISection prepareExampleSection() {
-		INISection section = new INISection("section");
+public class SectionEqualsTest {
+
+	private Section prepareExampleSection() {
+		Section section = new Section("section");
 		
 		section.addKey("a", "1");
 		section.addKey("b", "2");
@@ -22,46 +24,46 @@ public class INISectionEqualsTest {
 
 	@Test
 	public void nullSections() {
-		INISection section = new INISection("A");
+		Section section = new Section("A");
 		
 		assertFalse(section.equals(null));
 	}
 
 	@Test
 	public void theSameSections() {
-		INISection section = new INISection("A");
+		Section section = new Section("A");
 		
 		assertEquals(section, section);
 	}
 	
 	@Test
 	public void twoEmptySections() {
-		INISection section1 = new INISection("A");
-		INISection section2 = new INISection("A");
+		Section section1 = new Section("A");
+		Section section2 = new Section("A");
 		
 		assertEquals(section1, section2);
 	}
 	
 	@Test
 	public void twoEmptySections_diffName() {
-		INISection section1 = new INISection("A");
-		INISection section2 = new INISection("B");
+		Section section1 = new Section("A");
+		Section section2 = new Section("B");
 		
 		assertNotEquals(section1, section2);
 	}
 	
 	@Test
 	public void twoEqualSections() {
-		INISection section1 = prepareExampleSection();
-		INISection section2 = prepareExampleSection();
+		Section section1 = prepareExampleSection();
+		Section section2 = prepareExampleSection();
 		
 		assertEquals(section1, section2);
 	}
 	
 	@Test
 	public void oneDiffValue() {
-		INISection section1 = prepareExampleSection();
-		INISection section2 = prepareExampleSection();
+		Section section1 = prepareExampleSection();
+		Section section2 = prepareExampleSection();
 		
 		section2.addKey("a", "0");
 		
@@ -70,8 +72,8 @@ public class INISectionEqualsTest {
 	
 	@Test
 	public void oneAdditionalKey() {
-		INISection section1 = prepareExampleSection();
-		INISection section2 = prepareExampleSection();
+		Section section1 = prepareExampleSection();
+		Section section2 = prepareExampleSection();
 		
 		section2.addKey("h", "8");
 		
@@ -81,8 +83,8 @@ public class INISectionEqualsTest {
 	
 	@Test
 	public void twoValueChanges_noDiff() {
-		INISection section1 = prepareExampleSection();
-		INISection section2 = prepareExampleSection();
+		Section section1 = prepareExampleSection();
+		Section section2 = prepareExampleSection();
 		
 		section2.addKey("a", "0");
 		section2.addKey("a", "1");

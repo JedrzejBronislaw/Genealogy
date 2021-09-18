@@ -1,4 +1,4 @@
-package model.pgl.reader;
+package model.pgl.loader;
 
 import java.util.List;
 

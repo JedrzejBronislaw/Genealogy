@@ -1,4 +1,4 @@
-package model.pgl.writer;
+package model.pgl.saver;
 
 import java.util.stream.Stream;
 
@@ -6,18 +6,18 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import model.Person;
 import model.Tree;
+import model.pgl.Section;
 import model.pgl.PGLFields;
-import model.pgl.virtual.INISection;
-import model.pgl.virtual.VirtualPGL;
+import model.pgl.PGL;
 
 @RequiredArgsConstructor
-public class VirtualPGLWriter {
+public class TreeToPGLMapper {
 
 	private Tree tree;
-	private VirtualPGL pgl;
+	private PGL pgl;
 
-	public VirtualPGL write(@NonNull Tree tree) {
-		pgl = new VirtualPGL();
+	public PGL map(@NonNull Tree tree) {
+		pgl = new PGL();
 		this.tree = tree;
 		
 		writeMainSection(tree, pgl.newSection(PGLFields.mainSectionName));
@@ -26,8 +26,8 @@ public class VirtualPGLWriter {
 		return pgl;
 	}
 
-	private void writeMainSection(Tree tree, INISection mainSection) {
-		SectionDataWriter writer = new SectionDataWriter(mainSection);
+	private void writeMainSection(Tree tree, Section mainSection) {
+		SectionWriter writer = new SectionWriter(mainSection);
 		
 		writer.saveProperty(PGLFields.lastOpen,         tree.getLastOpen());
 		writer.saveProperty(PGLFields.lastModification, tree.getLastModification());
@@ -40,7 +40,7 @@ public class VirtualPGLWriter {
 
 	private boolean writePerson(String id) {
 		Person person = tree.getPerson(id);
-		SectionDataWriter writer = new SectionDataWriter(pgl.newSection(id));
+		SectionWriter writer = new SectionWriter(pgl.newSection(id));
 		
 		writer.saveProperty(PGLFields.firstName, person.getFirstName());
 		writer.saveProperty(PGLFields.lastName,  person.getLastName());
@@ -70,7 +70,7 @@ public class VirtualPGLWriter {
 
 
 
-	private void saveProperty(SectionDataWriter writer, String name, Person value) {
+	private void saveProperty(SectionWriter writer, String name, Person value) {
 		if (value == null) return;
 		String id = tree.getID(value);
 		if (id == null) return;
@@ -78,7 +78,7 @@ public class VirtualPGLWriter {
 		writer.saveProperty(name, id);
 	}
 
-	private void saveMarriages(SectionDataWriter writer, Person person) {
+	private void saveMarriages(SectionWriter writer, Person person) {
 		int numberOfMarriages = person.numberOfMarriages();
 
 		if (numberOfMarriages < 1) return;
@@ -92,7 +92,7 @@ public class VirtualPGLWriter {
 		}
 	}
 
-	private void saveChildren(SectionDataWriter writer, Person person) {
+	private void saveChildren(SectionWriter writer, Person person) {
 		int numberOfChildren = person.numberOfChildren();
 		
 		if (numberOfChildren < 1) return;

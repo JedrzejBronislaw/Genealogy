@@ -1,4 +1,4 @@
-package model.pgl.virtual;
+package model.pgl.comparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,8 +13,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import model.pgl.PGL;
 
-public class Differences {
+public class PGLDiffContainer {
 	
 	@EqualsAndHashCode
 	@ToString
@@ -30,7 +31,7 @@ public class Differences {
 	@Getter
 	@AllArgsConstructor
 	public static class AdditionalKey {
-		private VirtualPGL pgl;
+		private PGL pgl;
 		private String section;
 		private String keyName;
 	}
@@ -40,25 +41,25 @@ public class Differences {
 	@Getter
 	@AllArgsConstructor
 	public static class AdditionalSection {
-		private VirtualPGL pgl;
+		private PGL pgl;
 		private String section;
 	}
 
 	@Getter
 	@Setter(value = AccessLevel.PACKAGE)
-	private VirtualPGL pgl1, pgl2;
+	private PGL pgl1, pgl2;
 	
 	private List<OtherValue> otherValues               = new ArrayList<>();
 	private List<AdditionalKey> additionalKeys         = new ArrayList<>();
 	private List<AdditionalSection> additionalSections = new ArrayList<>();
 	
 
-	private Map<VirtualPGL, String> pglNames = new HashMap<>(2);
+	private Map<PGL, String> pglNames = new HashMap<>(2);
 	
-	public void setPGLName(@NonNull VirtualPGL pgl, String pglName) {
+	public void setPGLName(@NonNull PGL pgl, String pglName) {
 		pglNames.put(pgl, pglName);
 	}
-	public String getPGLName(VirtualPGL pgl) {
+	public String getPGLName(PGL pgl) {
 		String name = pglNames.get(pgl);
 		return name != null ? name : "";
 	}
@@ -91,7 +92,7 @@ public class Differences {
 		       additionalSections.size();
 	}
 	
-	public Differences clear() {
+	public PGLDiffContainer clear() {
 		otherValues.clear();
 		additionalKeys.clear();
 		additionalSections.clear();

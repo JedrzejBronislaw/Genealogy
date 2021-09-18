@@ -1,4 +1,4 @@
-package model.pgl.reader;
+package model.pgl.loader;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -19,16 +19,16 @@ import model.MyDate;
 import model.Person;
 import model.Sex;
 import model.Tree;
+import model.pgl.Section;
 import model.pgl.PGLFields;
-import model.pgl.reader.Relation.Type;
-import model.pgl.virtual.INISection;
-import model.pgl.virtual.PGLDiffReport;
-import model.pgl.virtual.VirtualPGL;
-import model.pgl.virtual.PGLComparator;
-import model.pgl.writer.VirtualPGLWriter;
+import model.pgl.PGL;
+import model.pgl.comparator.PGLComparator;
+import model.pgl.comparator.PGLDiffReport;
+import model.pgl.loader.Relation.Type;
+import model.pgl.saver.TreeToPGLMapper;
 import tools.Tools;
 
-public class PGLReader {
+public class PGLLoader {
 
 	@AllArgsConstructor
 	class IndexedString {
@@ -40,7 +40,7 @@ public class PGLReader {
 	private BufferedReader brFile;
     
 	
-	public PGLReader(String path) throws FileNotFoundException {
+	public PGLLoader(String path) throws FileNotFoundException {
 		openFile(path);
 	}
 	
@@ -72,43 +72,43 @@ public class PGLReader {
 	public PGLDiffReport loadAndAnalize(Tree tree)
 	{
 		try{
-			VirtualPGL virtualPGL = loadFromFile(tree);
-			return analize(tree, virtualPGL);
+			PGL pgl = loadFromFile(tree);
+			return analize(tree, pgl);
 		} catch (IOException e) {
 			return null;
 		}
 	}
 	
-	private VirtualPGL loadFromFile(Tree tree) throws IOException
+	private PGL loadFromFile(Tree tree) throws IOException
 	{
 		String line;
-		INISection section = null;
+		Section section = null;
 		List<Relation> relations = new ArrayList<Relation>();
-		VirtualPGL virtualPGL = new VirtualPGL();
+		PGL pgl = new PGL();
 		
 		while ((line = brFile.readLine()) != null) {
 			line = line.trim();
 			
 			if (isSectionHeader(line))
-				section = virtualPGL.newSection(sectionName(line));
+				section = pgl.newSection(sectionName(line));
 			else
 				addValue(line, section);
 		}
 		
-		loadToTree(tree, virtualPGL, relations);
+		loadToTree(tree, pgl, relations);
 		relations.forEach(relation -> relation.applyFor(tree));
 
-		return virtualPGL;
+		return pgl;
 	}
 
-	private PGLDiffReport analize(Tree tree, VirtualPGL virtualPGL) {
+	private PGLDiffReport analize(Tree tree, PGL pgl) {
 		return new PGLDiffReport(new PGLComparator(
-				virtualPGL, "file",
-				new VirtualPGLWriter().write(tree), "loaded")
+				pgl, "file",
+				new TreeToPGLMapper().map(tree), "loaded")
 				.compare());
 	}
 
-	private void addValue(String line, INISection section) {
+	private void addValue(String line, Section section) {
 		if (section == null) return;
 		
 		String[] keyValue = line.split("=", 2);
@@ -124,7 +124,7 @@ public class PGLReader {
 			return null;
 	}
 
-	private boolean isMainSection(INISection section) {
+	private boolean isMainSection(Section section) {
 		return section.getName().toUpperCase().equals(
 				PGLFields.mainSectionName.toUpperCase());
 	}
@@ -134,7 +134,7 @@ public class PGLReader {
 			&& line.endsWith("]");
 	}
 
-	private void loadMetadataToTree(Tree tree, INISection section) {
+	private void loadMetadataToTree(Tree tree, Section section) {
 		section.value(PGLFields.lastOpen)        .flatMap(this::loadDate).ifPresent(tree::setLastOpen);
 		section.value(PGLFields.lastModification).flatMap(this::loadDate).ifPresent(tree::setLastModification);
 		section.value(PGLFields.numberOfPersons) .flatMap(this::strToInt).ifPresent(tree::setNumberOfPersons);
@@ -164,17 +164,17 @@ public class PGLReader {
 		return Optional.ofNullable(date);
 	}
 	
-	private void loadToTree(Tree tree, VirtualPGL virtualPGL, List<Relation> relations) {
-		virtualPGL.get(PGLFields.mainSectionName).ifPresent(mainSection ->
+	private void loadToTree(Tree tree, PGL pgl, List<Relation> relations) {
+		pgl.get(PGLFields.mainSectionName).ifPresent(mainSection ->
 			loadMetadataToTree(tree, mainSection)
 		);
 		
-		virtualPGL.forEachSection(section ->
+		pgl.forEachSection(section ->
 			loadDataToTree(tree, section, relations)
 		);
 	}
 	
-	private void loadDataToTree(Tree tree, INISection section, List<Relation> relations) {
+	private void loadDataToTree(Tree tree, Section section, List<Relation> relations) {
 		if (isMainSection(section)) return;
 		
 		Person person = new Person();
@@ -214,7 +214,7 @@ public class PGLReader {
 		return test.replace(PGLFields.lineSeparator, System.lineSeparator());
 	}
 	
-	private List<IndexedString> multiVal(INISection section, String key, int size) {
+	private List<IndexedString> multiVal(Section section, String key, int size) {
 		String value;
 		List<IndexedString> list = new ArrayList<>();
 		

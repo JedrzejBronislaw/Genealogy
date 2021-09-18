@@ -1,4 +1,4 @@
-package model.pgl.virtual;
+package model.pgl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,34 +6,34 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class VirtualPGL {
+public class PGL {
 
-	private List<INISection> sections = new ArrayList<>();
+	private List<Section> sections = new ArrayList<>();
 	
-	List<INISection> getSections() {
+	public List<Section> getSections() {
 		return Collections.unmodifiableList(sections);
 	}
 	
-	public INISection newSection(String name) {
-		INISection section = new INISection(name);
+	public Section newSection(String name) {
+		Section section = new Section(name);
 		sections.add(section);
 		return section;
 	}
 	
-	public Optional<INISection> get(String name) {
+	public Optional<Section> get(String name) {
 		return sections.stream().
 				filter(section -> section.getName().toUpperCase().equals(name.toUpperCase())).
 				findFirst();
 	}
 	
 	public String getValue(String sectionName, String keyName) {
-		Optional<INISection> section = get(sectionName);
+		Optional<Section> section = get(sectionName);
 		if (section.isEmpty()) return null;
 		
 		return section.get().getValue(keyName);
 	}
 	
-	public void forEachSection(Consumer<INISection> action) {
+	public void forEachSection(Consumer<Section> action) {
 		sections.forEach(action);
 	}
 	
@@ -44,9 +44,9 @@ public class VirtualPGL {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;
-		if (!(obj instanceof VirtualPGL)) return false;
+		if (!(obj instanceof PGL)) return false;
 		
-		VirtualPGL pgl = (VirtualPGL) obj;
+		PGL pgl = (PGL) obj;
 		
 		return sections.equals(pgl.sections);
 	}

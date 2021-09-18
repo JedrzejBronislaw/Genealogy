@@ -1,4 +1,4 @@
-package model.pgl.writer;
+package model.pgl.saver;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -6,11 +6,11 @@ import java.io.IOException;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import model.pgl.virtual.INISection;
-import model.pgl.virtual.VirtualPGL;
+import model.pgl.Section;
+import model.pgl.PGL;
 
 @RequiredArgsConstructor
-public class VirtualPGLtoFileWriter {
+public class PGLSaver {
 	
 	@NonNull
 	private File file;
@@ -18,7 +18,7 @@ public class VirtualPGLtoFileWriter {
 	
 	private IOException error = null;
 	
-	public boolean save(VirtualPGL pgl) throws IOException {
+	public boolean save(PGL pgl) throws IOException {
 		writer = new FileWriter(file);
 		
 		pgl.forEachSection(this::saveSection);
@@ -29,7 +29,7 @@ public class VirtualPGLtoFileWriter {
 		return true;
 	}
 	
-	private void saveSection(INISection section) {
+	private void saveSection(Section section) {
 		writeSectionName(section.getName());
 		section.forEachKey(this::saveProperty);
 	}

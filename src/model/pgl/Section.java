@@ -1,4 +1,4 @@
-package model.pgl.virtual;
+package model.pgl;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,17 +8,17 @@ import java.util.function.BiConsumer;
 
 import lombok.Getter;
 
-public class INISection {
+public class Section {
 	
 	@Getter private String name;
 	
 	private Map<String, String> keys = new HashMap<String, String>();
 	
-	Map<String, String> getKeys() {
+	public Map<String, String> getKeys() {
 		return Collections.unmodifiableMap(keys);
 	}
 	
-	public INISection(String name) {
+	public Section(String name) {
 		this.name = name;
 	}
 	
@@ -37,9 +37,9 @@ public class INISection {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;
-		if (!(obj instanceof INISection)) return false;
+		if (!(obj instanceof Section)) return false;
 		
-		INISection section = (INISection) obj;
+		Section section = (Section) obj;
 		
 		return name.equals(section.name) &&
 		       keys.equals(section.keys);

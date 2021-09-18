@@ -11,7 +11,7 @@ import lombok.Setter;
 import model.Person;
 import model.Tree;
 import model.TreeEditor;
-import model.pgl.virtual.PGLDiffReport;
+import model.pgl.comparator.PGLDiffReport;
 import session.Session;
 import settings.Settings;
 import tools.Injection;

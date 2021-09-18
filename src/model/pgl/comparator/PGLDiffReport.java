@@ -1,4 +1,4 @@
-package model.pgl.virtual;
+package model.pgl.comparator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import model.pgl.PGLFields;
-import model.pgl.virtual.Differences.AdditionalKey;
-import model.pgl.virtual.Differences.AdditionalSection;
-import model.pgl.virtual.Differences.OtherValue;
+import model.pgl.comparator.PGLDiffContainer.AdditionalKey;
+import model.pgl.comparator.PGLDiffContainer.AdditionalSection;
+import model.pgl.comparator.PGLDiffContainer.OtherValue;
 
 public class PGLDiffReport {
 	
@@ -16,7 +16,7 @@ public class PGLDiffReport {
 
 	public static final PGLDiffReport FILENOTFOUND = new PGLDiffReport(false);
 
-	@NonNull Differences diff;
+	@NonNull PGLDiffContainer diff;
 	private List<AdditionalKey> notEmptyAdditionalKeys = new ArrayList<>();
 	private List<AdditionalKey>    emptyAdditionalKeys = new ArrayList<>();
 	private List<OtherValue> similarOtherValues = new ArrayList<>();
@@ -26,11 +26,11 @@ public class PGLDiffReport {
 	private boolean permissionToOpen = false;
 	
 	private PGLDiffReport(boolean permissionToOpen) {
-		this.diff = new Differences();
+		this.diff = new PGLDiffContainer();
 		this.permissionToOpen = permissionToOpen;
 	}
 	
-	public PGLDiffReport(Differences diff) {
+	public PGLDiffReport(PGLDiffContainer diff) {
 		this.diff = diff;
 		
 		splitAdditionalKeyList();

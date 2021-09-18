@@ -1,4 +1,4 @@
-package model.pgl.virtual;
+package model.pgl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -7,8 +7,9 @@ import org.junit.Test;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.pgl.Section;
 
-public class INISectionTest {
+public class SectionTest {
 	
 	class ValueBox {
 		@Setter @Getter
@@ -18,7 +19,7 @@ public class INISectionTest {
 
 	@Test
 	public void testGetValue() {
-		INISection section = new INISection("");
+		Section section = new Section("");
 		section.addKey("abc", "def");
 		
 		assertEquals("def", section.getValue("abc"));
@@ -26,7 +27,7 @@ public class INISectionTest {
 
 	@Test
 	public void testGetNullValue() {
-		INISection section = new INISection("");
+		Section section = new Section("");
 		section.addKey("abc", "def");
 		
 		assertNull("def", section.getValue("abcd"));
@@ -34,14 +35,14 @@ public class INISectionTest {
 
 	@Test
 	public void testGetValueFromEmptySection() {
-		INISection section = new INISection("");
+		Section section = new Section("");
 		
 		assertNull(section.getValue("abc"));
 	}
 
 	@Test
 	public void testGetValue_trim() {
-		INISection section = new INISection("");
+		Section section = new Section("");
 		section.addKey("abc ", "def ");
 		
 		assertNull(section.getValue("abc "));
@@ -51,7 +52,7 @@ public class INISectionTest {
 	
 	@Test
 	public void testNotNullValue() {
-		INISection section = new INISection("");
+		Section section = new Section("");
 		section.addKey("abc", "def");
 		final ValueBox value = new ValueBox();
 		
@@ -61,7 +62,7 @@ public class INISectionTest {
 	
 	@Test
 	public void testNullValue() {
-		INISection section = new INISection("");
+		Section section = new Section("");
 		final ValueBox value = new ValueBox();
 		
 		section.value("abc").ifPresent(value::setValue);

@@ -1,4 +1,4 @@
-package model.pgl.writer;
+package model.pgl.saver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -12,14 +12,14 @@ import model.Person;
 import model.Sex;
 import model.Tree;
 import model.pgl.PGLFields;
-import model.pgl.virtual.VirtualPGL;
-import model.pgl.writer.VirtualPGLWriter;
+import model.pgl.saver.TreeToPGLMapper;
+import model.pgl.PGL;
 
-public class VirtualPGLWriterTest_onePerson {
+public class TreeToPGLMapperTest_onePerson {
 
 	private static final String ID = "1";
 
-	private static VirtualPGL virtualPGL;
+	private static PGL pgl;
 	
 	private static Tree tree = new Tree();
 	
@@ -28,8 +28,8 @@ public class VirtualPGLWriterTest_onePerson {
 	
 	@BeforeClass
 	public static void prepare() {
-		VirtualPGLWriter writer = new VirtualPGLWriter();
-		virtualPGL = writer.write(prepareTree());
+		TreeToPGLMapper writer = new TreeToPGLMapper();
+		pgl = writer.map(prepareTree());
 	}
 	
 	private static Tree prepareTree() {
@@ -58,73 +58,73 @@ public class VirtualPGLWriterTest_onePerson {
 	
 	@Test
 	public void testMainSection() {
-		assertTrue(virtualPGL.get(PGLFields.mainSectionName).isPresent());
-		assertEquals("1", virtualPGL.getValue(PGLFields.mainSectionName, PGLFields.numberOfPersons));
+		assertTrue(pgl.get(PGLFields.mainSectionName).isPresent());
+		assertEquals("1", pgl.getValue(PGLFields.mainSectionName, PGLFields.numberOfPersons));
 	}
 	
 	@Test
 	public void testFirstName() {
-		assertEquals("John", virtualPGL.getValue(ID, PGLFields.firstName));
+		assertEquals("John", pgl.getValue(ID, PGLFields.firstName));
 	}
 	
 	@Test
 	public void testLastName() {
-		assertEquals("Smith", virtualPGL.getValue(ID, PGLFields.lastName));
+		assertEquals("Smith", pgl.getValue(ID, PGLFields.lastName));
 	}
 	
 	@Test
 	public void testAlias() {
-		assertEquals("JS", virtualPGL.getValue(ID, PGLFields.alias));
+		assertEquals("JS", pgl.getValue(ID, PGLFields.alias));
 	}
 	
 	@Test
 	public void testBirthDate() {
-		assertEquals(birthDate, new MyDate(virtualPGL.getValue(ID, PGLFields.birthDate)));
+		assertEquals(birthDate, new MyDate(pgl.getValue(ID, PGLFields.birthDate)));
 	}
 	
 	@Test
 	public void testBirthPlace() {
-		assertEquals("birthPlace", virtualPGL.getValue(ID, PGLFields.birthPlace));
+		assertEquals("birthPlace", pgl.getValue(ID, PGLFields.birthPlace));
 	}
 	
 	@Test
 	public void testBaptismParish() {
-		assertEquals("baptismParish", virtualPGL.getValue(ID, PGLFields.baptismParish));
+		assertEquals("baptismParish", pgl.getValue(ID, PGLFields.baptismParish));
 	}
 	
 	@Test
 	public void testDeathDate() {
-		assertEquals(deathDate, new MyDate(virtualPGL.getValue(ID, PGLFields.deathDate)));
+		assertEquals(deathDate, new MyDate(pgl.getValue(ID, PGLFields.deathDate)));
 	}
 	
 	@Test
 	public void testDeathPlace() {
-		assertEquals("deathPlace", virtualPGL.getValue(ID, PGLFields.deathPlace));
+		assertEquals("deathPlace", pgl.getValue(ID, PGLFields.deathPlace));
 	}
 	
 	@Test
 	public void testBurialPlace() {
-		assertEquals("burialPlace", virtualPGL.getValue(ID, PGLFields.burialPlace));
+		assertEquals("burialPlace", pgl.getValue(ID, PGLFields.burialPlace));
 	}
 	
 	@Test
 	public void testComments() {
-		assertEquals("comments" + PGLFields.lineSeparator + "line2", virtualPGL.getValue(ID, PGLFields.comments));
+		assertEquals("comments" + PGLFields.lineSeparator + "line2", pgl.getValue(ID, PGLFields.comments));
 	}
 	
 	@Test
 	public void testContact() {
-		assertEquals("contact", virtualPGL.getValue(ID, PGLFields.contact));
+		assertEquals("contact", pgl.getValue(ID, PGLFields.contact));
 	}
 	
 	@Test
 	public void testLifeStatus() {
-		assertEquals(LifeStatus.NO.toString(), virtualPGL.getValue(ID, PGLFields.lifeStatus));
+		assertEquals(LifeStatus.NO.toString(), pgl.getValue(ID, PGLFields.lifeStatus));
 	}
 	
 	@Test
 	public void testSex() {
-		assertEquals(Sex.MAN.toString(), virtualPGL.getValue(ID, PGLFields.sex));
+		assertEquals(Sex.MAN.toString(), pgl.getValue(ID, PGLFields.sex));
 	}
 
 	
