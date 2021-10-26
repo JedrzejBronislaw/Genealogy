@@ -68,7 +68,7 @@ public class PGLEqualsTest {
 		PGL pgl1 = prepareExample();
 		PGL pgl2 = prepareExample();
 		
-		pgl2.get("A").get().addKey("a", "0");
+		pgl2.getSection("A").get().addKey("a", "0");
 		
 		assertNotEquals(pgl1, pgl2);
 		assertNotEquals(pgl2, pgl1);
@@ -79,7 +79,7 @@ public class PGLEqualsTest {
 		PGL pgl1 = prepareExample();
 		PGL pgl2 = prepareExample();
 		
-		pgl2.get("B").get().addKey("a", "0");
+		pgl2.getSection("B").get().addKey("a", "0");
 		
 		assertNotEquals(pgl1, pgl2);
 		assertNotEquals(pgl2, pgl1);
@@ -90,8 +90,8 @@ public class PGLEqualsTest {
 		PGL pgl1 = prepareExample();
 		PGL pgl2 = prepareExample();
 		
-		pgl2.get("A").get().addKey("a", "0");
-		pgl2.get("A").get().addKey("a", "1");
+		pgl2.getSection("A").get().addKey("a", "0");
+		pgl2.getSection("A").get().addKey("a", "1");
 		
 		assertEquals(pgl1, pgl2);
 		assertEquals(pgl2, pgl1);

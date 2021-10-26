@@ -165,7 +165,7 @@ public class PGLLoader {
 	}
 	
 	private void loadToTree(Tree tree, PGL pgl, List<Relation> relations) {
-		pgl.get(PGLFields.mainSectionName).ifPresent(mainSection ->
+		pgl.getSection(PGLFields.mainSectionName).ifPresent(mainSection ->
 			loadMetadataToTree(tree, mainSection)
 		);
 		

@@ -58,7 +58,7 @@ public class TreeToPGLMapperTest_onePerson {
 	
 	@Test
 	public void testMainSection() {
-		assertTrue(pgl.get(PGLFields.mainSectionName).isPresent());
+		assertTrue(pgl.getSection(PGLFields.mainSectionName).isPresent());
 		assertEquals("1", pgl.getValue(PGLFields.mainSectionName, PGLFields.numberOfPersons));
 	}
 	

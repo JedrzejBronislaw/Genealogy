@@ -20,14 +20,14 @@ public class PGL {
 		return section;
 	}
 	
-	public Optional<Section> get(String name) {
+	public Optional<Section> getSection(String name) {
 		return sections.stream().
 				filter(section -> section.getName().toUpperCase().equals(name.toUpperCase())).
 				findFirst();
 	}
 	
 	public String getValue(String sectionName, String keyName) {
-		Optional<Section> section = get(sectionName);
+		Optional<Section> section = getSection(sectionName);
 		if (section.isEmpty()) return null;
 		
 		return section.get().getValue(keyName);

@@ -97,7 +97,7 @@ public class PGLComparatorTest {
 //-----OtherValue
 
 	private PGLDiffContainer changeValueOfKeyAinSectionAinSecondPGL(PGL pgl1, PGL pgl2) {
-		pgl2.get("A").get().addKey("a", "0");
+		pgl2.getSection("A").get().addKey("a", "0");
 		
 		return new PGLComparator(pgl1, pgl2).compare();
 	}
@@ -149,7 +149,7 @@ public class PGLComparatorTest {
 //-----AdditionalKey
 
 	private PGLDiffContainer addKeyZtoSectionAinSecondPGL(PGL pgl1, PGL pgl2) {
-		pgl2.get("A").get().addKey("z", "0");
+		pgl2.getSection("A").get().addKey("z", "0");
 		
 		return new PGLComparator(pgl1, pgl2).compare();
 	}
@@ -269,8 +269,8 @@ public class PGLComparatorTest {
 		PGL pgl2 = preparePGLExample();
 		
 		pgl2.newSection("D");
-		pgl2.get("A").get().addKey("z", "0");
-		pgl2.get("A").get().addKey("a", "0");
+		pgl2.getSection("A").get().addKey("z", "0");
+		pgl2.getSection("A").get().addKey("a", "0");
 
 		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
@@ -288,7 +288,7 @@ public class PGLComparatorTest {
 		PGL pgl2 = preparePGLExample();
 		
 		pgl2.newSection("D");
-		pgl2.get("D").get().addKey("d", "0");
+		pgl2.getSection("D").get().addKey("d", "0");
 
 		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
@@ -318,9 +318,9 @@ public class PGLComparatorTest {
 		PGL pgl1 = preparePGLExample();
 		PGL pgl2 = preparePGLExample();
 		
-		pgl2.get("A").get().addKey("d", "0");
-		pgl2.get("A").get().addKey("e", "0");
-		pgl2.get("A").get().addKey("f", "0");
+		pgl2.getSection("A").get().addKey("d", "0");
+		pgl2.getSection("A").get().addKey("e", "0");
+		pgl2.getSection("A").get().addKey("f", "0");
 
 		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
@@ -335,9 +335,9 @@ public class PGLComparatorTest {
 		PGL pgl1 = preparePGLExample();
 		PGL pgl2 = preparePGLExample();
 		
-		pgl2.get("B").get().addKey("d", "0");
-		pgl2.get("B").get().addKey("e", "0");
-		pgl2.get("B").get().addKey("f", "0");
+		pgl2.getSection("B").get().addKey("d", "0");
+		pgl2.getSection("B").get().addKey("e", "0");
+		pgl2.getSection("B").get().addKey("f", "0");
 
 		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 

@@ -16,7 +16,7 @@ public class PGLFilePreparation {
 	@NonNull private String fileName;
 	protected File file;
 
-	protected void createPGLFile(String content) {
+	public void createPGLFile(String content) {
 		try {
 			file = File.createTempFile(fileName, ".pgl");
 			file.deleteOnExit();
@@ -29,7 +29,7 @@ public class PGLFilePreparation {
 		}
 	}
 
-	protected Tree loadTreeFromFile() {
+	public Tree loadTreeFromFile() {
 		PGLLoader pglReader = null;
 		Tree tree = new Tree();
 

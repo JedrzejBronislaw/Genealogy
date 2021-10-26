@@ -90,8 +90,8 @@ public class PGLComparator {
 	
 	private void checkKeys(PGL pgl1, PGL pgl2, String section) {
 
-		Set<String> keys1 = pgl1.get(section).get().getKeys().keySet();
-		Set<String> keys2 = pgl2.get(section).get().getKeys().keySet();
+		Set<String> keys1 = pgl1.getSection(section).get().getKeys().keySet();
+		Set<String> keys2 = pgl2.getSection(section).get().getKeys().keySet();
 
 		keys1.stream().
 			filter(key -> !keys2.contains(key)).
@@ -113,7 +113,7 @@ public class PGLComparator {
 	
 	private void checkValues(PGL pgl1, PGL pgl2, String section) {
 
-		Set<String> keys1 = pgl1.get(section).get().getKeys().keySet();
+		Set<String> keys1 = pgl1.getSection(section).get().getKeys().keySet();
 		
 		keys1.stream().
 			filter(key -> hasKey(pgl2, section, key)).

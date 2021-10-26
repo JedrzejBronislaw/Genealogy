@@ -23,7 +23,7 @@ public class TreeToPGLMapperTest_empty {
 	
 	@Test
 	public void testMainSection() {
-		assertTrue(pgl.get(PGLFields.mainSectionName).isPresent());
+		assertTrue(pgl.getSection(PGLFields.mainSectionName).isPresent());
 	}
 	
 	@Test
