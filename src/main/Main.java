@@ -13,6 +13,7 @@ import lang.Languages;
 import model.Tree;
 import model.pgl.comparator.PGLDiffReport;
 import model.pgl.loader.PGLLoader;
+import model.pgl.loader.TreeLoader;
 import model.pgl.saver.TreeSaver;
 import session.Session;
 import viewFX.mainWindow.MainWindowBuilder;
@@ -101,8 +102,8 @@ public class Main extends Application {
 		PGLDiffReport report;
 		
 		try {
-			PGLLoader file = new PGLLoader(path);
-			report = file.loadAndAnalize(tree);
+			TreeLoader treeLoader = new TreeLoader(new PGLLoader(path));
+			report = treeLoader.loadAndAnalize(tree);
 			System.out.println(report);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found (" + path + ").");

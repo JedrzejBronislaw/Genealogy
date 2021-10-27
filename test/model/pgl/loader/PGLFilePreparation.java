@@ -30,16 +30,18 @@ public class PGLFilePreparation {
 	}
 
 	public Tree loadTreeFromFile() {
-		PGLLoader pglReader = null;
+		PGLLoader pglLoader = null;
+		TreeLoader treeLoader;
 		Tree tree = new Tree();
 
 		try {
-			pglReader = new PGLLoader(file.getAbsolutePath());
+			pglLoader = new PGLLoader(file.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		
-		pglReader.load(tree);
+		treeLoader = new TreeLoader(pglLoader);
+		treeLoader.load(tree);
 		
 		return tree;
 	}

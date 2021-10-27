@@ -22,6 +22,7 @@ import model.Sex;
 import model.Tree;
 import model.familyRelations.RelationEditor;
 import model.pgl.loader.PGLLoader;
+import model.pgl.loader.TreeLoader;
 import model.pgl.saver.TreeSaver;
 
 public class PGLWriterTest {
@@ -102,7 +103,8 @@ public class PGLWriterTest {
 		File file = null;
 		Tree treeFromFile = new Tree();
 		TreeSaver writer;
-		PGLLoader pglFile = null;
+		PGLLoader pglLoader = null;
+		TreeLoader treeLoader;
 		
 		try {
 			file = File.createTempFile("pglWriterTest", ".pgl");
@@ -117,12 +119,13 @@ public class PGLWriterTest {
 		
 		
 		try {
-			pglFile = new PGLLoader(file.getAbsolutePath());
+			pglLoader = new PGLLoader(file.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			fail("Opening file error");
 		}
 		
-		if (!pglFile.load(treeFromFile)) fail("Loading file error");
+		treeLoader = new TreeLoader(pglLoader);
+		if (!treeLoader.load(treeFromFile)) fail("Loading file error");
 		
 		return treeFromFile;
 	}
