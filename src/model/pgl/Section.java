@@ -19,14 +19,21 @@ public class Section {
 	}
 	
 	public Section(String name) {
+		if (name == null) throw new IllegalArgumentException("Section name cannot be null.");
+		
 		this.name = name;
 	}
 	
 	public void addKey(String name, String value) {
+		if (name == null || value == null)
+			throw new IllegalArgumentException("Key and value must be not-null.");
+		
 		keys.put(name.trim(), value.trim());
 	}
 	
 	public String getValue(String keyName) {
+		if (keyName == null) throw new IllegalArgumentException("Key name cannot be null.");
+		
 		return keys.get(keyName);
 	}
 
