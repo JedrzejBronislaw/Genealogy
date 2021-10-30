@@ -34,6 +34,10 @@ public class Section {
 		return Optional.ofNullable(getValue(keyName));
 	}
 	
+	public int size() {
+		return keys.size();
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;
