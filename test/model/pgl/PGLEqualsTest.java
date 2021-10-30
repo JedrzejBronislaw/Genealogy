@@ -9,7 +9,7 @@ import model.pgl.PGL;
 
 public class PGLEqualsTest {
 
-	private PGL prepareExample() {
+	private PGL createExamplePGL() {
 		PGL example = new PGL();
 
 		Section sectionA = example.newSection("A");
@@ -31,93 +31,136 @@ public class PGLEqualsTest {
 	}
 	
 	@Test
-	public void notEqualsNull() {
-		PGL pgl = prepareExample();
+	public void shouldReturnFalseWhenCompareWithNull() {
+		// given
+		PGL pgl = createExamplePGL();
 		
+		// when
+		// then
 		assertFalse(pgl.equals(null));
 	}
 	
 	@Test
-	public void theSame() {
-		PGL pgl1 = prepareExample();
+	public void shouldReturnTrueWhenCompareWithItself() {
+		// given
+		PGL pgl = createExamplePGL();
 		
-		assertEquals(pgl1, pgl1);
+		// when
+		// then
+		assertEquals(pgl, pgl);
 	}
 	
 	@Test
-	public void twoEqual() {
-		PGL pgl1 = prepareExample();
-		PGL pgl2 = prepareExample();
+	public void shouldReturnTrueWhenCompareWithTheSame() {
+		// given
+		PGL pgl1 = createExamplePGL();
+		PGL pgl2 = createExamplePGL();
 		
+		// when
+		// then
 		assertEquals(pgl1, pgl2);
 	}
 	
 	@Test
-	public void oneAdditionalSection() {
-		PGL pgl1 = prepareExample();
-		PGL pgl2 = prepareExample();
-		
+	public void shouldReturnFalseWhenCompareWithPGLWithOneAdditionalSection() {
+		// given
+		PGL pgl1 = createExamplePGL();
+		PGL pgl2 = createExamplePGL();
 		pgl2.newSection("");
 		
-		assertNotEquals(pgl1, pgl2);
-		assertNotEquals(pgl2, pgl1);
+		// when
+		boolean isEqual = pgl1.equals(pgl2);
+		
+		// then
+		assertFalse(isEqual);
+	}
+
+	
+	@Test
+	public void shouldReturnFalseWhenCompareWithPGLWithOneSectionLess() {
+		// given
+		PGL pgl1 = createExamplePGL();
+		PGL pgl2 = createExamplePGL();
+		pgl2.newSection("");
+		
+		// when
+		boolean isEqual = pgl2.equals(pgl1);
+		
+		// then
+		assertFalse(isEqual);
 	}
 	
 	@Test
-	public void oneDiffValue() {
-		PGL pgl1 = prepareExample();
-		PGL pgl2 = prepareExample();
+	public void shouldReturnFalseWhenCompareWithPLGWithOneDifferentValue() {
+		// given
+		PGL pgl1 = createExamplePGL();
+		PGL pgl2 = createExamplePGL();
 		
 		pgl2.getSection("A").get().addKey("a", "0");
 		
+		// when
+		// then
 		assertNotEquals(pgl1, pgl2);
 		assertNotEquals(pgl2, pgl1);
 	}
 	
 	@Test
-	public void oneAdditionalKey() {
-		PGL pgl1 = prepareExample();
-		PGL pgl2 = prepareExample();
+	public void shouldReturnFalseWhenCompareWithPGLWithOneAdditionalKey() {
+		// given
+		PGL pgl1 = createExamplePGL();
+		PGL pgl2 = createExamplePGL();
 		
 		pgl2.getSection("B").get().addKey("a", "0");
 		
+		// when
+		// then
 		assertNotEquals(pgl1, pgl2);
 		assertNotEquals(pgl2, pgl1);
 	}
 	
 	@Test
-	public void twoValueChanges_noDiff() {
-		PGL pgl1 = prepareExample();
-		PGL pgl2 = prepareExample();
+	public void shouldReturnTrueWhenCompareWithPGLAfterChangeAndRechange() {
+		// given
+		//TODO wrong behavior
+		PGL pgl1 = createExamplePGL();
+		PGL pgl2 = createExamplePGL();
 		
 		pgl2.getSection("A").get().addKey("a", "0");
 		pgl2.getSection("A").get().addKey("a", "1");
 		
+		// when
+		// then
 		assertEquals(pgl1, pgl2);
 		assertEquals(pgl2, pgl1);
 	}
 	
 	@Test
-	public void oneAdditionalSectionWithExistingName() {
-		PGL pgl1 = prepareExample();
-		PGL pgl2 = prepareExample();
+	public void shouldReturnFalseWhenCompareWithPGLWithOneAdditionalSectionWithExistingName() {
+		// given
+		PGL pgl1 = createExamplePGL();
+		PGL pgl2 = createExamplePGL();
 		
 		pgl2.newSection("C");
 		
+		// when
+		// then
 		assertNotEquals(pgl1, pgl2);
 		assertNotEquals(pgl2, pgl1);
 	}
 	
 	@Test
-	public void additionalSectionCopy() {
-		PGL pgl1 = prepareExample();
-		PGL pgl2 = prepareExample();
+	public void shouldReturnFalseWhenCompareWithPGLWithAdditionalSectionCopy() {
+		// given
+		PGL pgl1 = createExamplePGL();
+		PGL pgl2 = createExamplePGL();
 		
 		Section sectionC = pgl2.newSection("C");
 		sectionC.addKey("g", "7");
 		sectionC.addKey("h", "8");
 		sectionC.addKey("i", "9");
 		
+		// when
+		// then
 		assertNotEquals(pgl1, pgl2);
 		assertNotEquals(pgl2, pgl1);
 	}
