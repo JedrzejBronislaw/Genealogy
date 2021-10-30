@@ -1,71 +1,95 @@
 package model.pgl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import lombok.Getter;
-import lombok.Setter;
 import model.pgl.Section;
 
 public class SectionTest {
 	
-	class ValueBox {
-		@Setter @Getter
-		private String value;
-	}
-	
 
 	@Test
-	public void testGetValue() {
+	public void shouldReturnValue() {
+		// given
 		Section section = new Section("");
-		section.addKey("abc", "def");
+		String key = "key";
+		String value = "value";
+		section.addKey(key, value);
 		
-		assertEquals("def", section.getValue("abc"));
-	}
-
-	@Test
-	public void testGetNullValue() {
-		Section section = new Section("");
-		section.addKey("abc", "def");
+		// when
+		String returnedValue = section.getValue(key);
 		
-		assertNull("def", section.getValue("abcd"));
+		// then
+		assertEquals("value", returnedValue);
 	}
 
 	@Test
-	public void testGetValueFromEmptySection() {
+	public void shouldReturnNullWhenGetNotExistingKey() {
+		// given
 		Section section = new Section("");
+		section.addKey("key", "value");
 		
-		assertNull(section.getValue("abc"));
+		// when
+		String returnedValue = section.getValue("otherKey");
+		
+		// then
+		assertNull(returnedValue);
 	}
 
 	@Test
-	public void testGetValue_trim() {
+	public void shouldReturnNullValueFromEmptySection() {
+		// given
 		Section section = new Section("");
-		section.addKey("abc ", "def ");
 		
-		assertNull(section.getValue("abc "));
-		assertEquals("def", section.getValue("abc"));
+		// when
+		String returnedValue = section.getValue("key");
+		
+		// then
+		assertNull(returnedValue);
+	}
+
+	@Test
+	public void shouldTrimKeyAndValueWhenAddNewKey() {
+		//TODO wrong behavior
+		// given
+		Section section = new Section("");
+		
+		// when
+		section.addKey("key ", "value ");
+		
+		// then
+		assertNull(section.getValue("key "));
+		assertEquals("value", section.getValue("key"));
 	}
 	
 	
 	@Test
-	public void testNotNullValue() {
+	public void shoulReturnOptionalWhenKeyExists() {
+		// given
 		Section section = new Section("");
-		section.addKey("abc", "def");
-		final ValueBox value = new ValueBox();
+		String key = "key";
+		String value = "value";
+		section.addKey(key, value);
 		
-		section.value("abc").ifPresent(value::setValue);
-		assertEquals("def", value.getValue());
+		// when
+		String returnedValue = section.value(key).get();
+
+		// then
+		assertEquals(value, returnedValue);
 	}
 	
 	@Test
-	public void testNullValue() {
+	public void shoulReturnOptionalWhenKeyDoesntExist() {
+		// given
 		Section section = new Section("");
-		final ValueBox value = new ValueBox();
 		
-		section.value("abc").ifPresent(value::setValue);
-		assertNull(value.getValue());
+		// when
+		boolean valueExists = section.value("notExistingKey").isPresent();
+		
+		// then
+		assertFalse(valueExists);
 	}
 }
