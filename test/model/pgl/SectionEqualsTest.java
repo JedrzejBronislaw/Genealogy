@@ -8,7 +8,7 @@ import model.pgl.Section;
 
 public class SectionEqualsTest {
 
-	private Section prepareExampleSection() {
+	private Section createExampleSection() {
 		Section section = new Section("section");
 		
 		section.addKey("a", "1");
@@ -23,72 +23,123 @@ public class SectionEqualsTest {
 	}
 
 	@Test
-	public void nullSections() {
+	public void shouldReturnFalseWhenCompareWithnullSections() {
+		// given
 		Section section = new Section("A");
 		
-		assertFalse(section.equals(null));
+		// when
+		boolean isEqual = section.equals(null);
+		
+		// then
+		assertFalse(isEqual);
 	}
 
 	@Test
-	public void theSameSections() {
+	public void shouldReturnTrueWhenCompareWithItself() {
+		// given
 		Section section = new Section("A");
 		
-		assertEquals(section, section);
+		// when
+		boolean isEqual = section.equals(section);
+		
+		// then
+		assertTrue(isEqual);
 	}
 	
 	@Test
-	public void twoEmptySections() {
+	public void shouldReturnTrueWhenCompareTwoEmptySectionsWithTheSameName() {
+		// given
 		Section section1 = new Section("A");
 		Section section2 = new Section("A");
 		
-		assertEquals(section1, section2);
+		// when
+		boolean isEqual = section1.equals(section2);
+
+		// then
+		assertTrue(isEqual);
 	}
 	
 	@Test
-	public void twoEmptySections_diffName() {
+	public void shouldReturnFalseWhenCompareTwoEmptySectionsWithDifferentNames() {
+		// given
 		Section section1 = new Section("A");
 		Section section2 = new Section("B");
+
+		// when
+		boolean isEqual = section1.equals(section2);
 		
-		assertNotEquals(section1, section2);
+		// then
+		assertFalse(isEqual);
 	}
 	
 	@Test
-	public void twoEqualSections() {
-		Section section1 = prepareExampleSection();
-		Section section2 = prepareExampleSection();
+	public void shouldReturnTrueWhenCompareTwoSectionsWithTheSameValues() {
+		// given
+		Section section1 = createExampleSection();
+		Section section2 = createExampleSection();
+
+		// when
+		boolean isEqual = section1.equals(section2);
 		
-		assertEquals(section1, section2);
+		// then
+		assertTrue(isEqual);
 	}
 	
 	@Test
-	public void oneDiffValue() {
-		Section section1 = prepareExampleSection();
-		Section section2 = prepareExampleSection();
-		
+	public void shouldReturnFalseWhenCompareTwoSectionsWithDifferentValues() {
+		// given
+		Section section1 = createExampleSection();
+		Section section2 = createExampleSection();
 		section2.addKey("a", "0");
+
+		// when
+		boolean isEqual = section1.equals(section2);
 		
-		assertNotEquals(section1, section2);
+		// then
+		assertFalse(isEqual);
 	}
 	
 	@Test
-	public void oneAdditionalKey() {
-		Section section1 = prepareExampleSection();
-		Section section2 = prepareExampleSection();
-		
+	public void shouldReturnFalseWhenCompareWithSectionWithOneAdditionalKey() {
+		// given
+		Section section1 = createExampleSection();
+		Section section2 = createExampleSection();
 		section2.addKey("h", "8");
 		
-		assertNotEquals(section1, section2);
-		assertNotEquals(section2, section1);
+		// when
+		boolean isEqual = section1.equals(section2);
+
+		// then
+		assertFalse(isEqual);
 	}
 	
 	@Test
-	public void twoValueChanges_noDiff() {
-		Section section1 = prepareExampleSection();
-		Section section2 = prepareExampleSection();
+	public void shouldReturnFalseWhenCompareWithSectionWithOneKeyLess() {
+		// given
+		Section section1 = createExampleSection();
+		Section section2 = createExampleSection();
+		section2.addKey("h", "8");
 		
+		// when
+		boolean isEqual = section2.equals(section1);
+
+		// then
+		assertFalse(isEqual);
+	}
+	
+	@Test
+	public void shouldReturnTrueWhenCompareWithSectionAfterChangAndRechange() {
+		//TODO wrong behavior
+		// given
+		Section section1 = createExampleSection();
+		Section section2 = createExampleSection();
 		section2.addKey("a", "0");
 		section2.addKey("a", "1");
 		
-		assertEquals(section1, section2);
+		// when
+		boolean isEqual = section1.equals(section2);
+		
+		// then
+		assertTrue(isEqual);
 	}
 }
