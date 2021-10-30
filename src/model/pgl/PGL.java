@@ -21,12 +21,17 @@ public class PGL {
 	}
 	
 	public Optional<Section> getSection(String name) {
+		if (name == null) throw new IllegalArgumentException("Section name cannot be null.");
+		
 		return sections.stream().
 				filter(section -> section.getName().toUpperCase().equals(name.toUpperCase())).
 				findFirst();
 	}
 	
 	public String getValue(String sectionName, String keyName) {
+		if (sectionName == null || keyName == null)
+			throw new IllegalArgumentException("Section name and key name cannot be null.");
+		
 		Optional<Section> section = getSection(sectionName);
 		if (section.isEmpty()) return null;
 		
