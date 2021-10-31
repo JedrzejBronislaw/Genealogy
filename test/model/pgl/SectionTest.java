@@ -95,17 +95,29 @@ public class SectionTest {
 	}
 
 	@Test
-	public void shouldTrimKeyAndValueWhenAddNewKey() {
-		//TODO wrong behavior
+	public void shouldNotTrimKeyWhenAddNewKey() {
 		// given
 		Section section = new Section("sectionName");
 		
 		// when
-		section.addKey("key ", "value ");
+		section.addKey("key ", "value");
 		
 		// then
-		assertNull(section.getValue("key "));
-		assertEquals("value", section.getValue("key"));
+		assertTrue(section.value("key").isEmpty());
+		assertTrue(section.value("key ").isPresent());
+		assertEquals("value", section.getValue("key "));
+	}
+
+	@Test
+	public void shouldNotTrimValueWhenAddNewKey() {
+		// given
+		Section section = new Section("sectionName");
+		
+		// when
+		section.addKey("key", "value ");
+		
+		// then
+		assertEquals("value ", section.getValue("key"));
 	}
 	
 	

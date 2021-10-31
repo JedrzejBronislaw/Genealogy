@@ -28,7 +28,7 @@ public class Section {
 		if (name == null || value == null)
 			throw new IllegalArgumentException("Key and value must be not-null.");
 		
-		keys.put(name.trim(), value.trim());
+		keys.put(name, value);
 	}
 	
 	public String getValue(String keyName) {
