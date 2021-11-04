@@ -95,6 +95,73 @@ public class SectionTest {
 	}
 
 	@Test
+	public void shouldReturnTheLastValueWithTheSameKey() {
+		// given
+		Section section = new Section("sectionName");
+		String key = "key";
+		String firstValue = "value1";
+		String lastValue = "value2";
+		section.addKey(key, firstValue);
+		section.addKey(key, lastValue);
+		
+		// when
+		String returnedValue = section.getValue(key);
+		
+		// then
+		assertEquals(lastValue, returnedValue);
+	}
+
+	@Test
+	public void shouldReturnAllValuesWithTheSameKey() {
+		// given
+		Section section = new Section("sectionName");
+		String key = "key";
+		String firstValue = "value1";
+		String lastValue = "value2";
+		section.addKey(key, firstValue);
+		section.addKey(key, lastValue);
+		
+		// when
+		List<String> returnedValues = section.getValues(key);
+		
+		// then
+		assertEquals(2, returnedValues.size());
+		assertTrue(returnedValues.contains(firstValue));
+		assertTrue(returnedValues.contains(lastValue));
+	}
+
+	@Test
+	public void shouldReturnOneElementListWhenExistOneValueWithSpecificKey() {
+		// given
+		Section section = new Section("sectionName");
+		String key = "key";
+		String value = "value";
+		section.addKey(key, value);
+		
+		// when
+		List<String> returnedValues = section.getValues(key);
+		
+		// then
+		assertEquals(1, returnedValues.size());
+		assertTrue(returnedValues.contains(value));
+	}
+
+	@Test
+	public void shouldReturnEmptyListWhenNotExistValueWithSpecificKey() {
+		// given
+		Section section = new Section("sectionName");
+		section.addKey("key", "value");
+		
+		// when
+		List<String> returnedValues = section.getValues("otherKey");
+		
+		// then
+		assertTrue(returnedValues.isEmpty());
+	}
+	
+	//
+
+	@Test
 	public void shouldNotTrimKeyWhenAddNewKey() {
 		// given
 		Section section = new Section("sectionName");
@@ -164,19 +231,19 @@ public class SectionTest {
 		assertEquals(value, section.getValue(key));
 	}
 
-//	@Test
-//	public void shouldAddValueWithTheSameKey() {
-//		// given
-//		Section section = new Section("sectionName");
-//		String key = "key";
-//		
-//		// when
-//		section.addKey(key, "value1");
-//		section.addKey(key, "value2");
-//		
-//		// then
-//		assertEquals(2, section.size());
-//	}
+	@Test
+	public void shouldAddValueWithTheSameKey() {
+		// given
+		Section section = new Section("sectionName");
+		String key = "key";
+		
+		// when
+		section.addKey(key, "value1");
+		section.addKey(key, "value2");
+		
+		// then
+		assertEquals(2, section.size());
+	}
 
 	@Test
 	public void shouldAddTwoTheSameValue() {
@@ -267,7 +334,7 @@ public class SectionTest {
 	//
 
 	@Test
-	public void shouldExecuteTeskForEachValues() {
+	public void shouldExecuteTaskForEachValues() {
 		// given
 		Section section = new Section("sectionName");
 		List<String> list = new ArrayList<>();
@@ -291,6 +358,60 @@ public class SectionTest {
 		assertTrue(list.contains(value1));
 		assertTrue(list.contains(key2));
 		assertTrue(list.contains(value2));
+	}
+
+	@Test
+	public void shouldExecuteTaskForEachValuesWithTheSameKey() {
+		// given
+		Section section = new Section("sectionName");
+		List<String> list = new ArrayList<>();
+		String key1 = "key1";
+		String value1 = "value1";
+		String key2 = "key2";
+		String value2 = "value2";
+		String value3 = "value3";
+		section.addKey(key1, value1);
+		section.addKey(key2, value2);
+		section.addKey(key2, value3);
+		
+		BiConsumer<String, String> task = (key, value) -> {
+			list.add(key);
+			list.add(value);
+		};
+		
+		// when
+		section.forEachKey(task);
+		
+		// then
+		assertTrue(list.contains(key1));
+		assertTrue(list.contains(value1));
+		assertTrue(list.contains(key2));
+		assertTrue(list.contains(value2));
+		assertTrue(list.contains(value3));
+		assertEquals(6, list.size());
+		assertEquals(2, list.stream().filter(el -> el.equals(key2)).count());
+	}
+
+	@Test
+	public void shouldBeKeyFirstAndValueSecondArgumentInTaskForEachValues() {
+		// given
+		Section section = new Section("sectionName");
+		List<String> list = new ArrayList<>();
+		String key = "key";
+		String value = "value";
+		section.addKey(key, value);
+		
+		BiConsumer<String, String> task = (k, v) -> {
+			list.add(k);
+			list.add(v);
+		};
+		
+		// when
+		section.forEachKey(task);
+		
+		// then
+		assertEquals(key, list.get(0));
+		assertEquals(value, list.get(1));
 	}
 	
 	//

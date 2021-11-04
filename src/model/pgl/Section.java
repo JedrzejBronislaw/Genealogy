@@ -1,21 +1,47 @@
 package model.pgl;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class Section {
 	
+	@AllArgsConstructor
+	class Pair {
+		String key;
+		String value;
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null) return false;
+			if (!(obj instanceof Pair)) return false;
+			Pair otherPair = (Pair) obj;
+
+			if (!Objects.equals(this.key, otherPair.key)) return false;
+			if (!Objects.equals(this.value, otherPair.value)) return false;
+			
+			return true;
+		}
+	}
+	
 	@Getter private String name;
+	private List<Pair> keys = new ArrayList<>();
+
 	
-	private Map<String, String> keys = new HashMap<String, String>();
+	public List<Pair> getKeys() {
+		return Collections.unmodifiableList(keys);
+	}
 	
-	public Map<String, String> getKeys() {
-		return Collections.unmodifiableMap(keys);
+	public Set<String> getKeySet() {
+		return keys.stream().map(pair -> pair.key).distinct().collect(Collectors.toUnmodifiableSet());
 	}
 	
 	public Section(String name) {
@@ -28,13 +54,23 @@ public class Section {
 		if (name == null || value == null)
 			throw new IllegalArgumentException("Key and value must be not-null.");
 		
-		keys.put(name, value);
+		keys.add(new Pair(name, value));
 	}
 	
 	public String getValue(String keyName) {
 		if (keyName == null) throw new IllegalArgumentException("Key name cannot be null.");
 		
-		return keys.get(keyName);
+		List<String> allValues = getValues(keyName);
+		
+		if (allValues.isEmpty()) return null;
+		return allValues.get(allValues.size()-1);
+	}
+	
+	public List<String> getValues(String keyName) {
+		return keys.stream()
+				.filter(pair -> pair.key.equals(keyName))
+				.map(pair -> pair.value)
+				.collect(Collectors.toUnmodifiableList());
 	}
 
 	public Optional<String> value(String keyName) {
@@ -57,6 +93,6 @@ public class Section {
 	}
 
 	public void forEachKey(BiConsumer<String, String> action) {
-		keys.forEach(action);
+		keys.forEach(pair -> action.accept(pair.key, pair.value));
 	}
 }

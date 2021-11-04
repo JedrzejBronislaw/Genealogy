@@ -119,9 +119,8 @@ public class PGLEqualsTest {
 	}
 	
 	@Test
-	public void shouldReturnTrueWhenCompareWithPGLAfterChangeAndRechange() {
+	public void shouldReturnFalseWhenCompareWithPGLAfterAttemptOfChangeAndRechange() {
 		// given
-		//TODO wrong behavior
 		PGL pgl1 = createExamplePGL();
 		PGL pgl2 = createExamplePGL();
 		
@@ -130,8 +129,8 @@ public class PGLEqualsTest {
 		
 		// when
 		// then
-		assertEquals(pgl1, pgl2);
-		assertEquals(pgl2, pgl1);
+		assertNotEquals(pgl1, pgl2);
+		assertNotEquals(pgl2, pgl1);
 	}
 	
 	@Test

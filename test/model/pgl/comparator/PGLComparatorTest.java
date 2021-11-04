@@ -2,6 +2,7 @@ package model.pgl.comparator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -15,25 +16,35 @@ import model.pgl.comparator.PGLDiffContainer.OtherValue;
 
 public class PGLComparatorTest {
 
-	private PGL preparePGLExample() {
+	private PGL preparePGLExample(
+			String aVal, String bVal, String cVal,
+			String dVal, String eVal, String fVal,
+			String gVal, String hVal, String iVal) {
 		PGL example = new PGL();
 
 		Section sectionA = example.newSection("A");
-		sectionA.addKey("a", "1");
-		sectionA.addKey("b", "2");
-		sectionA.addKey("c", "3");
+		sectionA.addKey("a", aVal);
+		sectionA.addKey("b", bVal);
+		sectionA.addKey("c", cVal);
 
 		Section sectionB = example.newSection("B");
-		sectionB.addKey("d", "4");
-		sectionB.addKey("e", "5");
-		sectionB.addKey("f", "6");
+		sectionB.addKey("d", dVal);
+		sectionB.addKey("e", eVal);
+		sectionB.addKey("f", fVal);
 
 		Section sectionC = example.newSection("C");
-		sectionC.addKey("g", "7");
-		sectionC.addKey("h", "8");
-		sectionC.addKey("i", "9");
+		sectionC.addKey("g", gVal);
+		sectionC.addKey("h", hVal);
+		sectionC.addKey("i", iVal);
 		
 		return example;
+	}
+
+	private PGL preparePGLExample() {
+		return preparePGLExample(
+				"1", "2", "3",
+				"4", "5", "6",
+				"7", "8", "9");
 	}
 	
 	private PGLDiffContainer prepareDiffExample() {
@@ -325,25 +336,24 @@ public class PGLComparatorTest {
 		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
 		chceckSizes(diff, 3, 0, 3, 0);
-		assertEquals(new AdditionalKey(pgl2, "A", "d"), diff.getAdditionalKeys().get(0));
-		assertEquals(new AdditionalKey(pgl2, "A", "e"), diff.getAdditionalKeys().get(1));
-		assertEquals(new AdditionalKey(pgl2, "A", "f"), diff.getAdditionalKeys().get(2));
+		assertTrue(diff.getAdditionalKeys().contains(new AdditionalKey(pgl2, "A", "d")));
+		assertTrue(diff.getAdditionalKeys().contains(new AdditionalKey(pgl2, "A", "e")));
+		assertTrue(diff.getAdditionalKeys().contains(new AdditionalKey(pgl2, "A", "f")));
 	}
 	
 	@Test
 	public void threeOtherValues() {
 		PGL pgl1 = preparePGLExample();
-		PGL pgl2 = preparePGLExample();
-		
-		pgl2.getSection("B").get().addKey("d", "0");
-		pgl2.getSection("B").get().addKey("e", "0");
-		pgl2.getSection("B").get().addKey("f", "0");
+		PGL pgl2 =  preparePGLExample(
+				"1", "2", "3",
+				"0", "0", "0",
+				"7", "8", "9");
 
 		PGLDiffContainer diff = new PGLComparator(pgl1, pgl2).compare();
 
 		chceckSizes(diff, 3, 3, 0, 0);
-		assertEquals(new OtherValue("B", "d"), diff.getOtherValues().get(0));
-		assertEquals(new OtherValue("B", "e"), diff.getOtherValues().get(1));
-		assertEquals(new OtherValue("B", "f"), diff.getOtherValues().get(2));
+		assertTrue(diff.getOtherValues().contains(new OtherValue("B", "d")));
+		assertTrue(diff.getOtherValues().contains(new OtherValue("B", "e")));
+		assertTrue(diff.getOtherValues().contains(new OtherValue("B", "f")));
 	}
 }

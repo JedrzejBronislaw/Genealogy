@@ -2,6 +2,8 @@ package model.pgl;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import model.pgl.Section;
@@ -128,8 +130,7 @@ public class SectionEqualsTest {
 	}
 	
 	@Test
-	public void shouldReturnTrueWhenCompareWithSectionAfterChangAndRechange() {
-		//TODO wrong behavior
+	public void shouldReturnFalseAfterAttemptOfChangAndRechange() {
 		// given
 		Section section1 = createExampleSection();
 		Section section2 = createExampleSection();
@@ -140,6 +141,21 @@ public class SectionEqualsTest {
 		boolean isEqual = section1.equals(section2);
 		
 		// then
-		assertTrue(isEqual);
+		assertFalse(isEqual);
+	}
+	
+	@Test
+	public void shouldReturn3ValuesAfterAttemptOfChangAndRechange() {
+		// given
+		Section section2 = createExampleSection();
+		String key = "a";
+		section2.addKey(key, "0");
+		section2.addKey(key, "1");
+		
+		// when
+		List<String> valuesWithOneKey = section2.getValues(key);
+		
+		// then
+		assertEquals(3, valuesWithOneKey.size());
 	}
 }
