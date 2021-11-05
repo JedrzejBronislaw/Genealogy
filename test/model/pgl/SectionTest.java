@@ -12,9 +12,6 @@ import java.util.function.BiConsumer;
 
 import org.junit.Test;
 
-import model.pgl.Section;
-import model.pgl.Section.Pair;
-
 public class SectionTest {
 
 	

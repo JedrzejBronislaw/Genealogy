@@ -3,34 +3,14 @@ package model.pgl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class Section {
-	
-	@AllArgsConstructor
-	static class Pair {
-		String key;
-		String value;
-		
-		@Override
-		public boolean equals(Object obj) {
-			if (obj == null) return false;
-			if (!(obj instanceof Pair)) return false;
-			Pair otherPair = (Pair) obj;
-
-			if (!Objects.equals(this.key, otherPair.key)) return false;
-			if (!Objects.equals(this.value, otherPair.value)) return false;
-			
-			return true;
-		}
-	}
 	
 	@Getter private String name;
 	private List<Pair> keys = new ArrayList<>();
@@ -41,7 +21,7 @@ public class Section {
 	}
 	
 	public Set<String> getKeySet() {
-		return keys.stream().map(pair -> pair.key).distinct().collect(Collectors.toUnmodifiableSet());
+		return keys.stream().map(Pair::getKey).distinct().collect(Collectors.toUnmodifiableSet());
 	}
 	
 	public Section(String name) {
@@ -68,8 +48,8 @@ public class Section {
 	
 	public List<String> getValues(String keyName) {
 		return keys.stream()
-				.filter(pair -> pair.key.equals(keyName))
-				.map(pair -> pair.value)
+				.filter(pair -> pair.getKey().equals(keyName))
+				.map(pair -> pair.getValue())
 				.collect(Collectors.toUnmodifiableList());
 	}
 
@@ -93,6 +73,6 @@ public class Section {
 	}
 
 	public void forEachKey(BiConsumer<String, String> action) {
-		keys.forEach(pair -> action.accept(pair.key, pair.value));
+		keys.forEach(pair -> action.accept(pair.getKey(), pair.getValue()));
 	}
 }
