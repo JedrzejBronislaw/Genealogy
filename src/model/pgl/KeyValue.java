@@ -2,14 +2,21 @@ package model.pgl;
 
 import java.util.Objects;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 public class KeyValue {
 	
 	@Getter private String key;
 	@Getter private String value;
+
+	public KeyValue(String key, String value) {
+		if (key == null) throw new IllegalArgumentException("Key cannot be null.");
+		if (value == null) throw new IllegalArgumentException("Value cannot be null.");
+		
+		this.key = key;
+		this.value = value;
+	}
+	
 	
 	@Override
 	public boolean equals(Object obj) {
