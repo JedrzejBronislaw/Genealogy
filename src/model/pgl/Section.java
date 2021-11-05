@@ -15,7 +15,7 @@ import lombok.Getter;
 public class Section {
 	
 	@AllArgsConstructor
-	class Pair {
+	static class Pair {
 		String key;
 		String value;
 		

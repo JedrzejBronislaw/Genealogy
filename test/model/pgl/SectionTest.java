@@ -7,11 +7,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 import org.junit.Test;
 
 import model.pgl.Section;
+import model.pgl.Section.Pair;
 
 public class SectionTest {
 
@@ -454,5 +456,81 @@ public class SectionTest {
 		
 		// then
 		assertEquals(3, size);
+	}
+
+	
+	@Test
+	public void shouldReturnAllKeyValuePairsWhenSectionDoesntContainMultiValueKey() {
+		// given
+		Section section = new Section("sectionName");
+		section.addKey("key1", "value1");
+		section.addKey("key2", "value2");
+		section.addKey("key3", "value3");
+		
+		// when
+		List<Pair> keyValueList = section.getKeys();
+		
+		// then
+		assertEquals(3, keyValueList.size());
+		assertTrue(keyValueList.contains(new Pair("key1", "value1")));
+		assertTrue(keyValueList.contains(new Pair("key2", "value2")));
+		assertTrue(keyValueList.contains(new Pair("key3", "value3")));
+	}
+	
+	@Test
+	public void shouldReturnAllKeyValuePairsWhenSectionContainsMultiValueKey() {
+		// given
+		Section section = new Section("sectionName");
+		section.addKey("key1", "value1");
+		section.addKey("key2", "value2");
+		section.addKey("key3", "value3");
+		section.addKey("key3", "value4");
+		
+		// when
+		List<Pair> keyValueList = section.getKeys();
+		
+		// then
+		assertEquals(4, keyValueList.size());
+		assertTrue(keyValueList.contains(new Pair("key1", "value1")));
+		assertTrue(keyValueList.contains(new Pair("key2", "value2")));
+		assertTrue(keyValueList.contains(new Pair("key3", "value3")));
+		assertTrue(keyValueList.contains(new Pair("key3", "value4")));
+	}
+	
+	@Test
+	public void shouldReturnAllKeysWhenSectionDoesntContainMultiValueKey() {
+		// given
+		Section section = new Section("sectionName");
+		section.addKey("key1", "value1");
+		section.addKey("key2", "value2");
+		section.addKey("key3", "value3");
+		
+		// when
+		Set<String> keyValueList = section.getKeySet();
+		
+		// then
+		assertEquals(3, keyValueList.size());
+		assertTrue(keyValueList.contains("key1"));
+		assertTrue(keyValueList.contains("key2"));
+		assertTrue(keyValueList.contains("key3"));
+	}
+	
+	@Test
+	public void shouldReturnDistinctKeysWhenSectionContainsMultiValueKey() {
+		// given
+		Section section = new Section("sectionName");
+		section.addKey("key1", "value1");
+		section.addKey("key2", "value2");
+		section.addKey("key3", "value3");
+		section.addKey("key3", "value4");
+		
+		// when
+		Set<String> keyValueList = section.getKeySet();
+		
+		// then
+		assertEquals(3, keyValueList.size());
+		assertTrue(keyValueList.contains("key1"));
+		assertTrue(keyValueList.contains("key2"));
+		assertTrue(keyValueList.contains("key3"));
 	}
 }
