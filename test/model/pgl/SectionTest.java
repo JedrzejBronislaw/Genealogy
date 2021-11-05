@@ -465,13 +465,13 @@ public class SectionTest {
 		section.addKey("key3", "value3");
 		
 		// when
-		List<Pair> keyValueList = section.getKeys();
+		List<KeyValue> keyValueList = section.getKeys();
 		
 		// then
 		assertEquals(3, keyValueList.size());
-		assertTrue(keyValueList.contains(new Pair("key1", "value1")));
-		assertTrue(keyValueList.contains(new Pair("key2", "value2")));
-		assertTrue(keyValueList.contains(new Pair("key3", "value3")));
+		assertTrue(keyValueList.contains(new KeyValue("key1", "value1")));
+		assertTrue(keyValueList.contains(new KeyValue("key2", "value2")));
+		assertTrue(keyValueList.contains(new KeyValue("key3", "value3")));
 	}
 	
 	@Test
@@ -484,14 +484,14 @@ public class SectionTest {
 		section.addKey("key3", "value4");
 		
 		// when
-		List<Pair> keyValueList = section.getKeys();
+		List<KeyValue> keyValueList = section.getKeys();
 		
 		// then
 		assertEquals(4, keyValueList.size());
-		assertTrue(keyValueList.contains(new Pair("key1", "value1")));
-		assertTrue(keyValueList.contains(new Pair("key2", "value2")));
-		assertTrue(keyValueList.contains(new Pair("key3", "value3")));
-		assertTrue(keyValueList.contains(new Pair("key3", "value4")));
+		assertTrue(keyValueList.contains(new KeyValue("key1", "value1")));
+		assertTrue(keyValueList.contains(new KeyValue("key2", "value2")));
+		assertTrue(keyValueList.contains(new KeyValue("key3", "value3")));
+		assertTrue(keyValueList.contains(new KeyValue("key3", "value4")));
 	}
 	
 	@Test

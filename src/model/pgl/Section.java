@@ -13,15 +13,15 @@ import lombok.Getter;
 public class Section {
 	
 	@Getter private String name;
-	private List<Pair> keys = new ArrayList<>();
+	private List<KeyValue> keys = new ArrayList<>();
 
 	
-	public List<Pair> getKeys() {
+	public List<KeyValue> getKeys() {
 		return Collections.unmodifiableList(keys);
 	}
 	
 	public Set<String> getKeySet() {
-		return keys.stream().map(Pair::getKey).distinct().collect(Collectors.toUnmodifiableSet());
+		return keys.stream().map(KeyValue::getKey).distinct().collect(Collectors.toUnmodifiableSet());
 	}
 	
 	public Section(String name) {
@@ -34,7 +34,7 @@ public class Section {
 		if (name == null || value == null)
 			throw new IllegalArgumentException("Key and value must be not-null.");
 		
-		keys.add(new Pair(name, value));
+		keys.add(new KeyValue(name, value));
 	}
 	
 	public String getValue(String keyName) {
