@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import model.Tree;
 
-public class PGLLoaderTest_EmptyFile {
+public class TreeLoaderTest_EmptyFile {
 	
 	static String content = "";
 

@@ -12,7 +12,7 @@ import model.Sex;
 import model.Tree;
 import model.pgl.PGLFields;
 
-public class PGLLoaderTest_SinglePerson {
+public class TreeLoaderTest_SinglePerson {
 	
 	private static String content = String.join("\n",
 			"[1]",

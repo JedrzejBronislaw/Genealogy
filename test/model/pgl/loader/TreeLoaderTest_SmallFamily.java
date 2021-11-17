@@ -11,7 +11,7 @@ import model.Sex;
 import model.Tree;
 import model.pgl.PGLFields;
 
-public class PGLLoaderTest_SmallFamily {
+public class TreeLoaderTest_SmallFamily {
 	
 	private static String content = String.join("\n",
 			"[1]",
