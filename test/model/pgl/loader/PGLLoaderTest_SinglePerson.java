@@ -34,13 +34,13 @@ public class PGLLoaderTest_SinglePerson {
 	private static Tree tree;
 	private static Person person;
 	
+	
 	@BeforeClass
 	public static void prepare() {
 		tree = new TempFile(content).loadTree();
 		person = tree.getAll()[0];
 	}
 	
-
 	
 	@Test
 	public void numberOfPersons() {
@@ -143,5 +143,4 @@ public class PGLLoaderTest_SinglePerson {
 	public void childrenArray() {
 		assertEquals(0, person.getChildren().length);
 	}
-
 }

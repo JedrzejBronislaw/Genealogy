@@ -13,8 +13,9 @@ public class PGLLoaderTest_EmptyFile {
 
 	private static Tree tree;
 	
+	
 	@BeforeClass
-	public static void x() {
+	public static void prepare() {
 		tree = new TempFile(content).loadTree();
 	}
 
@@ -23,5 +24,4 @@ public class PGLLoaderTest_EmptyFile {
 	public void test() {
 		assertEquals(0, tree.getAll().length);
 	}
-
 }

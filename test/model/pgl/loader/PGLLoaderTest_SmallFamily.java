@@ -54,13 +54,13 @@ public class PGLLoaderTest_SmallFamily {
 	private static Tree tree;
 	private static Person[] persons;
 	
+	
 	@BeforeClass
 	public static void prepare() {
 		tree = new TempFile(content).loadTree();
 		persons = tree.getAll();
 	}
 	
-
 	
 	@Test
 	public void numberOfPersons() {
