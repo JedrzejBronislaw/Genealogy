@@ -12,7 +12,7 @@ import model.Tree;
 import model.pgl.PGLFields;
 
 public class PGLLoaderTest_SmallFamily {
-	private static PGLFilePreparation preparation = new PGLFilePreparation("smallFamily");
+	private static TempFile tempFile = new TempFile("smallFamily");
 	private static String content = String.join("\n",
 			"[1]",
 			PGLFields.firstName + "=Adam",
@@ -56,8 +56,8 @@ public class PGLLoaderTest_SmallFamily {
 	
 	@BeforeClass
 	public static void prepare() {
-		preparation.createPGLFile(content);
-		tree = preparation.loadTreeFromFile();
+		tempFile.createPGLFile(content);
+		tree = tempFile.loadTreeFromFile();
 		persons = tree.getAll();
 	}
 	

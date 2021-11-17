@@ -11,7 +11,7 @@ import model.Tree;
 import model.pgl.loader.PGLLoader;
 
 @RequiredArgsConstructor
-public class PGLFilePreparation {
+public class TempFile {
 	
 	@NonNull private String fileName;
 	protected File file;

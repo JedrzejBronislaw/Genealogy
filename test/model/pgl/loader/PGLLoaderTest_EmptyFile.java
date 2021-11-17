@@ -9,15 +9,15 @@ import model.Tree;
 
 public class PGLLoaderTest_EmptyFile {
 	
-	static PGLFilePreparation preparation = new PGLFilePreparation("emptyFile");
+	static TempFile tempFile = new TempFile("emptyFile");
 	static String content = "";
 
 	private static Tree tree;
 	
 	@BeforeClass
 	public static void x() {
-		preparation.createPGLFile(content);
-		tree = preparation.loadTreeFromFile();
+		tempFile.createPGLFile(content);
+		tree = tempFile.loadTreeFromFile();
 	}
 
 	

@@ -13,7 +13,7 @@ import model.Tree;
 import model.pgl.PGLFields;
 
 public class PGLLoaderTest_SinglePerson {
-	private static PGLFilePreparation preparation = new PGLFilePreparation("singlePerson");
+	private static TempFile tempFile = new TempFile("singlePerson");
 	private static String content = String.join("\n",
 			"[1]",
 			PGLFields.firstName +     "=Jan",
@@ -36,8 +36,8 @@ public class PGLLoaderTest_SinglePerson {
 	
 	@BeforeClass
 	public static void prepare() {
-		preparation.createPGLFile(content);
-		tree = preparation.loadTreeFromFile();
+		tempFile.createPGLFile(content);
+		tree = tempFile.loadTreeFromFile();
 		person = tree.getAll()[0];
 	}
 	
