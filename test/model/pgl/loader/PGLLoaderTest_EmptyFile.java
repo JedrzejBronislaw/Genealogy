@@ -5,23 +5,23 @@ import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import model.Tree;
+import model.pgl.PGL;
 
-public class TreeLoaderTest_EmptyFile {
+public class PGLLoaderTest_EmptyFile {
 	
 	static String content = "";
 
-	private static Tree tree;
+	private static PGL pgl;
 	
 	
 	@BeforeClass
 	public static void prepare() {
-		tree = new TempFile(content).loadTree();
+		pgl = new TempFile(content).loadPGL();
 	}
 
 	
 	@Test
-	public void shouldReturnTreeSize0WhenFileIsEmpty() {
-		assertEquals(0, tree.getAll().length);
+	public void shouldReturnSize0WhenFileIsEmpty() {
+		assertEquals(0, pgl.size());
 	}
 }

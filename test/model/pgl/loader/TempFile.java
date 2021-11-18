@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import model.Tree;
+import model.pgl.PGL;
 
 public class TempFile {
 	
@@ -29,7 +30,19 @@ public class TempFile {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public PGL loadPGL() {
+		PGLLoader pglLoader = null;
+	
+		try {
+			pglLoader = new PGLLoader(file.getAbsolutePath());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return pglLoader.load();
+	}
+	
 	public Tree loadTree() {
 		PGLLoader pglLoader = null;
 		TreeLoader treeLoader;
