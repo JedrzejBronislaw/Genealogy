@@ -24,12 +24,8 @@ public class PGL {
 	public Optional<Section> getSection(String name) {
 		if (name == null) throw new IllegalArgumentException("Section name cannot be null.");
 		
-		List<Section> sections = getSections(name);
 		
-		if (sections.isEmpty())
-			return Optional.empty();
-		
-		return Optional.of(sections.get(sections.size()-1));
+		return Optional.ofNullable(last(getSections(name)));
 	}
 	
 	public List<Section> getSections(String name) {
@@ -45,12 +41,7 @@ public class PGL {
 			throw new IllegalArgumentException("Section name and key name cannot be null.");
 		
 		
-		List<String> values = getValues(sectionName, keyName);
-		
-		if (values.isEmpty())
-			return null;
-		
-		return values.get(values.size()-1);
+		return last(getValues(sectionName, keyName));
 	}
 	
 	public List<String> getValues(String sectionName, String keyName) {
@@ -94,5 +85,13 @@ public class PGL {
 		});
 		
 		return buffer.toString();
+	}
+	
+	
+	private <T> T last(List<T> list) {
+		if (list.isEmpty())
+			return null;
+		
+		return list.get(list.size()-1);
 	}
 }
