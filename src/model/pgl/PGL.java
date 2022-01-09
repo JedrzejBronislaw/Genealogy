@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class PGL {
 
@@ -23,19 +24,46 @@ public class PGL {
 	public Optional<Section> getSection(String name) {
 		if (name == null) throw new IllegalArgumentException("Section name cannot be null.");
 		
+		List<Section> sections = getSections(name);
+		
+		if (sections.isEmpty())
+			return Optional.empty();
+		
+		return Optional.of(sections.get(sections.size()-1));
+	}
+	
+	public List<Section> getSections(String name) {
+		if (name == null) throw new IllegalArgumentException("Section name cannot be null.");
+		
 		return sections.stream().
 				filter(section -> section.getName().toUpperCase().equals(name.toUpperCase())).
-				findFirst();
+				collect(Collectors.toUnmodifiableList());
 	}
 	
 	public String getValue(String sectionName, String keyName) {
 		if (sectionName == null || keyName == null)
 			throw new IllegalArgumentException("Section name and key name cannot be null.");
 		
-		Optional<Section> section = getSection(sectionName);
-		if (section.isEmpty()) return null;
 		
-		return section.get().getValue(keyName);
+		List<String> values = getValues(sectionName, keyName);
+		
+		if (values.isEmpty())
+			return null;
+		
+		return values.get(values.size()-1);
+	}
+	
+	public List<String> getValues(String sectionName, String keyName) {
+		if (sectionName == null || keyName == null)
+			throw new IllegalArgumentException("Section name and key name cannot be null.");
+		
+		
+		List<Section> sections = getSections(sectionName);
+		List<String> values = sections.stream().
+				flatMap(section -> section.getValues(keyName).stream()).
+				collect(Collectors.toList());
+		
+		return values;
 	}
 	
 	public void forEachSection(Consumer<Section> action) {
