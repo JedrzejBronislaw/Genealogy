@@ -336,4 +336,86 @@ public class PGLTest {
 //		// then
 //		pgl.getSections().get(0).addKey("key", "value");
 //	}
+
+
+	@Test
+	public void shouldReturn0UniqueSectionWhenPGLisNew() {
+		// given
+		PGL pgl = new PGL();
+		
+		// when
+		long numOfUniqueSection = pgl.numOfUniqueSections();
+		
+		// then
+		assertEquals(0, numOfUniqueSection);
+	}
+
+	@Test
+	public void shouldReturn1UniqueSectionWhenPGLhasOneSection() {
+		// given
+		PGL pgl = new PGL();
+		pgl.newSection("section1Name");
+		
+		// when
+		long numOfUniqueSection = pgl.numOfUniqueSections();
+		
+		// then
+		assertEquals(1, numOfUniqueSection);
+	}
+
+	@Test
+	public void shouldReturn3UniqueSectionWhenPGLhas3SectionInOnePart() {
+		// given
+		PGL pgl = new PGL();
+		pgl.newSection("section1Name");
+		pgl.newSection("section2Name");
+		pgl.newSection("section3Name");
+		
+		// when
+		long numOfUniqueSection = pgl.numOfUniqueSections();
+		
+		// then
+		assertEquals(3, numOfUniqueSection);
+	}
+
+	@Test
+	public void shouldReturn1UniqueSectionWhenPGLhas1SectionIn3Part() {
+		// given
+		PGL pgl = new PGL();
+		String sectionName = "sectionName";
+		pgl.newSection(sectionName);
+		pgl.newSection(sectionName);
+		pgl.newSection(sectionName);
+		
+		// when
+		long numOfUniqueSection = pgl.numOfUniqueSections();
+		long numOfSectionParts = pgl.getSections().size();
+		
+		// then
+		assertEquals(1, numOfUniqueSection);
+		assertEquals(3, numOfSectionParts);
+	}
+
+	@Test
+	public void shouldReturn3UniqueSectionWhenPGLhas3SectionInManyParts() {
+		// given
+		PGL pgl = new PGL();
+		String section1Name = "section1Name";
+		String section2Name = "section2Name";
+		String section3Name = "section3Name";
+		pgl.newSection(section1Name);
+		pgl.newSection(section1Name);
+		pgl.newSection(section2Name);
+		pgl.newSection(section3Name);
+		pgl.newSection(section2Name);
+		pgl.newSection(section1Name);
+		pgl.newSection(section3Name);
+		pgl.newSection(section3Name);
+		
+		// when
+		long numOfUniqueSection = pgl.numOfUniqueSections();
+		
+		// then
+		assertEquals(3, numOfUniqueSection);
+	}
 }

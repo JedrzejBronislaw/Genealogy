@@ -57,6 +57,13 @@ public class PGL {
 		return values;
 	}
 	
+	public long numOfUniqueSections() {
+		return sections.stream().
+				map(Section::getName).
+				distinct().
+				count();
+	}
+	
 	public void forEachSection(Consumer<Section> action) {
 		sections.forEach(action);
 	}

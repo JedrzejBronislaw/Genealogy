@@ -153,10 +153,10 @@ public class PGLLoaderTest {
 		assertEquals(0, pglSize);
 		assertFalse(sectionExists);
 	}
-	
+
 	
 	@Test
-	public void shouldReturnOneSectionWhenSectionNameUsedTwice() {
+	public void shouldReturnTwoPartOfSectionWhenSectionNameUsedTwice() {
 		// given
 		PGL pgl = saveAndLoadFile(
 			"[1]",
@@ -171,7 +171,7 @@ public class PGLLoaderTest {
 	}
 	
 	@Test
-	public void shouldReturnOneSectionWithAllValuesWhenSectionNameUsedTwice() {
+	public void shouldGetValuesFromAllPartsOfSection() {
 		// given
 		String sectionName = "1";
 		String nameKey = "name";
@@ -470,6 +470,85 @@ public class PGLLoaderTest {
 		assertEquals(2, returnedNames.size());
 		assertEquals(nameValue1, returnedNames.get(0));
 		assertEquals(nameValue2, returnedNames.get(1));
+		assertEquals(cityValue, returnedCity);
+	}
+	
+	
+
+	
+	@Test
+	public void shouldReturn0UniqueSectionsWhenPGLisEmpty() {
+		// given
+		PGL pgl = saveAndLoadFile("");
+		
+		// when
+		long numOfUniqueSections = pgl.numOfUniqueSections();
+		
+		// then
+		assertEquals(0, numOfUniqueSections);
+	}
+	
+	@Test
+	public void shouldReturn1UniqueSectionWhenSectionNameUsedTwice() {
+		// given
+		PGL pgl = saveAndLoadFile(
+			"[1]",
+			"[1]"
+			);
+		
+		// when
+		long numOfUniqueSections = pgl.numOfUniqueSections();
+		
+		// then
+		assertEquals(1, numOfUniqueSections);
+	}
+	
+	@Test
+	public void shouldReturn3UniqueSectionWhen9PartOfSectionsUse3Names() {
+		// given
+		PGL pgl = saveAndLoadFile(
+			"[1]",
+			"[2]",
+			"[3]",
+			"[2]",
+			"[1]",
+			"[2]",
+			"[2]",
+			"[3]",
+			"[1]"
+			);
+		
+		// when
+		long numOfUniqueSections = pgl.numOfUniqueSections();
+		
+		// then
+		assertEquals(3, numOfUniqueSections);
+	}
+	
+	@Test
+	public void shouldReturn1UniqueSectionWhenPartsOfSectionsHaveOtherValues() {
+		// given
+		String sectionName = "1";
+		String nameKey = "name";
+		String nameValue = "Jan";
+		String cityKey = "city";
+		String cityValue = "Poznan";
+		
+		PGL pgl = saveAndLoadFile(
+			"[" + sectionName + "]",
+			nameKey + "=" + nameValue,
+			"[" + sectionName + "]",
+			cityKey + "=" + cityValue
+			);
+		
+		// when
+		long numOfUniqueSections = pgl.numOfUniqueSections();
+		String returnedName = pgl.getValue(sectionName, nameKey);
+		String returnedCity = pgl.getValue(sectionName, cityKey);
+		
+		// then
+		assertEquals(1, numOfUniqueSections);
+		assertEquals(nameValue, returnedName);
 		assertEquals(cityValue, returnedCity);
 	}
 }
