@@ -27,5 +27,7 @@ public class PGLIncorrectLine {
 	
 	private void validateContent(String content) {
 		if (content == null) throw new IllegalArgumentException("Incorrect PGL line cannot be null.");
+		if (content.contains("="))
+			throw new ContentIsNotIncorrectException(content);
 	}
 }

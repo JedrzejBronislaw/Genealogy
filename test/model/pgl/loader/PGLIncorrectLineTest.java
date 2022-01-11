@@ -82,7 +82,6 @@ public class PGLIncorrectLineTest {
 
 	
 
-
 	@Test
 	public void shouldCreatePGLIncorrectLineWhenUseOneArgConstructor() {
 		new PGLIncorrectLine("line");
@@ -129,5 +128,17 @@ public class PGLIncorrectLineTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void shouldThrowsExceptionWhenContentIsNullAndUseOneArgConstructor() {
 		new PGLIncorrectLine(null);
+	}
+	
+
+	
+	@Test(expected = ContentIsNotIncorrectException.class)
+	public void shuldThrowsExceptionWhenContentIsCorrectLine_2ArgsConstructor() {
+		new PGLIncorrectLine("key=value", "sectionName");
+	}
+	
+	@Test(expected = ContentIsNotIncorrectException.class)
+	public void shuldThrowsExceptionWhenContentIsCorrectLine_1ArgConstructor() {
+		new PGLIncorrectLine("key=value");
 	}
 }
