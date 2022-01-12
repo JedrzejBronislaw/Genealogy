@@ -1,7 +1,6 @@
 package model.pgl.loader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -32,29 +31,20 @@ public class TempFile {
 	}
 	
 	public PGL loadPGL() {
-		PGLLoader pglLoader = null;
-	
-		try {
-			pglLoader = new PGLLoader(file.getAbsolutePath());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		PGLLoader pglLoader = new PGLLoader(file.getAbsolutePath());
 		
-		return pglLoader.load();
+		try {
+			return pglLoader.load();
+		} catch (IOException e) {
+			return null;
+		}
 	}
 	
 	public Tree loadTree() {
-		PGLLoader pglLoader = null;
-		TreeLoader treeLoader;
 		Tree tree = new Tree();
+		PGLLoader pglLoader = new PGLLoader(file.getAbsolutePath());
+		TreeLoader treeLoader = new TreeLoader(pglLoader);
 
-		try {
-			pglLoader = new PGLLoader(file.getAbsolutePath());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		treeLoader = new TreeLoader(pglLoader);
 		treeLoader.load(tree);
 		
 		return tree;

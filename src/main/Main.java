@@ -1,8 +1,6 @@
 package main;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -101,14 +99,14 @@ public class Main extends Application {
 		Tree tree = new Tree();
 		PGLDiffReport report;
 		
-		try {
+//		try {
 			TreeLoader treeLoader = new TreeLoader(new PGLLoader(path));
 			report = treeLoader.loadAndAnalize(tree);
 			System.out.println(report);
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found (" + path + ").");
-			return new TreeAndReport(null, PGLDiffReport.FILENOTFOUND);
-		}		
+//		} catch (FileNotFoundException e) {
+//			System.out.println("File not found (" + path + ").");
+//			return new TreeAndReport(null, PGLDiffReport.FILENOTFOUND);
+//		}
 		
 		return new TreeAndReport(tree, report);
 	}

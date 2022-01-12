@@ -118,12 +118,7 @@ public class PGLWriterTest {
 		if (!writer.save(tree)) fail("Saving file error");
 		
 		
-		try {
-			pglLoader = new PGLLoader(file.getAbsolutePath());
-		} catch (FileNotFoundException e) {
-			fail("Opening file error");
-		}
-		
+		pglLoader = new PGLLoader(file.getAbsolutePath());
 		treeLoader = new TreeLoader(pglLoader);
 		if (!treeLoader.load(treeFromFile)) fail("Loading file error");
 		

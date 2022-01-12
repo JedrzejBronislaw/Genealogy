@@ -11,15 +11,15 @@ import model.pgl.PGL;
 import tools.Tools;
 
 public class PGLLoader implements IPGLLoader {
+
+	private String path;
 	
-	private BufferedReader brFile;
 	
-	
-	public PGLLoader(String path) throws FileNotFoundException {
-		openFile(path);
+	public PGLLoader(String path) {
+		this.path = path;
 	}
 	
-	private void openFile(String path) throws FileNotFoundException {
+	private BufferedReader openFile(String path) throws FileNotFoundException {
 		FileInputStream fis;
 		DataInputStream dis;
 		
@@ -29,24 +29,18 @@ public class PGLLoader implements IPGLLoader {
 		fis = new FileInputStream(path);
 		dis = new DataInputStream(fis);
 		
-		brFile = new BufferedReader(new InputStreamReader(dis));
+		return new BufferedReader(new InputStreamReader(dis));
 	}
 	
 	@Override
-	public PGL load() {
-		try{
-			return loadFromFile();
-		} catch (IOException e) {
-			return null;
-		}
-	}
-	
-	private PGL loadFromFile() throws IOException {
+	public PGL load() throws IOException {
 		String line;
 		Section section = null;
 		PGL pgl = new PGL();
+
+		BufferedReader reader = openFile(path);
 		
-		while ((line = brFile.readLine()) != null) {
+		while ((line = reader.readLine()) != null) {
 			line = line.trim();
 			
 			if (isSectionHeader(line))
