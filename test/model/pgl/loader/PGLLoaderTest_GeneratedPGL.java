@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import model.pgl.PGL;
 
-public class PGLLoaderTest {
+public class PGLLoaderTest_GeneratedPGL {
 	
 	
 	private PGL saveAndLoadFile(String... content) {
