@@ -16,18 +16,18 @@ public class PGLIncorrectLine {
 	}
 	
 	public PGLIncorrectLine(String content, String sectionName) {
-		validateContent(content);
+		validate(content, sectionName);
 		
 		this.content = content;
 		this.sectionName = Optional.ofNullable(sectionName);
 	}
 
 	
-	private void validateContent(String content) {
+	private void validate(String content, String sectionName) {
 		if (content == null)
 			throw new IllegalArgumentException("Incorrect PGL line cannot be null.");
 		
-		if (content.contains("="))
+		if (content.contains("=") && sectionName != null)
 			throw new ContentIsNotIncorrectException(content);
 	}
 }

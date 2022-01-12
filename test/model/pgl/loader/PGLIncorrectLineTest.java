@@ -133,12 +133,17 @@ public class PGLIncorrectLineTest {
 
 	
 	@Test(expected = ContentIsNotIncorrectException.class)
-	public void shuldThrowsExceptionWhenContentIsCorrectLine_2ArgsConstructor() {
+	public void shouldThrowsExceptionWhenContentIsCorrectLine_2ArgsConstructor() {
 		new PGLIncorrectLine("key=value", "sectionName");
 	}
 	
-	@Test(expected = ContentIsNotIncorrectException.class)
-	public void shuldThrowsExceptionWhenContentIsCorrectLine_1ArgConstructor() {
+	@Test
+	public void shouldNotThrowExceptionWhenContentIsCorrectLineButWithoutSectionName_2ArgConstructor() {
+		new PGLIncorrectLine("key=value", null);
+	}
+	
+	@Test
+	public void shouldNotThrowExceptionWhenContentIsCorrectLineButWithoutSectionName_1ArgConstructor() {
 		new PGLIncorrectLine("key=value");
 	}
 }
