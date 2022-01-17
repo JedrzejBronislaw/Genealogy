@@ -14,7 +14,7 @@ public class PGLDiffReport {
 	
 	public static final String newLine = System.lineSeparator();
 
-	public static final PGLDiffReport FILENOTFOUND = new PGLDiffReport(false);
+	public static final PGLDiffReport LOADINGERROR = new PGLDiffReport(false);
 
 	@NonNull PGLDiffContainer diff;
 	private List<AdditionalKey> notEmptyAdditionalKeys = new ArrayList<>();

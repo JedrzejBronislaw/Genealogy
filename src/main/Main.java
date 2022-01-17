@@ -94,19 +94,18 @@ public class Main extends Application {
 		stage.setFullScreen(fullscreen);
 	}
 	
-	private static TreeAndReport loadTree(String path)
-	{
+	private static TreeAndReport loadTree(String path) {
 		Tree tree = new Tree();
-		PGLDiffReport report;
+
+		TreeLoader treeLoader = new TreeLoader(new PGLLoader(path));
+		PGLDiffReport report = treeLoader.loadAndAnalize(tree);
 		
-//		try {
-			TreeLoader treeLoader = new TreeLoader(new PGLLoader(path));
-			report = treeLoader.loadAndAnalize(tree);
-			System.out.println(report);
-//		} catch (FileNotFoundException e) {
-//			System.out.println("File not found (" + path + ").");
-//			return new TreeAndReport(null, PGLDiffReport.FILENOTFOUND);
-//		}
+		System.out.println(report);
+		
+		if (report == null) {
+			System.out.println("Loading error (" + path + ").");
+			return new TreeAndReport(null, PGLDiffReport.LOADINGERROR);
+		}
 		
 		return new TreeAndReport(tree, report);
 	}
