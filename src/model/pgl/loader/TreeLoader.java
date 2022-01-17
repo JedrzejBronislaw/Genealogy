@@ -41,7 +41,7 @@ public class TreeLoader implements ITreeLoader {
 	
 	@Override
 	public boolean load(Tree tree) {
-		try{
+		try {
 			loadFromFile(tree);
 		} catch (IOException e) {
 			return false;
@@ -51,12 +51,15 @@ public class TreeLoader implements ITreeLoader {
 	
 	@Override
 	public PGLDiffReport loadAndAnalize(Tree tree) {
-		try{
-			PGL pgl = loadFromFile(tree);
-			return analize(tree, pgl);
+		PGL pgl;
+		
+		try {
+			pgl = loadFromFile(tree);
 		} catch (IOException e) {
 			return null;
 		}
+		
+		return analize(tree, pgl);
 	}
 	
 	private PGL loadFromFile(Tree tree) throws IOException {
