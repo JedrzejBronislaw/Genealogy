@@ -9,12 +9,12 @@ import model.Person;
 
 public class Children extends Area implements PersonLocationContainter {
 
-	private GraphParameters params = GraphParameters.ZERO;
+//	private GraphParameters params = GraphParameters.ZERO;
 	private List<Family> children;
 	
 
 	public Children(Person[] children, int generation, GraphParameters params) {
-		this.params = params;
+//		this.params = params;
 		
 		this.children = Arrays.asList(children).stream()
 				.map(person -> new Family(person, generation, params))
