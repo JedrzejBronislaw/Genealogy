@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import model.pgl.Section;
 import model.pgl.PGL;
-import tools.Tools;
+import tools.PathUtils;
 
 public class PGLLoader implements IPGLLoader {
 
@@ -20,17 +20,9 @@ public class PGLLoader implements IPGLLoader {
 	}
 	
 	private BufferedReader openFile(String path) throws FileNotFoundException {
-		path = makePathAbsolute(path);
+		path = PathUtils.makePathAbsolute(path);
 
 		return new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(path))));
-	}
-
-	private String makePathAbsolute(String path) {
-		return path = isPathAbsolute(path) ? path : Tools.dirWithJarPath() + path;
-	}
-
-	private boolean isPathAbsolute(String path) {
-		return path.charAt(1) == ':';
 	}
 	
 	@Override
