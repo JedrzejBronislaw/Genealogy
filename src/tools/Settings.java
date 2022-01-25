@@ -29,7 +29,7 @@ public class Settings {
 		DataInputStream dis;
 		
 		if (sciezka.charAt(1) != ':')
-			sciezka = PathUtils.jarPath() + sciezka;
+			sciezka = PathUtils.JAR_PATH + sciezka;
 		
 		fis = new FileInputStream(sciezka);
 		dis = new DataInputStream(fis);

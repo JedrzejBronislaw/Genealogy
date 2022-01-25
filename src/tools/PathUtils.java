@@ -6,7 +6,10 @@ import java.net.URLDecoder;
 
 public class PathUtils {
 	
-	public static String jarPath() {
+	public static final String JAR_PATH = jarPath();
+	
+	
+	private static String jarPath() {
 		File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
 		String path = null;
 
@@ -22,7 +25,7 @@ public class PathUtils {
 	}
 	
 	public static String makePathAbsolute(String path) {
-		return path = isPathAbsolute(path) ? path : jarPath() + path;
+		return path = isPathAbsolute(path) ? path : JAR_PATH + path;
 	}
 
 	public static boolean isPathAbsolute(String path) {
