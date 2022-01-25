@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import model.pgl.Section;
-
 public class SectionEqualsTest {
 
 	private Section createExampleSection() {

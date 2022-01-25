@@ -4,9 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import model.pgl.Section;
-import model.pgl.PGL;
-
 public class PGLEqualsTest {
 
 	private PGL createExamplePGL() {

@@ -13,7 +13,6 @@ import model.LifeStatus;
 import model.MyDate;
 import model.Sex;
 import model.pgl.Section;
-import model.pgl.saver.SectionWriter;
 import model.pgl.PGLFields;
 
 public class SectionWriterTest {

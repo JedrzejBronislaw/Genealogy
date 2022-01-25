@@ -8,8 +8,6 @@ import org.junit.Test;
 
 import model.pgl.Section;
 import model.pgl.PGL;
-import model.pgl.comparator.PGLDiffContainer;
-import model.pgl.comparator.PGLComparator;
 import model.pgl.comparator.PGLDiffContainer.AdditionalKey;
 import model.pgl.comparator.PGLDiffContainer.AdditionalSection;
 import model.pgl.comparator.PGLDiffContainer.OtherValue;

@@ -12,7 +12,6 @@ import model.Person;
 import model.Sex;
 import model.Tree;
 import model.pgl.PGLFields;
-import model.pgl.saver.TreeToPGLMapper;
 import model.pgl.PGL;
 
 public class TreeToPGLMapperTest_onePerson {

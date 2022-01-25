@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +22,6 @@ import model.Tree;
 import model.familyRelations.RelationEditor;
 import model.pgl.loader.PGLLoader;
 import model.pgl.loader.TreeLoader;
-import model.pgl.saver.TreeSaver;
 
 public class PGLWriterTest {
 

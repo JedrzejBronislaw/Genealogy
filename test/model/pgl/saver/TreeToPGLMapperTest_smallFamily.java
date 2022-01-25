@@ -13,7 +13,6 @@ import model.Sex;
 import model.Tree;
 import model.familyRelations.RelationEditor;
 import model.pgl.PGLFields;
-import model.pgl.saver.TreeToPGLMapper;
 import model.pgl.PGL;
 import model.random.RandomPerson;
 
