@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.junit.Test;
@@ -108,5 +109,15 @@ public class PGLLoaderTest {
 		
 		// then
 		assertNotSame(pgl1, pgl2);
+	}
+	
+	@Test(expected = FileNotFoundException.class)
+	public void shouldThrowExceptionWhenPathIsWrong() throws IOException {
+		// given
+		PGLLoader pglLoader = new PGLLoader("wrongPath");
+
+		// when
+		// then
+		pglLoader.load();
 	}
 }
