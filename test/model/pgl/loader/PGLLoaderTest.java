@@ -19,16 +19,19 @@ public class PGLLoaderTest {
 		
 		try {
 			file = File.createTempFile("file", ".txt");
-			file.deleteOnExit();
-			
-			FileWriter writer = new FileWriter(file);
-			writer.write(content);
-			writer.close();
+			file.deleteOnExit();		
+			setFileContent(file, content);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		return file;
+	}
+
+	private void setFileContent(File file, String content) throws IOException {
+		FileWriter writer = new FileWriter(file);
+		writer.write(content);
+		writer.close();
 	}
 	
 	private PGLLoader createPGLLoader(File file) {
@@ -119,5 +122,22 @@ public class PGLLoaderTest {
 		// when
 		// then
 		pglLoader.load();
+	}
+	
+	@Test
+	public void shouldLoadNewPGLWhenFileChangedAfterFirstLoad() throws IOException {
+		// given
+		File file = createFile("[1]");
+		PGLLoader pglLoader = createPGLLoader(file);
+		
+		PGL pgl1 = pglLoader.load();
+		setFileContent(file, "[1]\n[2]");
+
+		// when
+		PGL pgl2 = pglLoader.load();
+		
+		// then
+		assertEquals(1, pgl1.size());
+		assertEquals(2, pgl2.size());
 	}
 }
