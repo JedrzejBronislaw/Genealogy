@@ -8,7 +8,7 @@ import model.Person;
 import model.Sex;
 import model.Tree;
 import other.Diminutives;
-import tools.Tools;
+import tools.Utils;
 
 public class SearchEngine {
 	
@@ -71,7 +71,7 @@ public class SearchEngine {
 		keyWords += " " + Diminutives.forNameStd(person.getFirstName());
 		
 		keyWords = keyWords.toUpperCase();		
-		return Tools.replacePolishChars(keyWords);
+		return Utils.replacePolishChars(keyWords);
 	}
 	
 	public List<Person> run(String query){
@@ -85,7 +85,7 @@ public class SearchEngine {
 	private List<String> prepareQuery(String query) {
 		query = query.trim();
 		query = query.toUpperCase();
-		query = Tools.replacePolishChars(query);
+		query = Utils.replacePolishChars(query);
 		return Arrays.asList(query.split(" "));
 	}
 

@@ -3,7 +3,7 @@ package tools;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tools {
+public class Utils {
 	
 	public static String replacePolishChars(String text)
 	{
