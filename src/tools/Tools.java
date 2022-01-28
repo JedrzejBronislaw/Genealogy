@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Tools {
 	
-	public static String removePolishChars(String text)
+	public static String replacePolishChars(String text)
 	{
 		text = text.replace("¹", "a");
 		text = text.replace("ê", "e");
