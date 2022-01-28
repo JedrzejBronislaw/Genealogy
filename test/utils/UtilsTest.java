@@ -1,0 +1,56 @@
+package utils;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+public class UtilsTest {
+
+	@Test
+	public void shouldReplaceLowerPolishCharacters() {
+		// given
+		String polishChars = "πÊÍ≥ÒÛúøü";
+		
+		// when
+		String withoutPolishChars = Utils.replacePolishChars(polishChars);
+		
+		// then
+		assertEquals("acelnoszz", withoutPolishChars);
+	}
+
+	@Test
+	public void shouldReplaceUpperPolishCharacters() {
+		// given
+		String polishChars = "•∆ £—”åØè";
+		
+		// when
+		String withoutPolishChars = Utils.replacePolishChars(polishChars);
+		
+		// then
+		assertEquals("ACELNOSZZ", withoutPolishChars);
+	}
+
+	@Test
+	public void shouldReplaceMixedLowerAndUpperPolishCharacters() {
+		// given
+		String polishChars = "•∆ ≥ÒÛåØè";
+		
+		// when
+		String withoutPolishChars = Utils.replacePolishChars(polishChars);
+		
+		// then
+		assertEquals("ACElnoSZZ", withoutPolishChars);
+	}
+
+	@Test
+	public void shouldReplaceMixedPolishCharsWithOtherChar() {
+		// given
+		String polishChars = "x•x∆x x≥xÒxÛxåxØxèx";
+		
+		// when
+		String withoutPolishChars = Utils.replacePolishChars(polishChars);
+		
+		// then
+		assertEquals("xAxCxExlxnxoxSxZxZx", withoutPolishChars);
+	}
+}
