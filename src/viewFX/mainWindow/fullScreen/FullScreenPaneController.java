@@ -11,7 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import lang.Internationalization;
 import lombok.Setter;
-import tools.Injection;
+import utils.Injection;
 
 public class FullScreenPaneController implements Initializable {
 

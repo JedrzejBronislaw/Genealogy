@@ -13,11 +13,11 @@ import javafx.scene.layout.VBox;
 import lombok.Setter;
 import model.Person;
 import session.Session;
-import tools.Injection;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.TreeGraphType;
 import treeGraphs.painter.PainterServiceType;
 import treeGraphs.painter.nameDisplayers.NameDisplayerType;
+import utils.Injection;
 import viewFX.editPerson.fields.SearchBox;
 import viewFX.editPerson.fields.enumField.control.EnumField;
 

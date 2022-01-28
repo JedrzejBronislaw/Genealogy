@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import javafx.scene.control.Label;
 import lang.Languages;
 import lombok.Setter;
-import tools.Injection;
+import utils.Injection;
 import viewFX.builders.FXMLBuilder;
 
 public class LanguageItemPaneBuilder extends FXMLBuilder<LanguageItemPaneController> {

@@ -10,7 +10,7 @@ import model.Person;
 import model.Sex;
 import model.familyRelations.RelationEditor;
 import session.Session;
-import tools.Utils;
+import utils.Utils;
 import viewFX.builders.PaneFXMLBuilder;
 import viewFX.editPerson.fields.children.EditChildrenItem;
 import viewFX.editPerson.fields.date.EditDateItem;

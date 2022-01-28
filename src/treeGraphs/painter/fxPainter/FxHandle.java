@@ -1,8 +1,8 @@
 package treeGraphs.painter.fxPainter;
 
 import javafx.scene.Node;
-import tools.Injection;
 import treeGraphs.painter.Handle;
+import utils.Injection;
 
 public class FxHandle extends Handle {
 

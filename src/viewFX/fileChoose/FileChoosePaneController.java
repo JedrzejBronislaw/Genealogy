@@ -13,8 +13,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import lombok.Setter;
 import settings.RecentFile;
-import tools.FxDialogs;
-import tools.Injection;
+import utils.FxDialogs;
+import utils.Injection;
 
 public class FileChoosePaneController implements Initializable {
 

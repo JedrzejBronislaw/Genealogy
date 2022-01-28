@@ -1,8 +1,8 @@
 package treeGraphs.stdDescendantsTG;
 
 import lombok.Getter;
-import tools.Injection;
 import treeGraphs.painter.Point;
+import utils.Injection;
 
 public abstract class Area {
 	

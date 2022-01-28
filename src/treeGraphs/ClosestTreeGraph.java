@@ -1,10 +1,10 @@
 package treeGraphs;
 
 import model.Person;
-import tools.Maxer;
 import treeGraphs.painter.Direction;
 import treeGraphs.painter.MyFont;
 import treeGraphs.painter.MyFont.Style;
+import utils.Maxer;
 import treeGraphs.painter.Point;
 
 public class ClosestTreeGraph extends TreeGraph {

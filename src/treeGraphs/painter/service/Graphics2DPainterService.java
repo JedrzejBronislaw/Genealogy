@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import tools.SwingRefresher;
 import treeGraphs.TreeGraph;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.Painter;
@@ -14,6 +13,7 @@ import treeGraphs.painter.graphics2DPainter.ClickMap;
 import treeGraphs.painter.graphics2DPainter.G2DHandleFactory;
 import treeGraphs.painter.graphics2DPainter.Graphics2DGraphSaver;
 import treeGraphs.painter.graphics2DPainter.Graphics2DPainter;
+import utils.SwingRefresher;
 
 public class Graphics2DPainterService extends PainterService {
 

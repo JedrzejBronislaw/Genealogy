@@ -13,8 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import lombok.Setter;
-import tools.FxDialogs;
-import tools.Injection;
+import utils.FxDialogs;
+import utils.Injection;
 
 public class TreePaneController implements Initializable{
 

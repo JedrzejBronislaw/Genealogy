@@ -15,7 +15,7 @@ import lombok.Setter;
 import model.Marriage;
 import model.Person;
 import model.Sex;
-import tools.Injection;
+import utils.Injection;
 import viewFX.editPerson.fields.date.EditDateFieldBuilder;
 import viewFX.editPerson.fields.date.EditDateFieldController;
 

@@ -3,9 +3,9 @@ package treeGraphs.painter.graphics2DPainter;
 import java.util.ArrayList;
 
 import lombok.Setter;
-import tools.Injection;
 import treeGraphs.painter.Point;
 import treeGraphs.painter.Rectangle;
+import utils.Injection;
 
 public class ClickMap {
 

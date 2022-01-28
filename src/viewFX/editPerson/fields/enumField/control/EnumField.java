@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 
 import javafx.scene.Node;
 import lombok.Getter;
-import tools.Injection;
-import tools.Utils;
+import utils.Injection;
+import utils.Utils;
 import viewFX.editPerson.fields.enumField.EditEnumFieldBuilder;
 import viewFX.editPerson.fields.enumField.EditEnumFieldController;
 

@@ -19,10 +19,10 @@ import lombok.Setter;
 import model.Person;
 import model.Sex;
 import other.PersonDetails;
-import tools.Injection;
 import treeGraphs.ClosestTreeGraph;
 import treeGraphs.painter.service.FXPainterService;
 import treeGraphs.painter.service.PainterService;
+import utils.Injection;
 
 public class CardPaneController implements Initializable{
 

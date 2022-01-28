@@ -13,7 +13,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import lang.Internationalization;
 import lombok.Setter;
-import tools.Injection;
+import utils.Injection;
 import viewFX.editPerson.fields.EditFieldInterface;
 
 public class EditEnumFieldController implements EditFieldInterface, Initializable {

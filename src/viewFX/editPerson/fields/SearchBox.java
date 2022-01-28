@@ -11,7 +11,7 @@ import lombok.Setter;
 import model.Person;
 import model.Tree;
 import searchEngine.SearchEngine;
-import tools.Injection;
+import utils.Injection;
 import viewFX.search.SearchViewBuilder;
 import viewFX.search.SearchViewController;
 

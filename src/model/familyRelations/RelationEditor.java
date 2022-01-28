@@ -10,7 +10,7 @@ import model.Sex;
 import model.Tree;
 import model.TreeEditor;
 import model.tools.ManWoman;
-import tools.Utils;
+import utils.Utils;
 
 @NoArgsConstructor
 public class RelationEditor {

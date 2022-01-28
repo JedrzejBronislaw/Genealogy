@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import lombok.Setter;
-import tools.Injection;
+import utils.Injection;
 
 public class LanguageItemPaneController implements Initializable {
 	

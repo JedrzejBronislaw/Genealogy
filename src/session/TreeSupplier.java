@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import model.Tree;
-import tools.Injection;
+import utils.Injection;
 
 public class TreeSupplier {
 	private Tree tree = null;

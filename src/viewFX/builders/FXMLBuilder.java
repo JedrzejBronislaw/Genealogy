@@ -3,8 +3,8 @@ package viewFX.builders;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import lombok.Getter;
-import tools.MyFXMLLoader;
-import tools.MyFXMLLoader.NodeAndController;
+import utils.MyFXMLLoader;
+import utils.MyFXMLLoader.NodeAndController;
 
 public abstract class FXMLBuilder<T extends Initializable> {
 	

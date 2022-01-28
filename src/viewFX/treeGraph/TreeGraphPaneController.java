@@ -11,13 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import lombok.Setter;
 import model.Person;
-import tools.FxDialogs;
-import tools.Injection;
 import treeGraphs.TreeGraph;
 import treeGraphs.TreeGraphParameters;
 import treeGraphs.painter.GraphSaver;
 import treeGraphs.painter.service.PainterService;
 import treeGraphs.painter.service.PainterServiceBuilder;
+import utils.FxDialogs;
+import utils.Injection;
 
 public class TreeGraphPaneController implements Initializable{
 
