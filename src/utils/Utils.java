@@ -31,6 +31,9 @@ public class Utils {
 	}
 	
 	public static String[] getStringValues(Class<? extends Enum<?>> enumClass) {
+		if (enumClass == null)
+			throw new IllegalArgumentException("Enum class must be set.");
+		
 		Enum<?>[] rawValues = enumClass.getEnumConstants();
 		String[] strValues = new String[rawValues.length];
 		
