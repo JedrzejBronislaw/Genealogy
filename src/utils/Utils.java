@@ -44,6 +44,9 @@ public class Utils {
 	}
 	
 	public static <T> List<T> removeNullElements(List<T> list) {
+		if (list == null)
+			throw new IllegalArgumentException("List must be not null");
+		
 		List<T> listWithoutNulls = new ArrayList<>();
 		
 		list.forEach(element -> {
