@@ -61,6 +61,19 @@ public class UtilsTest {
 		// then
 		assertEquals("xAxCxExlxnxoxSxZxZx", withoutPolishChars);
 	}
+
+	@Test
+	public void shouldHandleSentence_Zazolc_gesla_jazn() {
+		// given
+		String sentence         = "Za¿ó³æ gêœl¹ jaŸñ";
+		String expectedSentence = "Zazolc gesla jazn";
+		
+		// when
+		String returnedSentence = Utils.replacePolishChars(sentence);
+		
+		// then
+		assertEquals(expectedSentence, returnedSentence);
+	}
 	
 	// getStringValues
 	
