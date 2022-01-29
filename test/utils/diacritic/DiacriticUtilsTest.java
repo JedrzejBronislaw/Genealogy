@@ -106,4 +106,18 @@ public class DiacriticUtilsTest {
 		// then
 		assertEquals("aUo", withoutGermanChars);
 	}
+	
+	//
+
+	@Test
+	public void shouldReplaceMixedPolishAndGermanCharacters() {
+		// given
+		String diacriticChars = "¥ÆÊäüö";
+		
+		// when
+		String returnedChars = DiacriticUtils.replaceDiacriticChars(diacriticChars);
+		
+		// then
+		assertEquals("ACEauo", returnedChars);
+	}
 }

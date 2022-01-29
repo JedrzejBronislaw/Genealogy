@@ -1,5 +1,7 @@
 package utils.diacritic;
 
+import java.util.List;
+
 public class DiacriticUtils {
 	
 	private static final DiacriticAlphabet POLISH = new DiacriticAlphabet(
@@ -33,12 +35,26 @@ public class DiacriticUtils {
 			new DiacriticPair("Ö", "O"),
 			new DiacriticPair("Ü", "U")
 	);
-		
+	
+	private static final List<DiacriticAlphabet> ALL_ALPHABETS = List.of(POLISH, GERMAN);
+
+	
+	public static String replaceDiacriticChars(String text) {
+		for (DiacriticAlphabet alphabet : ALL_ALPHABETS)
+			text = replaceDiacriticChars(text, alphabet);
+
+		return text;
+	}
+	
 	public static String replacePolishChars(String text) {
-		return POLISH.replaceDiacriticLetters(text);
+		return replaceDiacriticChars(text, POLISH);
 	}
 	
 	public static String replaceGermanChars(String text) {
-		return GERMAN.replaceDiacriticLetters(text);
+		return replaceDiacriticChars(text, GERMAN);
+	}
+
+	private static String replaceDiacriticChars(String text, DiacriticAlphabet alphabet) {
+		return alphabet.replaceDiacriticLetters(text);
 	}
 }
