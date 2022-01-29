@@ -23,8 +23,22 @@ public class DiacriticUtils {
 			new DiacriticPair("¯", "Z"),
 			new DiacriticPair("Ñ", "N")
 	);
+	
+	private static final DiacriticAlphabet GERMAN = new DiacriticAlphabet(
+			new DiacriticPair("ä", "a"),
+			new DiacriticPair("ö", "o"),
+			new DiacriticPair("ü", "u"),
+
+			new DiacriticPair("Ä", "A"),
+			new DiacriticPair("Ö", "O"),
+			new DiacriticPair("Ü", "U")
+	);
 		
 	public static String replacePolishChars(String text) {
 		return POLISH.replaceDiacriticLetters(text);
+	}
+	
+	public static String replaceGermanChars(String text) {
+		return GERMAN.replaceDiacriticLetters(text);
 	}
 }

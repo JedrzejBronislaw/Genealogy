@@ -68,4 +68,42 @@ public class DiacriticUtilsTest {
 		// then
 		assertEquals(expectedSentence, returnedSentence);
 	}
+
+	// replaceGermanChars
+	
+	@Test
+	public void shouldReplaceLowerGermanCharacters() {
+		// given
+		String germanChars = "äüö";
+		
+		// when
+		String withoutGermanChars = DiacriticUtils.replaceGermanChars(germanChars);
+		
+		// then
+		assertEquals("auo", withoutGermanChars);
+	}
+
+	@Test
+	public void shouldReplaceUpperGermanCharacters() {
+		// given
+		String germanChars = "ÄÜÖ";
+		
+		// when
+		String withoutGermanChars = DiacriticUtils.replaceGermanChars(germanChars);
+		
+		// then
+		assertEquals("AUO", withoutGermanChars);
+	}
+
+	@Test
+	public void shouldReplaceMixedLowerAndUpperGermanCharacters() {
+		// given
+		String germanChars = "äÜö";
+		
+		// when
+		String withoutGermanChars = DiacriticUtils.replaceGermanChars(germanChars);
+		
+		// then
+		assertEquals("aUo", withoutGermanChars);
+	}
 }
