@@ -16,15 +16,15 @@ public class Settings {
 	private static BufferedReader brPlik;
 	private static ArrayList<String> ostatnioOtwarte = new ArrayList<String>();
 	
-	public static String[] getOstatnioOtwarte()
-	{
+	
+	public static String[] getOstatnioOtwarte() {
 		String[] tab = new String[ostatnioOtwarte.size()];
 		ostatnioOtwarte.toArray(tab);
+		
 		return tab;
 	}
 	
-	private static void otworzPlik(String sciezka) throws FileNotFoundException
-	{
+	private static void otworzPlik(String sciezka) throws FileNotFoundException {
 		FileInputStream fis;
 		DataInputStream dis;
 		
@@ -37,8 +37,7 @@ public class Settings {
 		brPlik = new BufferedReader(new InputStreamReader(dis));
 	}
 	
-	public static boolean zaladuj()
-	{
+	public static boolean zaladuj() {
 		HashMap<String, String> pola = new HashMap<String, String>();
 
 		buforuj(pola);
@@ -47,8 +46,7 @@ public class Settings {
 		return true;
 	}
 
-	private static boolean buforuj(HashMap<String, String> pola)
-	{
+	private static boolean buforuj(HashMap<String, String> pola) {
 		String linia;
 		String[] podzial;
 		
@@ -60,8 +58,7 @@ public class Settings {
 		
 		try {
 			linia = brPlik.readLine();
-			while (linia != null)
-			{
+			while (linia != null) {
 				linia = linia.trim();
 				podzial = linia.split("=", 2);
 				
@@ -81,17 +78,13 @@ public class Settings {
 		String wartosc;
 		
 		//scie¿ki ostatnio otwartych plików
-		for (int i=1; i<=10; i++)
-		{
+		for (int i=1; i<=10; i++) {
 			wartosc = pola.get("oo"+i);
 			if (wartosc != null) ostatnioOtwarte.add(wartosc);
 		}
 	}
 
-	public boolean zapisz()
-	{
-		
-		
+	public boolean zapisz() {
 		return true;//TODO uzale¿niæ zwracan¹ wartoœæ od powodzenia zapisu
 	}
 }
