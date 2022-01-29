@@ -1,12 +1,13 @@
 package utils;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Utils {
 	
-	public static String replacePolishChars(String text)
-	{
+	public static String replacePolishChars(String text) {
 		text = text.replace("¹", "a");
 		text = text.replace("ê", "e");
 		text = text.replace("œ", "s");
@@ -34,27 +35,17 @@ public class Utils {
 		if (enumClass == null)
 			throw new IllegalArgumentException("Enum class must be set.");
 		
-		Enum<?>[] rawValues = enumClass.getEnumConstants();
-		String[] strValues = new String[rawValues.length];
-		
-		for(int i=0; i<rawValues.length; i++)
-			strValues[i] = rawValues[i].name();
-		
-		return strValues;
+		return Stream.of(enumClass.getEnumConstants())
+				.map(Enum::name)
+				.toArray(String[]::new);
 	}
 	
 	public static <T> List<T> removeNullElements(List<T> list) {
 		if (list == null)
 			throw new IllegalArgumentException("List must be not null");
 		
-		List<T> listWithoutNulls = new ArrayList<>();
-		
-		list.forEach(element -> {
-			if (element != null)
-				listWithoutNulls.add(element);
-			});
-		list = listWithoutNulls;
-		
-		return list;
+		return list.stream()
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
 	}
 }
