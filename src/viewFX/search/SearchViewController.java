@@ -15,7 +15,7 @@ import javafx.scene.input.KeyCode;
 import lombok.Setter;
 import model.Person;
 import other.PersonDetails;
-import tools.Injection;
+import utils.Injection;
 
 public class SearchViewController implements Initializable {
 

@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 import model.Person;
-import tools.Injection;
+import utils.Injection;
 import viewFX.editPerson.fields.EditItemInterface;
 
 public class EditPersonPaneController implements Initializable {

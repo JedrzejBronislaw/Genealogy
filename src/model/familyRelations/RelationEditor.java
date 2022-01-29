@@ -10,7 +10,7 @@ import model.Sex;
 import model.Tree;
 import model.TreeEditor;
 import model.tools.ManWoman;
-import tools.Tools;
+import utils.Utils;
 
 @NoArgsConstructor
 public class RelationEditor {
@@ -157,7 +157,7 @@ public class RelationEditor {
 		if (person == null || marriages == null) return false;
 		if (person.getSex() == Sex.UNKNOWN) return false;
 
-		marriages = Tools.removeNullElements(marriages);
+		marriages = Utils.removeNullElements(marriages);
 		marriages = delDoubles(marriages);
 
 		for (Marriage marriage : marriages)

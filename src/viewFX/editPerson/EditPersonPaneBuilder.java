@@ -10,7 +10,7 @@ import model.Person;
 import model.Sex;
 import model.familyRelations.RelationEditor;
 import session.Session;
-import tools.Tools;
+import utils.Utils;
 import viewFX.builders.PaneFXMLBuilder;
 import viewFX.editPerson.fields.children.EditChildrenItem;
 import viewFX.editPerson.fields.date.EditDateItem;
@@ -81,11 +81,11 @@ public class EditPersonPaneBuilder extends PaneFXMLBuilder<EditPersonPaneControl
 				true));
 
 		layout.addItem(new EditEnumItem(Internationalization.get("lives"),
-				Tools.getStringValues(LifeStatus.class),
+				Utils.getStringValues(LifeStatus.class),
 				(person, value) -> person.setLifeStatus(LifeStatus.valueOf(value)),
 				person -> person.getLifeStatus().name()));
 		layout.addItem(new EditEnumItem(Internationalization.get("sex"),
-				Tools.getStringValues(Sex.class),
+				Utils.getStringValues(Sex.class),
 				(person, value) -> person.setSex(Sex.valueOf(value)),
 				person -> person.getSex().name()));
 

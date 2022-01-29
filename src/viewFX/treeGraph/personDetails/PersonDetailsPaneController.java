@@ -12,7 +12,7 @@ import lang.Internationalization;
 import lombok.Setter;
 import model.MyDate;
 import model.Person;
-import tools.Injection;
+import utils.Injection;
 
 public class PersonDetailsPaneController implements Initializable {
 

@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 
 import javafx.scene.Node;
 import lombok.Getter;
-import tools.Injection;
-import tools.Tools;
+import utils.Injection;
+import utils.Utils;
 import viewFX.editPerson.fields.enumField.EditEnumFieldBuilder;
 import viewFX.editPerson.fields.enumField.EditEnumFieldController;
 
@@ -27,7 +27,7 @@ public class EnumField<T extends Enum<T>> {
 	private void build() {
 		EditEnumFieldBuilder builder = new EditEnumFieldBuilder();
 		
-		builder.setOptions(Tools.getStringValues(enumClass));
+		builder.setOptions(Utils.getStringValues(enumClass));
 		builder.build();
 		
 		controller = builder.getController();

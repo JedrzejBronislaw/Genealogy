@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import tools.Injection;
+import utils.Injection;
 
 public class MainWindowController implements Initializable {
 

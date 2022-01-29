@@ -7,8 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import model.pgl.Section;
+import utils.PathUtils;
 import model.pgl.PGL;
-import tools.PathUtils;
 
 public class PGLLoader implements IPGLLoader {
 
