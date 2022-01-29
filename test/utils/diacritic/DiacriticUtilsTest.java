@@ -3,6 +3,8 @@ package utils.diacritic;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import static utils.diacritic.DiacriticUtils.POLISH;
+import static utils.diacritic.DiacriticUtils.GERMAN;
 
 public class DiacriticUtilsTest {
 
@@ -14,7 +16,7 @@ public class DiacriticUtilsTest {
 		String polishChars = "πÊÍ≥ÒÛúøü";
 		
 		// when
-		String withoutPolishChars = DiacriticUtils.replacePolishChars(polishChars);
+		String withoutPolishChars = DiacriticUtils.replaceDiacriticChars(polishChars, POLISH);
 		
 		// then
 		assertEquals("acelnoszz", withoutPolishChars);
@@ -26,7 +28,7 @@ public class DiacriticUtilsTest {
 		String polishChars = "•∆ £—”åØè";
 		
 		// when
-		String withoutPolishChars = DiacriticUtils.replacePolishChars(polishChars);
+		String withoutPolishChars = DiacriticUtils.replaceDiacriticChars(polishChars, POLISH);
 		
 		// then
 		assertEquals("ACELNOSZZ", withoutPolishChars);
@@ -38,7 +40,7 @@ public class DiacriticUtilsTest {
 		String polishChars = "•∆ ≥ÒÛåØè";
 		
 		// when
-		String withoutPolishChars = DiacriticUtils.replacePolishChars(polishChars);
+		String withoutPolishChars = DiacriticUtils.replaceDiacriticChars(polishChars, POLISH);
 		
 		// then
 		assertEquals("ACElnoSZZ", withoutPolishChars);
@@ -50,7 +52,7 @@ public class DiacriticUtilsTest {
 		String polishChars = "x•x∆x x≥xÒxÛxåxØxèx";
 		
 		// when
-		String withoutPolishChars = DiacriticUtils.replacePolishChars(polishChars);
+		String withoutPolishChars = DiacriticUtils.replaceDiacriticChars(polishChars, POLISH);
 		
 		// then
 		assertEquals("xAxCxExlxnxoxSxZxZx", withoutPolishChars);
@@ -63,7 +65,7 @@ public class DiacriticUtilsTest {
 		String expectedSentence = "Zazolc gesla jazn";
 		
 		// when
-		String returnedSentence = DiacriticUtils.replacePolishChars(sentence);
+		String returnedSentence = DiacriticUtils.replaceDiacriticChars(sentence, POLISH);
 		
 		// then
 		assertEquals(expectedSentence, returnedSentence);
@@ -77,7 +79,7 @@ public class DiacriticUtilsTest {
 		String germanChars = "‰¸ˆ";
 		
 		// when
-		String withoutGermanChars = DiacriticUtils.replaceGermanChars(germanChars);
+		String withoutGermanChars = DiacriticUtils.replaceDiacriticChars(germanChars, GERMAN);
 		
 		// then
 		assertEquals("aeueoe", withoutGermanChars);
@@ -89,7 +91,7 @@ public class DiacriticUtilsTest {
 		String germanChars = "ƒ‹÷";
 		
 		// when
-		String withoutGermanChars = DiacriticUtils.replaceGermanChars(germanChars);
+		String withoutGermanChars = DiacriticUtils.replaceDiacriticChars(germanChars, GERMAN);
 		
 		// then
 		assertEquals("AEUEOE", withoutGermanChars);
@@ -101,7 +103,7 @@ public class DiacriticUtilsTest {
 		String germanChars = "‰‹ˆ";
 		
 		// when
-		String withoutGermanChars = DiacriticUtils.replaceGermanChars(germanChars);
+		String withoutGermanChars = DiacriticUtils.replaceDiacriticChars(germanChars, GERMAN);
 		
 		// then
 		assertEquals("aeUEoe", withoutGermanChars);

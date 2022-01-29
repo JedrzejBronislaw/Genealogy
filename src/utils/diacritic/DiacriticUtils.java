@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DiacriticUtils {
 	
-	private static final DiacriticAlphabet POLISH = new DiacriticAlphabet(
+	public static final DiacriticAlphabet POLISH = new DiacriticAlphabet(
 			new DiacriticPair("¹", "a"),
 			new DiacriticPair("ê", "e"),
 			new DiacriticPair("œ", "s"),
@@ -26,7 +26,7 @@ public class DiacriticUtils {
 			new DiacriticPair("Ñ", "N")
 	);
 	
-	private static final DiacriticAlphabet GERMAN = new DiacriticAlphabet(
+	public static final DiacriticAlphabet GERMAN = new DiacriticAlphabet(
 			new DiacriticPair("ä", "ae"),
 			new DiacriticPair("ö", "oe"),
 			new DiacriticPair("ü", "ue"),
@@ -45,16 +45,8 @@ public class DiacriticUtils {
 
 		return text;
 	}
-	
-	public static String replacePolishChars(String text) {
-		return replaceDiacriticChars(text, POLISH);
-	}
-	
-	public static String replaceGermanChars(String text) {
-		return replaceDiacriticChars(text, GERMAN);
-	}
 
-	private static String replaceDiacriticChars(String text, DiacriticAlphabet alphabet) {
+	public static String replaceDiacriticChars(String text, DiacriticAlphabet alphabet) {
 		return alphabet.replaceDiacriticLetters(text);
 	}
 }

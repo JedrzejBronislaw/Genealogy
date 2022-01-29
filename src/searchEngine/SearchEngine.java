@@ -71,7 +71,7 @@ public class SearchEngine {
 		keyWords += " " + Diminutives.forNameStd(person.getFirstName());
 		
 		keyWords = keyWords.toUpperCase();		
-		return DiacriticUtils.replacePolishChars(keyWords);
+		return DiacriticUtils.replaceDiacriticChars(keyWords);
 	}
 	
 	public List<Person> run(String query){
@@ -85,7 +85,7 @@ public class SearchEngine {
 	private List<String> prepareQuery(String query) {
 		query = query.trim();
 		query = query.toUpperCase();
-		query = DiacriticUtils.replacePolishChars(query);
+		query = DiacriticUtils.replaceDiacriticChars(query);
 		return Arrays.asList(query.split(" "));
 	}
 
