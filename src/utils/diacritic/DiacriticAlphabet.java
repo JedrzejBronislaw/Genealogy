@@ -13,7 +13,7 @@ class DiacriticAlphabet {
 	}
 	
 	
-	public String replaceDiacriticLetters(String text) {
+	public String replaceDiacriticChars(String text) {
 		for (DiacriticPair dp : diacriticPairs)
 			text = text.replace(dp.getDiacritic(), dp.getNonDiacritic());
 		

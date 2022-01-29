@@ -47,6 +47,6 @@ public class DiacriticUtils {
 	}
 
 	public static String replaceDiacriticChars(String text, DiacriticAlphabet alphabet) {
-		return alphabet.replaceDiacriticLetters(text);
+		return alphabet.replaceDiacriticChars(text);
 	}
 }
