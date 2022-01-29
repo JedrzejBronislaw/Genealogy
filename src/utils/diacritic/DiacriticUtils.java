@@ -27,13 +27,13 @@ public class DiacriticUtils {
 	);
 	
 	private static final DiacriticAlphabet GERMAN = new DiacriticAlphabet(
-			new DiacriticPair("ä", "a"),
-			new DiacriticPair("ö", "o"),
-			new DiacriticPair("ü", "u"),
+			new DiacriticPair("ä", "ae"),
+			new DiacriticPair("ö", "oe"),
+			new DiacriticPair("ü", "ue"),
 
-			new DiacriticPair("Ä", "A"),
-			new DiacriticPair("Ö", "O"),
-			new DiacriticPair("Ü", "U")
+			new DiacriticPair("Ä", "AE"),
+			new DiacriticPair("Ö", "OE"),
+			new DiacriticPair("Ü", "UE")
 	);
 	
 	private static final List<DiacriticAlphabet> ALL_ALPHABETS = List.of(POLISH, GERMAN);

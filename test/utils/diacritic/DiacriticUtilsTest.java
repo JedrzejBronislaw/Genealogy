@@ -80,7 +80,7 @@ public class DiacriticUtilsTest {
 		String withoutGermanChars = DiacriticUtils.replaceGermanChars(germanChars);
 		
 		// then
-		assertEquals("auo", withoutGermanChars);
+		assertEquals("aeueoe", withoutGermanChars);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class DiacriticUtilsTest {
 		String withoutGermanChars = DiacriticUtils.replaceGermanChars(germanChars);
 		
 		// then
-		assertEquals("AUO", withoutGermanChars);
+		assertEquals("AEUEOE", withoutGermanChars);
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class DiacriticUtilsTest {
 		String withoutGermanChars = DiacriticUtils.replaceGermanChars(germanChars);
 		
 		// then
-		assertEquals("aUo", withoutGermanChars);
+		assertEquals("aeUEoe", withoutGermanChars);
 	}
 	
 	//
@@ -118,6 +118,6 @@ public class DiacriticUtilsTest {
 		String returnedChars = DiacriticUtils.replaceDiacriticChars(diacriticChars);
 		
 		// then
-		assertEquals("ACEauo", returnedChars);
+		assertEquals("ACEaeueoe", returnedChars);
 	}
 }
