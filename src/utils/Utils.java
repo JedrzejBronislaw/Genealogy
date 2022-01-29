@@ -5,29 +5,42 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import lombok.AllArgsConstructor;
+
 public class Utils {
 	
-	public static String replacePolishChars(String text) {
-		text = text.replace("π", "a");
-		text = text.replace("Í", "e");
-		text = text.replace("ú", "s");
-		text = text.replace("Ê", "c");
-		text = text.replace("≥", "l");
-		text = text.replace("Û", "o");
-		text = text.replace("ü", "z");
-		text = text.replace("ø", "z");
-		text = text.replace("Ò", "n");
+	@AllArgsConstructor
+	private static class DiacriticPair {
+		private String diacritic;
+		private String nonDiacritic;
+	}
+	
+	private static DiacriticPair[] polishDiacriticAlphabet = new DiacriticPair[] {
+			new DiacriticPair("π", "a"),
+			new DiacriticPair("Í", "e"),
+			new DiacriticPair("ú", "s"),
+			new DiacriticPair("Ê", "c"),
+			new DiacriticPair("≥", "l"),
+			new DiacriticPair("Û", "o"),
+			new DiacriticPair("ü", "z"),
+			new DiacriticPair("ø", "z"),
+			new DiacriticPair("Ò", "n"),
 
-		text = text.replace("•", "A");
-		text = text.replace(" ", "E");
-		text = text.replace("å", "S");
-		text = text.replace("∆", "C");
-		text = text.replace("£", "L");
-		text = text.replace("”", "O");
-		text = text.replace("è", "Z");
-		text = text.replace("Ø", "Z");
-		text = text.replace("—", "N");
-				
+			new DiacriticPair("•", "A"),
+			new DiacriticPair(" ", "E"),
+			new DiacriticPair("å", "S"),
+			new DiacriticPair("∆", "C"),
+			new DiacriticPair("£", "L"),
+			new DiacriticPair("”", "O"),
+			new DiacriticPair("è", "Z"),
+			new DiacriticPair("Ø", "Z"),
+			new DiacriticPair("—", "N"),
+		};
+		
+	public static String replacePolishChars(String text) {
+		for (DiacriticPair dp : polishDiacriticAlphabet)
+			text = text.replace(dp.diacritic, dp.nonDiacritic);
+		
 		return text;
 	}
 	
