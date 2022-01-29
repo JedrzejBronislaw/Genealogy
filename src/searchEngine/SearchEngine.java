@@ -8,7 +8,7 @@ import model.Person;
 import model.Sex;
 import model.Tree;
 import other.Diminutives;
-import utils.DiacriticUtils;
+import utils.diacritic.DiacriticUtils;
 
 public class SearchEngine {
 	

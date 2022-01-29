@@ -1,16 +1,8 @@
-package utils;
-
-import lombok.AllArgsConstructor;
+package utils.diacritic;
 
 public class DiacriticUtils {
 	
-	@AllArgsConstructor
-	private static class DiacriticPair {
-		private String diacritic;
-		private String nonDiacritic;
-	}
-	
-	private static DiacriticPair[] polishDiacriticAlphabet = new DiacriticPair[] {
+	private static final DiacriticAlphabet POLISH = new DiacriticAlphabet(
 			new DiacriticPair("π", "a"),
 			new DiacriticPair("Í", "e"),
 			new DiacriticPair("ú", "s"),
@@ -29,13 +21,10 @@ public class DiacriticUtils {
 			new DiacriticPair("”", "O"),
 			new DiacriticPair("è", "Z"),
 			new DiacriticPair("Ø", "Z"),
-			new DiacriticPair("—", "N"),
-		};
+			new DiacriticPair("—", "N")
+	);
 		
 	public static String replacePolishChars(String text) {
-		for (DiacriticPair dp : polishDiacriticAlphabet)
-			text = text.replace(dp.diacritic, dp.nonDiacritic);
-		
-		return text;
+		return POLISH.replaceDiacriticLetters(text);
 	}
 }

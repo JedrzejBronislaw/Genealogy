@@ -1,4 +1,4 @@
-package utils;
+package utils.diacritic;
 
 import static org.junit.Assert.assertEquals;
 
